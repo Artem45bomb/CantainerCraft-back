@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: spring-config-server
+  cloud:
+    config:
+      server:
+        git:
+          username: weather
+          password: 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
+          basedir: file://c:\weather/git-prop
+          clone-on-start: true
+          uri: https://github.com/Artem45bomb/WeatherApp-prop.git
+server:
+  port: 8888
