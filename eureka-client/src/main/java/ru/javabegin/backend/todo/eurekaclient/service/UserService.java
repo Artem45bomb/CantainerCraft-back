@@ -1,13 +1,10 @@
 package ru.javabegin.backend.todo.eurekaclient.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javabegin.backend.todo.eurekaclient.convertor.UserDTOConvertor;
 import ru.javabegin.backend.todo.eurekaclient.dto.UserDTO;
 import ru.javabegin.backend.todo.eurekaclient.dto.UserUpdateDTO;
-import ru.javabegin.backend.todo.eurekaclient.entity.Subscription;
 import ru.javabegin.backend.todo.eurekaclient.entity.User;
 import ru.javabegin.backend.todo.eurekaclient.repository.UserRepository;
 
@@ -46,7 +43,6 @@ public class UserService {
         return true;
     }
 
-    @Cacheable(value = "email")
     public User findByEmail(String email){
         return userRepository.findByEmail(email).get();
     }

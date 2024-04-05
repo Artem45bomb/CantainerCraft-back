@@ -1,9 +1,7 @@
 package ru.javabegin.backend.todo.eurekaclient.service;
 
 import jakarta.transaction.Transactional;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import ru.javabegin.backend.todo.eurekaclient.convertor.SubscriptionDTOConvertor;
 import ru.javabegin.backend.todo.eurekaclient.dto.SubscriptionDTO;
 import ru.javabegin.backend.todo.eurekaclient.dto.SubscriptionUpdateDTO;

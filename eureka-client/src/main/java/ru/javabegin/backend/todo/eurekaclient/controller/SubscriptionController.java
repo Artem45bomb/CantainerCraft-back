@@ -1,14 +1,10 @@
 package ru.javabegin.backend.todo.eurekaclient.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.javabegin.backend.todo.eurekaclient.dto.RoleDTO;
-import ru.javabegin.backend.todo.eurekaclient.dto.RoleUpdateDTO;
 import ru.javabegin.backend.todo.eurekaclient.dto.SubscriptionDTO;
 import ru.javabegin.backend.todo.eurekaclient.dto.SubscriptionUpdateDTO;
-import ru.javabegin.backend.todo.eurekaclient.entity.Role;
 import ru.javabegin.backend.todo.eurekaclient.entity.Subscription;
 import ru.javabegin.backend.todo.eurekaclient.service.SubscriptionService;
 
