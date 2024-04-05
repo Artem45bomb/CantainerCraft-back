@@ -43,6 +43,12 @@ public class User implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles;
 
+    @ManyToMany
+    @JoinTable(name = "user_subscription",schema = "weather",catalog = "postgres",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "subscription_id"))
+    private List<Subscription> subscriptions;
+
     @Override
     public int hashCode() {
         return Objects.hash(getId());

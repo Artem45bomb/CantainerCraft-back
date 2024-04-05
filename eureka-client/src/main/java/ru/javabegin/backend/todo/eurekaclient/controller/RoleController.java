@@ -26,7 +26,6 @@ public class RoleController {
         return ResponseEntity.ok(RoleService.findById(id));
     }
 
-
     @GetMapping("/all")
     public ResponseEntity<List<Role>> findAll(){
         return ResponseEntity.ok(RoleService.findAll());
