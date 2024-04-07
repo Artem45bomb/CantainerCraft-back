@@ -2,8 +2,8 @@ package ru.javabegin.backend.todo.eurekaclient.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import ru.javabegin.backend.todo.eurekaclient.entity.Role;
-import ru.javabegin.backend.todo.eurekaclient.entity.Subscription;
+import ru.weather.project.entity.Role;
+import ru.weather.project.entity.Subscription;
 
 import java.util.List;
 

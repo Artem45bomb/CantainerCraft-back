@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import ru.javabegin.backend.todo.eurekaclient.convertor.SubscriptionDTOConvertor;
 import ru.javabegin.backend.todo.eurekaclient.dto.SubscriptionDTO;
 import ru.javabegin.backend.todo.eurekaclient.dto.SubscriptionUpdateDTO;
-import ru.javabegin.backend.todo.eurekaclient.entity.Subscription;
+import ru.weather.project.entity.Subscription;
 import ru.javabegin.backend.todo.eurekaclient.repository.SubscriptionRepository;
 import java.util.List;
 

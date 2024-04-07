@@ -4,7 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.javabegin.backend.todo.eurekaclient.dto.RoleDTO;
-import ru.javabegin.backend.todo.eurekaclient.entity.Role;
+import ru.weather.project.entity.Role;
 
 @Component
 public class RoleDTOConvertor {

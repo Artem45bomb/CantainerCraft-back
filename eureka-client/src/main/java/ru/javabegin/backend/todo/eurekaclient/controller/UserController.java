@@ -1,12 +1,11 @@
 package ru.javabegin.backend.todo.eurekaclient.controller;
 
-import jakarta.ws.rs.PUT;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.javabegin.backend.todo.eurekaclient.dto.UserDTO;
 import ru.javabegin.backend.todo.eurekaclient.dto.UserUpdateDTO;
-import ru.javabegin.backend.todo.eurekaclient.entity.User;
+import ru.weather.project.entity.User;
 import ru.javabegin.backend.todo.eurekaclient.service.UserService;
 
 import java.util.List;

@@ -6,7 +6,7 @@ spring:
       server:
         git:
           username: weather
-          password: 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
+          password: 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
           basedir: file://c:\weather/git-prop
           clone-on-start: true
           uri: https://github.com/Artem45bomb/WeatherApp-prop.git

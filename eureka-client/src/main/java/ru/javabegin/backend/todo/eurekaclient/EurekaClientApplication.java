@@ -1,14 +1,13 @@
 package ru.javabegin.backend.todo.eurekaclient;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication(scanBasePackages = "ru.javabegin.backend.todo.eurekaclient")
 @EnableDiscoveryClient
+@EntityScan("ru.weather.project.entity")
 public class EurekaClientApplication {
 
 

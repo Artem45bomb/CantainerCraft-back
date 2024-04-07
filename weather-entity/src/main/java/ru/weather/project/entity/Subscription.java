@@ -1,4 +1,4 @@
-package ru.javabegin.backend.todo.eurekaclient.entity;
+package ru.weather.project.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -14,6 +14,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "subsciption",schema = "weather",catalog = "postgres")
+@Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Subscription {
     @Id

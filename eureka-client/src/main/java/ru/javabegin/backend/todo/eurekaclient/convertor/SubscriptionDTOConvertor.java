@@ -4,7 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.javabegin.backend.todo.eurekaclient.dto.SubscriptionDTO;
-import ru.javabegin.backend.todo.eurekaclient.entity.Subscription;
+import ru.weather.project.entity.Subscription;
 
 @Component
 public class SubscriptionDTOConvertor {

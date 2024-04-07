@@ -5,7 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.javabegin.backend.todo.eurekaclient.convertor.RoleDTOConvertor;
 import ru.javabegin.backend.todo.eurekaclient.dto.RoleDTO;
 import ru.javabegin.backend.todo.eurekaclient.dto.RoleUpdateDTO;
-import ru.javabegin.backend.todo.eurekaclient.entity.Role;
+import ru.weather.project.entity.Role;
 import ru.javabegin.backend.todo.eurekaclient.repository.RoleRepository;
 
 import java.util.List;

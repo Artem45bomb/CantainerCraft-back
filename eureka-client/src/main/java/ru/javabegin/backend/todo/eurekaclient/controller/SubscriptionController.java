@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.javabegin.backend.todo.eurekaclient.dto.SubscriptionDTO;
 import ru.javabegin.backend.todo.eurekaclient.dto.SubscriptionUpdateDTO;
-import ru.javabegin.backend.todo.eurekaclient.entity.Subscription;
+import ru.weather.project.entity.Subscription;
 import ru.javabegin.backend.todo.eurekaclient.service.SubscriptionService;
 
 import java.util.List;
@@ -19,7 +19,7 @@ public class SubscriptionController {
 
     public SubscriptionController(SubscriptionService subscriptionService) { this.subscriptionService = subscriptionService; }
 
-    @GetMapping("{/id}")
+    @GetMapping("{id}")
     public ResponseEntity<Subscription> findById(@PathVariable Long id) {
         return ResponseEntity.ok(subscriptionService.findByID(id));
     }

@@ -1,2 +1,4 @@
 rootProject.name = 'WeatherApp'
 includeBuild('eureka-server')
+includeBuild('eureka-client')
+includeBuild('weather-entity')

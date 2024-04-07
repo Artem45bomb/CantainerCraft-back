@@ -5,11 +5,10 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.javabegin.backend.todo.eurekaclient.convertor.UserDTOConvertor;
 import ru.javabegin.backend.todo.eurekaclient.dto.UserDTO;
 import ru.javabegin.backend.todo.eurekaclient.dto.UserUpdateDTO;
-import ru.javabegin.backend.todo.eurekaclient.entity.User;
+import ru.weather.project.entity.User;
 import ru.javabegin.backend.todo.eurekaclient.repository.UserRepository;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Component
 @Transactional

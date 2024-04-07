@@ -5,11 +5,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.javabegin.backend.todo.eurekaclient.dto.RoleDTO;
 import ru.javabegin.backend.todo.eurekaclient.dto.RoleUpdateDTO;
-import ru.javabegin.backend.todo.eurekaclient.entity.Role;
 import ru.javabegin.backend.todo.eurekaclient.service.RoleService;
-
 import java.util.List;
 import java.util.NoSuchElementException;
+import ru.weather.project.entity.Role;
+
 
 @RestController
 @RequestMapping("/roles")
