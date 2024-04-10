@@ -2,3 +2,6 @@ rootProject.name = 'WeatherApp'
 includeBuild('eureka-server')
 includeBuild('eureka-client')
 includeBuild('weather-entity')
+includeBuild('socket-chats')
+includeBuild('api-gateway')
+includeBuild('spring-config-server')

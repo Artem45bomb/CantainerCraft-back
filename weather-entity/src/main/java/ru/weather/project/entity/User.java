@@ -15,6 +15,7 @@ import java.util.Objects;
 @Builder
 @Entity
 @Table(name = "user_data",schema = "weather",catalog = "postgres")
+@Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class User implements Serializable {
 

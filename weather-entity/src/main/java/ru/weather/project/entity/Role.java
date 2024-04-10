@@ -14,6 +14,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "role_data",schema = "weather",catalog = "postgres")
+@Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Role {
     @Id
