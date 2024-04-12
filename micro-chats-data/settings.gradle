@@ -1,0 +1,2 @@
+include(':micro-entity')
+rootProject.name = 'micro-chats-data'

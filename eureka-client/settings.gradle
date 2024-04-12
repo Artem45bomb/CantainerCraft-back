@@ -1,2 +1,2 @@
-include(':weather-entity')
+include(':micro-entity')
 rootProject.name = 'eureka-client'
