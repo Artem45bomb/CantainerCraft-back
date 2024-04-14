@@ -1,6 +1,6 @@
 spring:
   application:
-    name: eclient
+    name: 'micro-users'
   profiles:
     active: dev
   config:

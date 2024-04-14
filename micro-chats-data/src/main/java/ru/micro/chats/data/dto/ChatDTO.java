@@ -15,8 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChatDTO {
-    private String value;
-    private Long userId;
+    private String name;
     private Date date;
     private TypeChat typeChat;
     private List<Message> messages;

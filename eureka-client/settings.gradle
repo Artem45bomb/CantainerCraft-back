@@ -1,2 +1,0 @@
-include(':micro-entity')
-rootProject.name = 'eureka-client'

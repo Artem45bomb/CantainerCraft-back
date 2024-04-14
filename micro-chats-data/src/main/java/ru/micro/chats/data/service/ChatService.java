@@ -5,8 +5,10 @@ import ru.micro.chats.data.repository.ChatRepository;
 import ru.micro.chats.data.dto.ChatDTO;
 import ru.micro.chats.data.dto.ChatDTOConvertor;
 import ru.micro.chats.data.dto.ChatUpdateDTO;
+import ru.weather.project.entity.TypeChat;
 import ru.weather.project.entity.chats.Chat;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -42,9 +44,9 @@ public class ChatService {
     }
 
 
-//    public List<Chat> findBySearch(UUID uuid, String name, TypeChat typeChat,Date dateStart,Date dateEnd){
-//        return chatRepository.findBySearch(uuid,name,typeChat,dateStart,dateEnd);
-//    }
+    public List<Chat> findBySearch(UUID uuid, String name, TypeChat typeChat, Date dateStart, Date dateEnd){
+        return chatRepository.findBySearch(uuid,name,typeChat,dateStart,dateEnd);
+    }
 
     public Optional<Chat> findByName(String chatName){
         return chatRepository.findByName(chatName);

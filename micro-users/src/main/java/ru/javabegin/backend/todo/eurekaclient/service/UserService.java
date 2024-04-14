@@ -8,7 +8,9 @@ import ru.javabegin.backend.todo.eurekaclient.dto.UserUpdateDTO;
 import ru.weather.project.entity.User;
 import ru.javabegin.backend.todo.eurekaclient.repository.UserRepository;
 
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @Transactional
@@ -46,6 +48,13 @@ public class UserService {
         return userRepository.findByEmail(email).get();
     }
 
+    public List<User> findBySearch(String email,String password){
+        return userRepository.findBySearch(email,password);
+    }
+
+    public Optional<User> findByEmailAndPassword(String email,String pass){
+        return userRepository.findByEmailAndPassword(email,pass);
+    }
     public void delete(Long id){
         userRepository.deleteById(id);
     }

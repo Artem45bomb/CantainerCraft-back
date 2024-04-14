@@ -28,7 +28,6 @@ public class Message {
 
     private Date date;
 
-    private UUID recipientId;
 
     private Long userId;
 

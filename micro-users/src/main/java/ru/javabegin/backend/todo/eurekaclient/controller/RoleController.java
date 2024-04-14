@@ -31,7 +31,7 @@ public class RoleController {
         return ResponseEntity.ok(RoleService.findAll());
     }
 
-    @PostMapping("/create")
+    @PostMapping("/add")
     public ResponseEntity<Role> save(@RequestBody RoleDTO RoleDTO){
         return ResponseEntity.ok(RoleService.save(RoleDTO));
     }
@@ -48,7 +48,7 @@ public class RoleController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Boolean> delete(@PathVariable Long id ){
         try{
             findById(id);

@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.javabegin.backend.todo.eurekaclient.dto.UserDTO;
+import ru.javabegin.backend.todo.eurekaclient.dto.UserSearchDTO;
 import ru.javabegin.backend.todo.eurekaclient.dto.UserUpdateDTO;
 import ru.weather.project.entity.User;
 import ru.javabegin.backend.todo.eurekaclient.service.UserService;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
 
     private final UserService userService;
@@ -21,9 +22,23 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping
+    @PostMapping("/id")
     public ResponseEntity<User> findById(@RequestBody Long id){
-        return ResponseEntity.ok(userService.findById(id));
+        try {
+            return ResponseEntity.ok(userService.findById(id));
+        }
+        catch (NoSuchElementException exception){
+            return new ResponseEntity("user is not exist",HttpStatus.NO_CONTENT);
+        }
+    }
+
+    @PostMapping("/search")
+    public ResponseEntity<List<User>> findBySearch(@RequestBody UserSearchDTO userSearchDTO){
+
+        String email = userSearchDTO.getEmail() == null ? null : userSearchDTO.getEmail();
+        String password = userSearchDTO.getPassword() ==null ? null :userSearchDTO.getPassword();
+
+        return ResponseEntity.ok(userService.findBySearch(email,password));
     }
 
     @PostMapping("/email")
@@ -34,15 +49,18 @@ public class UserController {
         return ResponseEntity.ok(userService.findByEmail(email));
     }
 
+
     @GetMapping("/all")
     public ResponseEntity<List<User>> findAll(){
         return ResponseEntity.ok(userService.findAll());
     }
 
-    @PostMapping("/create")
+    @PostMapping("/add")
     public ResponseEntity<User> save(@RequestBody UserDTO userDTO){
         return ResponseEntity.ok(userService.save(userDTO));
     }
+
+
 
     @PutMapping
     public ResponseEntity<Boolean> update(@RequestBody UserUpdateDTO userUpdateDTO){
@@ -56,10 +74,10 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Boolean> delete(@PathVariable Long id ){
         try{
-            findById(id);
+            userService.findById(id);
             userService.delete(id);
             return ResponseEntity.ok(true);
         }

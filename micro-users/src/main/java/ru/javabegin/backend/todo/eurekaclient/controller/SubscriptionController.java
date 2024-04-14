@@ -29,7 +29,7 @@ public class SubscriptionController {
         return ResponseEntity.ok(subscriptionService.findAll());
     }
 
-    @PostMapping("/create")
+    @PostMapping("/add")
     public ResponseEntity<Subscription> save(@RequestBody SubscriptionDTO subscriptionDTO){
         return ResponseEntity.ok(subscriptionService.save(subscriptionDTO));
     }
@@ -46,7 +46,7 @@ public class SubscriptionController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Boolean> delete(@PathVariable Long id ){
         try{
             findById(id);

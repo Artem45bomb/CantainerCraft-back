@@ -1,6 +1,6 @@
 rootProject.name = 'WeatherApp'
 includeBuild('eureka-server')
-includeBuild('eureka-client')
+includeBuild('micro-users')
 includeBuild('micro-entity')
 includeBuild('micro-chats-data')
 includeBuild('socket-chats')

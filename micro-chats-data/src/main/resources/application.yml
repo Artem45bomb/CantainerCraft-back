@@ -5,5 +5,8 @@ spring:
     active: dev
   application:
     name: 'micro-chats-data'
+
 server:
   port: 0
+  error:
+    include-message: always

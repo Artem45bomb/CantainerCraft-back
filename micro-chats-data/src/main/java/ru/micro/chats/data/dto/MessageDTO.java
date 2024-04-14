@@ -14,12 +14,12 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MessageDTO {
+    private UUID uuid;
 
     private String value;
 
     private Date date;
 
-    private UUID recipientId;
 
     private Long userId;
 

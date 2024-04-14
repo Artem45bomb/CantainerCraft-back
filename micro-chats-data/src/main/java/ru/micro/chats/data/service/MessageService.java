@@ -3,10 +3,10 @@ package ru.micro.chats.data.service;
 import org.springframework.stereotype.Service;
 import ru.micro.chats.data.dto.MessageDTO;
 import ru.micro.chats.data.dto.MessageDTOConvertor;
-import ru.micro.chats.data.dto.MessageUpdateDTO;
 import ru.micro.chats.data.repository.MessageRepository;
 import ru.weather.project.entity.chats.Message;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -25,9 +25,8 @@ public class MessageService {
         return messageRepository.save(message);
     }
 
-    public boolean update(MessageUpdateDTO messageUpdateDTO){
-        Message message = messageDTOConvertor.convertMessageDTOToMessage(messageUpdateDTO);
-        message.setUuid(messageUpdateDTO.getUuid());
+    public boolean update(MessageDTO messageDTO){
+        Message message = messageDTOConvertor.convertMessageDTOToMessage(messageDTO);
         messageRepository.save(message);
         return true;
     }
@@ -45,7 +44,7 @@ public class MessageService {
         return messageRepository.findById(uuid);
     }
 
-//    public List<Message> findBySearch(Date dateStart,Date dateEnd,String value,UUID uuid,Long userId){
-//        return messageRepository.findBySearch(dateStart,dateEnd,value,uuid,userId);
-//    }
+    public List<Message> findBySearch(Date dateStart, Date dateEnd, String value, UUID uuid, Long userId){
+        return messageRepository.findBySearch(dateStart,dateEnd,value,uuid,userId);
+    }
 }

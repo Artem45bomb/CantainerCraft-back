@@ -1,1 +1,2 @@
+include('micro-entity')
 rootProject.name = 'micro-entity'
