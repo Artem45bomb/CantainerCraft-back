@@ -13,6 +13,6 @@ public class MessageDTO {
     private ChatDTO chat;
     private String value;
     private Long userId;
-    private LocalDate localDate;
+    private LocalDate date;
 
 }

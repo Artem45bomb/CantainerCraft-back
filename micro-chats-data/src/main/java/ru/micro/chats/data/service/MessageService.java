@@ -25,10 +25,9 @@ public class MessageService {
         return messageRepository.save(message);
     }
 
-    public boolean update(MessageDTO messageDTO){
+    public Message update(MessageDTO messageDTO){
         Message message = messageDTOConvertor.convertMessageDTOToMessage(messageDTO);
-        messageRepository.save(message);
-        return true;
+        return messageRepository.save(message);
     }
 
     public boolean delete(UUID uuid){

@@ -6,11 +6,11 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class TemplateConfig {
-    private final static String CHATS_BASE_Url = "http://localhost:8081/micro-chats-data";
+    private final static String CHATS_BASE_URL = "http://localhost:8081/micro-chats-data/";
 
     @Bean("chatsClient")
     public WebClient webClient(){
         return WebClient
-                .create(CHATS_BASE_Url);
+                .create(CHATS_BASE_URL);
     }
 }

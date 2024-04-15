@@ -64,7 +64,7 @@ public class MessageController {
 
 
     @PutMapping("/update")
-    public ResponseEntity<Boolean> update(@RequestBody MessageDTO messageDTO){
+    public ResponseEntity<Message> update(@RequestBody MessageDTO messageDTO){
         try{
             if(userFeignClient.userExist(messageDTO.getUserId()) == null){
                 return new ResponseEntity("user is not exist",HttpStatus.NO_CONTENT);
