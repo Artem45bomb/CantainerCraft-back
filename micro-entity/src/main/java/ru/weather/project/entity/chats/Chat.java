@@ -32,6 +32,8 @@ public class Chat {
 
     private TypeChat typeChat;
 
+    @OneToMany(mappedBy = "chat",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    private List<User_Chat> userChat;
 
     @OneToMany(mappedBy = "chat",fetch = FetchType.EAGER)
     private List<Message> messages;

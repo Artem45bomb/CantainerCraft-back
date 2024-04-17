@@ -1,8 +1,9 @@
-package ru.micro.chats.data.dto;
+package ru.micro.chats.data.convertor;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ru.micro.chats.data.dto.MessageDTO;
 import ru.weather.project.entity.chats.Message;
 
 

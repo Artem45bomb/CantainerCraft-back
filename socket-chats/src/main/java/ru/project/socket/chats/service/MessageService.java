@@ -3,10 +3,7 @@ package ru.project.socket.chats.service;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import ru.project.socket.chats.dto.MessageDTO;
-
-import java.time.LocalDate;
 import java.util.UUID;
 
 @Service
@@ -18,7 +15,6 @@ public class MessageService {
     }
 
     public MessageDTO save(MessageDTO messageDTO){
-        messageDTO.setDate(LocalDate.now());
         return webClient
                 .post()
                 .uri("message/add")
@@ -28,7 +24,6 @@ public class MessageService {
                 .blockFirst();
     }
     public Flux<MessageDTO> asyncSave(MessageDTO messageDTO){
-        messageDTO.setDate(LocalDate.now());
         return webClient
                 .post()
                 .uri("message/add")

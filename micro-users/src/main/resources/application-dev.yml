@@ -5,3 +5,5 @@ spring:
     url: jdbc:postgresql://localhost:5555/postgres
   jpa:
     show-sql: true
+    hibernate:
+      ddl-auto: update

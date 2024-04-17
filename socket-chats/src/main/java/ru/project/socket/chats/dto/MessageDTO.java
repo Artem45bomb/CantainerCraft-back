@@ -3,6 +3,7 @@ package ru.project.socket.chats.dto;
 import lombok.Getter;
 import lombok.Setter;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.UUID;
 
 
@@ -13,6 +14,6 @@ public class MessageDTO {
     private ChatDTO chat;
     private String value;
     private Long userId;
-    private LocalDate date;
+    private Date date;
 
 }

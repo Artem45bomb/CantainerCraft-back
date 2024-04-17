@@ -49,6 +49,11 @@ public class User implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "subscription_id"))
     private List<Subscription> subscriptions;
 
+
+    @OneToOne
+    @JoinColumn(name = "profile_uuid",referencedColumnName = "uuid")
+    private Profile profile;
+
     @Override
     public int hashCode() {
         return Objects.hash(getId());

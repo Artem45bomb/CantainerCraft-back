@@ -2,7 +2,7 @@ package ru.micro.chats.data.service;
 
 import org.springframework.stereotype.Service;
 import ru.micro.chats.data.dto.MessageDTO;
-import ru.micro.chats.data.dto.MessageDTOConvertor;
+import ru.micro.chats.data.convertor.MessageDTOConvertor;
 import ru.micro.chats.data.repository.MessageRepository;
 import ru.weather.project.entity.chats.Message;
 

@@ -15,7 +15,7 @@ import java.util.*;
 @RestController
 @RequestMapping("/chat")
 public class ChatController {
-    
+
     private final ChatService chatService;
 
     public ChatController(ChatService chatService) {
@@ -30,14 +30,14 @@ public class ChatController {
 
     @PostMapping("/uuid")
     public ResponseEntity<Chat> findByUUID(@RequestBody UUID uuid){
-            Optional<Chat> chat = chatService.findByUUID(uuid);
-            
-            if(chat.isPresent()) {
-                return ResponseEntity.ok(chat.get());
-            }
-            return new ResponseEntity("No content", HttpStatus.NO_CONTENT);
+        Optional<Chat> chat = chatService.findByUUID(uuid);
+
+        if(chat.isPresent()) {
+            return ResponseEntity.ok(chat.get());
+        }
+        return new ResponseEntity("No content", HttpStatus.NO_CONTENT);
     }
-    
+
     @PostMapping("/name")
     public ResponseEntity<Chat> findByName(@RequestBody String name){
         Optional<Chat> chat = chatService.findByName(name);
@@ -48,7 +48,7 @@ public class ChatController {
         }
         return new ResponseEntity("No content", HttpStatus.NO_CONTENT);
     }
-    
+
     @PutMapping("/delete")
     public ResponseEntity<Boolean> delete(@RequestBody UUID uuid){
         try{
