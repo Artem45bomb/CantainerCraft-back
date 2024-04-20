@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import ru.weather.project.entity.TypeChat;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -18,7 +19,7 @@ import java.util.UUID;
 @Cacheable
 @Table(name = "chats",schema = "messenger_chats",catalog = "micro_chats")
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
-public class Chat {
+public class Chat implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

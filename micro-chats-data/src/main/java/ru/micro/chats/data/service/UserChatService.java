@@ -33,6 +33,9 @@ public class UserChatService {
         return userChatRepository.save(userChat);
     }
 
+    public Integer deleteByUserId(Long userId,UUID chatId){
+        return userChatRepository.deleteByUserIdAndChatUuid(userId,chatId);
+    }
     public void deleteById(Long id){
         userChatRepository.deleteById(id);
     }

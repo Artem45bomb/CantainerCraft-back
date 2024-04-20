@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
@@ -19,7 +20,7 @@ import java.util.UUID;
 @Cacheable
 @Table(name = "messages",schema = "messenger_chats",catalog = "micro_chats")
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Message {
+public class Message implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID uuid;

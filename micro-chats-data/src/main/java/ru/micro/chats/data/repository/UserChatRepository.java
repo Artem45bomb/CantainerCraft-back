@@ -1,8 +1,10 @@
 package ru.micro.chats.data.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.weather.project.entity.chats.User_Chat;
 
 import java.util.List;
@@ -16,4 +18,8 @@ public interface UserChatRepository extends JpaRepository<User_Chat,Long> {
             "(user_chat.userId = :userId or :userId is null ) and " +
             "(user_chat.id=:id or :id is null )")
     List<User_Chat> findBySearch(Long id,Long userId,UUID chatId);
+
+    @Transactional
+    @Modifying
+    Integer deleteByUserIdAndChatUuid(Long userId,UUID chatId);
 }

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
@@ -17,7 +18,7 @@ import java.util.UUID;
 @Builder
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
-public class Profile {
+public class Profile implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

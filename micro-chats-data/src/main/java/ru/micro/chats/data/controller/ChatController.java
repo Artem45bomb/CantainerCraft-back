@@ -1,25 +1,30 @@
 package ru.micro.chats.data.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.micro.chats.data.dto.ChatDTO;
-import ru.micro.chats.data.dto.ChatSearchDTO;
+import ru.micro.chats.data.dto.*;
 import ru.micro.chats.data.service.ChatService;
-import ru.micro.chats.data.dto.ChatUpdateDTO;
+import ru.micro.chats.data.service.UserChatService;
 import ru.weather.project.entity.TypeChat;
 import ru.weather.project.entity.chats.Chat;
+import ru.weather.project.entity.chats.User_Chat;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/chat")
+@Slf4j
 public class ChatController {
 
     private final ChatService chatService;
+    private final UserChatService userChatService;
 
-    public ChatController(ChatService chatService) {
+    public ChatController(ChatService chatService, UserChatService userChatService) {
         this.chatService = chatService;
+        this.userChatService = userChatService;
     }
 
     @PostMapping("/all")
@@ -93,7 +98,7 @@ public class ChatController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/search")
     public ResponseEntity<List<Chat>> findBySearch(@RequestBody ChatSearchDTO chatSearchDTO){
 
         UUID uuid = chatSearchDTO.getUuid() == null ? null :chatSearchDTO.getUuid();
@@ -129,6 +134,18 @@ public class ChatController {
 
         return ResponseEntity.ok(chatService.findBySearch(uuid,chatName,typeChat,dateStart,dateEnd));
 
+    }
+
+    //ищет пользователей по userId через useChatService так как все пользователи хранятся в user_chat
+    @PostMapping("/user/search")
+    public ResponseEntity<List<Chat>> search(@RequestBody Long userId){
+
+        List<User_Chat> userChats =userChatService.findBySearch(null,userId,null);
+        log.info(userChats.toString());
+        List<Chat> chats= userChats.stream()
+                .map(User_Chat::getChat)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(chats);
     }
 
 }

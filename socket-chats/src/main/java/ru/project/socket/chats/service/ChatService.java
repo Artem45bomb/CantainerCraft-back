@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import ru.project.socket.chats.dto.ChatDTO;
+import ru.project.socket.chats.dto.UserAddChatDTO;
+import ru.project.socket.chats.dto.UserChatDTO;
 
 import java.util.UUID;
 
@@ -53,5 +55,23 @@ public class ChatService {
                 .retrieve()
                 .bodyToMono(Boolean.class);
 
+    }
+
+    public Mono<UserChatDTO> addUser(UserChatDTO dto){
+        return  webClient
+                .post()
+                .uri("user_chat/add")
+                .bodyValue(dto)
+                .retrieve()
+                .bodyToMono(UserChatDTO.class);
+    }
+
+    public Mono<Boolean> deleteUser(UserChatDTO dto){
+        return webClient
+                .post()
+                .uri("/user_chat/delete/user")
+                .bodyValue(dto)
+                .retrieve()
+                .bodyToMono(Boolean.class);
     }
 }

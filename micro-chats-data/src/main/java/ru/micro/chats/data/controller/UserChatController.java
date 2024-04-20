@@ -16,7 +16,7 @@ import java.util.*;
 @RestController
 @RequestMapping("/user_chat")
 class UserChatController {
-
+    //UserFeignClient для взаимодействия с micro-users
     private final UserFeignClient userFeignClient;
     private final UserChatService userChatService;
 
@@ -32,7 +32,7 @@ class UserChatController {
 
 
     @PostMapping("/id")
-    public ResponseEntity<User_Chat> findByUUID(@RequestBody Long id){
+    public ResponseEntity<User_Chat> findById(@RequestBody Long id){
         Optional<User_Chat> chat = userChatService.findById(id);
 
         if(chat.isPresent()) {
@@ -64,6 +64,15 @@ class UserChatController {
         catch (NoSuchElementException exception){
             return new ResponseEntity("No content for delete",HttpStatus.NON_AUTHORITATIVE_INFORMATION);
         }
+    }
+
+    @PutMapping("/delete/user")
+    public ResponseEntity<Integer> delete(@RequestBody UserChatDTO dto){
+            List<User_Chat> user_chats = userChatService.findBySearch(null, dto.getUserId(),dto.getChat().getUuid());
+            if(!user_chats.isEmpty()){
+                return ResponseEntity.ok(userChatService.deleteByUserId(dto.getUserId(),dto.getChat().getUuid()));
+            }
+            return new ResponseEntity("No content for delete",HttpStatus.NON_AUTHORITATIVE_INFORMATION);
     }
 
     @PostMapping("/add")

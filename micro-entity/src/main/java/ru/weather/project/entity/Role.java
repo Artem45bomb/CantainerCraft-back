@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import java.io.Serializable;
 import java.util.List;
 
 @NoArgsConstructor
@@ -16,7 +17,7 @@ import java.util.List;
 @Table(name = "role_data",schema = "weather",catalog = "postgres")
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Role {
+public class Role implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -6,8 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import ru.weather.project.entity.chats.Chat;
 
-
-
+import java.io.Serializable;
 
 
 @AllArgsConstructor
@@ -20,7 +19,7 @@ import ru.weather.project.entity.chats.Chat;
 @Entity
 @Table(name = "user_chat",schema = "messenger_chats",catalog = "micro_chats")
 @ToString
-public class User_Chat {
+public class User_Chat implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +29,7 @@ public class User_Chat {
     private Long userId;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "chat_id",referencedColumnName = "uuid")
     private Chat chat;
 }
