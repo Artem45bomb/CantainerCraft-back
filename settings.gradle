@@ -1,8 +1,8 @@
 rootProject.name = 'WeatherApp'
-includeBuild('eureka-server')
+includeBuild('micro-server')
 includeBuild('micro-users')
 includeBuild('micro-entity')
-includeBuild('micro-chats-data')
-includeBuild('socket-chats')
-includeBuild('api-gateway')
-includeBuild('spring-config-server')
+includeBuild('micro-chats')
+includeBuild('micro-messenger')
+includeBuild('micro-gateway')
+includeBuild('micro-config')

@@ -1,2 +1,1 @@
-include(':micro-entity')
 rootProject.name = 'micro-users'
