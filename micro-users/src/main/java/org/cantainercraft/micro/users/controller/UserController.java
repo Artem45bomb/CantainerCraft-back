@@ -11,6 +11,7 @@ import org.cantainercraft.micro.users.service.UserService;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
@@ -46,7 +47,11 @@ public class UserController {
         if(email ==null || !email.trim().isEmpty()){
             return new ResponseEntity("email is null", HttpStatus.NOT_ACCEPTABLE);
         }
-        return ResponseEntity.ok(userService.findByEmail(email));
+        Optional<User> user = userService.findByEmail(email);
+
+        return user.map(ResponseEntity::ok)
+                .orElseGet(() -> new ResponseEntity("user is not exist", HttpStatus.NO_CONTENT));
+
     }
 
 
@@ -74,11 +79,24 @@ public class UserController {
         }
     }
 
+    @PutMapping("/delete/email")
+    public ResponseEntity<Boolean> deleteByEmail(@RequestBody String email){
+        try{
+            User user = userService.findByEmail(email)
+                    .orElseGet(() -> {throw new NoSuchElementException();});
+            userService.deleteByEmail(email);
+            return ResponseEntity.ok(true);
+        }
+        catch (NoSuchElementException exception){
+            return new ResponseEntity("element is not exist",HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
+
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Boolean> delete(@PathVariable Long id ){
+    public ResponseEntity<Boolean> deleteById(@PathVariable Long id ){
         try{
             userService.findById(id);
-            userService.delete(id);
+            userService.deleteById(id);
             return ResponseEntity.ok(true);
         }
         catch (NoSuchElementException exception){

@@ -3,6 +3,8 @@ package org.cantainercraft.micro.users.controller;
 import org.cantainercraft.micro.users.dto.ProfileDTO;
 import org.cantainercraft.micro.users.dto.ProfileSearchDTO;
 import org.cantainercraft.micro.users.service.ProfileService;
+import org.cantainercraft.micro.users.service.impl.ProfileServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +21,7 @@ public class ProfileController {
 
     private final ProfileService profileService;
 
+    @Autowired
     public ProfileController(ProfileService profileService){
         this.profileService = profileService;
     }
@@ -84,10 +87,10 @@ public class ProfileController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Boolean> delete(@PathVariable UUID id ){
+    public ResponseEntity<Boolean> deleteById(@PathVariable UUID id ){
         Optional<Profile> profile = profileService.findById(id);
         if(profile.isPresent()){
-            profileService.delete(id);
+            profileService.deleteById(id);
             return ResponseEntity.ok(true);
         }
         return new ResponseEntity("profile is not exist",HttpStatus.NON_AUTHORITATIVE_INFORMATION);

@@ -3,6 +3,8 @@ package org.cantainercraft.micro.users.controller;
 import org.cantainercraft.micro.users.dto.SubscriptionDTO;
 import org.cantainercraft.micro.users.dto.SubscriptionUpdateDTO;
 import org.cantainercraft.micro.users.service.SubscriptionService;
+import org.cantainercraft.micro.users.service.impl.SubscriptionServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +19,12 @@ public class SubscriptionController {
 
     private final SubscriptionService subscriptionService;
 
-    public SubscriptionController(SubscriptionService subscriptionService) { this.subscriptionService = subscriptionService; }
+    @Autowired
+    public SubscriptionController(SubscriptionService subscriptionService) {
+        this.subscriptionService = subscriptionService; 
+    }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Subscription> findById(@PathVariable Long id) {
         return ResponseEntity.ok(subscriptionService.findByID(id));
     }
@@ -47,10 +52,10 @@ public class SubscriptionController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Boolean> delete(@PathVariable Long id ){
+    public ResponseEntity<Boolean> deleteById(@PathVariable Long id ){
         try{
             findById(id);
-            subscriptionService.delete(id);
+            subscriptionService.deleteById(id);
             return ResponseEntity.ok(true);
         }
         catch (NoSuchElementException exception){

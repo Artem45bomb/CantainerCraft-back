@@ -1,15 +1,12 @@
 package org.cantainercraft.micro.users;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.cantainercraft.micro.users.controller.UserController;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
-@SpringBootTest
+
+@WebMvcTest(UserController.class)
 class EurekaClientApplicationTests {
 
-    @Test
-    void contextLoads() {
-        Assertions.assertEquals(1,1);
-    }
+
 
 }

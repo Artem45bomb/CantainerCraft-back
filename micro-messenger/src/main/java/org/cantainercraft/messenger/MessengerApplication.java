@@ -4,12 +4,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
-@SpringBootApplication(scanBasePackages = "ru.project.socket.chats")
-@EnableFeignClients(basePackages = "ru.project.socket.chats.feign")
-public class SocketChatsApplication {
+@SpringBootApplication(scanBasePackages = "org.cantainercraft.messenger")
+@EnableFeignClients(basePackages = "org.cantainercraft.messenger.feign")
+public class MessengerApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SocketChatsApplication.class, args);
+        SpringApplication.run(MessengerApplication.class, args);
     }
 
 }

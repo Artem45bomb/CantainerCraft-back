@@ -9,8 +9,12 @@ import org.cantainercraft.project.entity.User;
 @Component
 public class UserDTOConvertor {
 
-    @Autowired
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
+
+    public UserDTOConvertor(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+    }
+
 
     public UserDTO convertUserToUserDTO(User user){
         return modelMapper.map(user,UserDTO.class);

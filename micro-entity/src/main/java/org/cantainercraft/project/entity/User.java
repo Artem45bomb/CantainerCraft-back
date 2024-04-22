@@ -28,7 +28,7 @@ public class User implements Serializable {
 
     private String password;
 
-    @Column("useremail")
+
     private String email;
 
     public User(String name,String password,String email){
@@ -64,5 +64,15 @@ public class User implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(getId());
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(" +
+                "id = " + id + ", " +
+                "name = " + name + ", " +
+                "password = " + password + ", " +
+                "email = " + email + ", " +
+                "profile = " + profile + ")";
     }
 }
