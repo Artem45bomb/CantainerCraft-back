@@ -1,21 +1,24 @@
 package org.cantainercraft.micro.users.controller;
 
+import com.google.gson.Gson;
+import org.cantainercraft.micro.users.exception.MessageError;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.cantainercraft.micro.users.dto.UserDTO;
 import org.cantainercraft.micro.users.dto.UserSearchDTO;
-import org.cantainercraft.micro.users.dto.UserUpdateDTO;
 import org.cantainercraft.project.entity.User;
 import org.cantainercraft.micro.users.service.UserService;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import javax.swing.text.html.Option;
+import java.util.*;
+
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
+    private final Gson gson = new Gson();
 
     private final UserService userService;
 
@@ -25,12 +28,17 @@ public class UserController {
 
     @PostMapping("/id")
     public ResponseEntity<User> findById(@RequestBody Long id){
-        try {
-            return ResponseEntity.ok(userService.findById(id));
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type","application/json;charset=UTF-8");
+
+        Optional<User> user = userService.findById(id);
+
+        if(user.isPresent()){
+            return ResponseEntity.ok(user.get());
         }
-        catch (NoSuchElementException exception){
-            return new ResponseEntity("user is not exist",HttpStatus.NO_CONTENT);
-        }
+
+
+        return new ResponseEntity(gson.toJson("user is not exist"),headers,HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/search")
@@ -62,45 +70,66 @@ public class UserController {
 
     @PostMapping("/add")
     public ResponseEntity<User> save(@RequestBody UserDTO userDTO){
-        return ResponseEntity.ok(userService.save(userDTO));
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type","application/json");
+        Optional<User> user = userService.findByEmail(userDTO.getName());
+
+        if(user.isPresent()){
+            return new ResponseEntity(MessageError.of("user is exist"),headers,HttpStatus.CONFLICT);
+        }
+
+        if(userDTO.getId() != null ){
+            return new ResponseEntity(MessageError.of("missed param:id"),headers,HttpStatus.NO_CONTENT);
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(userService.save(userDTO));
     }
 
-
-
-    @PutMapping
-    public ResponseEntity<Boolean> update(@RequestBody UserUpdateDTO userUpdateDTO){
+    @PutMapping("/update")
+    public ResponseEntity<String> update(@RequestBody UserDTO dto){
         try{
-            findById(userUpdateDTO.getId());
-            userService.update(userUpdateDTO);
-            return ResponseEntity.ok(true);
+
+            if(dto.getId() == null){
+                return new ResponseEntity(MessageError.of("missed param: id"),HttpStatus.NOT_FOUND);
+            }
+
+            Optional<User> user = userService.findById(dto.getId());
+            user.orElseGet(() -> {throw new NoSuchElementException();});
+            userService.update(dto);
+            return ResponseEntity.ok("user update");
         }
         catch (NoSuchElementException exception){
-            return new ResponseEntity("element is not exist",HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity(MessageError.of("user is not exist"),HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
     @PutMapping("/delete/email")
-    public ResponseEntity<Boolean> deleteByEmail(@RequestBody String email){
+    public ResponseEntity<String> deleteByEmail(@RequestBody String email){
         try{
             User user = userService.findByEmail(email)
-                    .orElseGet(() -> {throw new NoSuchElementException();});
+                    .orElseGet(() ->{throw new NoSuchElementException();});
             userService.deleteByEmail(email);
-            return ResponseEntity.ok(true);
+            return ResponseEntity.ok("delete user");
         }
         catch (NoSuchElementException exception){
-            return new ResponseEntity("element is not exist",HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity("user is not exist",HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Boolean> deleteById(@PathVariable Long id ){
+    @PutMapping("/delete/id")
+    public ResponseEntity<String> deleteById(@RequestBody Long id ){
         try{
-            userService.findById(id);
+            Optional<User> user= userService.findById(id);
+
+            if(user.isEmpty()) throw new NoSuchElementException();
+
             userService.deleteById(id);
-            return ResponseEntity.ok(true);
+            return ResponseEntity.ok("delete user");
         }
         catch (NoSuchElementException exception){
-            return new ResponseEntity("element is not exist",HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity("user is not exist",HttpStatus.NOT_ACCEPTABLE);
         }
     }
 }

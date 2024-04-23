@@ -5,7 +5,6 @@ import org.cantainercraft.micro.users.service.UserService;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.cantainercraft.micro.users.dto.UserDTO;
-import org.cantainercraft.micro.users.dto.UserUpdateDTO;
 import org.cantainercraft.project.entity.User;
 import org.cantainercraft.micro.users.repository.UserRepository;
 
@@ -28,8 +27,8 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
-    public User findById(Long id){
-        return userRepository.findById(id).get();
+    public Optional<User> findById(Long id){
+        return userRepository.findById(id);
     }
     
     public User save(UserDTO userDTO){
@@ -37,9 +36,8 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
     
-    public boolean update(UserUpdateDTO userUpdateDTO){
-        User user = userDTOConvertor.convertUserDTOToUser(userUpdateDTO);
-        user.setId(userUpdateDTO.getId());
+    public boolean update(UserDTO userDTO){
+        User user = userDTOConvertor.convertUserDTOToUser(userDTO);
         userRepository.save(user);
         return true;
     }
@@ -52,9 +50,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.findBySearch(email,password);
     }
 
-    public Optional<User> findByEmailAndPassword(String email,String pass){
-        return userRepository.findByEmailAndPassword(email,pass);
-    }
     public void deleteById(Long id){
         userRepository.deleteById(id);
     }
