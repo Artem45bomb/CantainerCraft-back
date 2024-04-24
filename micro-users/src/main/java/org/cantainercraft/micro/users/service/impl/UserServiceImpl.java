@@ -1,7 +1,9 @@
 package org.cantainercraft.micro.users.service.impl;
 
 import org.cantainercraft.micro.users.convertor.UserDTOConvertor;
+import org.cantainercraft.micro.users.service.InitService;
 import org.cantainercraft.micro.users.service.UserService;
+import org.cantainercraft.project.entity.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.cantainercraft.micro.users.dto.UserDTO;
@@ -16,11 +18,13 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     
     private final UserDTOConvertor userDTOConvertor;
+    private final InitService<Profile> profileInitService;
     private final UserRepository userRepository;
     
-    public UserServiceImpl(UserRepository userRepository,UserDTOConvertor userDTOConvertor) {
+    public UserServiceImpl(UserRepository userRepository, UserDTOConvertor userDTOConvertor, InitService<Profile> profileInitService) {
         this.userRepository = userRepository;
         this.userDTOConvertor =userDTOConvertor;
+        this.profileInitService = profileInitService;
     }
 
     public List<User> findAll(){
@@ -33,6 +37,8 @@ public class UserServiceImpl implements UserService {
     
     public User save(UserDTO userDTO){
         User user = userDTOConvertor.convertUserDTOToUser(userDTO);
+        Profile profile = Profile.builder().user(user).build();
+        profileInitService.init(profile);
         return userRepository.save(user);
     }
     

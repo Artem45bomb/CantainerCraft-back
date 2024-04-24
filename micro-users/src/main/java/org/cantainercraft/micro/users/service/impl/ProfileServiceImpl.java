@@ -39,6 +39,7 @@ public class ProfileServiceImpl implements ProfileService {
         return  profileRepository.findByUserIdOrUserEmail(userId,email);
     }
 
+
     public List<Profile> findAll(){
         return profileRepository.findAll();
     }

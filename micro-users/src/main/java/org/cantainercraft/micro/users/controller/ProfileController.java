@@ -2,6 +2,7 @@ package org.cantainercraft.micro.users.controller;
 
 import org.cantainercraft.micro.users.dto.ProfileDTO;
 import org.cantainercraft.micro.users.dto.ProfileSearchDTO;
+import org.cantainercraft.micro.users.exception.MessageError;
 import org.cantainercraft.micro.users.service.ProfileService;
 import org.cantainercraft.micro.users.service.impl.ProfileServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,8 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Profile> findById(@PathVariable UUID id){
+    @PostMapping("/id")
+    public ResponseEntity<Profile> findById(@RequestBody UUID id){
 
         Optional<Profile> profile = profileService.findById(id);
 
@@ -35,20 +36,20 @@ public class ProfileController {
             return ResponseEntity.ok(profileService.findById(id).get());
         }
 
-        return new ResponseEntity("profile is not exist",HttpStatus.NO_CONTENT);
+        return new ResponseEntity(MessageError.of("profile is not exist"),HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping
+    @PostMapping("/user")
     public ResponseEntity<Profile> findByUser(@RequestBody ProfileSearchDTO profileSearchDTO){
         String email = profileSearchDTO.getEmail();
         Long userId = profileSearchDTO.getUserId();
 
-        if(!email.trim().isEmpty() && userId == 0){
-            return new ResponseEntity("param missed: userId",HttpStatus.NOT_ACCEPTABLE);
+        if(!email.trim().isEmpty() && userId <= 0){
+            return new ResponseEntity(MessageError.of("param missed: userId"),HttpStatus.NOT_ACCEPTABLE);
         }
 
-        if(email.isEmpty() && userId != 0 ){
-            return new ResponseEntity("param missed: email",HttpStatus.NOT_ACCEPTABLE);
+        if(email.isEmpty() && userId >0 ){
+            return new ResponseEntity(MessageError.of("param missed: email"),HttpStatus.NOT_ACCEPTABLE);
         }
 
         Optional<Profile> profile = profileService.findByUser(userId, email);
@@ -57,7 +58,7 @@ public class ProfileController {
             return ResponseEntity.ok(profile.get());
         }
 
-        return new ResponseEntity("profile is not exist",HttpStatus.NO_CONTENT);
+        return new ResponseEntity( MessageError.of("profile is not exist"),HttpStatus.NOT_ACCEPTABLE);
 
     }
 
@@ -68,12 +69,20 @@ public class ProfileController {
 
     @PostMapping("/add")
     public ResponseEntity<Profile> save(@RequestBody ProfileDTO profileDTO){
+        Long userId = profileDTO.getUser() == null? 0 : profileDTO.getUser().getId();
+        Optional<Profile> profile = profileService.findByUser(userId,"");
 
-        if(profileDTO.getUuid() != null){
-            return new ResponseEntity("param missed: uuid",HttpStatus.NOT_ACCEPTABLE);
+        if(profile.isPresent()){
+            return new ResponseEntity(MessageError.of("profile is exist"),HttpStatus.NOT_ACCEPTABLE);
         }
 
-        return ResponseEntity.ok(profileService.save(profileDTO));
+        if(profileDTO.getUuid() != null){
+            return new ResponseEntity(MessageError.of("param missed: uuid"),HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        return ResponseEntity
+                .status(201)
+                .body(profileService.save(profileDTO));
     }
 
     @PutMapping("/update")
@@ -83,17 +92,17 @@ public class ProfileController {
                 profileService.update(profileDTO);
                 return ResponseEntity.ok(true);
             }
-            return new ResponseEntity("profile is not exist",HttpStatus.NON_AUTHORITATIVE_INFORMATION);
+            return new ResponseEntity(MessageError.of("profile is not exist"),HttpStatus.NOT_ACCEPTABLE);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Boolean> deleteById(@PathVariable UUID id ){
+    @PutMapping("/delete/id")
+    public ResponseEntity<Boolean> deleteById(@RequestBody UUID id ){
         Optional<Profile> profile = profileService.findById(id);
         if(profile.isPresent()){
             profileService.deleteById(id);
             return ResponseEntity.ok(true);
         }
-        return new ResponseEntity("profile is not exist",HttpStatus.NON_AUTHORITATIVE_INFORMATION);
+        return new ResponseEntity(MessageError.of("profile is not exist"),HttpStatus.NOT_ACCEPTABLE);
     }
 
     @PutMapping("/delete/user")
@@ -102,12 +111,12 @@ public class ProfileController {
         String email = profileSearchDTO.getEmail() == null ? null :profileSearchDTO.getEmail().trim();
         Long userId = profileSearchDTO.getUserId() == null ? null :profileSearchDTO.getUserId();
 
-        if(!email.isEmpty() && (userId == 0 || userId==null)){
-            return new ResponseEntity("param missed: userId",HttpStatus.NOT_ACCEPTABLE);
+        if(!email.trim().isEmpty() && userId <= 0){
+            return new ResponseEntity(MessageError.of("param missed: userId"),HttpStatus.NOT_ACCEPTABLE);
         }
 
-        if(email.isEmpty() && (userId != 0 || userId !=null)){
-            return new ResponseEntity("param missed: email",HttpStatus.NOT_ACCEPTABLE);
+        if(email.isEmpty() && userId >0 ){
+            return new ResponseEntity(MessageError.of("param missed: email"),HttpStatus.NOT_ACCEPTABLE);
         }
 
         profileService.deleteByUser(userId,email);

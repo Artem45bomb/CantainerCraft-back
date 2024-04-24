@@ -35,7 +35,8 @@ public class Profile implements Serializable {
 
     private String about;
 
-    @JsonIgnore
-    @OneToOne(mappedBy = "profile")
+    @OneToOne
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
     private User user;
+
 }

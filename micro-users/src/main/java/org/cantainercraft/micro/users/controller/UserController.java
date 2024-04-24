@@ -2,6 +2,8 @@ package org.cantainercraft.micro.users.controller;
 
 import com.google.gson.Gson;
 import org.cantainercraft.micro.users.exception.MessageError;
+import org.cantainercraft.micro.users.service.ProfileService;
+import org.cantainercraft.project.entity.Profile;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +21,6 @@ import java.util.*;
 @RequestMapping("/user")
 public class UserController {
     private final Gson gson = new Gson();
-
     private final UserService userService;
 
     public UserController(UserService userService){
@@ -38,7 +39,7 @@ public class UserController {
         }
 
 
-        return new ResponseEntity(gson.toJson("user is not exist"),headers,HttpStatus.NOT_FOUND);
+        return new ResponseEntity(MessageError.of("user is not exist"),headers,HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/search")
@@ -72,7 +73,7 @@ public class UserController {
     public ResponseEntity<User> save(@RequestBody UserDTO userDTO){
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type","application/json");
-        Optional<User> user = userService.findByEmail(userDTO.getName());
+        Optional<User> user = userService.findByEmail(userDTO.getEmail());
 
         if(user.isPresent()){
             return new ResponseEntity(MessageError.of("user is exist"),headers,HttpStatus.CONFLICT);
@@ -81,6 +82,7 @@ public class UserController {
         if(userDTO.getId() != null ){
             return new ResponseEntity(MessageError.of("missed param:id"),headers,HttpStatus.NO_CONTENT);
         }
+
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)

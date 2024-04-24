@@ -5,21 +5,17 @@ import org.cantainercraft.micro.users.convertor.UserDTOConvertor;
 import org.cantainercraft.micro.users.exception.MessageError;
 import org.cantainercraft.micro.users.service.impl.UserServiceImpl;
 import org.cantainercraft.project.entity.User;
-import org.cantainercraft.project.entity.chats.Message;
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
 import java.util.Optional;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @WebMvcTest(UserController.class)
@@ -66,7 +62,7 @@ public class UserControllerTest {
                 .content(gson.toJson(id)))
                 .andDo(print())
                 .andExpect(status().is(404))
-                .andExpect(content().json(gson.toJson(body)));
+                .andExpect(content().json(gson.toJson(MessageError.of(body))));
     }
 
     @Test

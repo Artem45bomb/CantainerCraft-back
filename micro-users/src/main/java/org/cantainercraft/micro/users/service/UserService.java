@@ -22,4 +22,5 @@ public interface UserService {
      void deleteById(Long id);
 
      void deleteByEmail(String email);
+
 }
