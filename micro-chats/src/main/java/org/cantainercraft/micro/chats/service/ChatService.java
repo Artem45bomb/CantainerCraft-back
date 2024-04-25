@@ -11,6 +11,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface ChatService {
+
      Chat save(ChatDTO chatDTO);
 
      boolean update(ChatUpdateDTO chatUpdateDTO);
@@ -20,11 +21,11 @@ public interface ChatService {
      boolean deleteByName(String name);
 
 
-     List<Chat> findBySearch(UUID uuid, String name, TypeChat typeChat, Date dateStart, Date dateEnd);
+    List<Chat> findBySearch(UUID uuid, String name, TypeChat typeChat, Date dateStart, Date dateEnd);
 
-     Optional<Chat> findByName(String chatName);
+    Optional<Chat> findByName(String chatName);
 
-     List<Chat> findAll();
+    List<Chat> findAll();
 
-     Optional<Chat> findByUUID(UUID uuid);
+    Optional<Chat> findByUUID(UUID uuid);
 }

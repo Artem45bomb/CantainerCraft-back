@@ -19,7 +19,6 @@ public class MessageServiceImpl implements MessageService {
     private final MessageRepository messageRepository;
     private final MessageDTOConvertor messageDTOConvertor;
 
-
     public Message save(MessageDTO messageDTO){
         Message message = messageDTOConvertor.convertMessageDTOToMessage(messageDTO);
         return messageRepository.save(message);

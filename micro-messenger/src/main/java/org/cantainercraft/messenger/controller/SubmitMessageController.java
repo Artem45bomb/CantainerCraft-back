@@ -1,5 +1,6 @@
 package org.cantainercraft.messenger.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.cantainercraft.messenger.feign.MessageFeignClient;
 import org.cantainercraft.messenger.service.MessageService;
@@ -13,15 +14,10 @@ import java.util.UUID;
 
 @Controller
 @Slf4j
+@RequiredArgsConstructor
 public class SubmitMessageController {
     private final MessageService messageService;
     private final MessageFeignClient messageFeignClient;
-
-    public SubmitMessageController(MessageService messageService, MessageFeignClient messageFeignClient) {
-        this.messageService = messageService;
-        this.messageFeignClient = messageFeignClient;
-    }
-
 
     @MessageMapping("/submit")
     @SendTo("/topic/public")
