@@ -1,9 +1,10 @@
 package org.cantainercraft.micro.users.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.users.dto.SubscriptionDTO;
 import org.cantainercraft.micro.users.dto.SubscriptionUpdateDTO;
 import org.cantainercraft.micro.users.service.SubscriptionService;
-import org.cantainercraft.micro.users.service.impl.SubscriptionServiceImpl;
+import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,14 +16,11 @@ import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/subs")
+@RequiredArgsConstructor
 public class SubscriptionController {
 
     private final SubscriptionService subscriptionService;
 
-    @Autowired
-    public SubscriptionController(SubscriptionService subscriptionService) {
-        this.subscriptionService = subscriptionService; 
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Subscription> findById(@PathVariable Long id) {
@@ -47,7 +45,7 @@ public class SubscriptionController {
             return ResponseEntity.ok(true);
         }
         catch (NoSuchElementException exception){
-            return new ResponseEntity("element is not exist",HttpStatus.NOT_ACCEPTABLE);
+            throw  new NotResourceException("element is not exist");
         }
     }
 
@@ -59,7 +57,7 @@ public class SubscriptionController {
             return ResponseEntity.ok(true);
         }
         catch (NoSuchElementException exception){
-            return new ResponseEntity("element is not exist",HttpStatus.NOT_ACCEPTABLE);
+            throw  new NotResourceException("element is not exist");
         }
     }
 }

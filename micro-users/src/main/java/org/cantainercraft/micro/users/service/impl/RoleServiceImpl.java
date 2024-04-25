@@ -1,5 +1,6 @@
 package org.cantainercraft.micro.users.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.users.convertor.RoleDTOConvertor;
 import org.cantainercraft.micro.users.service.RoleService;
 import org.springframework.stereotype.Component;
@@ -13,15 +14,12 @@ import java.util.List;
 
 @Component
 @Transactional
+@RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService {
     
     private final org.cantainercraft.micro.users.convertor.RoleDTOConvertor RoleDTOConvertor;
     private final RoleRepository RoleRepository;
-    
-    public RoleServiceImpl(RoleRepository RoleRepository, RoleDTOConvertor RoleDTOConvertor) {
-        this.RoleRepository = RoleRepository;
-        this.RoleDTOConvertor =RoleDTOConvertor;
-    }
+
 
     public List<Role> findAll(){
         return RoleRepository.findAll();

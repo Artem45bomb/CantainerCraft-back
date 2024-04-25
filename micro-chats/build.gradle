@@ -37,6 +37,9 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    //utility
+    implementation 'org.cantainercraft.micro.utilits:micro-utility'
 }
 
 dependencyManagement {

@@ -2,7 +2,7 @@ package org.cantainercraft.micro.users.controller;
 
 import com.google.gson.Gson;
 import org.cantainercraft.micro.users.dto.ProfileSearchDTO;
-import org.cantainercraft.micro.users.exception.MessageError;
+import org.cantainercraft.micro.utilits.exception.MessageError;
 import org.cantainercraft.micro.users.service.impl.ProfileServiceImpl;
 import org.cantainercraft.project.entity.Profile;
 import org.junit.jupiter.api.Test;
@@ -89,7 +89,7 @@ public class ProfileControllerTest {
                         .contentType("application/json")
                         .content(gson.toJson(profileSearchDTO)))
                 .andDo(print())
-                .andExpect(status().is(406))
+                .andExpect(status().is(404))
                 .andExpect(content().json(gson.toJson(MessageError.of("profile is not exist"))));
     }
 
@@ -144,7 +144,7 @@ public class ProfileControllerTest {
     }
 
     @Test
-    public void saveProfile_whenExistProfile_thenStatus406() throws Exception{
+    public void saveProfile_whenExistProfile_thenStatus409() throws Exception{
         Profile profileRequest = Profile.builder()
                 .about("I programming")
                 .build();
@@ -159,7 +159,7 @@ public class ProfileControllerTest {
                         .contentType("application/json")
                         .content(gson.toJson(profileRequest)))
                 .andDo(print())
-                .andExpect(status().is(406))
+                .andExpect(status().is(409))
                 .andExpect(content().json(gson.toJson(MessageError.of("profile is exist"))));
     }
 

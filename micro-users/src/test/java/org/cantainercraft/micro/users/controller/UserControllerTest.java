@@ -2,7 +2,7 @@ package org.cantainercraft.micro.users.controller;
 
 import com.google.gson.Gson;
 import org.cantainercraft.micro.users.convertor.UserDTOConvertor;
-import org.cantainercraft.micro.users.exception.MessageError;
+import org.cantainercraft.micro.utilits.exception.MessageError;
 import org.cantainercraft.micro.users.service.impl.UserServiceImpl;
 import org.cantainercraft.project.entity.User;
 import org.junit.jupiter.api.*;
@@ -66,7 +66,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void deleteUserById_whenExistUser_thenStatus406() throws Exception{
+    public void deleteUserById_whenExistUser_thenStatus404() throws Exception{
         long deleteId = 1;
         Mockito.when(userService.findById(Mockito.any())).thenReturn(Optional.empty());
 
@@ -74,7 +74,7 @@ public class UserControllerTest {
                 .contentType("application/json")
                 .content(gson.toJson(deleteId)))
                 .andDo(print())
-                .andExpect(status().is(406));
+                .andExpect(status().is(404));
     }
 
     @Test
@@ -145,7 +145,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void updateUser_whenMissedParamId_thenStatus404() throws Exception{
+    public void updateUser_whenMissedParamId_thenStatus406() throws Exception{
         long id=1;
 
         User userRequest = new User(null,"Dima","1111","qwerty@gmail.com");
@@ -158,12 +158,12 @@ public class UserControllerTest {
                         .contentType("application/json")
                         .content(gson.toJson(userRequest)))
                 .andDo(print())
-                .andExpect(status().is(404))
+                .andExpect(status().is(406))
                 .andExpect(content().json(gson.toJson(MessageError.of("missed param: id"))));
     }
 
     @Test
-    public void updateUser_whenNotExist_thenStatus406() throws Exception{
+    public void updateUser_whenNotExist_thenStatus404() throws Exception{
         long id=1;
 
         User userRequest = new User(23L,"Dima","1111","qwerty@gmail.com");
@@ -175,7 +175,7 @@ public class UserControllerTest {
                         .contentType("application/json")
                         .content(gson.toJson(userRequest)))
                 .andDo(print())
-                .andExpect(status().is(406))
+                .andExpect(status().is(404))
                 .andExpect(content().json(gson.toJson(MessageError.of("user is not exist"))));
     }
 }

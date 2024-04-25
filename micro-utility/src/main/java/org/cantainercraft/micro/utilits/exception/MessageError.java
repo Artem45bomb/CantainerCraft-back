@@ -1,4 +1,4 @@
-package org.cantainercraft.micro.users.exception;
+package org.cantainercraft.micro.utilits.exception;
 
 import lombok.Getter;
 import lombok.Setter;

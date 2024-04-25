@@ -1,11 +1,14 @@
 package org.cantainercraft.micro.chats.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.cantainercraft.micro.chats.dto.ChatDTO;
 import org.cantainercraft.micro.chats.dto.ChatSearchDTO;
 import org.cantainercraft.micro.chats.dto.ChatUpdateDTO;
 import org.cantainercraft.micro.chats.service.ChatService;
 import org.cantainercraft.micro.chats.service.UserChatService;
+import org.cantainercraft.micro.utilits.exception.ExistResourceException;
+import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.TypeChat;
 import org.cantainercraft.project.entity.chats.Chat;
 import org.cantainercraft.project.entity.chats.User_Chat;
@@ -19,15 +22,12 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/chat")
 @Slf4j
+@RequiredArgsConstructor
 public class ChatController {
 
     private final ChatService chatService;
     private final UserChatService userChatService;
 
-    public ChatController(ChatService chatService, UserChatService userChatService) {
-        this.chatService = chatService;
-        this.userChatService = userChatService;
-    }
 
     @PostMapping("/all")
     public ResponseEntity<List<Chat>> findAll(){
@@ -39,21 +39,21 @@ public class ChatController {
     public ResponseEntity<Chat> findByUUID(@RequestBody UUID uuid){
         Optional<Chat> chat = chatService.findByUUID(uuid);
 
-        if(chat.isPresent()) {
-            return ResponseEntity.ok(chat.get());
+        if(chat.isEmpty()){
+            throw new NotResourceException("No content");
         }
-        return new ResponseEntity("No content", HttpStatus.NO_CONTENT);
+
+        return ResponseEntity.ok(chat.get());
     }
 
     @PostMapping("/name")
     public ResponseEntity<Chat> findByName(@RequestBody String name){
         Optional<Chat> chat = chatService.findByName(name);
 
-
-        if(chat.isPresent()) {
-            return ResponseEntity.ok(chat.get());
+        if(chat.isEmpty()) {
+            throw new NotResourceException("No content");
         }
-        return new ResponseEntity("No content", HttpStatus.NO_CONTENT);
+        return ResponseEntity.ok(chat.get());
     }
 
     @PutMapping("/delete")
@@ -63,7 +63,7 @@ public class ChatController {
             return ResponseEntity.ok(chatService.delete(uuid));
         }
         catch (NoSuchElementException exception){
-            return new ResponseEntity("No content for delete",HttpStatus.NON_AUTHORITATIVE_INFORMATION);
+            throw new NotResourceException("No content for delete");
         }
     }
 
@@ -72,8 +72,9 @@ public class ChatController {
         Optional<Chat> chat = chatService.findByName(chatDTO.getName());
 
         if(chat.isPresent()){
-            return new ResponseEntity("chat is exist",HttpStatus.NOT_ACCEPTABLE);
+            throw new ExistResourceException("chat is exist");
         }
+
         Date date = Calendar.getInstance().getTime();
         chatDTO.setDate(date);
         return ResponseEntity.ok(chatService.save(chatDTO));
@@ -86,7 +87,7 @@ public class ChatController {
             return ResponseEntity.ok(chatService.deleteByName(name));
         }
         catch (NoSuchElementException exception){
-            return new ResponseEntity("No content for delete",HttpStatus.NON_AUTHORITATIVE_INFORMATION);
+            throw new NotResourceException("No content for delete");
         }
     }
 
@@ -97,7 +98,7 @@ public class ChatController {
             return ResponseEntity.ok(chatService.update(chatUpdateDTO));
         }
         catch (NoSuchElementException exception){
-            return new ResponseEntity("No content for delete",HttpStatus.NON_AUTHORITATIVE_INFORMATION);
+            throw new NotResourceException("No content for delete");
         }
     }
 

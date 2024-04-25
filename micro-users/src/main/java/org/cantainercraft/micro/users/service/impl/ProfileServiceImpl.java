@@ -1,5 +1,6 @@
 package org.cantainercraft.micro.users.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.users.service.ProfileService;
 import org.springframework.stereotype.Service;
 import org.cantainercraft.micro.users.convertor.ProfileDTOConvertor;
@@ -12,14 +13,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class ProfileServiceImpl implements ProfileService {
     public final ProfileRepository profileRepository;
     public final ProfileDTOConvertor profileDTOConvertor;
-    
-    public ProfileServiceImpl(ProfileRepository profileRepository, ProfileDTOConvertor profileDTOConvertor) {
-        this.profileRepository = profileRepository;
-        this.profileDTOConvertor = profileDTOConvertor;
-    }
+
     
     public Profile save (ProfileDTO profileDTO){
         Profile profile = profileDTOConvertor.convertProfileDTOToProfile(profileDTO);

@@ -1,12 +1,14 @@
 package org.cantainercraft.micro.chats.controller;
 
+import lombok.RequiredArgsConstructor;
+import org.cantainercraft.micro.chats.service.MessageService;
+import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.cantainercraft.micro.chats.dto.MessageDTO;
 import org.cantainercraft.micro.chats.dto.MessageSearchDTO;
 import org.cantainercraft.micro.chats.feign.UserFeignClient;
-import org.cantainercraft.micro.chats.service.MessageService;
 import org.cantainercraft.project.entity.chats.Message;
 
 
@@ -14,15 +16,13 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/message")
+@RequiredArgsConstructor
 public class MessageController {
 
     private final MessageService messageService;
     private final UserFeignClient userFeignClient;
 
-    public MessageController(MessageService messageService, UserFeignClient userFeignClient) {
-        this.messageService = messageService;
-        this.userFeignClient = userFeignClient;
-    }
+
 
     @PostMapping("/all")
     public ResponseEntity<List<Message>> findAll(){
@@ -34,10 +34,10 @@ public class MessageController {
     public ResponseEntity<Message> findByUUID(@RequestBody UUID uuid){
         Optional<Message> message = messageService.findByUUID(uuid);
 
-        if(message.isPresent()) {
-            return ResponseEntity.ok(message.get());
+        if(message.isEmpty()) {
+            throw new NotResourceException("No content");
         }
-        return new ResponseEntity("No content", HttpStatus.NO_CONTENT);
+        return ResponseEntity.ok(message.get());
     }
 
 
@@ -45,7 +45,7 @@ public class MessageController {
     public ResponseEntity<Message> save(@RequestBody MessageDTO messageDTO){
 
         if(userFeignClient.userExist(messageDTO.getUserId()).getBody() == null){
-            return new ResponseEntity("user is not exist",HttpStatus.NO_CONTENT);
+            throw new NotResourceException("user is not exist");
         }
 
         return ResponseEntity.ok(messageService.save(messageDTO));
@@ -53,29 +53,26 @@ public class MessageController {
 
     @PutMapping("/delete")
     public ResponseEntity<Boolean> delete(@RequestBody UUID uuid){
-        try{
-            messageService.findByUUID(uuid);
+            Optional<Message> message = messageService.findByUUID(uuid);
+
+            if(message.isEmpty()){
+                throw new NotResourceException("No content for delete");
+            }
+
             return ResponseEntity.ok(messageService.delete(uuid));
-        }
-        catch (NoSuchElementException exception){
-            return new ResponseEntity("No content for delete",HttpStatus.NON_AUTHORITATIVE_INFORMATION);
-        }
     }
 
 
     @PutMapping("/update")
     public ResponseEntity<Message> update(@RequestBody MessageDTO messageDTO){
-        try{
+
             if(userFeignClient.userExist(messageDTO.getUserId()) == null){
-                return new ResponseEntity("user is not exist",HttpStatus.NO_CONTENT);
+                throw new NotResourceException("user is not exist");
             }
 
             messageService.findByUUID(messageDTO.getUuid());
+
             return ResponseEntity.ok(messageService.update(messageDTO));
-        }
-        catch (NoSuchElementException exception){
-            return new ResponseEntity("No content for delete",HttpStatus.NON_AUTHORITATIVE_INFORMATION);
-        }
     }
 
     @PostMapping

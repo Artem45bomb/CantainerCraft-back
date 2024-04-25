@@ -1,9 +1,12 @@
 package org.cantainercraft.micro.users.controller;
 
 import com.google.gson.Gson;
-import org.cantainercraft.micro.users.exception.MessageError;
-import org.cantainercraft.micro.users.service.ProfileService;
-import org.cantainercraft.project.entity.Profile;
+import lombok.RequiredArgsConstructor;
+import org.cantainercraft.micro.utilits.exception.ExistResourceException;
+import org.cantainercraft.micro.utilits.exception.MessageError;
+import org.cantainercraft.micro.utilits.exception.NotResourceException;
+import org.cantainercraft.micro.utilits.exception.NotValidateParamException;
+import org.modelmapper.ValidationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,34 +15,26 @@ import org.cantainercraft.micro.users.dto.UserDTO;
 import org.cantainercraft.micro.users.dto.UserSearchDTO;
 import org.cantainercraft.project.entity.User;
 import org.cantainercraft.micro.users.service.UserService;
-
-import javax.swing.text.html.Option;
 import java.util.*;
 
 
 @RestController
 @RequestMapping("/user")
+@RequiredArgsConstructor
 public class UserController {
     private final Gson gson = new Gson();
     private final UserService userService;
 
-    public UserController(UserService userService){
-        this.userService = userService;
-    }
 
     @PostMapping("/id")
     public ResponseEntity<User> findById(@RequestBody Long id){
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Content-Type","application/json;charset=UTF-8");
-
         Optional<User> user = userService.findById(id);
 
-        if(user.isPresent()){
-            return ResponseEntity.ok(user.get());
+        if(user.isEmpty()){
+            throw new NotResourceException("user is not exist");
         }
 
-
-        return new ResponseEntity(MessageError.of("user is not exist"),headers,HttpStatus.NOT_FOUND);
+        return ResponseEntity.ok(user.get());
     }
 
     @PostMapping("/search")
@@ -54,12 +49,12 @@ public class UserController {
     @PostMapping("/email")
     public ResponseEntity<User> findByEmail(@RequestBody String email){
         if(email ==null || !email.trim().isEmpty()){
-            return new ResponseEntity("email is null", HttpStatus.NOT_ACCEPTABLE);
+            throw  new NotValidateParamException("email is null");
         }
         Optional<User> user = userService.findByEmail(email);
 
         return user.map(ResponseEntity::ok)
-                .orElseGet(() -> new ResponseEntity("user is not exist", HttpStatus.NO_CONTENT));
+                .orElseGet(() -> {throw new NotResourceException("user is not exist");});
 
     }
 
@@ -76,13 +71,12 @@ public class UserController {
         Optional<User> user = userService.findByEmail(userDTO.getEmail());
 
         if(user.isPresent()){
-            return new ResponseEntity(MessageError.of("user is exist"),headers,HttpStatus.CONFLICT);
+            throw new ExistResourceException("user is exist");
         }
 
         if(userDTO.getId() != null ){
-            return new ResponseEntity(MessageError.of("missed param:id"),headers,HttpStatus.NO_CONTENT);
+            throw new NotValidateParamException("missed param:id");
         }
-
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -92,31 +86,34 @@ public class UserController {
     @PutMapping("/update")
     public ResponseEntity<String> update(@RequestBody UserDTO dto){
         try{
-
             if(dto.getId() == null){
-                return new ResponseEntity(MessageError.of("missed param: id"),HttpStatus.NOT_FOUND);
+                throw new NotValidateParamException("missed param: id");
             }
 
             Optional<User> user = userService.findById(dto.getId());
-            user.orElseGet(() -> {throw new NoSuchElementException();});
+
+            if(user.isEmpty()) throw new NoSuchElementException();
+
             userService.update(dto);
             return ResponseEntity.ok("user update");
         }
         catch (NoSuchElementException exception){
-            return new ResponseEntity(MessageError.of("user is not exist"),HttpStatus.NOT_ACCEPTABLE);
+            throw new NotResourceException("user is not exist");
         }
     }
 
     @PutMapping("/delete/email")
     public ResponseEntity<String> deleteByEmail(@RequestBody String email){
         try{
-            User user = userService.findByEmail(email)
-                    .orElseGet(() ->{throw new NoSuchElementException();});
+            Optional<User> user = userService.findByEmail(email);
+
+            if(user.isEmpty()) throw new NoSuchElementException();
+
             userService.deleteByEmail(email);
             return ResponseEntity.ok("delete user");
         }
         catch (NoSuchElementException exception){
-            return new ResponseEntity("user is not exist",HttpStatus.NOT_ACCEPTABLE);
+            throw new NotResourceException("user is not exist");
         }
     }
 
@@ -131,7 +128,7 @@ public class UserController {
             return ResponseEntity.ok("delete user");
         }
         catch (NoSuchElementException exception){
-            return new ResponseEntity("user is not exist",HttpStatus.NOT_ACCEPTABLE);
+            throw new NotResourceException("user is not exist");
         }
     }
 }

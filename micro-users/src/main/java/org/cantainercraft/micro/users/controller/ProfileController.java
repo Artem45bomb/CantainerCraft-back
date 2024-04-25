@@ -1,10 +1,13 @@
 package org.cantainercraft.micro.users.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.users.dto.ProfileDTO;
 import org.cantainercraft.micro.users.dto.ProfileSearchDTO;
-import org.cantainercraft.micro.users.exception.MessageError;
+import org.cantainercraft.micro.utilits.exception.ExistResourceException;
+import org.cantainercraft.micro.utilits.exception.MessageError;
 import org.cantainercraft.micro.users.service.ProfileService;
-import org.cantainercraft.micro.users.service.impl.ProfileServiceImpl;
+import org.cantainercraft.micro.utilits.exception.NotResourceException;
+import org.cantainercraft.micro.utilits.exception.NotValidateParamException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,25 +21,21 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/profile")
+@RequiredArgsConstructor
 public class ProfileController {
 
     private final ProfileService profileService;
-
-    @Autowired
-    public ProfileController(ProfileService profileService){
-        this.profileService = profileService;
-    }
 
     @PostMapping("/id")
     public ResponseEntity<Profile> findById(@RequestBody UUID id){
 
         Optional<Profile> profile = profileService.findById(id);
 
-        if(profile.isPresent()){
-            return ResponseEntity.ok(profileService.findById(id).get());
+        if(profile.isEmpty()){
+            throw  new NotResourceException("profile is not exist");
         }
 
-        return new ResponseEntity(MessageError.of("profile is not exist"),HttpStatus.NOT_FOUND);
+        return ResponseEntity.ok(profileService.findById(id).get());
     }
 
     @PostMapping("/user")
@@ -45,20 +44,19 @@ public class ProfileController {
         Long userId = profileSearchDTO.getUserId();
 
         if(!email.trim().isEmpty() && userId <= 0){
-            return new ResponseEntity(MessageError.of("param missed: userId"),HttpStatus.NOT_ACCEPTABLE);
+            throw new NotValidateParamException("param missed: userId");
         }
 
         if(email.isEmpty() && userId >0 ){
-            return new ResponseEntity(MessageError.of("param missed: email"),HttpStatus.NOT_ACCEPTABLE);
+            throw new NotValidateParamException("param missed: email");
         }
 
         Optional<Profile> profile = profileService.findByUser(userId, email);
 
-        if(profile.isPresent()){
-            return ResponseEntity.ok(profile.get());
+        if(profile.isEmpty()){
+            throw new NotResourceException("profile is not exist");
         }
-
-        return new ResponseEntity( MessageError.of("profile is not exist"),HttpStatus.NOT_ACCEPTABLE);
+        return ResponseEntity.ok(profile.get());
 
     }
 
@@ -73,11 +71,11 @@ public class ProfileController {
         Optional<Profile> profile = profileService.findByUser(userId,"");
 
         if(profile.isPresent()){
-            return new ResponseEntity(MessageError.of("profile is exist"),HttpStatus.NOT_ACCEPTABLE);
+            throw new ExistResourceException("profile is exist");
         }
 
         if(profileDTO.getUuid() != null){
-            return new ResponseEntity(MessageError.of("param missed: uuid"),HttpStatus.NOT_ACCEPTABLE);
+            throw new NotValidateParamException("param missed: uuid");
         }
 
         return ResponseEntity

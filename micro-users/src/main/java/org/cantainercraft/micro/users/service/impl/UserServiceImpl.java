@@ -1,5 +1,6 @@
 package org.cantainercraft.micro.users.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.users.convertor.UserDTOConvertor;
 import org.cantainercraft.micro.users.service.InitService;
 import org.cantainercraft.micro.users.service.UserService;
@@ -15,17 +16,12 @@ import java.util.Optional;
 
 @Component
 @Transactional
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     
     private final UserDTOConvertor userDTOConvertor;
     private final InitService<Profile> profileInitService;
     private final UserRepository userRepository;
-    
-    public UserServiceImpl(UserRepository userRepository, UserDTOConvertor userDTOConvertor, InitService<Profile> profileInitService) {
-        this.userRepository = userRepository;
-        this.userDTOConvertor =userDTOConvertor;
-        this.profileInitService = profileInitService;
-    }
 
     public List<User> findAll(){
         return userRepository.findAll();

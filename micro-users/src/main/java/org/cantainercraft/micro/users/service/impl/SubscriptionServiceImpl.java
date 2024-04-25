@@ -1,6 +1,7 @@
 package org.cantainercraft.micro.users.service.impl;
 
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.users.convertor.SubscriptionDTOConvertor;
 import org.cantainercraft.micro.users.service.SubscriptionService;
 import org.springframework.stereotype.Component;
@@ -12,15 +13,11 @@ import java.util.List;
 
 @Component
 @Transactional
+@RequiredArgsConstructor
 public class SubscriptionServiceImpl implements SubscriptionService {
     private final SubscriptionRepository subscriptionRepository;
-
     private final SubscriptionDTOConvertor subscriptionDTOConvertor;
 
-    public SubscriptionServiceImpl(SubscriptionRepository subscriptionRepository, SubscriptionDTOConvertor subscriptionDTOConvertor) {
-        this.subscriptionRepository = subscriptionRepository;
-        this.subscriptionDTOConvertor = subscriptionDTOConvertor;
-    }
     public List<Subscription> findAll() { return subscriptionRepository.findAll(); }
 
     public Subscription findByID(Long id) { return subscriptionRepository.findById(id).get(); }
