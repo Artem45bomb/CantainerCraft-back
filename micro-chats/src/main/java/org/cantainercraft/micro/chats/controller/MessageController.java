@@ -1,13 +1,13 @@
 package org.cantainercraft.micro.chats.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.cantainercraft.micro.chats.service.MessageService;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.cantainercraft.micro.chats.dto.MessageDTO;
 import org.cantainercraft.micro.chats.dto.MessageSearchDTO;
 import org.cantainercraft.micro.chats.feign.UserFeignClient;
-import org.cantainercraft.micro.chats.service.impl.MessageServiceImpl;
 import org.cantainercraft.project.entity.chats.Message;
 
 
@@ -18,7 +18,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class MessageController {
 
-    private final MessageServiceImpl messageService;
+    private final MessageService messageService;
     private final UserFeignClient userFeignClient;
 
     @PostMapping("/all")

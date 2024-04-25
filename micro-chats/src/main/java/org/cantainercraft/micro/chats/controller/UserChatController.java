@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import org.cantainercraft.micro.chats.dto.UserChatDTO;
 import org.cantainercraft.micro.chats.dto.UserChatSearchDTO;
 import org.cantainercraft.micro.chats.feign.UserFeignClient;
-import org.cantainercraft.micro.chats.service.impl.UserChatServiceImpl;
 import org.cantainercraft.project.entity.chats.User_Chat;
 
 import java.util.*;
