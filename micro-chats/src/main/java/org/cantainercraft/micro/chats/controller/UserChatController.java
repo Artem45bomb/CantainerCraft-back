@@ -1,27 +1,24 @@
 package org.cantainercraft.micro.chats.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.cantainercraft.micro.chats.dto.UserChatDTO;
 import org.cantainercraft.micro.chats.dto.UserChatSearchDTO;
 import org.cantainercraft.micro.chats.feign.UserFeignClient;
-import org.cantainercraft.micro.chats.service.UserChatService;
+import org.cantainercraft.micro.chats.service.impl.UserChatServiceImpl;
 import org.cantainercraft.project.entity.chats.User_Chat;
 
 import java.util.*;
 
 @RestController
 @RequestMapping("/user_chat")
+@RequiredArgsConstructor
 class UserChatController {
     //UserFeignClient для взаимодействия с micro-users
     private final UserFeignClient userFeignClient;
-    private final UserChatService userChatService;
-
-    public UserChatController(UserFeignClient userFeignClient, UserChatService userChatService) {
-        this.userFeignClient = userFeignClient;
-        this.userChatService = userChatService;
-    }
+    private final UserChatServiceImpl userChatService;
 
     @PostMapping("/all")
     public ResponseEntity<List<User_Chat>> findAll(){

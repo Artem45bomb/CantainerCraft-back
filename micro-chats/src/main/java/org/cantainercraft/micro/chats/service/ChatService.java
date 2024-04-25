@@ -1,10 +1,7 @@
 package org.cantainercraft.micro.chats.service;
 
-import org.cantainercraft.micro.chats.convertor.ChatDTOConvertor;
 import org.cantainercraft.micro.chats.dto.ChatDTO;
 import org.cantainercraft.micro.chats.dto.ChatUpdateDTO;
-import org.cantainercraft.micro.chats.repository.ChatRepository;
-import org.springframework.stereotype.Service;
 import org.cantainercraft.project.entity.TypeChat;
 import org.cantainercraft.project.entity.chats.Chat;
 
@@ -13,50 +10,21 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Service
-public class ChatService {
-    private final ChatRepository chatRepository;
-    private final ChatDTOConvertor chatDTOConvertor;
-    public ChatService(ChatRepository chatRepository,ChatDTOConvertor chatDTOConvertor){
-        this.chatRepository = chatRepository;
-        this.chatDTOConvertor = chatDTOConvertor;
-    }
+public interface ChatService {
 
-    public Chat save(ChatDTO chatDTO){
-        Chat chat = chatDTOConvertor.convertChatDTOToChat(chatDTO);
-        return chatRepository.save(chat);
-    }
+    Chat save(ChatDTO chatDTO);
 
-    public boolean update(ChatUpdateDTO chatUpdateDTO){
-        Chat chat = chatDTOConvertor.convertChatDTOToChat(chatUpdateDTO);
-        chat.setUuid(chatUpdateDTO.getUuid());
-        chatRepository.save(chat);
-        return true;
-    }
+    List<Chat> findBySearch(UUID uuid, String name, TypeChat typeChat, Date dateStart, Date dateEnd);
 
-    public boolean delete(UUID uuid){
-        chatRepository.deleteById(uuid);
-        return true;
-    }
+    boolean deleteByName(String name);
 
-    public boolean deleteByName(String name){
-       return chatRepository.deleteByName(name);
-    }
+    public Optional<Chat> findByName(String chatName);
 
+    Optional<Chat> findByUUID(UUID uuid);
 
-    public List<Chat> findBySearch(UUID uuid, String name, TypeChat typeChat, Date dateStart, Date dateEnd){
-        return chatRepository.findBySearch(uuid,name,typeChat,dateStart,dateEnd);
-    }
+    List<Chat> findAll();
 
-    public Optional<Chat> findByName(String chatName){
-        return chatRepository.findByName(chatName);
-    }
+    boolean update(ChatUpdateDTO chatUpdateDTO);
 
-    public List<Chat> findAll(){
-        return chatRepository.findAll();
-    }
-
-    public Optional<Chat> findByUUID(UUID uuid){
-        return chatRepository.findById(uuid);
-    }
+    boolean delete(UUID uuid);
 }

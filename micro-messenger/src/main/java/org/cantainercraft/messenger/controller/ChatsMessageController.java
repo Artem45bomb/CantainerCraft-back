@@ -1,5 +1,6 @@
 package org.cantainercraft.messenger.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.cantainercraft.messenger.dto.ChatDTO;
 import org.cantainercraft.messenger.dto.UserChatDTO;
 import org.cantainercraft.messenger.exception.NotExist;
@@ -12,14 +13,10 @@ import org.cantainercraft.messenger.service.ChatService;
 import java.util.UUID;
 
 @Controller
+@RequiredArgsConstructor
 public class ChatsMessageController {
 
     private final ChatService chatService;
-
-    public ChatsMessageController(ChatService chatService) {
-        this.chatService = chatService;
-    }
-
 
     @MessageMapping("/chat/add")
     @SendTo("/client/createChat")
@@ -34,7 +31,6 @@ public class ChatsMessageController {
         chatService.saveAsync(chatDTO).subscribe(System.out::println);
 
         return chatDTO;
-
     }
 
     @MessageMapping("/chat/delete")

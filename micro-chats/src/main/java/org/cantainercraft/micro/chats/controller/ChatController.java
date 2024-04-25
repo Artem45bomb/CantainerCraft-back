@@ -1,11 +1,12 @@
 package org.cantainercraft.micro.chats.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.cantainercraft.micro.chats.dto.ChatDTO;
 import org.cantainercraft.micro.chats.dto.ChatSearchDTO;
 import org.cantainercraft.micro.chats.dto.ChatUpdateDTO;
-import org.cantainercraft.micro.chats.service.ChatService;
-import org.cantainercraft.micro.chats.service.UserChatService;
+import org.cantainercraft.micro.chats.service.impl.ChatServiceImpl;
+import org.cantainercraft.micro.chats.service.impl.UserChatServiceImpl;
 import org.cantainercraft.project.entity.TypeChat;
 import org.cantainercraft.project.entity.chats.Chat;
 import org.cantainercraft.project.entity.chats.User_Chat;
@@ -19,15 +20,11 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/chat")
 @Slf4j
+@RequiredArgsConstructor
 public class ChatController {
 
-    private final ChatService chatService;
-    private final UserChatService userChatService;
-
-    public ChatController(ChatService chatService, UserChatService userChatService) {
-        this.chatService = chatService;
-        this.userChatService = userChatService;
-    }
+    private final ChatServiceImpl chatService;
+    private final UserChatServiceImpl userChatService;
 
     @PostMapping("/all")
     public ResponseEntity<List<Chat>> findAll(){

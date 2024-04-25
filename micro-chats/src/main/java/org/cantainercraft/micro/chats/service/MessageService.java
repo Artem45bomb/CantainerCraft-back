@@ -1,8 +1,5 @@
 package org.cantainercraft.micro.chats.service;
 
-import org.cantainercraft.micro.chats.convertor.MessageDTOConvertor;
-import org.cantainercraft.micro.chats.repository.MessageRepository;
-import org.springframework.stereotype.Service;
 import org.cantainercraft.micro.chats.dto.MessageDTO;
 import org.cantainercraft.project.entity.chats.Message;
 
@@ -11,39 +8,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Service
-public class MessageService {
-    private final MessageRepository messageRepository;
-    private final MessageDTOConvertor messageDTOConvertor;
-    public MessageService(MessageRepository messageRepository, MessageDTOConvertor messageDTOConvertor){
-        this.messageRepository = messageRepository;
-        this.messageDTOConvertor = messageDTOConvertor;
-    }
+public interface MessageService {
+    Message save(MessageDTO messageDTO);
 
-    public Message save(MessageDTO messageDTO){
-        Message message = messageDTOConvertor.convertMessageDTOToMessage(messageDTO);
-        return messageRepository.save(message);
-    }
+    Message update(MessageDTO messageDTO);
 
-    public Message update(MessageDTO messageDTO){
-        Message message = messageDTOConvertor.convertMessageDTOToMessage(messageDTO);
-        return messageRepository.save(message);
-    }
+    boolean delete(UUID uuid);
 
-    public boolean delete(UUID uuid){
-        messageRepository.deleteById(uuid);
-        return true;
-    }
+    List<Message> findAll();
 
-    public List<Message> findAll(){
-        return messageRepository.findAll();
-    }
+    Optional<Message> findByUUID(UUID uuid);
 
-    public Optional<Message> findByUUID(UUID uuid){
-        return messageRepository.findById(uuid);
-    }
-
-    public List<Message> findBySearch(Date dateStart, Date dateEnd, String value, UUID uuid, Long userId){
-        return messageRepository.findBySearch(dateStart,dateEnd,value,uuid,userId);
-    }
+    List<Message> findBySearch(Date dateStart, Date dateEnd, String value, UUID uuid, Long userId);
 }
