@@ -8,6 +8,19 @@ spring:
         locator:
           lower-case-service-id: true
           enabled: true
+      routes:
+        - id: micro_users
+          uri: http://localhost:${server.port}
+          predicates:
+            - Path=/mu/**
+          filters:
+            - RewritePath=/mu/(?<segment>.*), /micro-users/${segment}
+        - id: micro_chats
+          uri: http://localhost:${server.port}
+          predicates:
+            - Path=/mch/**
+          filters:
+            - RewritePath=/mch/(?<segment>.*), /micro-users/${segment}
 eureka:
   client:
     service-url:

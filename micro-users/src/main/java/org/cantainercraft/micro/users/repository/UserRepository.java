@@ -13,6 +13,15 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User,Long> {
     void  deleteByEmail(String email);
 
+    Optional<User> findByName(String name);
+
+
+    User getByName(String username);
+
+    boolean existsByName(String name);
+
+    boolean existsByEmail(String email);
+
     Optional<User> findByEmail(String email);
 
     @Query("select user from User user where (:email is null or lower(user.email) like lower(concat('%',:email,'%'))) and" +

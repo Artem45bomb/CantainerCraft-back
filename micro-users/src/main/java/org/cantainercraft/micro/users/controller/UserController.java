@@ -58,6 +58,20 @@ public class UserController {
 
     }
 
+    @PostMapping("/name")
+    public ResponseEntity<User> findByName(@RequestBody String name){
+        if(name ==null || !name.trim().isEmpty()){
+            throw  new NotValidateParamException("email is null");
+        }
+        Optional<User> user = userService.findByEmail(name);
+
+        if(user.isEmpty()){
+            throw new NotResourceException("user is not exist");
+        }
+
+        return ResponseEntity.ok(user.get());
+
+    }
 
     @GetMapping("/all")
     public ResponseEntity<List<User>> findAll(){
@@ -85,50 +99,35 @@ public class UserController {
 
     @PutMapping("/update")
     public ResponseEntity<String> update(@RequestBody UserDTO dto){
-        try{
             if(dto.getId() == null){
                 throw new NotValidateParamException("missed param: id");
             }
 
             Optional<User> user = userService.findById(dto.getId());
 
-            if(user.isEmpty()) throw new NoSuchElementException();
+            if(user.isEmpty())  throw new NotResourceException("user is not exist");
 
             userService.update(dto);
             return ResponseEntity.ok("user update");
-        }
-        catch (NoSuchElementException exception){
-            throw new NotResourceException("user is not exist");
-        }
     }
 
     @PutMapping("/delete/email")
     public ResponseEntity<String> deleteByEmail(@RequestBody String email){
-        try{
             Optional<User> user = userService.findByEmail(email);
 
-            if(user.isEmpty()) throw new NoSuchElementException();
+            if(user.isEmpty()) throw new NotResourceException("user is not exist");;
 
             userService.deleteByEmail(email);
             return ResponseEntity.ok("delete user");
-        }
-        catch (NoSuchElementException exception){
-            throw new NotResourceException("user is not exist");
-        }
     }
 
     @PutMapping("/delete/id")
     public ResponseEntity<String> deleteById(@RequestBody Long id ){
-        try{
             Optional<User> user= userService.findById(id);
 
-            if(user.isEmpty()) throw new NoSuchElementException();
+            if(user.isEmpty())  throw new NotResourceException("user is not exist");
 
             userService.deleteById(id);
             return ResponseEntity.ok("delete user");
-        }
-        catch (NoSuchElementException exception){
-            throw new NotResourceException("user is not exist");
-        }
     }
 }

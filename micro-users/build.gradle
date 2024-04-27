@@ -26,6 +26,7 @@ ext {
 }
 
 dependencies {
+    implementation 'jakarta.validation:jakarta.validation-api:3.1.0-M2'
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -43,8 +44,14 @@ dependencies {
     //junit
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
-
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    //jwt & auth
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.5'
+    implementation 'org.springframework.boot:spring-boot-starter-security:3.2.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.5'
+
 }
 
 dependencyManagement {
