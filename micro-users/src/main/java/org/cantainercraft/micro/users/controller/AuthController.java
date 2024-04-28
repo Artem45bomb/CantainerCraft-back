@@ -1,7 +1,9 @@
 package org.cantainercraft.micro.users.controller;
 
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.users.dto.JwtAuthResponse;
 import org.cantainercraft.micro.users.dto.SignInAuthDTO;
@@ -25,8 +27,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    private JwtAuthResponse login(@RequestBody @Valid SignInAuthDTO signInAuthDTO){
-        return authService.login(signInAuthDTO);
+    private JwtAuthResponse login(@RequestBody @Valid SignInAuthDTO signInAuthDTO, @NonNull HttpServletResponse response){
+        return authService.login(signInAuthDTO,response);
     }
 
 }

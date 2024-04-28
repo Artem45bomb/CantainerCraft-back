@@ -1,5 +1,6 @@
 package org.cantainercraft.micro.users.dto;
 
+import lombok.Builder;
 import org.cantainercraft.project.entity.Role;
 import org.cantainercraft.project.entity.User;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+
 public class CustomUserDetails extends User implements UserDetails {
     private final String password;
     private final String username;
@@ -18,7 +20,7 @@ public class CustomUserDetails extends User implements UserDetails {
 
     public CustomUserDetails(User user){
         this.password = user.getPassword();
-        this.username = user.getName();
+        this.username = user.getUsername();
         List<GrantedAuthority> auth = new ArrayList<>();
 
         for(Role role : user.getRoles()){

@@ -5,6 +5,7 @@ import org.cantainercraft.micro.users.convertor.UserDTOConvertor;
 import org.cantainercraft.micro.users.dto.CustomUserDetails;
 import org.cantainercraft.micro.users.service.InitService;
 import org.cantainercraft.micro.users.service.UserService;
+import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.project.entity.Profile;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
@@ -37,6 +38,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(UserDTO userDTO){
+        if(existByUsername(userDTO.getUsername())){
+            throw new ExistResourceException("user is exist");
+        }
         User user = userDTOConvertor.convertUserDTOToUser(userDTO);
         Profile profile = Profile.builder().user(user).build();
         profileInitService.init(profile);
@@ -73,12 +77,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> findByUsername(String username){
-        return userRepository.findByName(username);
+        return userRepository.findByUsername(username);
     }
 
     @Override
     public boolean existByUsername(String username){
-        return userRepository.existsByName(username);
+        return userRepository.existsByUsername(username);
     }
 
     @Override

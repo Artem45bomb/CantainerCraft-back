@@ -7,6 +7,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,4 +29,15 @@ public class Role implements Serializable {
     @ManyToMany(mappedBy = "roles",fetch = FetchType.LAZY)
     public List<User> users;
 
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (!(object instanceof Role role1)) return false;
+        return Objects.equals(getRole(), role1.getRole());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getRole());
+    }
 }

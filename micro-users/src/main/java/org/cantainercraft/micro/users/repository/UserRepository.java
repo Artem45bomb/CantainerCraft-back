@@ -13,12 +13,12 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User,Long> {
     void  deleteByEmail(String email);
 
-    Optional<User> findByName(String name);
+    Optional<User> findByUsername(String name);
 
 
-    User getByName(String username);
+    User getByUsername(String username);
 
-    boolean existsByName(String name);
+    boolean existsByUsername(String name);
 
     boolean existsByEmail(String email);
 
