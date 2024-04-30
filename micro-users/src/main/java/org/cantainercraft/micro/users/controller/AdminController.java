@@ -3,6 +3,7 @@ package org.cantainercraft.micro.users.controller;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.users.dto.JwtAuthResponse;
 import org.cantainercraft.micro.users.service.impl.JwtService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

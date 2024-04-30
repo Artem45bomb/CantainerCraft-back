@@ -7,6 +7,7 @@ import org.cantainercraft.micro.users.service.InitService;
 import org.cantainercraft.micro.users.service.UserService;
 import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.project.entity.Profile;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -76,6 +77,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
+    @Cacheable("users")
     public Optional<User> findByUsername(String username){
         return userRepository.findByUsername(username);
     }

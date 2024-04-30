@@ -1,6 +1,7 @@
 package org.cantainercraft.micro.users.dto;
 
 import lombok.Builder;
+import lombok.Setter;
 import org.cantainercraft.project.entity.Role;
 import org.cantainercraft.project.entity.User;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,6 +16,7 @@ import java.util.List;
 public class CustomUserDetails extends User implements UserDetails {
     private final String password;
     private final String username;
+    @Setter
     Collection<? extends GrantedAuthority> authorities;
 
 

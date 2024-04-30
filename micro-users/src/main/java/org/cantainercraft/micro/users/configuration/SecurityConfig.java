@@ -2,9 +2,7 @@ package org.cantainercraft.micro.users.configuration;
 
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.users.component.JwtAuthFilter;
-import org.cantainercraft.micro.users.service.UserService;
 import org.cantainercraft.micro.users.service.impl.UserServiceDetailsImpl;
-import org.cantainercraft.project.entity.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -47,14 +45,12 @@ public class SecurityConfig {
                 }))
                 // Настройка доступа к конечным точкам
                 .authorizeHttpRequests(request -> request
-                        // Можно указать конкретный путь, * - 1 уровень вложенности, ** - любое количество уровней вложенности
+                        .requestMatchers("/user/**").hasAuthority("ADMIN")
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/endpoint", "/admin/**").hasAnyRole("ADMIN")
-                        .anyRequest().authenticated())
+                        .requestMatchers("/admin/**").hasRole("ADMIN"))
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                . addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

@@ -16,12 +16,14 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +37,6 @@ public class AuthServiceImpl implements AuthService {
     private final UserDTOConvertor convertor;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-    private final UserServiceDetailsImpl userServiceDetails;
     private final RefreshTokenService refreshService;
 
     public JwtAuthResponse signup( SignUpAuthDTO signUpAuthDTO){
@@ -66,10 +67,9 @@ public class AuthServiceImpl implements AuthService {
            RefreshToken refreshToken = refreshService.createRefreshToken(signInAuthDTO.getUsername());
            Optional<User> user = userService.findByUsername(signInAuthDTO.getUsername());
            var customUserDetails =new CustomUserDetails(user.get());
-
            String accessToken = jwtService.GenerateToken(customUserDetails);
 
-           ResponseCookie responseCookie = ResponseCookie.from("assessToken")
+           ResponseCookie responseCookie = ResponseCookie.from("accessToken")
                    .value(accessToken)
                    .httpOnly(true)
                    .secure(false)
