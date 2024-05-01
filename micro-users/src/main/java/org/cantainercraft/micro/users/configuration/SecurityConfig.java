@@ -1,14 +1,16 @@
 package org.cantainercraft.micro.users.configuration;
 
 import lombok.RequiredArgsConstructor;
-import org.cantainercraft.micro.users.component.JwtAuthFilter;
+import org.cantainercraft.micro.users.configuration.filter.JwtAuthFilter;
 import org.cantainercraft.micro.users.service.impl.UserServiceDetailsImpl;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -45,9 +47,7 @@ public class SecurityConfig {
                 }))
                 // Настройка доступа к конечным точкам
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/user/**").hasAuthority("ADMIN")
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN"))
+                        .requestMatchers("/auth/**").permitAll())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider())
                 . addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
@@ -60,11 +60,11 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userServiceDetails);
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return authProvider;
+    public AuthenticationProvider authenticationProvider(){
+        DaoAuthenticationProvider authenticationProvider =new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userServiceDetails);
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
+        return  authenticationProvider;
     }
 
     @Bean

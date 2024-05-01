@@ -41,8 +41,9 @@ public class AuthServiceImpl implements AuthService {
 
     public JwtAuthResponse signup( SignUpAuthDTO signUpAuthDTO){
             Role roleUser = new Role();
-            roleUser.setId(2L);
-            roleUser.setRole("USER");
+            roleUser.setId(1L);
+            roleUser.setRole("ROLE_USER");
+            RefreshToken refreshToken = refreshService.createRefreshToken(signUpAuthDTO.getUsername());
             User user = User
                     .builder()
                     .username(signUpAuthDTO.getUsername())
@@ -55,6 +56,7 @@ public class AuthServiceImpl implements AuthService {
             String accessToken = jwtService.GenerateToken(new CustomUserDetails(user));
             return  JwtAuthResponse.builder()
                     .accessToken(accessToken)
+                    .token(refreshToken.getToken())
                     .build();
     }
 

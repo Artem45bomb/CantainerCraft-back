@@ -8,6 +8,7 @@ import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,6 +34,7 @@ public class RoleController {
         return ResponseEntity.ok(roleService.findAll());
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<Role> save(@RequestBody RoleDTO RoleDTO){
         return ResponseEntity.ok(roleService.save(RoleDTO));
@@ -50,6 +52,7 @@ public class RoleController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Boolean> deleteById(@PathVariable Long id ){
         try{
@@ -61,4 +64,5 @@ public class RoleController {
             throw  new NotResourceException("element is not exist");
         }
     }
+
 }

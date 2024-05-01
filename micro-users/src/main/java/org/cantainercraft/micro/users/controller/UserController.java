@@ -10,6 +10,7 @@ import org.modelmapper.ValidationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.cantainercraft.micro.users.dto.UserDTO;
 import org.cantainercraft.micro.users.dto.UserSearchDTO;
@@ -73,15 +74,15 @@ public class UserController {
 
     }
 
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_ADMIN_TEMP')")
     @GetMapping("/all")
     public ResponseEntity<List<User>> findAll(){
         return ResponseEntity.ok(userService.findAll());
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<User> save(@RequestBody UserDTO userDTO){
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Content-Type","application/json");
         Optional<User> user = userService.findByEmail(userDTO.getEmail());
 
         if(user.isPresent()){
@@ -97,6 +98,7 @@ public class UserController {
                 .body(userService.save(userDTO));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','ADMIN_TEMP')")
     @PutMapping("/update")
     public ResponseEntity<String> update(@RequestBody UserDTO dto){
             if(dto.getId() == null){
@@ -111,6 +113,7 @@ public class UserController {
             return ResponseEntity.ok("user update");
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','ADMIN_TEMP')")
     @PutMapping("/delete/email")
     public ResponseEntity<String> deleteByEmail(@RequestBody String email){
             Optional<User> user = userService.findByEmail(email);
@@ -121,6 +124,7 @@ public class UserController {
             return ResponseEntity.ok("delete user");
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','ADMIN_TEMP')")
     @PutMapping("/delete/id")
     public ResponseEntity<String> deleteById(@RequestBody Long id ){
             Optional<User> user= userService.findById(id);

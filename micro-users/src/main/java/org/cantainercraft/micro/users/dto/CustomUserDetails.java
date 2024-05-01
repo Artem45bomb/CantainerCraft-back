@@ -1,6 +1,6 @@
 package org.cantainercraft.micro.users.dto;
 
-import lombok.Builder;
+
 import lombok.Setter;
 import org.cantainercraft.project.entity.Role;
 import org.cantainercraft.project.entity.User;

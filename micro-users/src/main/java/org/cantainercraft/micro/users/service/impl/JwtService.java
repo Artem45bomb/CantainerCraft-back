@@ -5,9 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.cantainercraft.micro.users.dto.CustomUserDetails;
-import org.cantainercraft.project.entity.Role;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -24,8 +22,9 @@ public class JwtService {
     @Value("${token.signing.key}")
     private String SECRET_KEY;
 
-//    @Value("${jwt.cookieExpiry}")
-//    private long cookieExpiry;
+    public String extractRole(String token){
+        return extractAllClaims(token).get("role",String.class);
+    }
 
     public Date extractExpiry(String token){
         return extractClaim(token,Claims::getExpiration);
@@ -72,7 +71,6 @@ public class JwtService {
                 .compact();
 
     }
-
 
     public String GenerateToken(UserDetails userDetails){
         Map<String,Object> claims = new HashMap<>();

@@ -8,6 +8,7 @@ import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.cantainercraft.project.entity.Subscription;
 
@@ -32,12 +33,14 @@ public class SubscriptionController {
         return ResponseEntity.ok(subscriptionService.findAll());
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<Subscription> save(@RequestBody SubscriptionDTO subscriptionDTO){
         return ResponseEntity.ok(subscriptionService.save(subscriptionDTO));
     }
 
-    @PutMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/update")
     public ResponseEntity<Boolean> update(@RequestBody SubscriptionUpdateDTO subscriptionUpdateDTO){
         try{
             findById(subscriptionUpdateDTO.getId());
@@ -49,6 +52,7 @@ public class SubscriptionController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Boolean> deleteById(@PathVariable Long id ){
         try{

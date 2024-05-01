@@ -11,6 +11,7 @@ import org.cantainercraft.micro.utilits.exception.NotValidateParamException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.cantainercraft.project.entity.Profile;
 
@@ -65,6 +66,7 @@ public class ProfileController {
         return ResponseEntity.ok(profileService.findAll());
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<Profile> save(@RequestBody ProfileDTO profileDTO){
         Long userId = profileDTO.getUser() == null? 0 : profileDTO.getUser().getId();
@@ -83,6 +85,7 @@ public class ProfileController {
                 .body(profileService.save(profileDTO));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','ADMIN_TEMP')")
     @PutMapping("/update")
     public ResponseEntity<Boolean> update(@RequestBody ProfileDTO profileDTO){
             Optional<Profile> profile = profileService.findById(profileDTO.getUuid());
@@ -93,6 +96,7 @@ public class ProfileController {
             return new ResponseEntity(MessageError.of("profile is not exist"),HttpStatus.NOT_ACCEPTABLE);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/delete/id")
     public ResponseEntity<Boolean> deleteById(@RequestBody UUID id ){
         Optional<Profile> profile = profileService.findById(id);
@@ -103,6 +107,7 @@ public class ProfileController {
         return new ResponseEntity(MessageError.of("profile is not exist"),HttpStatus.NOT_ACCEPTABLE);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/delete/user")
     public ResponseEntity<Boolean> deleteByUser(@RequestBody ProfileSearchDTO profileSearchDTO){
 
