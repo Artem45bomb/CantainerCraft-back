@@ -21,6 +21,14 @@ import java.util.UUID;
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Chat implements Serializable {
 
+    public Chat(UUID uuid, String srcImage, String name, Date date, TypeChat typeChat) {
+        this.uuid = uuid;
+        this.srcImage = srcImage;
+        this.name = name;
+        this.date = date;
+        this.typeChat = typeChat;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID uuid;

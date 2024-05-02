@@ -1,5 +1,6 @@
 package org.cantainercraft.micro.chats.convertor;
 
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -8,9 +9,10 @@ import org.cantainercraft.project.entity.chats.Message;
 
 
 @Component
+@RequiredArgsConstructor
 public class MessageDTOConvertor {
     @Autowired
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     public MessageDTO convertMessageToMessageDTO(Message message){
         return modelMapper.map(message,MessageDTO.class);

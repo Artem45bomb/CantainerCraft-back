@@ -100,7 +100,7 @@ public class ChatController {
             return ResponseEntity.ok(chatService.update(chatUpdateDTO));
         }
         catch (NoSuchElementException exception){
-            throw new NotResourceException("No content for delete");
+            throw new NotResourceException("No content for update");
         }
     }
 
@@ -142,7 +142,7 @@ public class ChatController {
 
     }
 
-    //ищет пользователей по userId через useChatService так как все пользователи хранятся в user_chat
+    //ищет пользователей по userId через userChatService так как все пользователи хранятся в user_chat
     @PostMapping("/user/search")
     public ResponseEntity<List<Chat>> search(@RequestBody Long userId){
 
