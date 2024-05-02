@@ -65,7 +65,7 @@ public class MessageControllerTest {
                 .uuid(uuid)
                 .build();
 
-        Mockito.when(messageService.findByUUID(Mockito.any())).thenThrow(new NotResourceException("Message has not been founded!"));
+        Mockito.when(messageService.findByUUID(Mockito.any())).thenReturn(Optional.empty());
 
         mockMvc.perform(post("/message/uuid")
                         .contentType("application/json")
@@ -96,7 +96,7 @@ public class MessageControllerTest {
                 .uuid(uuid)
                 .build();
 
-        Mockito.when(messageService.findByUUID(Mockito.any())).thenThrow(new NotResourceException("Message has not been founded!"));
+        Mockito.when(messageService.findByUUID(Mockito.any())).thenReturn(Optional.empty());
 
         mockMvc.perform(put("/message/delete")
                         .contentType("application/json")
@@ -192,7 +192,7 @@ public class MessageControllerTest {
                 .build();
 
         Mockito.when(userFeignClient.userExist(Mockito.any())).thenReturn(ResponseEntity.ok().body(userTest));
-        Mockito.when(messageService.findByUUID(Mockito.any())).thenThrow(new NotResourceException("No content for update!"));
+        Mockito.when(messageService.findByUUID(Mockito.any())).thenReturn(Optional.empty());
 
         mockMvc.perform(put("/message/update")
                         .contentType("application/json")
@@ -203,6 +203,7 @@ public class MessageControllerTest {
     }
     @Test
     void updateMessage_withMissedParam_thenStatus406() throws Exception {
+        long user_id = 1;
         Message messageRequest = Message.builder()
                 .uuid(null)
                 .build();
@@ -212,7 +213,12 @@ public class MessageControllerTest {
                 .uuid(uuid)
                 .build();
 
-        Mockito.when(messageService.findByUUID(Mockito.any())).thenThrow(new NotValidateParamException("Missed param: id"));
+        User userTest = User.builder()
+                .id(user_id)
+                .build();
+
+        Mockito.when(userFeignClient.userExist(Mockito.any())).thenReturn(ResponseEntity.ok().body(userTest));
+        Mockito.when(messageService.findByUUID(Mockito.any())).thenReturn(Optional.of(messageTest));
 
         mockMvc.perform(put("/message/update")
                         .contentType("application/json")

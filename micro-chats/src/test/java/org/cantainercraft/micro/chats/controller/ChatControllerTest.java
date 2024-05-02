@@ -58,7 +58,7 @@ public class ChatControllerTest {
                 Chat chatTest = new Chat();
                 chatTest.setUuid(uuid);
                 Mockito.when(chatService.findByUUID(Mockito.any()))
-                        .thenThrow(new NotResourceException("Chat has been not found"));
+                        .thenReturn(Optional.empty());
 
                 mockMvc.perform(post("/chat/id")
                                 .contentType("application/json")
@@ -70,7 +70,7 @@ public class ChatControllerTest {
         public void deleteChatByName_whenChatExist_thenStatus406() throws Exception {
                 Chat chatTest = Chat.builder()
                         .uuid(UUID.randomUUID())
-                        .name("Dima")
+                        .name(null)
                         .build();
 
                 Mockito.when(chatService.findByName(Mockito.any()))
@@ -104,7 +104,7 @@ public class ChatControllerTest {
                 chatTest.setUuid(uuid);
 
                 Mockito.when(chatService.findByUUID(Mockito.any()))
-                        .thenThrow(new NotResourceException("No content for update"));
+                        .thenReturn(Optional.empty());
 
                 mockMvc.perform(put("/chat/update")
                         .contentType("application/json")
@@ -146,7 +146,7 @@ public class ChatControllerTest {
                 chatTest.setUuid(uuid);
 
                 Mockito.when(chatService.findByUUID(Mockito.any()))
-                        .thenThrow(new NotValidateParamException("missed param: id"));
+                        .thenReturn(Optional.of(chatTest));
 
                 mockMvc.perform(put("/chat/update")
                                 .contentType("application/json")

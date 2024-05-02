@@ -71,19 +71,18 @@ public class MessageController {
 
     @PutMapping("/update")
     public ResponseEntity<Message> update(@RequestBody MessageDTO messageDTO) {
-        try {
-            messageService.findByUUID(messageDTO.getUuid());
+            Optional<Message> message = messageService.findByUUID(messageDTO.getUuid());
+            if(message.isEmpty()) {
+                throw new NotResourceException("No content for update");
+            }
             if(messageDTO.getUuid() == null) {
-                throw new NotResourceException("Missed param: id");
+                throw new NotValidateParamException("Missed param: id");
             }
             if (userFeignClient.userExist(messageDTO.getUserId()) == null) {
                 throw new NotResourceException("user is not exist");
             }
             return ResponseEntity.ok(messageService.update(messageDTO));
 
-        } catch (NoSuchElementException exception) {
-            throw new NotResourceException("No content for update");
-        }
     }
 
     @PostMapping
@@ -124,5 +123,5 @@ public class MessageController {
         return ResponseEntity.ok(messageService.findBySearch(dateStart,dateEnd,valueMessage,uuid,userId));
 
     }
-
 }
+
