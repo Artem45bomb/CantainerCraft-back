@@ -2,10 +2,12 @@ package org.cantainercraft.micro.chats.controller;
 
 import com.google.gson.Gson;
 import org.cantainercraft.micro.chats.convertor.ChatDTOConvertor;
+import org.cantainercraft.micro.chats.feign.UserFeignClient;
 import org.cantainercraft.micro.chats.service.impl.ChatServiceImpl;
 import org.cantainercraft.micro.chats.service.impl.UserChatServiceImpl;
 import org.cantainercraft.micro.utilits.exception.MessageError;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
+import org.cantainercraft.micro.utilits.exception.NotValidateParamException;
 import org.cantainercraft.project.entity.chats.Chat;
 import org.cantainercraft.project.entity.chats.User_Chat;
 import org.junit.jupiter.api.Test;
@@ -65,16 +67,20 @@ public class ChatControllerTest {
                         .andExpect(status().is(404));
         }
         @Test
-        public void deleteChatByUUID_whenChatExist_thenStatus406() throws Exception {
-                Mockito.when(chatService.findByUUID(Mockito.any()))
-                        .thenReturn(Optional.empty());
+        public void deleteChatByName_whenChatExist_thenStatus406() throws Exception {
+                Chat chatTest = Chat.builder()
+                        .uuid(UUID.randomUUID())
+                        .name("Dima")
+                        .build();
 
-                mockMvc.perform(put("/chat/delete/id")
+                Mockito.when(chatService.findByName(Mockito.any()))
+                        .thenThrow(new NotValidateParamException("Missed param: name"));
+
+                mockMvc.perform(put("/chat/delete/name")
                                 .contentType("application/json")
-                                .content(gson.toJson(UUID.randomUUID())))
+                                .content(gson.toJson(null)))
                         .andDo(print())
-                        .andExpect(status().is(406))
-                        .andExpect(content().json(gson.toJson(MessageError.of(""))));
+                        .andExpect(status().is(406));
         }
         @Test
         public void deleteChatByUUID_whenChatExist_thenStatus200() throws Exception {
@@ -85,9 +91,9 @@ public class ChatControllerTest {
                 Mockito.when(chatService.findByUUID(Mockito.any()))
                         .thenReturn(Optional.of(chatTest));
 
-                mockMvc.perform(put("/chat/delete/id")
+                mockMvc.perform(put("/chat/delete")
                                 .contentType("application/json")
-                                .content(gson.toJson(UUID.randomUUID())))
+                                .content(gson.toJson(uuid)))
                         .andDo(print())
                         .andExpect(status().is(200));
         }
@@ -100,7 +106,7 @@ public class ChatControllerTest {
                 Mockito.when(chatService.findByUUID(Mockito.any()))
                         .thenThrow(new NotResourceException("No content for update"));
 
-                mockMvc.perform(put("chat/update")
+                mockMvc.perform(put("/chat/update")
                         .contentType("application/json")
                         .content(gson.toJson(chatTest)))
                         .andDo(print())
@@ -108,21 +114,23 @@ public class ChatControllerTest {
         }
         @Test
         public void updateChat_whenChatExist_thenStatus200() throws Exception {
+                UUID uuid = UUID.randomUUID();
+
                 Chat chatRequest = Chat.builder()
-                        .uuid(UUID.randomUUID())
+                        .uuid(uuid)
                         .name("Dima")
                         .build();
 
                 Chat chatTest = Chat.builder()
-                        .uuid(UUID.randomUUID())
+                        .uuid(uuid)
                         .build();
 
                 Mockito.when(chatService.findByUUID(Mockito.any()))
                         .thenReturn(Optional.of(chatTest));
 
-                mockMvc.perform(put("chat/update")
+                mockMvc.perform(put("/chat/update")
                                 .contentType("application/json")
-                                .content(gson.toJson(convertor.convertChatToChatDTO(chatTest))))
+                                .content(gson.toJson(chatTest)))
                         .andDo(print())
                         .andExpect(status().is(200));
         }
@@ -138,9 +146,9 @@ public class ChatControllerTest {
                 chatTest.setUuid(uuid);
 
                 Mockito.when(chatService.findByUUID(Mockito.any()))
-                        .thenReturn(Optional.of(chatTest));
+                        .thenThrow(new NotValidateParamException("missed param: id"));
 
-                mockMvc.perform(put("chat/update")
+                mockMvc.perform(put("/chat/update")
                                 .contentType("application/json")
                                 .content(gson.toJson(chatRequest)))
                         .andDo(print())
@@ -150,14 +158,18 @@ public class ChatControllerTest {
         @Test
         void saveChat_whenChatExist_thenStatus409() throws Exception {
                 Chat chatRequest = Chat.builder()
+                        .name("Dima")
+                        .build();
+
+                Chat chatResponse = Chat.builder()
                         .uuid(UUID.randomUUID())
                         .name("Dima")
                         .build();
 
-                Mockito.when(chatService.findByUUID(Mockito.any()))
-                        .thenReturn(Optional.of(chatRequest));
+                Mockito.when(chatService.findByName(Mockito.any()))
+                        .thenReturn(Optional.of(chatResponse));
 
-                mockMvc.perform(post("chat/add")
+                mockMvc.perform(post("/chat/add")
                                 .contentType("application/json")
                                 .content(gson.toJson(chatRequest)))
                         .andDo(print())
@@ -165,7 +177,7 @@ public class ChatControllerTest {
                         .andExpect(content().json(gson.toJson(MessageError.of("chat is exist"))));
         }
         @Test
-        void saveChat_whenChatNotExist_thenStatus201() throws Exception {
+        void saveChat_whenChatNotExist_thenStatus200() throws Exception {
                 Chat chatRequest = Chat.builder()
                         .uuid(UUID.randomUUID())
                         .name("Dima")
@@ -174,15 +186,15 @@ public class ChatControllerTest {
                 Mockito.when(chatService.findByUUID(Mockito.any()))
                         .thenReturn(Optional.empty());
 
-                mockMvc.perform(put("chat/add")
+                mockMvc.perform(post("/chat/add")
                                 .contentType("application/json")
-                                .content(gson.toJson(chatRequest)))
+                                .content(gson.toJson(convertor.convertChatToChatDTO(chatRequest))))
                         .andDo(print())
-                        .andExpect(status().is(201));
+                        .andExpect(status().is(200));
         }
 
         @Test
-        void search_whenUserExists_thenStatus201() throws Exception {
+        void search_whenUserExists_thenStatus200() throws Exception {
         long user_id = 1;
 
                 Chat chatRequest = Chat.builder()
@@ -201,13 +213,11 @@ public class ChatControllerTest {
                 Mockito.when(userChatService.findBySearch(Mockito.any(), Mockito.any(), Mockito.any()))
                         .thenReturn(user_chats);
 
-                mockMvc.perform(post("/user/search")
+                mockMvc.perform(post("/chat/user/search")
                                 .contentType("application/json")
                                 .content(gson.toJson(user_id)))
                         .andDo(print())
-                        .andExpect(status().is(201));
+                        .andExpect(status().is(200));
         }
-
-
 
 }

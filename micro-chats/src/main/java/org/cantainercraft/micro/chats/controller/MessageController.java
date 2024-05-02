@@ -2,7 +2,9 @@ package org.cantainercraft.micro.chats.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.service.MessageService;
+import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
+import org.cantainercraft.micro.utilits.exception.NotValidateParamException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.cantainercraft.micro.chats.dto.MessageDTO;
@@ -39,12 +41,19 @@ public class MessageController {
 
 
     @PostMapping("/add")
-    public ResponseEntity<Message> save(@RequestBody MessageDTO messageDTO){
+    public ResponseEntity<Message> save(@RequestBody MessageDTO messageDTO) {
 
-        if(userFeignClient.userExist(messageDTO.getUserId()).getBody() == null){
+        if (userFeignClient.userExist(messageDTO.getUserId()).getBody() == null) {
             throw new NotResourceException("user is not exist");
         }
+        Optional<Message> message = messageService.findByUUID(messageDTO.getUuid());
 
+        if (message.isPresent()) {
+            throw new ExistResourceException("Message is exist");
+        }
+        if (messageDTO.getUuid() == null) {
+            throw new NotValidateParamException("Missed param: id");
+        }
         return ResponseEntity.ok(messageService.save(messageDTO));
     }
 
@@ -61,15 +70,20 @@ public class MessageController {
 
 
     @PutMapping("/update")
-    public ResponseEntity<Message> update(@RequestBody MessageDTO messageDTO){
-
-            if(userFeignClient.userExist(messageDTO.getUserId()) == null){
+    public ResponseEntity<Message> update(@RequestBody MessageDTO messageDTO) {
+        try {
+            messageService.findByUUID(messageDTO.getUuid());
+            if(messageDTO.getUuid() == null) {
+                throw new NotResourceException("Missed param: id");
+            }
+            if (userFeignClient.userExist(messageDTO.getUserId()) == null) {
                 throw new NotResourceException("user is not exist");
             }
-
-            messageService.findByUUID(messageDTO.getUuid());
-
             return ResponseEntity.ok(messageService.update(messageDTO));
+
+        } catch (NoSuchElementException exception) {
+            throw new NotResourceException("No content for update");
+        }
     }
 
     @PostMapping

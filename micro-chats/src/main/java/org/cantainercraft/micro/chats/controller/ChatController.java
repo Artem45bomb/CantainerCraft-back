@@ -11,6 +11,8 @@ import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.micro.chats.service.impl.ChatServiceImpl;
 import org.cantainercraft.micro.chats.service.impl.UserChatServiceImpl;
+import org.cantainercraft.micro.utilits.exception.NotValidateParamException;
+import org.cantainercraft.project.entity.Profile;
 import org.cantainercraft.project.entity.TypeChat;
 import org.cantainercraft.project.entity.chats.Chat;
 import org.cantainercraft.project.entity.chats.User_Chat;
@@ -86,10 +88,13 @@ public class ChatController {
     public ResponseEntity<Boolean> delete(@RequestBody String name){
         try{
             chatService.findByName(name);
+            if(name == null) {
+                throw new NotValidateParamException("Missed param: name");
+            }
             return ResponseEntity.ok(chatService.deleteByName(name));
         }
         catch (NoSuchElementException exception){
-            throw new NotResourceException("No content for delete");
+               throw new NotResourceException("No content for delete");
         }
     }
 
@@ -97,7 +102,11 @@ public class ChatController {
     public ResponseEntity<Boolean> update(@RequestBody ChatUpdateDTO chatUpdateDTO){
         try{
             chatService.findByUUID(chatUpdateDTO.getUuid());
-            return ResponseEntity.ok(chatService.update(chatUpdateDTO));
+            if(chatUpdateDTO.getUuid() == null){
+                throw new NotValidateParamException("missed param: id");
+            } else {
+                return ResponseEntity.ok(chatService.update(chatUpdateDTO));
+            }
         }
         catch (NoSuchElementException exception){
             throw new NotResourceException("No content for update");
