@@ -4,10 +4,14 @@ import com.google.gson.Gson;
 import org.cantainercraft.micro.chats.convertor.MessageDTOConvertor;
 import org.cantainercraft.micro.chats.dto.MessageSearchDTO;
 import org.cantainercraft.micro.chats.controller.MessageController;
+import org.cantainercraft.micro.chats.feign.UserFeignClient;
 import org.cantainercraft.micro.chats.service.MessageService;
 import org.cantainercraft.micro.chats.service.impl.MessageServiceImpl;
+import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.micro.utilits.exception.MessageError;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
+import org.cantainercraft.micro.utilits.exception.NotValidateParamException;
+import org.cantainercraft.project.entity.User;
 import org.cantainercraft.project.entity.chats.Message;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -15,6 +19,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -30,6 +35,9 @@ public class MessageControllerTest {
     @MockBean
     MessageServiceImpl messageService;
 
+    @MockBean
+    public UserFeignClient userFeignClient;
+
     private final MessageDTOConvertor convertor = new MessageDTOConvertor(new ModelMapper());
 
     @Autowired
@@ -37,14 +45,14 @@ public class MessageControllerTest {
 
     @Test
     public void givenMessageByUUID_whenMessageExistChat_thenStatus200() throws Exception {
-        UUID uuid =  UUID.randomUUID();
+        UUID uuid = UUID.randomUUID();
         Message messageTest = Message.builder()
                 .uuid(uuid)
                 .build();
 
         Mockito.when(messageService.findByUUID(Mockito.any())).thenReturn(Optional.of(messageTest));
 
-        mockMvc.perform(get("/message/uuid")
+        mockMvc.perform(post("/message/uuid")
                         .contentType("application/json")
                         .content(gson.toJson(uuid)))
                 .andDo(print())
@@ -57,9 +65,9 @@ public class MessageControllerTest {
                 .uuid(uuid)
                 .build();
 
-        Mockito.when(messageService.findByUUID(Mockito.any())).thenThrow(new NotResourceException("Message has not been founded!"));
+        Mockito.when(messageService.findByUUID(Mockito.any())).thenReturn(Optional.empty());
 
-        mockMvc.perform(get("/message/uuid")
+        mockMvc.perform(post("/message/uuid")
                         .contentType("application/json")
                         .content(gson.toJson(uuid)))
                 .andDo(print())
@@ -88,7 +96,7 @@ public class MessageControllerTest {
                 .uuid(uuid)
                 .build();
 
-        Mockito.when(messageService.findByUUID(Mockito.any())).thenThrow(new NotResourceException("Message has not been founded!"));
+        Mockito.when(messageService.findByUUID(Mockito.any())).thenReturn(Optional.empty());
 
         mockMvc.perform(put("/message/delete")
                         .contentType("application/json")
@@ -99,72 +107,103 @@ public class MessageControllerTest {
     @Test
     public void saveMessage_whenMessageExist_thenStatus409() throws Exception {
         UUID uuid =  UUID.randomUUID();
+        long user_id = 1;
+
         Message messageTest = Message.builder()
                 .uuid(uuid)
                 .build();
 
-        Mockito.when(messageService.findByUUID(Mockito.any())).thenThrow(new NotResourceException("Message is exist!"));
+        User userTest = User.builder()
+                .id(user_id)
+                .build();
+
+        Mockito.when(userFeignClient.userExist(Mockito.any())).thenReturn(ResponseEntity.ok().body(userTest));
+        Mockito.when(messageService.findByUUID(Mockito.any())).thenReturn(Optional.of(messageTest));
 
         mockMvc.perform(post("/message/add")
                         .contentType("application/json")
                         .content(gson.toJson(messageTest)))
                 .andDo(print())
                 .andExpect(status().is(409))
-                .andExpect(mvcResult -> mvcResult.getResolvedException().getClass().equals(NotResourceException.class));
+                .andExpect(mvcResult -> mvcResult.getResolvedException().getClass().equals(ExistResourceException.class));
     }
     @Test
-    public void saveMessage_whenMessageNotExist_thenStatus201() throws Exception {
+    public void saveMessage_whenMessageNotExist_thenStatus200() throws Exception {
         UUID uuid =  UUID.randomUUID();
+        long user_id = 1;
+
         Message messageTest = Message.builder()
                 .uuid(uuid)
                 .build();
 
+        User userTest = User.builder()
+                .id(user_id)
+                .build();
+
+        Mockito.when(userFeignClient.userExist(Mockito.any())).thenReturn(ResponseEntity.ok().body(userTest));
         Mockito.when(messageService.findByUUID(Mockito.any())).thenReturn(Optional.empty());
 
         mockMvc.perform(post("/message/add")
                         .contentType("application/json")
                         .content(gson.toJson(messageTest)))
                 .andDo(print())
-                .andExpect(status().is(201));
+                .andExpect(status().is(200));
     }
     @Test
     void updateMessage_whenMessageExist_thenStatus200() throws Exception {
-        UUID uuid1 =  UUID.randomUUID();
+        UUID uuid =  UUID.randomUUID();
+        long user_id = 1;
+
         Message messageRequest = Message.builder()
-                .uuid(uuid1)
+                .uuid(uuid)
+                .userId(user_id)
                 .build();
 
-        UUID uuid =  UUID.randomUUID();
         Message messageTest = Message.builder()
                 .uuid(uuid)
+                .userId(user_id)
                 .build();
 
+        User userTest = User.builder()
+                .id(user_id)
+                .build();
+
+        Mockito.when(userFeignClient.userExist(Mockito.any())).thenReturn(ResponseEntity.ok().body(userTest));
         Mockito.when(messageService.findByUUID(Mockito.any())).thenReturn(Optional.of(messageTest));
 
         mockMvc.perform(put("/message/update")
                         .contentType("application/json")
-                        .content(gson.toJson(convertor.convertMessageToMessageDTO(messageTest))))
+                        .content(gson.toJson(convertor.convertMessageToMessageDTO(messageRequest))))
                 .andDo(print())
                 .andExpect(status().is(200));
     }
     @Test
     void updateMessage_whenMessageNotExist_thenStatus404() throws Exception {
         UUID uuid =  UUID.randomUUID();
-        Message messageTest = Message.builder()
+        long user_id = 1;
+
+        Message messageRequest = Message.builder()
                 .uuid(uuid)
+                .userId(user_id)
                 .build();
 
-        Mockito.when(messageService.findByUUID(Mockito.any())).thenThrow(new NotResourceException("No content for update!"));
+        User userTest = User.builder()
+                .id(user_id)
+                .build();
+
+        Mockito.when(userFeignClient.userExist(Mockito.any())).thenReturn(ResponseEntity.ok().body(userTest));
+        Mockito.when(messageService.findByUUID(Mockito.any())).thenReturn(Optional.empty());
 
         mockMvc.perform(put("/message/update")
                         .contentType("application/json")
-                        .content(gson.toJson(convertor.convertMessageToMessageDTO(messageTest))))
+                        .content(gson.toJson(convertor.convertMessageToMessageDTO(messageRequest))))
                 .andDo(print())
                 .andExpect(status().is(404))
                 .andExpect(mvcResult -> mvcResult.getResolvedException().getClass().equals(NotResourceException.class));
     }
     @Test
     void updateMessage_withMissedParam_thenStatus406() throws Exception {
+        long user_id = 1;
         Message messageRequest = Message.builder()
                 .uuid(null)
                 .build();
@@ -174,6 +213,11 @@ public class MessageControllerTest {
                 .uuid(uuid)
                 .build();
 
+        User userTest = User.builder()
+                .id(user_id)
+                .build();
+
+        Mockito.when(userFeignClient.userExist(Mockito.any())).thenReturn(ResponseEntity.ok().body(userTest));
         Mockito.when(messageService.findByUUID(Mockito.any())).thenReturn(Optional.of(messageTest));
 
         mockMvc.perform(put("/message/update")
@@ -181,7 +225,7 @@ public class MessageControllerTest {
                         .content(gson.toJson(messageRequest)))
                 .andDo(print())
                 .andExpect(status().is(406))
-                .andExpect(content().json(gson.toJson(MessageError.of("missed param: id"))));;
+                .andExpect(content().json(gson.toJson(MessageError.of("Missed param: id"))));;
     }
 
 

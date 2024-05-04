@@ -11,6 +11,8 @@ import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.micro.chats.service.impl.ChatServiceImpl;
 import org.cantainercraft.micro.chats.service.impl.UserChatServiceImpl;
+import org.cantainercraft.micro.utilits.exception.NotValidateParamException;
+import org.cantainercraft.project.entity.Profile;
 import org.cantainercraft.project.entity.TypeChat;
 import org.cantainercraft.project.entity.chats.Chat;
 import org.cantainercraft.project.entity.chats.User_Chat;
@@ -60,13 +62,11 @@ public class ChatController {
 
     @PutMapping("/delete")
     public ResponseEntity<Boolean> delete(@RequestBody UUID uuid){
-        try{
-            chatService.findByUUID(uuid);
+        Optional<Chat> chat = chatService.findByUUID(uuid);
+        if(chat.isEmpty()) {
+            throw new NotResourceException("No content to delete");
+        }
             return ResponseEntity.ok(chatService.delete(uuid));
-        }
-        catch (NoSuchElementException exception){
-            throw new NotResourceException("No content for delete");
-        }
     }
 
     @PostMapping("/add")
@@ -84,25 +84,29 @@ public class ChatController {
 
     @PutMapping("/delete/name")
     public ResponseEntity<Boolean> delete(@RequestBody String name){
-        try{
-            chatService.findByName(name);
-            return ResponseEntity.ok(chatService.deleteByName(name));
+        Optional<Chat> chat = chatService.findByName(name);
+        if(chat.isEmpty()) {
+            throw new NotResourceException("No content to delete");
         }
-        catch (NoSuchElementException exception){
-            throw new NotResourceException("No content for delete");
+        if(name == null) {
+            throw new NotValidateParamException("Missed param: name");
         }
+        return ResponseEntity.ok(chatService.deleteByName(name));
     }
 
     @PutMapping("/update")
     public ResponseEntity<Boolean> update(@RequestBody ChatUpdateDTO chatUpdateDTO){
-        try{
-            chatService.findByUUID(chatUpdateDTO.getUuid());
-            return ResponseEntity.ok(chatService.update(chatUpdateDTO));
+        Optional<Chat> chat = chatService.findByUUID(chatUpdateDTO.getUuid());
+        if (chat.isEmpty()) {
+            throw new NotResourceException("No content to update");
         }
-        catch (NoSuchElementException exception){
-            throw new NotResourceException("No content for update");
-        }
+            if(chatUpdateDTO.getUuid() == null){
+                throw new NotValidateParamException("missed param: id");
+            } else {
+                return ResponseEntity.ok(chatService.update(chatUpdateDTO));
+            }
     }
+
 
     @PostMapping("/search")
     public ResponseEntity<List<Chat>> findBySearch(@RequestBody ChatSearchDTO chatSearchDTO){
