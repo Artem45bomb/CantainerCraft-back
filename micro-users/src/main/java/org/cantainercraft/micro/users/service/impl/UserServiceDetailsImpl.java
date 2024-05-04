@@ -29,8 +29,9 @@ public class UserServiceDetailsImpl implements UserDetailsService {
         Optional<User> user = userRepository.findByUsername(username);
 
         if(user.isEmpty()){
-            throw new NotResourceException("user is not exist");
+            throw new UsernameNotFoundException("user is not exist");
         }
+
         CustomUserDetails customUserDetails = new CustomUserDetails(user.get());
         List<GrantedAuthority> grantedAuthorities  = new ArrayList<>();
         for(Role role : user.get().getRoles()){

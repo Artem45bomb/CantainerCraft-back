@@ -11,6 +11,7 @@ import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.RefreshToken;
 import org.cantainercraft.project.entity.Role;
 import org.cantainercraft.project.entity.User;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -38,22 +39,30 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final RefreshTokenService refreshService;
+    @Value("${duration.time.cookie}")
+    private Long cookieTime;
 
-    public JwtAuthResponse signup( SignUpAuthDTO signUpAuthDTO){
-            Role roleUser = new Role();
-            roleUser.setId(1L);
-            roleUser.setRole("ROLE_USER");
-            RefreshToken refreshToken = refreshService.createRefreshToken(signUpAuthDTO.getUsername());
-            User user = User
-                    .builder()
+    public JwtAuthResponse signup( SignUpAuthDTO signUpAuthDTO,HttpServletResponse response){
+            Role roleUser = new Role(1L,"ROLE_USER");
+
+            User user = User.builder()
                     .username(signUpAuthDTO.getUsername())
                     .roles(List.of(roleUser))
                     .email(signUpAuthDTO.getEmail())
                     .password(passwordEncoder.encode(signUpAuthDTO.getPassword()))
                     .build();
-
             userService.save(convertor.convertUserToUserDTO(user));
+            RefreshToken refreshToken = refreshService.createRefreshToken(signUpAuthDTO.getUsername());
             String accessToken = jwtService.GenerateToken(new CustomUserDetails(user));
+
+            ResponseCookie cookie = ResponseCookie.from("accessToken")
+                    .value(accessToken)
+                    .secure(true)
+                    .httpOnly(true)
+                    .path("/")
+                    .build();
+            response.addHeader(HttpHeaders.SET_COOKIE,cookie.toString());
+
             return  JwtAuthResponse.builder()
                     .accessToken(accessToken)
                     .token(refreshToken.getToken())
@@ -76,7 +85,7 @@ public class AuthServiceImpl implements AuthService {
                    .httpOnly(true)
                    .secure(false)
                    .path("/")
-                   .maxAge(10000*60*24)
+                   .maxAge(10000*24*60*cookieTime)
                    .build();
            response.addHeader(HttpHeaders.SET_COOKIE,responseCookie.toString());
            return JwtAuthResponse.builder()

@@ -85,7 +85,7 @@ public class ProfileController {
                 .body(profileService.save(profileDTO));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','ADMIN_TEMP')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<Boolean> update(@RequestBody ProfileDTO profileDTO){
             Optional<Profile> profile = profileService.findById(profileDTO.getUuid());

@@ -21,6 +21,8 @@ import java.util.function.Function;
 public class JwtService {
     @Value("${token.signing.key}")
     private String SECRET_KEY;
+    @Value("${duration.time.accessToken}")
+    private Long cookieTime;
 
     public String extractRole(String token){
         return extractAllClaims(token).get("role",String.class);
@@ -61,7 +63,7 @@ public class JwtService {
     public String createToken(Map<String,Object> claims,String username){
 
         Date date = new Date();
-        Date expiry = new Date(date.getTime() + 10000* 24*60);
+        Date expiry = new Date(date.getTime() +10000*24*60*cookieTime);
         return Jwts.builder()
                 .setClaims(claims)  // Устанавливаем пользовательские claims
                 .setSubject(username) // Устанавливаем имя пользователя в качестве темы токена (Subject)

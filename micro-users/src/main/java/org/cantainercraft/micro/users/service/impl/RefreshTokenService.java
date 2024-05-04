@@ -18,18 +18,28 @@ public class RefreshTokenService {
     private final RefreshTokenRepository repositoryToken;
     private final UserRepository userRepository;
 
+
+    public void deleteToken(Long userId){
+        Optional<RefreshToken> refreshToken  = repositoryToken.findById(userId);
+
+        if(refreshToken.isEmpty()){
+            throw new NotResourceException("token is not exist");
+        }
+
+        repositoryToken.deleteById(userId);
+    }
+
     public RefreshToken createRefreshToken(String username){
         Optional<User> user = userRepository.findByUsername(username);
 
 
-        if(!user.isEmpty()){
-            Optional<RefreshToken> token = repositoryToken.findByUserId(user.get().getId());
-
+        if(user.isPresent()){
+            RefreshToken refreshToken = user.get().getRefreshToken();
             try {
-                return verifyException(token.get());
+                return verifyException(refreshToken);
             }
             catch (RuntimeException runtimeException){
-                RefreshToken refreshToken = RefreshToken.builder()
+                refreshToken = RefreshToken.builder()
                         .token(UUID.randomUUID().toString())
                         .expiryDate(Instant.now().plusMillis(6000000))
                         .user(user.get())

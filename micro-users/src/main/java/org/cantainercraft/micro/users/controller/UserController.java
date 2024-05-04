@@ -1,6 +1,8 @@
 package org.cantainercraft.micro.users.controller;
 
 import com.google.gson.Gson;
+import jakarta.servlet.http.HttpServletRequest;
+import jdk.jfr.Name;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.micro.utilits.exception.MessageError;
@@ -11,6 +13,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.cantainercraft.micro.users.dto.UserDTO;
 import org.cantainercraft.micro.users.dto.UserSearchDTO;
@@ -27,6 +31,7 @@ public class UserController {
     private final UserService userService;
 
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/id")
     public ResponseEntity<User> findById(@RequestBody Long id){
         Optional<User> user = userService.findById(id);
@@ -47,9 +52,10 @@ public class UserController {
         return ResponseEntity.ok(userService.findBySearch(email,password));
     }
 
+    @PreAuthorize("hasAnyRole('USER')")
     @PostMapping("/email")
     public ResponseEntity<User> findByEmail(@RequestBody String email){
-        if(email ==null || !email.trim().isEmpty()){
+        if(email ==null || email.trim().isEmpty()){
             throw  new NotValidateParamException("email is null");
         }
         Optional<User> user = userService.findByEmail(email);
@@ -59,6 +65,7 @@ public class UserController {
 
     }
 
+    @PreAuthorize("hasAnyRole('USER')")
     @PostMapping("/name")
     public ResponseEntity<User> findByName(@RequestBody String name){
         if(name ==null || !name.trim().isEmpty()){
@@ -74,7 +81,7 @@ public class UserController {
 
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_ADMIN_TEMP')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/all")
     public ResponseEntity<List<User>> findAll(){
         return ResponseEntity.ok(userService.findAll());
@@ -98,7 +105,7 @@ public class UserController {
                 .body(userService.save(userDTO));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','ADMIN_TEMP')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<String> update(@RequestBody UserDTO dto){
             if(dto.getId() == null){
@@ -113,7 +120,7 @@ public class UserController {
             return ResponseEntity.ok("user update");
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','ADMIN_TEMP')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/delete/email")
     public ResponseEntity<String> deleteByEmail(@RequestBody String email){
             Optional<User> user = userService.findByEmail(email);
@@ -124,7 +131,7 @@ public class UserController {
             return ResponseEntity.ok("delete user");
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','ADMIN_TEMP')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/delete/id")
     public ResponseEntity<String> deleteById(@RequestBody Long id ){
             Optional<User> user= userService.findById(id);
@@ -133,5 +140,11 @@ public class UserController {
 
             userService.deleteById(id);
             return ResponseEntity.ok("delete user");
+    }
+
+    @GetMapping("/j")
+    public String get(HttpServletRequest request){
+        UserDetails userDetails = (UserDetails)(((Authentication)request.getUserPrincipal()).getPrincipal());
+        return userDetails.getUsername();
     }
 }

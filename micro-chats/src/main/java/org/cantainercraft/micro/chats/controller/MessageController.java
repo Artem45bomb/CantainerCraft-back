@@ -45,6 +45,8 @@ public class MessageController {
             throw new NotResourceException("user is not exist");
         }
 
+        messageDTO.setDate(new Date());
+
         return ResponseEntity.ok(messageService.save(messageDTO));
     }
 
@@ -72,7 +74,7 @@ public class MessageController {
             return ResponseEntity.ok(messageService.update(messageDTO));
     }
 
-    @PostMapping
+    @PostMapping("/search")
     public ResponseEntity<List<Message>> findBySearch(@RequestBody MessageSearchDTO messageSearchDTO){
 
         UUID uuid = messageSearchDTO.getUuid() == null ? null :messageSearchDTO.getUuid();

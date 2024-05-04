@@ -22,8 +22,8 @@ public class AuthController {
     private final AuthServiceImpl authService;
 
     @PostMapping("/signup")
-    private JwtAuthResponse signup(@RequestBody @Valid SignUpAuthDTO authDTO){
-        return authService.signup(authDTO);
+    private JwtAuthResponse signup(@RequestBody @Valid SignUpAuthDTO authDTO,HttpServletResponse response){
+        return authService.signup(authDTO,response);
     }
 
     @PostMapping("/login")

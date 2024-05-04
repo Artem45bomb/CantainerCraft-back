@@ -25,6 +25,12 @@ public class Role implements Serializable {
 
     private String role;
 
+
+    public Role(Long id,String role){
+        this.role =role;
+        this.id = id;
+    }
+
     @JsonIgnore
     @ManyToMany(mappedBy = "roles",fetch = FetchType.LAZY)
     public List<User> users;
