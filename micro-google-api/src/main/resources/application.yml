@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: micro-google-api
+  config:
+    import: optional:configserver:http://localhost:8888/
+
+
+

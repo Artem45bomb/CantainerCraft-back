@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "duration.time.cookie",
+      "type": "java.lang.Long",
+      "description": "Description for duration.time.cookie."
+  },
+    {
+      "name": "duration.time.accessToken",
+      "type": "java.lang.Long",
+      "description": "Description for duration.time.cookie."
+    }
+
+] }
