@@ -45,10 +45,6 @@ public class User implements Serializable {
         this.password =password;
     }
 
-    @JsonIgnore
-    @OneToOne(mappedBy = "user")
-    private RefreshToken refreshToken;
-
     @Override
     public boolean equals(Object object) {
         if (this == object) return true;

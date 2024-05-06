@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.cantainercraft.micro.users.dto.CustomUserDetails;
+import org.cantainercraft.project.entity.Token;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -24,9 +25,6 @@ public class JwtService {
     @Value("${duration.time.accessToken}")
     private Long cookieTime;
 
-    public String extractRole(String token){
-        return extractAllClaims(token).get("role",String.class);
-    }
 
     public Date extractExpiry(String token){
         return extractClaim(token,Claims::getExpiration);
@@ -74,12 +72,10 @@ public class JwtService {
 
     }
 
-    public String GenerateToken(UserDetails userDetails){
+    public String GenerateToken(Token token){
         Map<String,Object> claims = new HashMap<>();
-        if(userDetails instanceof CustomUserDetails customUserDetails){
-            claims.put("username", customUserDetails.getUsername());
-        }
-        return createToken(claims,userDetails.getUsername());
+        claims.put("username",token.getUsername());
+        return createToken(claims,token.getUsername());
     }
 
     public Key getSignKey(){

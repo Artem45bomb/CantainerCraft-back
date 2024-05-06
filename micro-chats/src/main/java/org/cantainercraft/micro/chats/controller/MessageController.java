@@ -5,6 +5,9 @@ import org.cantainercraft.micro.chats.service.MessageService;
 import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.micro.utilits.exception.NotValidateParamException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.cantainercraft.micro.chats.dto.MessageDTO;
@@ -22,6 +25,7 @@ public class MessageController {
 
     private final MessageService messageService;
     private final UserFeignClient userFeignClient;
+    private final String COLUM_ID = "id";
 
     @PostMapping("/all")
     public ResponseEntity<List<Message>> findAll(){
@@ -89,14 +93,15 @@ public class MessageController {
     }
 
     @PostMapping("/search")
-    public ResponseEntity<List<Message>> findBySearch(@RequestBody MessageSearchDTO messageSearchDTO){
+    public ResponseEntity<Page<Message>> findBySearch(@RequestBody MessageSearchDTO messageSearchDTO){
 
         UUID uuid = messageSearchDTO.getUuid() == null ? null :messageSearchDTO.getUuid();
         String valueMessage = messageSearchDTO.getValue() == null ? null :messageSearchDTO.getValue();
         Long userId = messageSearchDTO.getUserId() == null ? null : messageSearchDTO.getUserId();
-        
-        Date dateStart = null;
-        Date dateEnd = null;
+        UUID chatId = messageSearchDTO.getChatId() == null ? null : messageSearchDTO.getChatId();
+
+        Date dateStart = messageSearchDTO.getDateStart()  == null? null: messageSearchDTO.getDateStart();
+        Date dateEnd = messageSearchDTO.getDateEnd() == null? null : messageSearchDTO.getDateEnd();
 
         if (messageSearchDTO.getDateEnd() != null) {
 
@@ -119,11 +124,20 @@ public class MessageController {
             calendarStart.set(Calendar.SECOND, 0);
             calendarStart.set(Calendar.MILLISECOND, 0);
 
-            dateEnd = calendarStart.getTime(); // записываем конечную дату с 23:59
+            dateStart = calendarStart.getTime(); // записываем конечную дату с 00:00
 
         }
-        
-        return ResponseEntity.ok(messageService.findBySearch(dateStart,dateEnd,valueMessage,uuid,userId));
+        String sortDirection = messageSearchDTO.getSortDirection() == null ? "" : messageSearchDTO.getSortDirection();
+        int pageNumber = messageSearchDTO.getPageNumber() == null ? 0 : messageSearchDTO.getPageNumber();
+        int pageSize =  messageSearchDTO.getPageSize() == null ? 1 : messageSearchDTO.getPageSize();
+        String sortColumn = messageSearchDTO.getSortColumn() == null? "id" :messageSearchDTO.getSortColumn();
+
+        Sort.Direction direction = sortDirection.isEmpty() || sortDirection.toUpperCase().equals("ASK") ?
+                Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(direction,sortColumn,COLUM_ID);
+        PageRequest pageRequest = PageRequest.of(pageNumber,pageSize,sort);
+
+        return ResponseEntity.ok(messageService.findBySearch(dateStart,dateEnd,valueMessage,uuid,userId,chatId,pageRequest));
 
     }
 }

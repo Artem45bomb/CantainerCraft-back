@@ -49,7 +49,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 }
             }
         }
-        System.out.println("token:"+token);
+
         if(token == null){
             filterChain.doFilter(request,response);
             return;
@@ -59,7 +59,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         if(username != null){
             UserDetails userDetails = userServiceDetails.loadUserByUsername(username);
+
+            userDetails.getAuthorities().stream().forEach(e -> System.out.println("AUTH:"+e.toString()));
+
             if(jwtService.isTokenValid(token,userDetails)){
+                System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                 try {
                     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                             userDetails.getUsername(),

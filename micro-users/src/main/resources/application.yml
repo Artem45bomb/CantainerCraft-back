@@ -12,5 +12,8 @@ server:
   port: 8080
 duration:
   time:
-    cookie: 900
-    accessToken: 900
+    cookie: 9000
+    accessToken: 9000
+time:
+  token:
+    refresh: 90080

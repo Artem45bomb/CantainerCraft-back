@@ -1,8 +1,11 @@
 package org.cantainercraft.micro.users.configuration;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.filters.CorsFilter;
+import org.cantainercraft.micro.users.configuration.filter.GetJwtTokenFilter;
 import org.cantainercraft.micro.users.configuration.filter.JwtAuthFilter;
 import org.cantainercraft.micro.users.service.impl.UserServiceDetailsImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -49,11 +52,17 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/account/**").permitAll()
                         .requestMatchers("/auth/**").permitAll()
-                        .anyRequest().authenticated())
+                        .anyRequest().authenticated()
+                )
 
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
+                .exceptionHandling(exceptionHandling -> {
+                    exceptionHandling.authenticationEntryPoint(((request, response, authException) -> {
+                        authException.printStackTrace();
+                    }));
+                })
                 .authenticationProvider(authenticationProvider())
-                . addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
@@ -69,7 +78,9 @@ public class SecurityConfig {
         return  authenticationProvider;
     }
 
+
     @Bean
+    @Autowired
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
             throws Exception {
         return config.getAuthenticationManager();

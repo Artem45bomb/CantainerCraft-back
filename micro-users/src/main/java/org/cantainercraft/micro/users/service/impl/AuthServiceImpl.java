@@ -5,10 +5,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.cantainercraft.micro.users.convertor.UserDTOConvertor;
 import org.cantainercraft.micro.users.dto.*;
+import org.cantainercraft.micro.users.factory.AccessTokenFactory;
 import org.cantainercraft.micro.users.service.AuthService;
 import org.cantainercraft.micro.users.service.UserService;
-import org.cantainercraft.micro.utilits.exception.NotResourceException;
-import org.cantainercraft.project.entity.RefreshToken;
+import org.cantainercraft.project.entity.Token;
 import org.cantainercraft.project.entity.Role;
 import org.cantainercraft.project.entity.User;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,14 +17,10 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +29,7 @@ import java.util.Optional;
 @Slf4j
 public class AuthServiceImpl implements AuthService {
 
-    private final JwtService jwtService;
+    private final AccessTokenFactory accessTokenFactory;
     private final UserService userService;
     private final UserDTOConvertor convertor;
     private final PasswordEncoder passwordEncoder;
@@ -51,9 +47,12 @@ public class AuthServiceImpl implements AuthService {
                     .email(signUpAuthDTO.getEmail())
                     .password(passwordEncoder.encode(signUpAuthDTO.getPassword()))
                     .build();
+            var authentication = new UsernamePasswordAuthenticationToken(signUpAuthDTO.getUsername()
+                    ,signUpAuthDTO.getPassword());
+
             userService.save(convertor.convertUserToUserDTO(user));
-            RefreshToken refreshToken = refreshService.createRefreshToken(signUpAuthDTO.getUsername());
-            String accessToken = jwtService.GenerateToken(new CustomUserDetails(user));
+            Token token = refreshService.createRefreshToken(authentication);
+            String accessToken = accessTokenFactory.apply(token);
 
             ResponseCookie cookie = ResponseCookie.from("accessToken")
                     .value(accessToken)
@@ -65,20 +64,19 @@ public class AuthServiceImpl implements AuthService {
 
             return  JwtAuthResponse.builder()
                     .accessToken(accessToken)
-                    .token(refreshToken.getToken())
+                    .token(token.getToken())
                     .build();
     }
 
    public JwtAuthResponse login(SignInAuthDTO signInAuthDTO, HttpServletResponse response){
-       Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+       var authenticationToken  = new UsernamePasswordAuthenticationToken(
                signInAuthDTO.getUsername(),
                signInAuthDTO.getPassword()
-       ));
+       );
+       var authentication = authenticationManager.authenticate(authenticationToken);
        if(authentication.isAuthenticated()){
-           RefreshToken refreshToken = refreshService.createRefreshToken(signInAuthDTO.getUsername());
-           Optional<User> user = userService.findByUsername(signInAuthDTO.getUsername());
-           var customUserDetails =new CustomUserDetails(user.get());
-           String accessToken = jwtService.GenerateToken(customUserDetails);
+           Token token = refreshService.createRefreshToken(authenticationToken);
+           String accessToken = accessTokenFactory.apply(token);
 
            ResponseCookie responseCookie = ResponseCookie.from("accessToken")
                    .value(accessToken)
@@ -89,7 +87,7 @@ public class AuthServiceImpl implements AuthService {
                    .build();
            response.addHeader(HttpHeaders.SET_COOKIE,responseCookie.toString());
            return JwtAuthResponse.builder()
-                   .token(refreshToken.getToken())
+                   .token(token.getToken())
                    .accessToken(accessToken)
                    .build();
        }

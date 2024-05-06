@@ -2,7 +2,8 @@ package org.cantainercraft.micro.chats.service;
 
 import org.cantainercraft.micro.chats.dto.MessageDTO;
 import org.cantainercraft.project.entity.chats.Message;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -19,5 +20,5 @@ public interface MessageService {
 
     Optional<Message> findByUUID(UUID uuid);
 
-    List<Message> findBySearch(Date dateStart, Date dateEnd, String value, UUID uuid, Long userId);
+    Page<Message> findBySearch(Date dateStart, Date dateEnd, String value, UUID uuid, Long userId, UUID chatId, Pageable pageable);
 }
