@@ -1,54 +1,48 @@
-package org.cantainercraft.micro.users.configuration.filter;
+package org.cantainercraft.micro.chats.configuration.filter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.cantainercraft.micro.users.service.impl.JwtService;
-import org.cantainercraft.micro.users.service.impl.UserServiceDetailsImpl;
+import org.cantainercraft.micro.chats.dto.CustomUserDetails;
+import org.cantainercraft.micro.chats.service.impl.JwtService;
+import org.cantainercraft.micro.chats.webflux.UserWebClient;
+import org.cantainercraft.micro.utilits.service.JwtServiceBase;
+import org.cantainercraft.micro.utilits.service.impl.JwtBaseServiceImpl;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import java.io.IOException;
-import java.net.http.HttpHeaders;
 
+import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
-@Slf4j
 public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
-    private final UserServiceDetailsImpl userServiceDetails;
-
+    private final UserDetailsService userDetailsService;
     @Override
-    protected void doFilterInternal(
-            @NonNull HttpServletRequest request,
-            @NonNull HttpServletResponse response,
-            @NonNull FilterChain filterChain
-    ) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
+        String token = null;
+        String username = null;
 
-        // Получаем токен из заголовка
-        String username=null;
-        String token =null;
-        String url = request.getRequestURI();
-
-        if(request.getCookies() != null && !url.equals("/auth/login") ){
+        if(request.getCookies() != null){
             for(Cookie cookie : request.getCookies()){
-                if(cookie.getName().equals("accessToken")){
+                if(cookie.getName().equals("accessToken"))
+                {
                     token = cookie.getValue();
                 }
             }
         }
+
 
         if(token == null){
             filterChain.doFilter(request,response);
@@ -58,7 +52,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         username = jwtService.extractUsername(token);
 
         if(username != null){
-            UserDetails userDetails = userServiceDetails.loadUserByUsername(username);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
             if(jwtService.isTokenValid(token,userDetails)){
                 try {
@@ -77,6 +71,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
             }
         }
+
         filterChain.doFilter(request,response);
     }
 }

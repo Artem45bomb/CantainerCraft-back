@@ -1,19 +1,15 @@
 package org.cantainercraft.micro.users.controller;
 
-import com.google.gson.Gson;
-import jakarta.servlet.http.HttpServletRequest;
-import jdk.jfr.Name;
 import lombok.RequiredArgsConstructor;
+import org.cantainercraft.micro.users.dto.CustomUserDetails;
 import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.micro.utilits.exception.MessageError;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.micro.utilits.exception.NotValidateParamException;
-import org.modelmapper.ValidationException;
-import org.springframework.http.HttpHeaders;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.cantainercraft.micro.users.dto.UserDTO;
@@ -27,7 +23,9 @@ import java.util.*;
 @RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
-    private final Gson gson = new Gson();
+
+    @Value("${service.key}")
+    private String serviceKey;
     private final UserService userService;
 
 
@@ -142,9 +140,29 @@ public class UserController {
             return ResponseEntity.ok("delete user");
     }
 
-    @GetMapping("/j")
-    public String get(HttpServletRequest request){
-        UserDetails userDetails = (UserDetails)(((Authentication)request.getUserPrincipal()).getPrincipal());
-        return userDetails.getUsername();
+    @PostMapping("/exist/id")
+    public ResponseEntity<Boolean> existById(@RequestHeader("micro-service-key") String header,
+                                                     @RequestBody Long id){
+        if(!serviceKey.equals(header))
+            return new ResponseEntity(new MessageError("not access"),HttpStatus.FORBIDDEN);
+
+        return ResponseEntity
+                .ok(userService.existById(id));
+    }
+
+
+    @PostMapping("/loadedUser")
+    public ResponseEntity<User> loadedUser(@RequestHeader("micro-service-key") String header,
+                                                  @RequestBody String username){
+        if(!serviceKey.equals(header))
+            return new ResponseEntity(new MessageError("not access"),HttpStatus.FORBIDDEN);
+
+        Optional<User> user = userService.findByUsername(username);
+
+        if(user.isPresent()){
+            return ResponseEntity.ok(user.get());
+        }
+        else
+            return new ResponseEntity(new MessageError("not access"),HttpStatus.FORBIDDEN);
     }
 }

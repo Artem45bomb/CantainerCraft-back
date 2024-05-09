@@ -1,12 +1,14 @@
 spring:
   application:
-    name: 'micro-data'
+    name: 'micro-chats'
   config:
-    import: optional:configserver:http://localhost:8888/
+    import: configserver:http://localhost:8888/
   profiles:
     active: dev
-
-server:
-  port: 8080
   error:
     include-message: always
+logging:
+  level:
+    org.springframework.security: trace
+service:
+  key: Uieiej6895op

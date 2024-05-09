@@ -2,8 +2,10 @@ package org.cantainercraft.micro.chats.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.service.UserChatService;
+import org.cantainercraft.micro.chats.webflux.UserWebClient;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.cantainercraft.micro.chats.dto.UserChatDTO;
 import org.cantainercraft.micro.chats.dto.UserChatSearchDTO;
@@ -17,16 +19,17 @@ import java.util.*;
 @RequiredArgsConstructor
 class UserChatController {
     //UserFeignClient для взаимодействия с micro-users
-    private final UserFeignClient userFeignClient;
+    private final UserWebClient userWebClient;
     private final UserChatService userChatService;
 
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/all")
     public ResponseEntity<List<User_Chat>> findAll(){
         return ResponseEntity.ok(userChatService.findAll());
     }
 
-
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/id")
     public ResponseEntity<User_Chat> findById(@RequestBody Long id){
         Optional<User_Chat> chat = userChatService.findById(id);
@@ -37,6 +40,7 @@ class UserChatController {
         return ResponseEntity.ok(chat.get());
     }
 
+    @PreAuthorize("hasAnyRole('USER,ADMIN')")
     @PostMapping("/search")
     public ResponseEntity<List<User_Chat>> findBySearch(@RequestBody UserChatSearchDTO dto){
 
@@ -46,7 +50,7 @@ class UserChatController {
         return ResponseEntity.ok(userChatService.findBySearch(id,userId,chatId));
     }
 
-
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/delete")
     public ResponseEntity<Boolean> delete(@RequestBody Long id){
             Optional<User_Chat> userChat= userChatService.findById(id);
@@ -59,6 +63,7 @@ class UserChatController {
             return ResponseEntity.ok(true);
     }
 
+    @PreAuthorize("hasAnyRole('CHAT_ADMIN,ADMIN')")
     @PutMapping("/delete/user")
     public ResponseEntity<Integer> delete(@RequestBody UserChatDTO dto){
             List<User_Chat> user_chats = userChatService.findBySearch(null, dto.getUserId(),dto.getChat().getUuid());
@@ -70,16 +75,20 @@ class UserChatController {
             return ResponseEntity.ok(userChatService.deleteByUserId(dto.getUserId(),dto.getChat().getUuid()));
     }
 
+    @PreAuthorize("hasAnyRole('CHAT_ADMIN,ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<User_Chat> save(@RequestBody UserChatDTO userChatDTO){
+        System.out.println("add user:"+userChatDTO.getUserId());
 
-        if(userFeignClient.userExist(userChatDTO.getUserId()).getBody() == null){
+        System.out.println(userWebClient.userExist(userChatDTO.getUserId()));
+        if(userWebClient.userExist(userChatDTO.getUserId()) == false){
             throw new NotResourceException("user is not exist");
         }
 
         return ResponseEntity.ok(userChatService.save(userChatDTO));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<User_Chat> update(@RequestBody UserChatDTO userChatDTO){
         Optional<User_Chat> userChat= userChatService.findById(userChatDTO.getId());
@@ -87,7 +96,7 @@ class UserChatController {
             throw new NotResourceException("No content for update");
         }
 
-        if(userFeignClient.userExist(userChatDTO.getUserId()).getBody() == null){
+        if(userWebClient.userExist(userChatDTO.getUserId()) == null){
             throw new NotResourceException("user is not exist");
         }
 

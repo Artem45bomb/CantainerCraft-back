@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.cantainercraft.micro.chats.dto.MessageDTO;
 import org.cantainercraft.micro.chats.dto.MessageSearchDTO;
@@ -27,12 +28,14 @@ public class MessageController {
     private final UserFeignClient userFeignClient;
     private final String COLUM_ID = "id";
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/all")
     public ResponseEntity<List<Message>> findAll(){
         return ResponseEntity.ok(messageService.findAll());
     }
 
 
+    @PreAuthorize("hasAnyRole('USER,ADMIN')")
     @PostMapping("/uuid")
     public ResponseEntity<Message> findByUUID(@RequestBody UUID uuid){
         Optional<Message> message = messageService.findByUUID(uuid);
@@ -43,7 +46,7 @@ public class MessageController {
         return ResponseEntity.ok(message.get());
     }
 
-
+    @PreAuthorize("hasAnyRole('USER,ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<Message> save(@RequestBody MessageDTO messageDTO) {
 
@@ -64,6 +67,7 @@ public class MessageController {
         return ResponseEntity.ok(messageService.save(messageDTO));
     }
 
+    @PreAuthorize("hasAnyRole('USER,ADMIN')")
     @PutMapping("/delete")
     public ResponseEntity<Boolean> delete(@RequestBody UUID uuid){
             Optional<Message> message = messageService.findByUUID(uuid);
@@ -75,7 +79,7 @@ public class MessageController {
             return ResponseEntity.ok(messageService.delete(uuid));
     }
 
-
+    @PreAuthorize("hasAnyRole('USER,ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<Message> update(@RequestBody MessageDTO messageDTO) {
             Optional<Message> message = messageService.findByUUID(messageDTO.getUuid());
@@ -92,6 +96,7 @@ public class MessageController {
 
     }
 
+    @PreAuthorize("hasAnyRole('USER,ADMIN')")
     @PostMapping("/search")
     public ResponseEntity<Page<Message>> findBySearch(@RequestBody MessageSearchDTO messageSearchDTO){
 

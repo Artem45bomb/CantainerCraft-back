@@ -1,5 +1,6 @@
 package org.cantainercraft.micro.users;
 
+import org.cantainercraft.micro.users.service.impl.JwtService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,7 +17,6 @@ public class EurekaClientApplication {
 
 
     public static void main(String[] args) {
-
         SpringApplication.run(EurekaClientApplication.class, args);
     }
 

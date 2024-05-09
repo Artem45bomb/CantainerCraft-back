@@ -18,6 +18,7 @@ import org.cantainercraft.project.entity.chats.Chat;
 import org.cantainercraft.project.entity.chats.User_Chat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -33,12 +34,14 @@ public class ChatController {
     private final UserChatService userChatService;
 
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/all")
     public ResponseEntity<List<Chat>> findAll(){
         return ResponseEntity.ok(chatService.findAll());
     }
 
 
+    @PreAuthorize("hasAnyRole('USER,ADMIN')")
     @PostMapping("/uuid")
     public ResponseEntity<Chat> findByUUID(@RequestBody UUID uuid){
         Optional<Chat> chat = chatService.findByUUID(uuid);
@@ -50,6 +53,7 @@ public class ChatController {
         return ResponseEntity.ok(chat.get());
     }
 
+    @PreAuthorize("hasAnyRole('USER,ADMIN')")
     @PostMapping("/name")
     public ResponseEntity<Chat> findByName(@RequestBody String name){
         Optional<Chat> chat = chatService.findByName(name);
@@ -60,6 +64,7 @@ public class ChatController {
         return ResponseEntity.ok(chat.get());
     }
 
+    @PreAuthorize("hasAnyRole('CHAT_ADMIN,ADMIN')")
     @PutMapping("/delete")
     public ResponseEntity<Boolean> delete(@RequestBody UUID uuid){
         Optional<Chat> chat = chatService.findByUUID(uuid);
@@ -69,6 +74,7 @@ public class ChatController {
             return ResponseEntity.ok(chatService.delete(uuid));
     }
 
+    @PreAuthorize("hasAnyRole('USER,ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<Chat> save(@RequestBody ChatDTO chatDTO){
         Optional<Chat> chat = chatService.findByName(chatDTO.getName());
@@ -82,6 +88,7 @@ public class ChatController {
         return ResponseEntity.ok(chatService.save(chatDTO));
     }
 
+    @PreAuthorize("hasAnyRole('CHAT_ADMIN,ADMIN')")
     @PutMapping("/delete/name")
     public ResponseEntity<Boolean> delete(@RequestBody String name){
         Optional<Chat> chat = chatService.findByName(name);
@@ -94,6 +101,7 @@ public class ChatController {
         return ResponseEntity.ok(chatService.deleteByName(name));
     }
 
+    @PreAuthorize("hasAnyRole('CHAT_ADMIN,ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<Boolean> update(@RequestBody ChatUpdateDTO chatUpdateDTO){
         Optional<Chat> chat = chatService.findByUUID(chatUpdateDTO.getUuid());
@@ -108,6 +116,7 @@ public class ChatController {
     }
 
 
+    @PreAuthorize("hasAnyRole('USER,ADMIN')")
     @PostMapping("/search")
     public ResponseEntity<List<Chat>> findBySearch(@RequestBody ChatSearchDTO chatSearchDTO){
 
@@ -147,6 +156,7 @@ public class ChatController {
     }
 
     //ищет пользователей по userId через userChatService так как все пользователи хранятся в user_chat
+    @PreAuthorize("hasAnyRole('CHAT_USER,ADMIN')")
     @PostMapping("/user/search")
     public ResponseEntity<List<Chat>> search(@RequestBody Long userId){
 
