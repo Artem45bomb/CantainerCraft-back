@@ -1,5 +1,8 @@
 package org.cantainercraft.micro.chats.repository;
 
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,11 +20,14 @@ public interface MessageRepository extends JpaRepository<Message, UUID> {
     @Query("select message from  Message message where( lower(message.value) like lower(concat('%',:value,'%')) or :value is null or :value = '') and" +
             "(message.uuid = :uuid or :uuid is null) and" +
             "(cast(:dateStart as timestamp ) is null or message.date>=:dateStart ) and" +
-            "(cast(:dateEnd as timestamp ) is null or  message.date <=:dateEnd)"+
-            "and (:userId is null or message.userId=:userId) ")
-    List<Message> findBySearch(@Param("dateStart") Date dateStart,
+            "(cast(:dateEnd as timestamp ) is null or  message.date <=:dateEnd) and"+
+            "(:chatId is null or message.chat.uuid =:chatId) and"+
+            "(:userId is null or message.userId=:userId) ")
+    Page<Message> findBySearch(@Param("dateStart") Date dateStart,
                                @Param("dateEnd") Date dateEnd,
                                @Param("value")String value,
                                @Param("uuid") UUID uuid,
-                               @Param("userId") Long userId);
+                               @Param("userId") Long userId,
+                               @Param("chatId") UUID chatId,
+                               Pageable pageable);
 }

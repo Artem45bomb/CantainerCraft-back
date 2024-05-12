@@ -28,7 +28,7 @@ public class User_Chat implements Serializable {
     private Long userId;
 
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "chat_id",referencedColumnName = "uuid")
     private Chat chat;
 }

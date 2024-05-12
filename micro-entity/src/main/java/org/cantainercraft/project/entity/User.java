@@ -27,6 +27,7 @@ public class User implements Serializable {
     @Column(name = "username",unique = true,nullable = false)
     private String username;
 
+    @JsonIgnore
     @Column(name = "password",nullable = false)
     private String password;
 
@@ -44,10 +45,6 @@ public class User implements Serializable {
         this.username = name;
         this.password =password;
     }
-
-    @JsonIgnore
-    @OneToOne(mappedBy = "user")
-    private RefreshToken refreshToken;
 
     @Override
     public boolean equals(Object object) {

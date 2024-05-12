@@ -5,6 +5,18 @@ spring:
     active: dev
   config:
     import: optional:configserver:http://localhost:8888/
+  rabbitmq:
+    port: 5672
+    username: guest
+    password: guest
+  cloud:
+    function:
+      definition: testUserGet
+    stream:
+      bindings:
+        testUserGet-in-0:
+          destination: micro-dest
+          group: micro-group
 token:
   signing:
     key: 53A73E5F1C4E0A2D3B5F2D784E6A1B423D6F247D1F6E5C3A596D635A75327855
@@ -12,5 +24,8 @@ server:
   port: 8080
 duration:
   time:
-    cookie: 900
-    accessToken: 900
+    cookie: 9000
+    accessToken: 9000
+time:
+  token:
+    refresh: 90080

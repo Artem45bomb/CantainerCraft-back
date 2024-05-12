@@ -15,16 +15,19 @@ import java.time.Instant;
 @Builder
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
-public class RefreshToken {
+public class Token {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String token;
 
+    private String username;
+
+    private String password;
+
+    private Instant issuerDate;
+
     private Instant expiryDate;
 
-    @OneToOne
-    @JoinColumn(name = "user_id",referencedColumnName = "id")
-    private User user;
 }

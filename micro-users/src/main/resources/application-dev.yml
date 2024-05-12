@@ -12,3 +12,5 @@ logging:
     org:
       springframework:
         security: TRACE
+service:
+  key: Uieiej6895op

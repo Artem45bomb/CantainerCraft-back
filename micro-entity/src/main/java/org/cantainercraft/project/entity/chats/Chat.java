@@ -1,5 +1,6 @@
 package org.cantainercraft.project.entity.chats;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -47,7 +48,8 @@ public class Chat implements Serializable {
     @OneToMany(mappedBy = "chat",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private List<User_Chat> users;
 
-    @OneToMany(mappedBy = "chat",fetch = FetchType.EAGER)
+    @JsonIgnore
+    @OneToMany(mappedBy = "chat",fetch = FetchType.LAZY)
     private List<Message> messages;
 }
 

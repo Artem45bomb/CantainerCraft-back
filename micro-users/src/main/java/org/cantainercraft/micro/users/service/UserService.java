@@ -1,5 +1,6 @@
 package org.cantainercraft.micro.users.service;
 
+import org.cantainercraft.micro.users.dto.ServiceUserDTO;
 import org.cantainercraft.micro.users.dto.UserDTO;
 import org.cantainercraft.project.entity.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -29,6 +30,8 @@ public interface UserService {
 
      boolean existByUsername(String username);
 
-     boolean existByEmail(String email);
+     boolean existById(Long id);
+
+     Optional<User> findByUsernameAndPassword(ServiceUserDTO dto);
 
 }

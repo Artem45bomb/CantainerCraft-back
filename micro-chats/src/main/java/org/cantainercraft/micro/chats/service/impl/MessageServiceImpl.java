@@ -4,10 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.convertor.MessageDTOConvertor;
 import org.cantainercraft.micro.chats.repository.MessageRepository;
 import org.cantainercraft.micro.chats.service.MessageService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.cantainercraft.micro.chats.dto.MessageDTO;
 import org.cantainercraft.project.entity.chats.Message;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -42,7 +43,7 @@ public class MessageServiceImpl implements MessageService {
         return messageRepository.findById(uuid);
     }
 
-    public List<Message> findBySearch(Date dateStart, Date dateEnd, String value, UUID uuid, Long userId){
-        return messageRepository.findBySearch(dateStart,dateEnd,value,uuid,userId);
+    public Page<Message> findBySearch(Date dateStart, Date dateEnd, String value, UUID uuid, Long userId, UUID chatId, Pageable pageable){
+        return messageRepository.findBySearch(dateStart,dateEnd,value,uuid,userId,chatId,pageable);
     }
 }

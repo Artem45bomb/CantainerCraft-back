@@ -1,12 +1,26 @@
 spring:
   application:
-    name: 'micro-data'
+    name: 'micro-chats'
   config:
-    import: optional:configserver:http://localhost:8888/
+    import: configserver:http://localhost:8888/
   profiles:
     active: dev
-
-server:
-  port: 8080
   error:
     include-message: always
+  rabbitmq:
+    port: 5672
+    username: guest
+    password: guest
+  cloud:
+    function:
+      definition: testUserGet
+    stream:
+      bindings:
+        testUserGet-out-0:
+          destination: micro-dest
+          group: micro-group
+logging:
+  level:
+    org.springframework.security: trace
+service:
+  key: Uieiej6895op

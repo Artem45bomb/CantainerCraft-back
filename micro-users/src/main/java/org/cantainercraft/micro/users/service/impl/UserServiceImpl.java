@@ -3,6 +3,7 @@ package org.cantainercraft.micro.users.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.users.convertor.UserDTOConvertor;
 import org.cantainercraft.micro.users.dto.CustomUserDetails;
+import org.cantainercraft.micro.users.dto.ServiceUserDTO;
 import org.cantainercraft.micro.users.service.InitService;
 import org.cantainercraft.micro.users.service.UserService;
 import org.cantainercraft.micro.utilits.exception.ExistResourceException;
@@ -56,6 +57,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Optional<User> findByUsernameAndPassword(ServiceUserDTO dto){
+        return userRepository.findByUsernameAndPassword(dto.getUsername(), dto.getUsername());
+    }
+
+    @Override
     public Optional<User> findByEmail(String email){
         return userRepository.findByEmail(email);
     }
@@ -88,8 +94,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean existByEmail(String email){
-        return userRepository.existsByEmail(email);
+    public boolean existById(Long id){
+        return userRepository.existsById(id);
     }
 
 

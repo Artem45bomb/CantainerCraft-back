@@ -14,8 +14,16 @@ import java.util.UUID;
 @NoArgsConstructor
 public class MessageSearchDTO {
     private UUID uuid;
+    private Long userId;
+    private UUID chatId;
+
     private Date dateStart;
     private Date dateEnd;
     private String value;
-    private Long userId;
+
+    private Integer pageNumber;
+    private Integer pageSize;
+    private String sortDirection;
+    private String sortColumn;
+
 }

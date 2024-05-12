@@ -1,4 +1,8 @@
 spring:
+  r2dbc:
+    username: postgres
+    password: postgres
+    url: jdbc:postgresql://localhost:5555/micro_chats
   datasource:
     username: postgres
     password: postgres

@@ -1,66 +1,55 @@
 package org.cantainercraft.micro.users.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.cantainercraft.micro.users.repository.RefreshTokenRepository;
-import org.cantainercraft.micro.users.repository.UserRepository;
+import org.cantainercraft.micro.users.repository.TokenRepository;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
-import org.cantainercraft.project.entity.RefreshToken;
-import org.cantainercraft.project.entity.User;
+import org.cantainercraft.project.entity.Token;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.Optional;
-import java.util.UUID;
+import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
 public class RefreshTokenService {
-    private final RefreshTokenRepository repositoryToken;
-    private final UserRepository userRepository;
+    private final TokenRepository tokenRepository;
+    private final Function<Authentication,Token> tokenFactory;
 
-
-    public void deleteToken(Long userId){
-        Optional<RefreshToken> refreshToken  = repositoryToken.findById(userId);
+    public void deleteToken(Integer id){
+        var refreshToken = tokenRepository.findById(id);
 
         if(refreshToken.isEmpty()){
             throw new NotResourceException("token is not exist");
         }
 
-        repositoryToken.deleteById(userId);
+        tokenRepository.deleteById(refreshToken.get().getId());
     }
 
-    public RefreshToken createRefreshToken(String username){
-        Optional<User> user = userRepository.findByUsername(username);
-
-
-        if(user.isPresent()){
-            RefreshToken refreshToken = user.get().getRefreshToken();
-            try {
-                return verifyException(refreshToken);
+    public Token createRefreshToken(Authentication authentication){
+            Optional<Token> optionalToken = findByToken(authentication);
+            System.out.println((String)authentication.getName()+":"+(String)authentication.getCredentials());
+            if(optionalToken.isPresent()){
+                return verifyException(optionalToken.get());
             }
-            catch (RuntimeException runtimeException){
-                refreshToken = RefreshToken.builder()
-                        .token(UUID.randomUUID().toString())
-                        .expiryDate(Instant.now().plusMillis(6000000))
-                        .user(user.get())
-                        .build();
-                return repositoryToken.save(refreshToken);
+            else {
+                Token token = tokenFactory.apply(authentication);
+                return tokenRepository.save(token);
             }
-        }else {
-            throw new NotResourceException("user is not exist");
-        }
     }
 
-    public Optional<RefreshToken> findByToken(String token){
-        return repositoryToken.findByToken(token);
+    public Optional<Token> findByToken(Authentication authentication){
+        String password = (String)authentication.getCredentials();
+        return tokenRepository.findByUsernameAndPassword(authentication.getName(),password);
     }
 
-    public RefreshToken verifyException(RefreshToken refreshToken){
-        if(refreshToken.getExpiryDate().compareTo(Instant.now()) < 0){
-            repositoryToken.delete(refreshToken);
-            throw new RuntimeException(refreshToken.getToken() + " Refresh token is expired. Please make a new login..!");
+    public Token verifyException(Token token){
+        if(token.getExpiryDate().compareTo(Instant.now()) < 0){
+            deleteToken(token.getId());
+            throw new RuntimeException(token.getToken() + " Refresh token is expired. Please make a new login..!");
         }
-        return refreshToken;
+        return token;
     }
 
 

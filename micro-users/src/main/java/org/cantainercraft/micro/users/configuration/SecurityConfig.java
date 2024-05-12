@@ -2,15 +2,15 @@ package org.cantainercraft.micro.users.configuration;
 
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.users.configuration.filter.JwtAuthFilter;
+import org.cantainercraft.micro.users.configuration.filter.ServiceAuthFilter;
 import org.cantainercraft.micro.users.service.impl.UserServiceDetailsImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -31,6 +31,7 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final JwtAuthFilter jwtAuthenticationFilter;
+    private final ServiceAuthFilter serviceAuthFilter;
     private final UserServiceDetailsImpl userServiceDetails;
 
     @Bean
@@ -48,12 +49,20 @@ public class SecurityConfig {
                 // Настройка доступа к конечным точкам
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/account/**").permitAll()
+                        .requestMatchers("/user/loadedUser").permitAll()
                         .requestMatchers("/auth/**").permitAll()
-                        .anyRequest().authenticated())
+                        .anyRequest().authenticated()
+                )
 
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
+                .exceptionHandling(exceptionHandling -> {
+                    exceptionHandling.authenticationEntryPoint(((request, response, authException) -> {
+                        authException.printStackTrace();
+                    }));
+                })
                 .authenticationProvider(authenticationProvider())
-                . addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(serviceAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
@@ -69,7 +78,9 @@ public class SecurityConfig {
         return  authenticationProvider;
     }
 
+
     @Bean
+    @Autowired
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
             throws Exception {
         return config.getAuthenticationManager();

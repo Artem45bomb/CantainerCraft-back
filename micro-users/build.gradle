@@ -38,6 +38,10 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
     annotationProcessor 'org.projectlombok:lombok'
 
+
+    //rabbit
+    implementation 'org.springframework.cloud:spring-cloud-stream-binder-rabbit:4.1.1'
+
     //utility
     implementation 'org.cantainercraft.micro.utilits:micro-utility'
 
@@ -49,8 +53,8 @@ dependencies {
     //jwt & auth
     implementation 'io.jsonwebtoken:jjwt-api:0.12.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.5'
-    implementation 'org.springframework.boot:spring-boot-starter-security:3.2.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.5'
+    implementation 'org.springframework.boot:spring-boot-starter-security:3.2.5'
 
 }
 
