@@ -48,7 +48,7 @@ dependencies {
     implementation 'org.cantainercraft.micro.utilits:micro-utility'
 
     //reactive
-    implementation 'org.postgresql:r2dbc-postgresql:1.0.5.RELEASE'
+    //implementation 'org.postgresql:r2dbc-postgresql:1.0.5.RELEASE'
 
 }
 

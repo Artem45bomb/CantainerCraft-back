@@ -53,7 +53,7 @@ public class ChatController {
         return ResponseEntity.ok(chat.get());
     }
 
-    @PreAuthorize("hasAnyRole('USER,ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/name")
     public ResponseEntity<Chat> findByName(@RequestBody String name){
         Optional<Chat> chat = chatService.findByName(name);
