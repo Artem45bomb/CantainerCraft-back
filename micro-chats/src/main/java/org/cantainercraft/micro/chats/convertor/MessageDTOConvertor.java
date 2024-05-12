@@ -11,7 +11,6 @@ import org.cantainercraft.project.entity.chats.Message;
 @Component
 @RequiredArgsConstructor
 public class MessageDTOConvertor {
-    @Autowired
     private final ModelMapper modelMapper;
 
     public MessageDTO convertMessageToMessageDTO(Message message){

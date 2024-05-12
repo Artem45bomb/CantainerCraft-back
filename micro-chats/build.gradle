@@ -26,6 +26,9 @@ ext {
 }
 
 dependencies {
+    //rabbit
+    implementation 'org.springframework.cloud:spring-cloud-stream-binder-rabbit:4.1.1'
+
     implementation 'org.springframework.boot:spring-boot-starter-security:3.2.5'
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'org.springframework.boot:spring-boot-starter-webflux:3.2.5'
@@ -43,6 +46,10 @@ dependencies {
 
     //utility
     implementation 'org.cantainercraft.micro.utilits:micro-utility'
+
+    //reactive
+    implementation 'org.postgresql:r2dbc-postgresql:1.0.5.RELEASE'
+
 }
 
 dependencyManagement {

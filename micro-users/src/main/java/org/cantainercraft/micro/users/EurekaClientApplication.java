@@ -1,6 +1,7 @@
 package org.cantainercraft.micro.users;
 
 import org.cantainercraft.micro.users.service.impl.JwtService;
+import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,6 +13,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication(scanBasePackages = "org.cantainercraft.micro.users")
 @EnableDiscoveryClient
 @EnableCaching
+@EnableRabbit
 @EntityScan("org.cantainercraft.project.entity")
 public class EurekaClientApplication {
 

@@ -7,6 +7,18 @@ spring:
     active: dev
   error:
     include-message: always
+  rabbitmq:
+    port: 5672
+    username: guest
+    password: guest
+  cloud:
+    function:
+      definition: testUserGet
+    stream:
+      bindings:
+        testUserGet-out-0:
+          destination: micro-dest
+          group: micro-group
 logging:
   level:
     org.springframework.security: trace
