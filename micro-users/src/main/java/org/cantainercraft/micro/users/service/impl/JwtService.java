@@ -9,7 +9,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/*
+    JwtService used to work with a token;
+     implements the basic interface JwtServiceBase
+*/
 @Component
 public class JwtService extends JwtBaseServiceImpl {
     public JwtService(@Value("${token.signing.key}") String SECRET_KEY,

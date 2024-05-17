@@ -48,20 +48,17 @@ public class SecurityConfig {
                 }))
                 // Настройка доступа к конечным точкам
                 .authorizeHttpRequests(request -> request
+                        //permitAll - this path is available even if the user is not authorized
                         .requestMatchers("/account/**").permitAll()
-                        .requestMatchers("/user/loadedUser").permitAll()
                         .requestMatchers("/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
-
+                //disable login sessions
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
-                .exceptionHandling(exceptionHandling -> {
-                    exceptionHandling.authenticationEntryPoint(((request, response, authException) -> {
-                        authException.printStackTrace();
-                    }));
-                })
                 .authenticationProvider(authenticationProvider())
+                //the service checks for the presence of a server key in the header to grant admin rights
                 .addFilterBefore(serviceAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                //checking that a registered user is contacting us
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }

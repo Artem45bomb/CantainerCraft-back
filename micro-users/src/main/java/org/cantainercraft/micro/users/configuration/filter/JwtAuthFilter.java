@@ -58,6 +58,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         username = jwtService.extractUsername(token);
 
         if(username != null){
+            //getting the user from the database
             UserDetails userDetails = userServiceDetails.loadUserByUsername(username);
 
             if(jwtService.isTokenValid(token,userDetails)){
@@ -69,6 +70,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
                     );
                     authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                    //before checking the presence of a user in the context in UsernamePasswordAuthenticationFilter, we add it
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 }
                 catch (AuthenticationException exception){

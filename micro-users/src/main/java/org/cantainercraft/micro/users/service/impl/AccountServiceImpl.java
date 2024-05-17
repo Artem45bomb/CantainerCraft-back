@@ -21,6 +21,9 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 import java.util.function.Function;
 
+/*
+    updates user account information
+*/
 @Service
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
@@ -34,16 +37,22 @@ public class AccountServiceImpl implements AccountService {
     private Long cookieTime;
     public JwtAuthResponse update(UserDTO userDTO, HttpServletResponse response){
         Optional<User> user = userRepository.findByUsername(userDTO.getUsername());
+
+        //create an authentication token
         var authentication = new UsernamePasswordAuthenticationToken(userDTO.getUsername(),userDTO.getPassword());
 
         if(user.isEmpty()){
             throw new NotResourceException("user is not exist");
         }
 
+        //create jwt tokens
         Token token = refreshService.createRefreshToken(authentication);
         String accessToken =  accessTokenFactory.apply(token);
+
+        //update user account
         userRepository.save(convertor.convertUserDTOToUser(userDTO));
 
+        //add accessToken to cookies so that the user has access to services
         ResponseCookie cookie = ResponseCookie.from("accessToken")
                 .value(accessToken)
                 .httpOnly(true)
