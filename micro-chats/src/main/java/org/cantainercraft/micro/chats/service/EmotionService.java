@@ -5,21 +5,23 @@ import org.cantainercraft.project.entity.chats.Emotion;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface EmotionService {
 
-    Mono<Emotion> findByUnicode(String unicode);
+    Optional<Emotion> findByUnicode(String unicode);
 
-    Mono<Void> deleteByUnicode(String unicode);
+    void deleteByUnicode(String unicode);
 
-    Mono<Void> deleteById(UUID uuid);
+    void deleteById(UUID uuid);
 
-    Mono<Emotion> save(EmotionDTO emotionDTO);
+    Emotion save(EmotionDTO emotionDTO);
 
-    Mono<Emotion> update(EmotionDTO emotionDTO);
+    Emotion update(EmotionDTO emotionDTO);
 
-    Flux<Emotion> findAll();
+    List<Emotion> findAll();
 
-    Mono<Emotion> findById(UUID uuid);
+    Optional<Emotion> findById(UUID uuid);
 }

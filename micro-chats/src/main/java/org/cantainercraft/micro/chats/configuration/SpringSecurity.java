@@ -44,7 +44,6 @@ public class SpringSecurity {
                 }))
                 .sessionManagement(sessionManagement  -> sessionManagement.sessionCreationPolicy(STATELESS) )
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/user_chat/**").permitAll()
                         .requestMatchers("/emotions/**").permitAll()
                         .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider())
