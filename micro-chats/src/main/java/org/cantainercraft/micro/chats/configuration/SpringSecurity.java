@@ -22,46 +22,68 @@ import java.util.List;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
+/**
+ * Класс конфигурации безопасности Spring.
+ * Этот класс настраивает параметры безопасности для вашего приложения,
+ * включая аутентификацию, авторизацию и настройку CORS.
+ */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SpringSecurity {
-    private final UserDetailServiceImpl userDetailServiceImpl;
-    private final JwtAuthFilter jwtAuthFilter;
 
+    // Поля
+    private final UserDetailServiceImpl userDetailServiceImpl; // Сервис для получения информации о пользователях
+    private final JwtAuthFilter jwtAuthFilter; // Фильтр для обработки JWT аутентификации
+
+    /**
+     * Конфигурирует цепочку фильтров безопасности.
+     *
+     * @param http объект HttpSecurity для настройки безопасности
+     * @return настроенный SecurityFilterChain
+     * @throws Exception если возникает ошибка конфигурации
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception, IOException {
-
-        http.csrf(AbstractHttpConfigurer::disable)
-                .cors(cors -> cors.configurationSource(request ->{
-                   var corsConfiguration = new CorsConfiguration();
-                   corsConfiguration.setAllowedMethods(List.of("POST","PUT","OPTION","HEADER","GET","DELETE"));
-                   corsConfiguration.setAllowedHeaders(List.of("*"));
-                   corsConfiguration.setAllowedOrigins(List.of("*"));
-                   corsConfiguration.setAllowCredentials(true);
-                   return corsConfiguration;
+        http.csrf(AbstractHttpConfigurer::disable) // Отключение защиты от CSRF
+                .cors(cors -> cors.configurationSource(request -> { // Настройка CORS
+                    var corsConfiguration = new CorsConfiguration();
+                    corsConfiguration.setAllowedMethods(List.of("POST", "PUT", "OPTION", "HEADER", "GET", "DELETE")); // Разрешенные методы
+                    corsConfiguration.setAllowedHeaders(List.of("*")); // Разрешенные заголовки
+                    corsConfiguration.setAllowedOrigins(List.of("*")); // Разрешенные источники
+                    corsConfiguration.setAllowCredentials(true); // Разрешение отправки учетных данных
+                    return corsConfiguration;
                 }))
-                .sessionManagement(sessionManagement  -> sessionManagement.sessionCreationPolicy(STATELESS) )
+                .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(STATELESS)) // Сессии не используются
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/emotions/**").permitAll()
-                        .anyRequest().authenticated())
-                .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                        .requestMatchers("/emotions/**").permitAll() // Разрешение доступа без аутентификации к указанному пути
+                        .anyRequest().authenticated()) // Все остальные запросы требуют аутентификации
+                .authenticationProvider(authenticationProvider()) // Установка провайдера аутентификации
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class); // Добавление JWT фильтра перед фильтром аутентификации
         return http.build();
     }
 
-
+    /**
+     * Создает и настраивает кодировщик паролей.
+     *
+     * @return объект PasswordEncoder для кодирования паролей
+     */
     @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(); // Использование BCrypt для кодирования паролей
     }
 
+    /**
+     * Создает и настраивает провайдера аутентификации.
+     *
+     * @return объект AuthenticationProvider для аутентификации пользователей
+     */
     @Bean
-    public AuthenticationProvider authenticationProvider(){
+    public AuthenticationProvider authenticationProvider() {
         var authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setPasswordEncoder(passwordEncoder());
-        authenticationProvider.setUserDetailsService(userDetailServiceImpl);
+        authenticationProvider.setPasswordEncoder(passwordEncoder()); // Установка кодировщика паролей
+        authenticationProvider.setUserDetailsService(userDetailServiceImpl); // Установка сервиса для получения данных о пользователях
         return authenticationProvider;
     }
 

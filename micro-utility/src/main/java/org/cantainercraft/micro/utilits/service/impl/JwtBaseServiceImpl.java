@@ -18,7 +18,9 @@ import java.util.function.Function;
 @Getter
 @Setter
 public class JwtBaseServiceImpl implements JwtServiceBase {
+    //SECRET_KEY needed for encryption and decryption of data
     protected final String SECRET_KEY;
+    // lifetime token
     protected final Long cookieTime;
 
     public JwtBaseServiceImpl(String SECRET_KEY,Long cookieTime){

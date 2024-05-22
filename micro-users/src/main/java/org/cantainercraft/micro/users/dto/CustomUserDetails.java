@@ -12,7 +12,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-
+/*
+    The CustomUserDetails class is created to implement a secure user and
+    user representation so as not to change the entity itself
+*/
 public class CustomUserDetails extends User implements UserDetails {
     private final String password;
     private final String username;

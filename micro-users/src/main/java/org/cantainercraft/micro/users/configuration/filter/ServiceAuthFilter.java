@@ -25,13 +25,14 @@ public class ServiceAuthFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         String header = request.getHeader("micro-service-key");
 
+        //checking that this service is not third-party
         if(header !=null && header.equals(serviceKey)){
             var authenticationToken = new UsernamePasswordAuthenticationToken(
                     null,
                     null,
                     List.of(new SimpleGrantedAuthority("ROLE_ADMIN")));
-            System.out.println("Header");
 
+            //before checking the presence of a user in the context in UsernamePasswordAuthenticationFilter, we add it
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             filterChain.doFilter(request,response);
             return;

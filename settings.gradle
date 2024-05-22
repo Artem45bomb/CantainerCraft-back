@@ -1,4 +1,4 @@
-rootProject.name = 'WeatherApp'
+rootProject.name = 'CantainerCraft-back'
 includeBuild('micro-server')
 includeBuild('micro-users')
 includeBuild('micro-entity')

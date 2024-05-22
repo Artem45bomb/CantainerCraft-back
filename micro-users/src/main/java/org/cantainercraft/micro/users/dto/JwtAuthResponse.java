@@ -4,6 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+/*
+    JwtAuthResponse used when registering or
+    authenticating a user
+*/
 @Data
 @AllArgsConstructor
 @Builder

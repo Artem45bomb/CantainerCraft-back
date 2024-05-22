@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.function.Function;
 
+
 @Component
 @RequiredArgsConstructor
 public class AccessTokenFactory implements Function<Token,String> {

@@ -45,13 +45,18 @@ public class AuthServiceImpl implements AuthService {
                     .email(signUpAuthDTO.getEmail())
                     .password(passwordEncoder.encode(signUpAuthDTO.getPassword()))
                     .build();
+
+            //create an authentication token
             var authentication = new UsernamePasswordAuthenticationToken(signUpAuthDTO.getUsername()
                     ,signUpAuthDTO.getPassword());
 
             userService.save(convertor.convertUserToUserDTO(user));
+
+            //create jwt tokens
             Token token = refreshService.createRefreshToken(authentication);
             String accessToken = accessTokenFactory.apply(token);
 
+            //add accessToken to cookies so that the user has access to services
             ResponseCookie cookie = ResponseCookie.from("accessToken")
                     .value(accessToken)
                     .secure(true)
