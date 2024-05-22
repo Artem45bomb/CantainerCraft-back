@@ -2,7 +2,7 @@ package org.cantainercraft.micro.users.factory;
 
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.cantainercraft.project.entity.Token;
+import org.cantainercraft.project.entity.users.Token;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;

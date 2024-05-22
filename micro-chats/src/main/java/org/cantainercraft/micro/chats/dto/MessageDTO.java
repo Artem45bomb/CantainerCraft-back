@@ -16,7 +16,8 @@ import java.util.UUID;
 public class MessageDTO {
     private UUID uuid;
 
-    private String value;
+    private String text;
+
 
     private Date date;
 

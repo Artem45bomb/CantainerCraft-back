@@ -2,16 +2,12 @@ package org.cantainercraft.micro.chats.controller;
 
 import com.google.gson.Gson;
 import org.cantainercraft.micro.chats.convertor.MessageDTOConvertor;
-import org.cantainercraft.micro.chats.dto.MessageSearchDTO;
-import org.cantainercraft.micro.chats.controller.MessageController;
 import org.cantainercraft.micro.chats.feign.UserFeignClient;
-import org.cantainercraft.micro.chats.service.MessageService;
 import org.cantainercraft.micro.chats.service.impl.MessageServiceImpl;
 import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.micro.utilits.exception.MessageError;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
-import org.cantainercraft.micro.utilits.exception.NotValidateParamException;
-import org.cantainercraft.project.entity.User;
+import org.cantainercraft.project.entity.users.User;
 import org.cantainercraft.project.entity.chats.Message;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -26,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
+
 @WebMvcTest(MessageController.class)
 public class MessageControllerTest {
 

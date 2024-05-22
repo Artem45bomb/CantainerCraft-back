@@ -2,10 +2,9 @@ package org.cantainercraft.micro.users.convertor;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.cantainercraft.micro.users.dto.ProfileDTO;
-import org.cantainercraft.project.entity.Profile;
+import org.cantainercraft.project.entity.users.Profile;
 
 @Component
 @RequiredArgsConstructor

@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.cantainercraft.project.entity.chats.Message;
-import org.cantainercraft.project.entity.TypeChat;
+import org.cantainercraft.project.entity.users.TypeChat;
 import org.cantainercraft.project.entity.chats.User_Chat;
 
 import java.util.Date;

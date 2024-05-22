@@ -1,6 +1,6 @@
 package org.cantainercraft.micro.users.repository;
 
-import org.cantainercraft.project.entity.Token;
+import org.cantainercraft.project.entity.users.Token;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -4,9 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.users.dto.CustomUserDetails;
 import org.cantainercraft.micro.users.repository.UserRepository;
 
-import org.cantainercraft.micro.utilits.exception.NotResourceException;
-import org.cantainercraft.project.entity.Role;
-import org.cantainercraft.project.entity.User;
+import org.cantainercraft.project.entity.users.Role;
+import org.cantainercraft.project.entity.users.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -2,7 +2,7 @@ package org.cantainercraft.micro.users.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.cantainercraft.project.entity.User;
+import org.cantainercraft.project.entity.users.User;
 
 import java.util.Date;
 import java.util.UUID;

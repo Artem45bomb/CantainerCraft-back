@@ -2,7 +2,7 @@ package org.cantainercraft.micro.chats.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.cantainercraft.project.entity.TypeChat;
+import org.cantainercraft.project.entity.users.TypeChat;
 
 import java.util.Date;
 import java.util.UUID;

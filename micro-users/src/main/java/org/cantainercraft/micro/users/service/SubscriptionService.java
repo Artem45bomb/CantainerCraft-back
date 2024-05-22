@@ -2,7 +2,7 @@ package org.cantainercraft.micro.users.service;
 
 import org.cantainercraft.micro.users.dto.SubscriptionDTO;
 import org.cantainercraft.micro.users.dto.SubscriptionUpdateDTO;
-import org.cantainercraft.project.entity.Subscription;
+import org.cantainercraft.project.entity.users.Subscription;
 
 import java.util.List;
 

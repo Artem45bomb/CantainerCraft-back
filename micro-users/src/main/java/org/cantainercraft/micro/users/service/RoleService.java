@@ -2,7 +2,7 @@ package org.cantainercraft.micro.users.service;
 
 import org.cantainercraft.micro.users.dto.RoleDTO;
 import org.cantainercraft.micro.users.dto.RoleUpdateDTO;
-import org.cantainercraft.project.entity.Role;
+import org.cantainercraft.project.entity.users.Role;
 
 import java.util.List;
 

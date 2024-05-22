@@ -5,7 +5,7 @@ import org.cantainercraft.micro.users.convertor.ProfileDTOConvertor;
 import org.cantainercraft.micro.users.dto.ProfileDTO;
 import org.cantainercraft.micro.users.service.InitService;
 import org.cantainercraft.micro.users.service.ProfileService;
-import org.cantainercraft.project.entity.Profile;
+import org.cantainercraft.project.entity.users.Profile;
 import org.springframework.stereotype.Component;
 
 @Component

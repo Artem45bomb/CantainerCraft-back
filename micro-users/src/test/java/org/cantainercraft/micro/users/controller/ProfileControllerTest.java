@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import org.cantainercraft.micro.users.dto.ProfileSearchDTO;
 import org.cantainercraft.micro.utilits.exception.MessageError;
 import org.cantainercraft.micro.users.service.impl.ProfileServiceImpl;
-import org.cantainercraft.project.entity.Profile;
+import org.cantainercraft.project.entity.users.Profile;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;

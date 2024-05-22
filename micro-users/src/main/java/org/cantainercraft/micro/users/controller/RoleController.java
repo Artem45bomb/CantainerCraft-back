@@ -5,15 +5,13 @@ import org.cantainercraft.micro.users.dto.RoleDTO;
 import org.cantainercraft.micro.users.dto.RoleUpdateDTO;
 import org.cantainercraft.micro.users.service.RoleService;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import org.cantainercraft.project.entity.Role;
+import org.cantainercraft.project.entity.users.Role;
 
 
 @RestController

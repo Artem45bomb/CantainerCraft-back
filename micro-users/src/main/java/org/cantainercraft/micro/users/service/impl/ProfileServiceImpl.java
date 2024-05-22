@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.cantainercraft.micro.users.convertor.ProfileDTOConvertor;
 import org.cantainercraft.micro.users.dto.ProfileDTO;
 import org.cantainercraft.micro.users.repository.ProfileRepository;
-import org.cantainercraft.project.entity.Profile;
+import org.cantainercraft.project.entity.users.Profile;
 
 import java.util.List;
 import java.util.Optional;

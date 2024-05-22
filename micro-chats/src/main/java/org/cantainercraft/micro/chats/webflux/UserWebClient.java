@@ -1,7 +1,7 @@
 package org.cantainercraft.micro.chats.webflux;
 
 import lombok.RequiredArgsConstructor;
-import org.cantainercraft.project.entity.User;
+import org.cantainercraft.project.entity.users.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;

@@ -1,7 +1,6 @@
 package org.cantainercraft.micro.users.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.cantainercraft.micro.users.dto.CustomUserDetails;
 import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.micro.utilits.exception.MessageError;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
@@ -10,11 +9,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.cantainercraft.micro.users.dto.UserDTO;
 import org.cantainercraft.micro.users.dto.UserSearchDTO;
-import org.cantainercraft.project.entity.User;
+import org.cantainercraft.project.entity.users.User;
 import org.cantainercraft.micro.users.service.UserService;
 import java.util.*;
 
