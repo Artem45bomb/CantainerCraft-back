@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.cantainercraft.project.entity.TypeChat;
+import org.cantainercraft.project.entity.users.TypeChat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -22,9 +22,8 @@ import java.util.UUID;
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Chat implements Serializable {
 
-    public Chat(UUID uuid, String srcImage, String name, Date date, TypeChat typeChat) {
+    public Chat(UUID uuid, String name, Date date, TypeChat typeChat) {
         this.uuid = uuid;
-        this.srcImage = srcImage;
         this.name = name;
         this.date = date;
         this.typeChat = typeChat;
@@ -34,8 +33,8 @@ public class Chat implements Serializable {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID uuid;
 
-    @Column(name = "src_image")
-    private String srcImage;
+    @OneToMany(mappedBy = "chat",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private List<Chat_Image_Profile> chatImageProfiles;
 
     @Column(name = "chat_name")
     private String name;

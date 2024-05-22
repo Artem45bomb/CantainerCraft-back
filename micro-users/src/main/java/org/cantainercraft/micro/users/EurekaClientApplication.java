@@ -14,7 +14,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableDiscoveryClient
 @EnableCaching
 @EnableRabbit
-@EntityScan("org.cantainercraft.project.entity")
+@EntityScan("org.cantainercraft.project.entity.users")
 public class EurekaClientApplication {
 
 

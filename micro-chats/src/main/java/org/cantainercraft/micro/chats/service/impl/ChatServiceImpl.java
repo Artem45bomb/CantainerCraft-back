@@ -8,7 +8,7 @@ import org.cantainercraft.micro.chats.dto.ChatUpdateDTO;
 import org.cantainercraft.micro.chats.repository.ChatRepository;
 import org.cantainercraft.micro.chats.service.ChatService;
 import org.springframework.stereotype.Service;
-import org.cantainercraft.project.entity.TypeChat;
+import org.cantainercraft.project.entity.users.TypeChat;
 import org.cantainercraft.project.entity.chats.Chat;
 
 import java.util.Date;

@@ -2,7 +2,7 @@ package org.cantainercraft.micro.chats.service;
 
 import org.cantainercraft.micro.chats.dto.ChatDTO;
 import org.cantainercraft.micro.chats.dto.ChatUpdateDTO;
-import org.cantainercraft.project.entity.TypeChat;
+import org.cantainercraft.project.entity.users.TypeChat;
 import org.cantainercraft.project.entity.chats.Chat;
 
 import java.util.Date;

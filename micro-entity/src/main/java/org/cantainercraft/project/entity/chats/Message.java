@@ -5,12 +5,10 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-
 
 @Entity
 @Builder
@@ -19,29 +17,33 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Cacheable
-@Table(name = "messages",schema = "messenger_chats",catalog = "micro_chats")
+@Table(name = "messages", schema = "messenger_chats", catalog = "micro_chats")
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Message implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID uuid;
 
-    private String value;
+    private String text;
+
+    private boolean is_pinned;
+
+    private String type;
 
     private Date date;
 
-
     private Long userId;
+
+    @OneToMany(mappedBy = "message",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private List<Content> srcContent;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "chat_uuid",referencedColumnName = "uuid")
+    @JoinColumn(name = "chat_id", referencedColumnName = "uuid")
     private Chat chat;
 
     @ManyToMany
-    @JoinTable(name = "messages_emotions",schema = "messenger_chats",catalog = "micro_chats"
-    ,joinColumns = @JoinColumn(name="message_id"),
-    inverseJoinColumns = @JoinColumn(name = "emotion_id"))
+    @JoinTable(name = "messages_emotions", schema = "messenger_chats", catalog = "micro_chats", joinColumns = @JoinColumn(name = "message_id"), inverseJoinColumns = @JoinColumn(name = "emotion_id"))
     private List<Emotion> emotions;
 
 }

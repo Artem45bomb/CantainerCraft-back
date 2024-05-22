@@ -1,0 +1,30 @@
+package org.cantainercraft.project.entity.chats;
+
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import java.util.UUID;
+
+@Entity
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Cacheable
+@Table(name = "message_reply", schema = "messenger_chats", catalog = "micro_chats")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class Message_Reply {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID uuid;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Message message;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "message_replyId")
+    private Message message_replyId;
+}

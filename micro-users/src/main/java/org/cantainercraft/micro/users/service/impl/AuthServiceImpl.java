@@ -8,21 +8,19 @@ import org.cantainercraft.micro.users.dto.*;
 import org.cantainercraft.micro.users.factory.AccessTokenFactory;
 import org.cantainercraft.micro.users.service.AuthService;
 import org.cantainercraft.micro.users.service.UserService;
-import org.cantainercraft.project.entity.Token;
-import org.cantainercraft.project.entity.Role;
-import org.cantainercraft.project.entity.User;
+import org.cantainercraft.project.entity.users.Token;
+import org.cantainercraft.project.entity.users.Role;
+import org.cantainercraft.project.entity.users.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

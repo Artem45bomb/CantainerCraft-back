@@ -2,18 +2,16 @@ package org.cantainercraft.micro.users.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.users.convertor.UserDTOConvertor;
-import org.cantainercraft.micro.users.dto.CustomUserDetails;
 import org.cantainercraft.micro.users.dto.ServiceUserDTO;
 import org.cantainercraft.micro.users.service.InitService;
 import org.cantainercraft.micro.users.service.UserService;
 import org.cantainercraft.micro.utilits.exception.ExistResourceException;
-import org.cantainercraft.project.entity.Profile;
+import org.cantainercraft.project.entity.users.Profile;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.cantainercraft.micro.users.dto.UserDTO;
-import org.cantainercraft.project.entity.User;
+import org.cantainercraft.project.entity.users.User;
 import org.cantainercraft.micro.users.repository.UserRepository;
 
 import java.util.List;

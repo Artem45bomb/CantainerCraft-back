@@ -1,12 +1,11 @@
 package org.cantainercraft.micro.users.repository;
 
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Component;
-import org.cantainercraft.project.entity.User;
+import org.cantainercraft.project.entity.users.User;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;

@@ -3,7 +3,7 @@ package org.cantainercraft.micro.users.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.users.repository.TokenRepository;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
-import org.cantainercraft.project.entity.Token;
+import org.cantainercraft.project.entity.users.Token;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 

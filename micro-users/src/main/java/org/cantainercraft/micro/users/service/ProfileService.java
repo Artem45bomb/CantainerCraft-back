@@ -1,7 +1,7 @@
 package org.cantainercraft.micro.users.service;
 
 import org.cantainercraft.micro.users.dto.ProfileDTO;
-import org.cantainercraft.project.entity.Profile;
+import org.cantainercraft.project.entity.users.Profile;
 
 import java.util.List;
 import java.util.Optional;

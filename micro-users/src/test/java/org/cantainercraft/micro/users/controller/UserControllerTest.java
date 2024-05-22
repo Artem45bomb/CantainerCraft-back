@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import org.cantainercraft.micro.users.convertor.UserDTOConvertor;
 import org.cantainercraft.micro.utilits.exception.MessageError;
 import org.cantainercraft.micro.users.service.impl.UserServiceImpl;
-import org.cantainercraft.project.entity.User;
+import org.cantainercraft.project.entity.users.User;
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 import org.modelmapper.ModelMapper;

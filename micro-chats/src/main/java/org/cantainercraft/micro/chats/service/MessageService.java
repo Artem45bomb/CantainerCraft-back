@@ -20,5 +20,5 @@ public interface MessageService {
 
     Optional<Message> findByUUID(UUID uuid);
 
-    Page<Message> findBySearch(Date dateStart, Date dateEnd, String value, UUID uuid, Long userId, UUID chatId, Pageable pageable);
+    Page<Message> findBySearch(Date dateStart, Date dateEnd, String text, UUID uuid, Long userId, UUID chatId, Pageable pageable);
 }

@@ -7,7 +7,7 @@ import org.cantainercraft.micro.users.service.SubscriptionService;
 import org.springframework.stereotype.Component;
 import org.cantainercraft.micro.users.dto.SubscriptionDTO;
 import org.cantainercraft.micro.users.dto.SubscriptionUpdateDTO;
-import org.cantainercraft.project.entity.Subscription;
+import org.cantainercraft.project.entity.users.Subscription;
 import org.cantainercraft.micro.users.repository.SubscriptionRepository;
 import java.util.List;
 

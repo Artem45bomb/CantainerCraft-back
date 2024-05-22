@@ -2,8 +2,8 @@ package org.cantainercraft.micro.users.dto;
 
 
 import lombok.Setter;
-import org.cantainercraft.project.entity.Role;
-import org.cantainercraft.project.entity.User;
+import org.cantainercraft.project.entity.users.Role;
+import org.cantainercraft.project.entity.users.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

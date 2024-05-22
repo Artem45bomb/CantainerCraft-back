@@ -1,13 +1,12 @@
 package org.cantainercraft.micro.users.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.cantainercraft.micro.users.convertor.RoleDTOConvertor;
 import org.cantainercraft.micro.users.service.RoleService;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.cantainercraft.micro.users.dto.RoleDTO;
 import org.cantainercraft.micro.users.dto.RoleUpdateDTO;
-import org.cantainercraft.project.entity.Role;
+import org.cantainercraft.project.entity.users.Role;
 import org.cantainercraft.micro.users.repository.RoleRepository;
 
 import java.util.List;

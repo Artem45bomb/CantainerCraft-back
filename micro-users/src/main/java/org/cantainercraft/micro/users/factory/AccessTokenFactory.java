@@ -1,9 +1,8 @@
 package org.cantainercraft.micro.users.factory;
 
 import lombok.RequiredArgsConstructor;
-import org.cantainercraft.micro.users.repository.UserRepository;
 import org.cantainercraft.micro.users.service.impl.JwtService;
-import org.cantainercraft.project.entity.Token;
+import org.cantainercraft.project.entity.users.Token;
 import org.springframework.stereotype.Component;
 
 import java.util.function.Function;

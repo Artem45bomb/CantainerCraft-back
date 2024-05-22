@@ -1,17 +1,10 @@
 package org.cantainercraft.micro.chats.webflux;
 
 import lombok.RequiredArgsConstructor;
-import org.cantainercraft.micro.chats.dto.CustomUserDetails;
-import org.cantainercraft.project.entity.User;
+import org.cantainercraft.project.entity.users.User;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.reactive.function.client.WebClient;
-
-import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
