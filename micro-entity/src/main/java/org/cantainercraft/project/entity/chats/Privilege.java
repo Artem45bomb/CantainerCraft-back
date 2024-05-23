@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -27,8 +28,20 @@ public class Privilege {
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Chat chat;
 
-    private String name_role;
+    private String nameRole;
 
     @OneToMany(mappedBy = "privilege",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private List<User_Privilege> userPrivileges;
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (!(object instanceof Privilege privilege)) return false;
+        return Objects.equals(getUuid(), privilege.getUuid()) && Objects.equals(getNameRole(), privilege.getNameRole());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUuid(), getNameRole());
+    }
 }

@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -16,9 +17,9 @@ import java.util.UUID;
 @Cacheable
 @Builder
 @Entity
-@Table(name = "user_secured",schema = "weather",catalog = "postgres")
+@Table(name = "user_secured",schema = "messenger_users",catalog = "postgres")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Chat_Info {
+public class Chat_Info implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

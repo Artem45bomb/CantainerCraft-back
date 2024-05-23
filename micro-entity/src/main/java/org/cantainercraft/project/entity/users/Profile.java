@@ -7,6 +7,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -40,4 +41,15 @@ public class Profile implements Serializable {
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     private User user;
 
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (!(object instanceof Profile profile)) return false;
+        return Objects.equals(getUuid(), profile.getUuid());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUuid());
+    }
 }

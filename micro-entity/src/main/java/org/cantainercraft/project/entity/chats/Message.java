@@ -8,6 +8,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -18,7 +19,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Cacheable
 @Table(name = "messages", schema = "messenger_chats", catalog = "micro_chats")
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Message implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -46,4 +47,15 @@ public class Message implements Serializable {
     @JoinTable(name = "messages_emotions", schema = "messenger_chats", catalog = "micro_chats", joinColumns = @JoinColumn(name = "message_id"), inverseJoinColumns = @JoinColumn(name = "emotion_id"))
     private List<Emotion> emotions;
 
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (!(object instanceof Message message)) return false;
+        return Objects.equals(getUuid(), message.getUuid()) && Objects.equals(getText(), message.getText()) && Objects.equals(getType(), message.getType());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUuid(), getText(), getType());
+    }
 }

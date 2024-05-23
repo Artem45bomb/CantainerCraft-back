@@ -9,6 +9,7 @@ import org.cantainercraft.project.entity.users.TypeChat;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -50,6 +51,18 @@ public class Chat implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "chat",fetch = FetchType.LAZY)
     private List<Message> messages;
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (!(object instanceof Chat chat)) return false;
+        return Objects.equals(getUuid(), chat.getUuid());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUuid());
+    }
 }
 
 

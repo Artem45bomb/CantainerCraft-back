@@ -7,6 +7,7 @@ import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -19,7 +20,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "emotions",schema = "messenger_chats",catalog = "micro_chats")
-public class Emotion {
+public class Emotion implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -27,19 +28,19 @@ public class Emotion {
 
     private String unicode;
 
+    @JsonIgnore
+    @ManyToMany(mappedBy = "emotions",fetch = FetchType.LAZY)
+    private List<Message> messages;
+
     @Override
     public boolean equals(Object object) {
         if (this == object) return true;
         if (!(object instanceof Emotion emotion)) return false;
-        return Objects.equals(getUuid(), emotion.getUuid());
+        return Objects.equals(getUuid(), emotion.getUuid()) && Objects.equals(getUnicode(), emotion.getUnicode());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUuid());
+        return Objects.hash(getUuid(), getUnicode());
     }
-
-    @JsonIgnore
-    @ManyToMany(mappedBy = "emotions",fetch = FetchType.LAZY)
-    private List<Message> messages;
 }

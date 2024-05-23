@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import java.io.Serializable;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -14,8 +16,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @Cacheable
 @Table(name = "message_reply", schema = "messenger_chats", catalog = "micro_chats")
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Message_Reply {
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+public class Message_Reply implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -26,5 +28,17 @@ public class Message_Reply {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "message_replyId")
-    private Message message_replyId;
+    private Message messageReplyId;
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (!(object instanceof Message_Reply that)) return false;
+        return Objects.equals(getUuid(), that.getUuid());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUuid());
+    }
 }

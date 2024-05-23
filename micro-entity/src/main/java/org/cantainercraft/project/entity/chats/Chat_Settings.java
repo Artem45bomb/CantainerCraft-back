@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import java.io.Serializable;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -16,7 +18,7 @@ import java.util.UUID;
 @Cacheable
 @Table(name = "chat_settings", schema = "messenger_chats", catalog = "micro_chats")
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Chat_Settings {
+public class Chat_Settings implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -33,4 +35,16 @@ public class Chat_Settings {
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
     private Chat chat;
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (!(object instanceof Chat_Settings that)) return false;
+        return Objects.equals(getUuid(), that.getUuid());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUuid());
+    }
 }

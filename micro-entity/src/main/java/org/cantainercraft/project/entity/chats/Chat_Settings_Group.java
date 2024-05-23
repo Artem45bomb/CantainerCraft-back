@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import java.time.Duration;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -48,6 +49,18 @@ public class Chat_Settings_Group {
     private Duration slowMode;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "chatSettingGroup",fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "chatSettingsGroup",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private Chat_Settings chatSettings;
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (!(object instanceof Chat_Settings_Group that)) return false;
+        return Objects.equals(getUuid(), that.getUuid());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUuid());
+    }
 }
