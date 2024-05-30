@@ -6,4 +6,5 @@ import org.cantainercraft.project.entity.users.Role;
 
 @Repository
 public interface RoleRepository extends JpaRepository<Role,Long> {
+
 }

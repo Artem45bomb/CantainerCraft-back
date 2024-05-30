@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -28,6 +29,8 @@ public class Content implements Serializable {
     private String srcContent;
 
     private String type;
+
+    private BigInteger sizeByte;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
