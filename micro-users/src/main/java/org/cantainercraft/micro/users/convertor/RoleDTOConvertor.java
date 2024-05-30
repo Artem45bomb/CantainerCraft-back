@@ -13,10 +13,14 @@ public class RoleDTOConvertor {
     private final ModelMapper modelMapper;
 
     public RoleDTO convertRoleToRoleDTO(Role role){
+
         return modelMapper.map(role,RoleDTO.class);
+
     }
 
     public Role convertRoleDTOToRole(RoleDTO roleDTO){
+
         return modelMapper.map(roleDTO,Role.class);
+
     }
 }

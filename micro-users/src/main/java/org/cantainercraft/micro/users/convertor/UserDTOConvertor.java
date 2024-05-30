@@ -13,10 +13,12 @@ public class UserDTOConvertor {
     private final ModelMapper modelMapper;
 
     public UserDTO convertUserToUserDTO(User user){
+
         return modelMapper.map(user,UserDTO.class);
     }
 
     public User convertUserDTOToUser(UserDTO userDTO){
+
         return modelMapper.map(userDTO,User.class);
     }
 }

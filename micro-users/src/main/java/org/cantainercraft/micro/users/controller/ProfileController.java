@@ -65,6 +65,8 @@ public class ProfileController {
         return ResponseEntity.ok(profileService.findAll());
     }
 
+
+
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<Profile> save(@RequestBody ProfileDTO profileDTO){
