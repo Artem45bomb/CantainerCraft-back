@@ -37,13 +37,18 @@ public class MessageController {
 
     @PreAuthorize("hasAnyRole('USER,ADMIN')")
     @PostMapping("/uuid")
-    public ResponseEntity<Message> findByUUID(@RequestBody UUID uuid){
+    public ResponseEntity<Message> findByUUID(@RequestBody UUID uuid) {
         Optional<Message> message = messageService.findByUUID(uuid);
 
         if(message.isEmpty()) {
             throw new NotResourceException("No content");
         }
         return ResponseEntity.ok(message.get());
+    }
+
+    @PostMapping("/user")
+    public ResponseEntity<List<Message>> findByUserId(@RequestBody Long id) {
+       return ResponseEntity.ok(messageService.findByUserId(id));
     }
 
     @PreAuthorize("hasAnyRole('USER,ADMIN')")

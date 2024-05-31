@@ -1,0 +1,21 @@
+package org.cantainercraft.micro.chats.convertor;
+
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
+import org.cantainercraft.micro.chats.dto.MessageReadDTO;
+import org.cantainercraft.project.entity.chats.MessageRead;
+
+@Component
+@RequiredArgsConstructor
+public class MessageReadDTOConvertor {
+    private final ModelMapper modelMapper;
+
+    public MessageReadDTO convertMessageReadToMessageReadDTO(MessageRead messageRead) {
+        return modelMapper.map(messageRead, MessageReadDTO.class);
+    }
+
+    public MessageRead convertMessageReadDTOToMessageRead(MessageReadDTO messageReadDTO) {
+        return modelMapper.map(messageReadDTO, MessageRead.class);
+    }
+}

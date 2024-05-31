@@ -28,7 +28,7 @@ public class Message_Forward implements Serializable {
     private Message messageFromId;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    private Message messageId;
+    private Message message;
 
     @Override
     public boolean equals(Object object) {

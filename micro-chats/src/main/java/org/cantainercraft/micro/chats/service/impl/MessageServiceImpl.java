@@ -46,4 +46,8 @@ public class MessageServiceImpl implements MessageService {
     public Page<Message> findBySearch(Date dateStart, Date dateEnd, String text, UUID uuid, Long userId, UUID chatId, Pageable pageable){
         return messageRepository.findBySearch(dateStart,dateEnd,text,uuid,userId,chatId,pageable);
     }
+
+    public List<Message> findByUserId(Long id) {
+        return messageRepository.findByUserId(id);
+    }
 }

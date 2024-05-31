@@ -24,7 +24,7 @@ public class User_Privilege implements Serializable {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID uuid;
 
-    private String userId;
+    private Long userId;
 
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)

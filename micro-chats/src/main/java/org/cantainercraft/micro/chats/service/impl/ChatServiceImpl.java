@@ -34,7 +34,7 @@ public class ChatServiceImpl implements ChatService {
         return true;
     }
 
-    public boolean delete(UUID uuid){
+     public boolean delete(UUID uuid){
         chatRepository.deleteById(uuid);
         return true;
     }

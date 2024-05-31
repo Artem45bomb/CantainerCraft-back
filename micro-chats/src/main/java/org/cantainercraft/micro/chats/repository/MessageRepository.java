@@ -17,7 +17,7 @@ import java.util.UUID;
 public interface MessageRepository extends JpaRepository<Message, UUID> {
     List<Message> findByUserId(Long userId);
 
-    @Query("select message from  Message message where( lower(message.value) like lower(concat('%',:value,'%')) or :value is null or :value = '') and" +
+    @Query("select message from  Message message where(lower(message.text) like lower(concat('%',:value,'%')) or :value is null or :value = '') and" +
             "(message.uuid = :uuid or :uuid is null) and" +
             "(cast(:dateStart as timestamp ) is null or message.date>=:dateStart ) and" +
             "(cast(:dateEnd as timestamp ) is null or  message.date <=:dateEnd) and"+

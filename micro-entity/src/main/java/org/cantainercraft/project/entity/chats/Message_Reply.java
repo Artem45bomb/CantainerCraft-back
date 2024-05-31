@@ -27,8 +27,8 @@ public class Message_Reply implements Serializable {
     private Message message;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "message_replyId")
-    private Message messageReplyId;
+    @JoinColumn(name = "message_replyId", referencedColumnName = "uuid")
+    private Message messageReply;
 
     @Override
     public boolean equals(Object object) {
