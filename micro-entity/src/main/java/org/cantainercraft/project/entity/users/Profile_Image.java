@@ -17,7 +17,7 @@ import java.util.UUID;
 @Cacheable
 @Builder
 @Entity
-@Table(name = "profile_image",schema = "weather",catalog = "postgres")
+@Table(name = "profile_image",schema = "messenger_users",catalog = "postgres")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Profile_Image implements Serializable {
 

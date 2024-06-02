@@ -15,7 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "profile_settings",schema = "weather",catalog = "postgres")
+@Table(name = "profile_settings",schema = "messenger_users",catalog = "postgres")
 @Builder
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_ONLY)

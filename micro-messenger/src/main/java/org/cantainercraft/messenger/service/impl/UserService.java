@@ -1,4 +1,4 @@
-package org.cantainercraft.messenger.service;
+package org.cantainercraft.messenger.service.impl;
 
 import org.springframework.stereotype.Service;
 

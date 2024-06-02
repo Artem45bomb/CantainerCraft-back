@@ -1,6 +1,8 @@
 package org.cantainercraft.messenger.controller;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.cantainercraft.messenger.dto.ChatDTO;
 import org.cantainercraft.messenger.dto.UserChatDTO;
 import org.cantainercraft.messenger.exception.NotExist;
@@ -8,12 +10,15 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
-import org.cantainercraft.messenger.service.ChatService;
-import reactor.core.publisher.Mono;
+import org.cantainercraft.messenger.service.impl.ChatService;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
 
+import java.io.IOException;
 import java.util.UUID;
 
 @Controller
+@Slf4j
 @RequiredArgsConstructor
 public class ChatsMessageController {
 
@@ -21,11 +26,12 @@ public class ChatsMessageController {
 
     @MessageMapping("/chat/add")
     @SendTo("/client/createChat")
-    private ChatDTO createChat(@Payload ChatDTO chatDTO){
+    private ChatDTO createChat(@Payload ChatDTO chatDTO) throws IOException {
 
         //генерация uuid
         UUID uuid = UUID.randomUUID();
         chatDTO.setUuid(uuid);
+
 
         //create new chat
         //создания происходит асинхронно и не блокирует главный поток
@@ -53,6 +59,8 @@ public class ChatsMessageController {
 
         return chatDTO;
     }
+
+
 
     @MessageMapping("/user/add")
     @SendTo("/client/addUser")

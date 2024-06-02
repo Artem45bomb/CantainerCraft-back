@@ -3,7 +3,7 @@ package org.cantainercraft.messenger.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.cantainercraft.messenger.feign.MessageFeignClient;
-import org.cantainercraft.messenger.service.MessageService;
+import org.cantainercraft.messenger.service.impl.MessageService;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -17,7 +17,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class SubmitMessageController {
     private final MessageService messageService;
-    private final MessageFeignClient messageFeignClient;
 
     @MessageMapping("/submit")
     @SendTo("/topic/public")

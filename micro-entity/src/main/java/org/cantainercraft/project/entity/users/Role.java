@@ -15,7 +15,7 @@ import java.util.Objects;
 @Setter
 @Builder
 @Entity
-@Table(name = "role_data",schema = "weather",catalog = "postgres")
+@Table(name = "role_data",schema = "messenger_users",catalog = "postgres")
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Role implements Serializable {
