@@ -6,6 +6,7 @@ import org.cantainercraft.micro.chats.dto.ChatSettingsChanelDTO;
 import org.cantainercraft.micro.chats.dto.ChatSettingsChanelUpdateDTO;
 import org.cantainercraft.micro.chats.repository.ChatSettingsChanelRopository;
 import org.cantainercraft.micro.chats.service.ChatSettingsChanelService;
+import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.chats.Chat_Settings_Chanel;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,11 @@ public class ChatSettingsChanelServiceImpl  implements ChatSettingsChanelService
     private final ChatSettingsChanelDTOConvertor chatSettingsChanelDTOConvertor;
 
     public boolean delete(UUID uuid) {
-        return chatSettingsChanelRopository.findById(uuid).isPresent();
+        if(!chatSettingsChanelRopository.existsById(uuid)) {
+            throw new NotResourceException("NoN");
+        }
+        chatSettingsChanelRopository.deleteById(uuid);
+        return true;
     }
 
     public Chat_Settings_Chanel save(ChatSettingsChanelDTO chatSettingsChanelDTO) {
@@ -30,6 +35,9 @@ public class ChatSettingsChanelServiceImpl  implements ChatSettingsChanelService
     }
 
     public boolean update(ChatSettingsChanelUpdateDTO chatSettingsChanelUpdateDTO) {
+        if(!chatSettingsChanelRopository.existsById(chatSettingsChanelUpdateDTO.getUuid())) {
+            throw new NotResourceException("NoN");
+        }
         Chat_Settings_Chanel chatSettingsChanel = chatSettingsChanelDTOConvertor.convertChatSettingsChanelDTOToChatSettingsChanel(chatSettingsChanelUpdateDTO);
         chatSettingsChanel.setUuid(chatSettingsChanelUpdateDTO.getUuid());
         chatSettingsChanelRopository.save(chatSettingsChanel);

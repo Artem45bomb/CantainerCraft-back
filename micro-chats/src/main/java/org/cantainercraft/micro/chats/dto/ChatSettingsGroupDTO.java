@@ -4,8 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.cantainercraft.project.entity.chats.Chat_Settings;
 
-import java.sql.Time;
+import java.time.Duration;
 import java.util.UUID;
 
 @Getter
@@ -14,19 +15,19 @@ import java.util.UUID;
 @NoArgsConstructor
 public class ChatSettingsGroupDTO {
     private UUID settingGroupId;
+    private UUID uuid;
     private String typeGroup;
     private boolean isSendMessage;
     private boolean isSendPhoto;
-    private boolean isSendVideo;
+    private boolean isSendVide;
     private boolean isSendMusic;
     private boolean isSendVoice;
     private boolean isSendFile;
     private boolean isStikerGif;
     private boolean isCreateSurvey;
     private boolean isPreviewSrc;
-    private boolean isAddUsers;
-    private boolean isCreateTheme;
-    private boolean isSecuredMessage;
     private boolean isUpdateMessage;
-    private Time time;
+    private Duration slowMode;
+
+    private Chat_Settings chatSettings;
 }
