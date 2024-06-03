@@ -13,13 +13,10 @@ public interface ProfileImageService {
 
     Optional<Profile_Image> findById(UUID id);
 
-    Profile_Image findByProfileId(String profileId);
-
     Profile_Image save(ProfileImageDTO profileImageDTO);
 
     Profile_Image update(ProfileImageDTO profileImageDTO);
 
     void deleteById(UUID uuid);
 
-    void deleteByProfileId(Long profileId);
 }

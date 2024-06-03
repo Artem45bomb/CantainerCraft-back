@@ -22,62 +22,50 @@ public class ChatInfoServiceImpl implements ChatInfoService {
 
     @Override
     public Chat_Info save(ChatInfoDTO chatInfoDTO) {
-        if (chatInfoRepository.existsById(chatInfoDTO.getUuid())) {
-            throw new NotResourceException("ChatInfo already exists");
+        Chat_Info ChatInfo = chatInfoDTOConvertor.convertDTOToEntity(chatInfoDTO);
+        Optional<Chat_Info> chatInfo = chatInfoRepository.findById(chatInfoDTO.getUuid());
+        if (chatInfo.isPresent()) {
+            throw new NotResourceException("Chat info already exists");
         }
-        else {
-        Chat_Info chatInfo = chatInfoDTOConvertor.convertChatInfoDTOToChatInfo(chatInfoDTO);
-        return chatInfoRepository.save(chatInfo);
-        }
+
+        return chatInfoRepository.save(ChatInfo);
     }
 
 
     @Override
     public Chat_Info update(ChatInfoDTO chatInfoDTO) {
-        Chat_Info chatInfo = chatInfoDTOConvertor.convertChatInfoDTOToChatInfo(chatInfoDTO);
-        chatInfo.setUuid(chatInfoDTO.getUuid());
-        chatInfoRepository.save(chatInfo);
-        return chatInfoRepository.save(chatInfo);
+        Chat_Info ChatInfo = chatInfoDTOConvertor.convertDTOToEntity(chatInfoDTO);
+        Optional<Chat_Info> chatInfo = chatInfoRepository.findById(chatInfoDTO.getUuid());
+        if (chatInfo.isEmpty()) {
+            throw new NotResourceException("Chat Info not found");
+        }
+
+        return chatInfoRepository.save(ChatInfo);
     }
 
     @Override
     public Optional<Chat_Info> findById(UUID uuid) {
-        if (chatInfoRepository.existsById(uuid)){
-            throw new NotResourceException("UUID not Found.");
+        Optional<Chat_Info> chatInfo = chatInfoRepository.findById(uuid);
+        if (chatInfo.isEmpty()) {
+            throw new NotResourceException("No such chat info");
         }
-        else{
-            return chatInfoRepository.findById(uuid);
-        }
+
+        return chatInfoRepository.findById(uuid);
     }
 
-    @Override
-    public Optional<Chat_Info> findByChatId(Long chatId) {
-
-        return Optional.empty();
-    }
 
     @Override
     public List<Chat_Info> findAll() {
-
         return chatInfoRepository.findAll();
     }
 
     @Override
     public void deleteById(UUID uuid) {
-        if (chatInfoRepository.existsById(uuid)) {
-            throw new NotResourceException("UUID not Found.");
+        Optional<Chat_Info> chatInfo = chatInfoRepository.findById(uuid);
+        if (chatInfo.isEmpty()) {
+            throw new NotResourceException("No such chat info");
         }
-        else{
-            chatInfoRepository.deleteById(uuid);
-        }
+        chatInfoRepository.deleteById(uuid);
     }
 
-    @Override
-    public void deleteByChatId(Long chatId) {
-
-    }
-
-    @Override
-    public void deleteByUser(Long userId, String email) {
-    }
 }

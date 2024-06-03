@@ -10,13 +10,13 @@ import java.util.UUID;
 public interface UserOnlineService {
     List<User_Online> findAll();
 
-    Optional<User_Online> findById(int id);
+    Optional<User_Online> findById(UUID uuid);
 
     User_Online save(UserOnlineDTO UserOnlineDTO);
 
-    void update(UserOnlineDTO UserOnlineDTO);
+    User_Online update(UserOnlineDTO UserOnlineDTO);
 
-    void deleteById(int id);
+    void deleteById(UUID uuid);
 
 
 }

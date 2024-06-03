@@ -1,19 +1,22 @@
 package org.cantainercraft.micro.users.dto;
 
+import jakarta.annotation.Nonnull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.UUID;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ChatInfoDTO {
 
     private UUID uuid;
 
-    private int userId;
-
-    private int chatId;
+    private UUID chatId;
 
     private boolean is_secured;
 

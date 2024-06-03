@@ -20,47 +20,25 @@ public class ProfileImageController {
 
     private final ProfileImageService profileImageService;
 
-    @PostMapping("/uuid")
+    @GetMapping("/uuid")
     public ResponseEntity<Optional<Profile_Image>> findById(@RequestBody UUID uuid) {
-
-        Optional<Profile_Image> profileImage = profileImageService.findById(uuid);
-
-        if (profileImage.isEmpty()) {
-            throw new NotResourceException("Profile image not found");
-        }
         return ResponseEntity.ok(profileImageService.findById(uuid));
     }
 
     @PostMapping("/add")
     public ResponseEntity<Profile_Image> save(@RequestBody ProfileImageDTO profileImageDTO){
-        Optional<Profile_Image> profileImage = profileImageService.findById(profileImageDTO.getUuid());
-        if (profileImage.isEmpty()) {
-            throw new NotResourceException("Profile id not founded");
-        }
-        else{
             return ResponseEntity.ok(profileImageService.save(profileImageDTO));
-        }
     }
 
 
     @PutMapping("/update")
     public ResponseEntity<Boolean> update(@RequestBody ProfileImageDTO profileImageDTO){
-        Optional<Profile_Image> profileImage = profileImageService.findById(profileImageDTO.getUuid());
-        if(profileImage.isPresent()){
-            profileImageService.update(profileImageDTO);
-            return ResponseEntity.ok(true);
-        }
         return new ResponseEntity(MessageError.of("profile is not exist"),HttpStatus.NOT_ACCEPTABLE);
     }
 
 
-    @PutMapping("/delete/id")
+    @DeleteMapping("/delete/id")
     public ResponseEntity<Boolean> deleteById(@RequestBody UUID uuid ){
-        Optional<Profile_Image> profileImage = profileImageService.findById(uuid);
-        if(profileImage.isPresent()){
-            profileImageService.deleteById(uuid);
-            return ResponseEntity.ok(true);
-        }
         return new ResponseEntity(MessageError.of("profile is not exist"),HttpStatus.NOT_ACCEPTABLE);
     }
 

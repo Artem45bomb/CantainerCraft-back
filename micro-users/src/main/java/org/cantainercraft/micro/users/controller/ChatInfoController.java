@@ -30,32 +30,13 @@ public class ChatInfoController  {
 
     private final ChatInfoService chatInfoService;
 
-    @PostMapping("/uuid")
-    public ResponseEntity<Chat_Info> createChatInfo(@RequestBody UUID uuid) {
-
-        Optional<Chat_Info> chatInfo = chatInfoService.findById(uuid);
-
-        if (chatInfo.isEmpty()){
-            throw  new NotResourceException("profile is not exist");
-        }
-        return ResponseEntity.ok(chatInfo.get());
-
-    }
-
     @PostMapping("/add")
     public ResponseEntity<Chat_Info> save(@RequestBody ChatInfoDTO chatInfoDTO){
         return ResponseEntity.ok(chatInfoService.save(chatInfoDTO));
     }
 
-    @PostMapping("/id")
+    @GetMapping("/id")
     public ResponseEntity<Chat_Info> findById(@RequestBody UUID uuid){
-
-        Optional<Chat_Info> chatInfo = chatInfoService.findById(uuid);
-
-        if(chatInfo.isEmpty()){
-            throw  new NotResourceException("chatInfo is not exist");
-        }
-
         return ResponseEntity.ok(chatInfoService.findById(uuid).get());
     }
 
@@ -66,19 +47,11 @@ public class ChatInfoController  {
 
     @PutMapping("/update")
     public ResponseEntity<Chat_Info> update(@RequestBody ChatInfoDTO chatInfoDTO) {
-        Optional<Chat_Info> chatInfo = chatInfoService.findById(chatInfoDTO.getUuid());
-        if (chatInfo.isEmpty()) {
-            throw new NotResourceException("chatInfo is not exist");
-        }
         return ResponseEntity.ok(chatInfoService.update(chatInfoDTO));
     }
 
-    @PutMapping("/delete/id")
+    @DeleteMapping("/delete/id")
     public ResponseEntity<Boolean> deleteById(@RequestBody UUID uuid ){
-        Optional<Chat_Info> chatInfo = chatInfoService.findById(uuid);
-        if(chatInfo.isEmpty()){
-            throw  new NotResourceException("chatInfo is not exist");
-        }
         return new ResponseEntity(MessageError.of("chatInfo is not exist"),HttpStatus.NOT_ACCEPTABLE);
     }
 
