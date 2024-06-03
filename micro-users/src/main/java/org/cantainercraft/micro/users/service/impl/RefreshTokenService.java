@@ -29,7 +29,7 @@ public class RefreshTokenService {
 
     public Token createRefreshToken(Authentication authentication){
             Optional<Token> optionalToken = findByToken(authentication);
-            System.out.println((String)authentication.getName()+":"+(String)authentication.getCredentials());
+
             if(optionalToken.isPresent()){
                 return verifyException(optionalToken.get());
             }

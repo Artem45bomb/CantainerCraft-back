@@ -17,7 +17,7 @@ public class ProfileInitServiceImpl implements InitService<Profile> {
 
     @Override
     public void init(Profile profile) {
-        ProfileDTO profileDTO = convertor.convertProfileToProfileDTO(profile);
+        ProfileDTO profileDTO = convertor.convertEntityToDTO(profile);
         profileService.save(profileDTO);
     }
 }

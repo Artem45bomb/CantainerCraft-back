@@ -23,11 +23,11 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     public Subscription findByID(Long id) { return subscriptionRepository.findById(id).get(); }
 
     public Subscription save(SubscriptionDTO subscriptionDTO){
-        Subscription subscription = subscriptionDTOConvertor.convertSubscriptionDTOToSubscription(subscriptionDTO);
+        Subscription subscription = subscriptionDTOConvertor.convertDTOToEntity(subscriptionDTO);
         return subscriptionRepository.save(subscription);
     }
     public boolean update(SubscriptionUpdateDTO subscriptionUpdateDTO){
-        Subscription subscription = subscriptionDTOConvertor.convertSubscriptionDTOToSubscription(subscriptionUpdateDTO);
+        Subscription subscription = subscriptionDTOConvertor.convertDTOToEntity(subscriptionUpdateDTO);
         subscription.setId(subscriptionUpdateDTO.getId());
         subscriptionRepository.save(subscription);
         return true;

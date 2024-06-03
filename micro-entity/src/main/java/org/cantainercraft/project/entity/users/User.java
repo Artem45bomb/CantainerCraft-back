@@ -59,13 +59,13 @@ public class User implements Serializable {
     private User_Online userOnline;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role",schema = "weather",catalog = "postgres",
+    @JoinTable(name = "user_role",schema = "messenger_users",catalog = "postgres",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles;
 
     @ManyToMany
-    @JoinTable(name = "user_subscription",schema = "weather",catalog = "postgres",
+    @JoinTable(name = "user_subscription",schema = "messenger_users",catalog = "postgres",
             joinColumns = @JoinColumn(name = "userId"),
             inverseJoinColumns = @JoinColumn(name = "subscriptionId"))
     private List<Subscription> subscriptions;

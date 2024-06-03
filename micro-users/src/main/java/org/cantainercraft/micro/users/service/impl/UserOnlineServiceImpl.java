@@ -26,13 +26,13 @@ public class UserOnlineServiceImpl implements UserOnlineService {
     }
 
     @Override
-    public Optional<User_Online> findById(UUID uuid) {
+    public User_Online findById(UUID uuid) {
         Optional<User_Online> userOnline = userOnlineRepository.findById(uuid);
         if (userOnline.isEmpty()) {
             throw new NotResourceException("User online not found");
         }
 
-        return userOnlineRepository.findById(uuid);
+        return userOnline.get();
     }
 
 

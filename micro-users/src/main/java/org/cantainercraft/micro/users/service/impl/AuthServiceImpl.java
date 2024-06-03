@@ -50,7 +50,9 @@ public class AuthServiceImpl implements AuthService {
             var authentication = new UsernamePasswordAuthenticationToken(signUpAuthDTO.getUsername()
                     ,signUpAuthDTO.getPassword());
 
-            userService.save(convertor.convertUserToUserDTO(user));
+            UserDTO userDTO = convertor.convertEntityToDTO(user);
+
+            userService.save(userDTO);
 
             //create jwt tokens
             Token token = refreshService.createRefreshToken(authentication);

@@ -27,7 +27,6 @@ public class UserController {
     private final UserService userService;
 
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/id")
     public ResponseEntity<User> findById(@RequestBody Long id){
         Optional<User> user = userService.findById(id);
@@ -48,7 +47,6 @@ public class UserController {
         return ResponseEntity.ok(userService.findBySearch(email,password));
     }
 
-    @PreAuthorize("hasAnyRole('USER')")
     @PostMapping("/email")
     public ResponseEntity<User> findByEmail(@RequestBody String email){
         if(email ==null || email.trim().isEmpty()){
@@ -61,7 +59,6 @@ public class UserController {
 
     }
 
-    @PreAuthorize("hasAnyRole('USER')")
     @PostMapping("/name")
     public ResponseEntity<User> findByName(@RequestBody String name){
         if(name ==null || !name.trim().isEmpty()){
@@ -77,13 +74,11 @@ public class UserController {
 
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/all")
     public ResponseEntity<List<User>> findAll(){
         return ResponseEntity.ok(userService.findAll());
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<User> save(@RequestBody UserDTO userDTO){
         Optional<User> user = userService.findByEmail(userDTO.getEmail());
@@ -101,7 +96,6 @@ public class UserController {
                 .body(userService.save(userDTO));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<String> update(@RequestBody UserDTO dto){
             if(dto.getId() == null){
@@ -116,7 +110,6 @@ public class UserController {
             return ResponseEntity.ok("user update");
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/delete/email")
     public ResponseEntity<String> deleteByEmail(@RequestBody String email){
             Optional<User> user = userService.findByEmail(email);
@@ -127,7 +120,7 @@ public class UserController {
             return ResponseEntity.ok("delete user");
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+
     @PutMapping("/delete/id")
     public ResponseEntity<String> deleteById(@RequestBody Long id ){
             Optional<User> user= userService.findById(id);

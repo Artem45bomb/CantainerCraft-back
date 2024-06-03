@@ -31,7 +31,6 @@ public class ChatInfoServiceImpl implements ChatInfoService {
         return chatInfoRepository.save(entity);
     }
 
-
     @Override
     public Chat_Info update(ChatInfoDTO chatInfoDTO) {
         Chat_Info entity = chatInfoDTOConvertor.convertDTOToEntity(chatInfoDTO);

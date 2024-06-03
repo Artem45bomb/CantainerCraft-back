@@ -20,12 +20,12 @@ public class ProfileServiceImpl implements ProfileService {
 
     
     public Profile save (ProfileDTO profileDTO){
-        Profile profile = profileDTOConvertor.convertProfileDTOToProfile(profileDTO);
+        Profile profile = profileDTOConvertor.convertDTOToEntity(profileDTO);
         return profileRepository.save(profile);
     }
     
     public Profile update(ProfileDTO profileDTO){
-        Profile profile = profileDTOConvertor.convertProfileDTOToProfile(profileDTO);
+        Profile profile = profileDTOConvertor.convertDTOToEntity(profileDTO);
         return profileRepository.save(profile);
     }
     

@@ -42,7 +42,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String token =null;
         String url = request.getRequestURI();
 
-        if(request.getCookies() != null && !url.equals("/auth/login") ){
+        if(request.getCookies() != null && !url.contains("/auth")){
             for(Cookie cookie : request.getCookies()){
                 if(cookie.getName().equals("accessToken")){
                     token = cookie.getValue();

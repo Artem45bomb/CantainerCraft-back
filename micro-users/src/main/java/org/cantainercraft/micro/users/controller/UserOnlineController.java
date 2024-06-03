@@ -29,7 +29,7 @@ public class UserOnlineController {
     }
 
     @GetMapping("/{uuid}")
-    public ResponseEntity<Optional<User_Online>> findById(@PathVariable UUID uuid) {
+    public ResponseEntity<User_Online> findById(@PathVariable UUID uuid) {
         return ResponseEntity.ok(userOnlineService.findById(uuid));
     }
 

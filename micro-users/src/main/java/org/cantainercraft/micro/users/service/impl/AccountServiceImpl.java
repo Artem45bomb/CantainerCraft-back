@@ -48,7 +48,7 @@ public class AccountServiceImpl implements AccountService {
         String accessToken =  accessTokenFactory.apply(token);
 
         //update user account
-        userRepository.save(convertor.convertUserDTOToUser(userDTO));
+        userRepository.save(convertor.convertDTOToEntity(userDTO));
 
         //add accessToken to cookies so that the user has access to services
         ResponseCookie cookie = ResponseCookie.from("accessToken")

@@ -6,7 +6,10 @@ import org.cantainercraft.micro.users.dto.ServiceUserDTO;
 import org.cantainercraft.micro.users.service.InitService;
 import org.cantainercraft.micro.users.service.UserService;
 import org.cantainercraft.micro.utilits.exception.ExistResourceException;
+import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.users.Profile;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,27 +35,41 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findById(Long id){
+    //@Cacheable(value = "users",key = "#id")
+    public Optional<User> findById(Long id) {
+        try {
+            Thread.sleep(3000);
+        }
+        catch (InterruptedException ex){
+            System.out.println(ex.getMessage());
+        }
         return userRepository.findById(id);
     }
 
     @Override
+    //@Cacheable(value = "users",key = "#userDTO.id")
     public User save(UserDTO userDTO){
         if(existByUsername(userDTO.getUsername())){
             throw new ExistResourceException("user is exist");
         }
-        User user = userDTOConvertor.convertUserDTOToUser(userDTO);
-        Profile profile = Profile.builder().user(user).build();
-        profileInitService.init(profile);
+        User user = userDTOConvertor.convertDTOToEntity(userDTO);
+
+//        Profile profile = Profile
+//                .builder()
+//                .user(user)
+//                .build();
+//        profileInitService.init(profile);
+
         return userRepository.save(user);
     }
 
     @Override
+    //@CachePut(value = "users",key = "#userDTO.id")
     public boolean update(UserDTO userDTO){
-        User user = userDTOConvertor.convertUserDTOToUser(userDTO);
+        User user = userDTOConvertor.convertDTOToEntity(userDTO);
         Optional<User> userOptional = userRepository.findById(userDTO.getId());
-        if(userOptional.isPresent()) {
-            throw new ExistResourceException("user is exist");
+        if(userOptional.isEmpty()) {
+            throw new NotResourceException("user is not exist");
         }
         userRepository.save(user);
         return true;
@@ -60,8 +77,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> findByUsernameAndPassword(ServiceUserDTO dto){
-        Optional<User> userOptional = userRepository.findByUsernameAndPassword(dto.getUsername(), dto.getPassword());
-        return userRepository.findByUsernameAndPassword(dto.getUsername(), dto.getUsername());
+        return userRepository.findByUsernameAndPassword(dto.getUsername(), dto.getPassword());
     }
 
     @Override
@@ -75,18 +91,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    //@CacheEvict("users")
     public void deleteById(Long id){
         userRepository.deleteById(id);
     }
 
     @Override
+    //@CacheEvict("users")
     public void deleteByEmail(String email){
         userRepository.deleteByEmail(email);
     }
 
 
     @Override
-    @Cacheable("users")
+    //@Cacheable(value = "users",key = "#username")
     public Optional<User> findByUsername(String username){
         return userRepository.findByUsername(username);
     }
