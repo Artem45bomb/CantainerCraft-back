@@ -8,15 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface ChatSettingsRepository extends JpaRepository<Chat_Settings, UUID> {
-    //boolean delete(UUID uuid);
-
-    //boolean update(UUID uuid, Chat_Settings settings);
-
-    //Optional<Chat_Settings> findByUuid(UUID uuid);
-
     List<Chat_Settings> findByChatUuid(UUID chat_Id);
-
-
 }
 
 

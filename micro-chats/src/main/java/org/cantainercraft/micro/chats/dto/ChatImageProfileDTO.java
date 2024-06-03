@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.cantainercraft.project.entity.chats.Chat;
+
 import java.util.UUID;
 @Getter
 @Setter
@@ -12,5 +14,5 @@ import java.util.UUID;
 public class ChatImageProfileDTO {
     private UUID uuid;
     private String srcContent;
-    private UUID chatId;
+    private Chat chat;
 }

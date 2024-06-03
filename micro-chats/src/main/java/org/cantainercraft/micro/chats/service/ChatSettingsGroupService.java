@@ -1,7 +1,6 @@
 package org.cantainercraft.micro.chats.service;
 
 import org.cantainercraft.micro.chats.dto.ChatSettingsGroupDTO;
-import org.cantainercraft.micro.chats.dto.ChatSettingsGroupUpdateDTO;
 import org.cantainercraft.project.entity.chats.Chat_Settings_Group;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +13,7 @@ public interface ChatSettingsGroupService {
 
     boolean delete(UUID uuid);
 
-    boolean update(ChatSettingsGroupUpdateDTO chatSettingsGroupUpdateDTO);
+    boolean update(ChatSettingsGroupDTO chatSettingsGroupUpdateDTO);
 
     Chat_Settings_Group save(ChatSettingsGroupDTO chatSettingsGroupDTO);
 

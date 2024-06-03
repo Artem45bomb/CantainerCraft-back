@@ -61,10 +61,10 @@ public class MessageReplyController {
 
     @PutMapping("/delete/user")
     public ResponseEntity<Void> deleteByMessageReplyUserId(@RequestBody MessageReplyDTO messageReplyDTO) {
-        if (service.findByMessageReplyUserId(messageReplyDTO.getMessageReplyUserId()).isEmpty()) {
+        if (service.findByMessageReplyUserId(messageReplyDTO.getMessageReply().getUserId()).isEmpty()) {
            throw new NotResourceException("No content to delete");
         }
-        service.deleteByMessageReplyUserId(messageReplyDTO.getMessageReplyUserId());
+        service.deleteByMessageReplyUserId(messageReplyDTO.getMessageReply().getUserId());
         return ResponseEntity.noContent().build();
     }
 }

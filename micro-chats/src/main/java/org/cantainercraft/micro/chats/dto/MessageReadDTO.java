@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.cantainercraft.project.entity.chats.Chat;
+import org.cantainercraft.project.entity.chats.Message;
+
 import java.util.UUID;
 
 @Getter
@@ -12,8 +15,8 @@ import java.util.UUID;
 @NoArgsConstructor
 public class MessageReadDTO {
     private UUID uuid;
-    private UUID messageId;
+    private Message message;
     private Long userId;
     private boolean isRead;
-    private UUID chatId;
+    private Chat chat;
 }

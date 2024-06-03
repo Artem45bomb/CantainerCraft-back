@@ -1,7 +1,6 @@
 package org.cantainercraft.micro.chats.service;
 
 import org.cantainercraft.micro.chats.dto.ChatDTO;
-import org.cantainercraft.micro.chats.dto.ChatUpdateDTO;
 import org.cantainercraft.project.entity.users.TypeChat;
 import org.cantainercraft.project.entity.chats.Chat;
 
@@ -14,7 +13,7 @@ public interface ChatService {
 
      Chat save(ChatDTO chatDTO);
 
-     boolean update(ChatUpdateDTO chatUpdateDTO);
+     boolean update(ChatDTO chatUpdateDTO);
 
      boolean delete(UUID uuid);
 

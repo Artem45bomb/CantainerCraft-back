@@ -3,7 +3,6 @@ package org.cantainercraft.micro.chats.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.cantainercraft.micro.chats.dto.ChatSettingsGroupDTO;
-import org.cantainercraft.micro.chats.dto.ChatSettingsGroupUpdateDTO;
 import org.cantainercraft.micro.chats.service.ChatSettingsGroupService;
 import org.cantainercraft.micro.chats.service.impl.ChatSettingsGroupServiceImpl;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
@@ -63,17 +62,17 @@ public class ChatSettingsGroupController {
 
     @PreAuthorize("hasAnyRole('USER,ADMIN')") //<<<--------------------
     @PutMapping("/update")
-    public ResponseEntity<Boolean> update(@RequestBody ChatSettingsGroupUpdateDTO chatSettingsGroupUpdateDTO){
-        Optional<Chat_Settings_Group> chatSettings = chatSettingsGroupService.findByUUID(chatSettingsGroupUpdateDTO.getUuid());
+    public ResponseEntity<Boolean> update(@RequestBody ChatSettingsGroupDTO chatSettingsGroupDTO){
+        Optional<Chat_Settings_Group> chatSettings = chatSettingsGroupService.findByUUID(chatSettingsGroupDTO.getUuid());
         if (chatSettings.isEmpty())
         {
             throw new NotResourceException("NoN");
         }
-        if(chatSettingsGroupUpdateDTO.getUuid()==null)
+        if(chatSettingsGroupDTO.getUuid()==null)
         {
             throw new NotResourceException("NoN");
         }else{
-            return ResponseEntity.ok(chatSettingsGroupService.update(chatSettingsGroupUpdateDTO));
+            return ResponseEntity.ok(chatSettingsGroupService.update(chatSettingsGroupDTO));
         }
     }
 
