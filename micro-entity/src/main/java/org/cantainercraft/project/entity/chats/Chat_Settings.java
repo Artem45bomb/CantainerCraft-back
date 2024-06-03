@@ -26,14 +26,14 @@ public class Chat_Settings implements Serializable {
 
     private boolean isAllowTheme;
 
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER,optional = false)
     private Chat_Settings_Group chatSettingsGroup;
 
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER,optional = false)
     private Chat_Settings_Chanel chatSettingsChanel;
 
     @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY,optional = false)
     private Chat chat;
 
     @Override

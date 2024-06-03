@@ -18,7 +18,7 @@ import java.util.UUID;
 @Cacheable
 @Builder
 @Entity
-@Table(name = "user_online",schema = "weather",catalog = "postgres")
+@Table(name = "user_online",schema = "messenger_users",catalog = "postgres")
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class User_Online implements Serializable {
 

@@ -1,5 +1,7 @@
 package org.cantainercraft.micro.users.repository;
 
+import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -7,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Component;
 import org.cantainercraft.project.entity.users.User;
 import org.springframework.transaction.annotation.Transactional;
+import reactor.util.annotation.NonNullApi;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,13 +28,14 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     User getByUsername(String username);
 
-    boolean existsById(Long id);
+    boolean existsById(@NotNull Long id);
 
     boolean existsByUsername(String name);
 
     boolean existsByEmail(String email);
 
     Optional<User> findByEmail(String email);
+
 
     @Query("select user from User user where (:email is null or lower(user.email) like lower(concat('%',:email,'%'))) and" +
             "(:password is null or lower(user.password) like lower(concat('%',:password,'%')))")

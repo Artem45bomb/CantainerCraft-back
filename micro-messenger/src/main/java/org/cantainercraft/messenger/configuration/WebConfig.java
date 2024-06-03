@@ -16,20 +16,20 @@ public class WebConfig implements WebSocketMessageBrokerConfigurer, WebSocketCon
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/client");
+        config.enableSimpleBroker("/topic");
         config.setApplicationDestinationPrefixes("/app");
     }
 
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/gs-guide-websocket").setAllowedOriginPatterns("*");
+        registry.addEndpoint("/gs-guide-websocket").setAllowedOriginPatterns("*").withSockJS();
     }
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(webSocketFileHandler,"/file-handler")
                 .addInterceptors(new HttpSessionHandshakeInterceptor())
-                .setAllowedOrigins("*");
+                .setAllowedOriginPatterns("*");
     }
 }

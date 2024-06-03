@@ -15,7 +15,7 @@ import java.util.Objects;
 @Setter
 @Builder
 @Entity
-@Table(name = "subsciption",schema = "weather",catalog = "postgres")
+@Table(name = "subsciption",schema = "messenger_users",catalog = "postgres")
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Subscription implements Serializable {

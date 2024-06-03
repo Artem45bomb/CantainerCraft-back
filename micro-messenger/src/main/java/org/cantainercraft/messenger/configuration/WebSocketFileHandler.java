@@ -1,86 +1,71 @@
 package org.cantainercraft.messenger.configuration;
 
-
-import feign.Headers;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.HttpHeaders;
+import org.cantainercraft.messenger.dto.WSFileDTO;
+import org.cantainercraft.messenger.service.FileWebSocketService;
+
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.BinaryMessage;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
-import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.handler.BinaryWebSocketHandler;
-import org.springframework.web.socket.handler.TextWebSocketHandler;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 @Log4j2
-public class WebSocketFileHandler extends TextWebSocketHandler {
+@RequiredArgsConstructor
+public class WebSocketFileHandler extends BinaryWebSocketHandler {
+    private static final Integer SIZE_CHUNK = 1_024;
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private Map<UUID,Set<WebSocketSession>> sessionStore = new ConcurrentHashMap<>();
+    private final FileWebSocketService service;
 
-    private final String SESSION_KEY = "session-chat-id";
-    private Map<UUID,Set<WebSocketSession>> sessionStore = Collections.synchronizedMap(new HashMap<>());
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         super.afterConnectionEstablished(session);
-        HttpHeaders headers = session.getHandshakeHeaders();
-        List<String> field =  headers.get(SESSION_KEY);
-
-        log.info("field:{}",field.get(0));
-        UUID sessionChatId =UUID.fromString(field.get(0));
-
-        if(sessionStore.containsKey(sessionChatId)){
-            sessionStore.get(sessionChatId).add(session);
-        }
-        else {
-            Set<WebSocketSession> set = new HashSet<>();
-            set.add(session);
-            sessionStore.put(sessionChatId,set);
-        }
-
     }
 
     @Override
-    protected void handleTextMessage(WebSocketSession session, TextMessage message) {
+    protected void handleTextMessage(WebSocketSession session,TextMessage textMessage){
+        File file = null;
+        try {
+            var dto = objectMapper.readValue(textMessage.getPayload(), WSFileDTO.class);
+            file = new File(dto.getSrcContent());
+        }
+        catch (IOException ex){
+            log.warn("Error:{}",ex.getMessage());
+        }
 
-            //super.handleTextMessage(session,message);
-            //session.close(CloseStatus.NOT_ACCEPTABLE.withReason("Text messages not supported"));
+        long fileLength = file.length();
+        long fileReadLength = 0;
 
-            HttpHeaders headers = session.getHandshakeHeaders();
-            List<String> field =  headers.get(SESSION_KEY);
+        try(var fileInput = new FileInputStream(file)){
 
-            log.info("field:{}",field.get(0));
-            UUID sessionChatId =UUID.fromString(field.get(0));
+            byte[] readArray = new byte[SIZE_CHUNK * 6];
+            long realLength;
 
-            String payload = message.getPayload();
-
-            if(session.isOpen()){
-
-                sessionStore.get(sessionChatId).forEach(wsSession -> {
-                            try {
-                                wsSession.sendMessage(message);
-                            } catch (IOException ex) {
-
-                            }}
-                );
+            while ((realLength = fileInput.read(readArray)) != -1){
+               fileReadLength += realLength;
+               boolean isLastMessage = fileLength  == fileReadLength;
+               session.sendMessage(new BinaryMessage(readArray,isLastMessage));
             }
-            else {
-                log.warn("Error:Closed connection");
-            }
+        }
+        catch (IOException ex){
+            log.warn("Error:{}",ex.getMessage());
+        }
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         super.afterConnectionClosed(session,status);
-
-        HttpHeaders headers = session.getHandshakeHeaders();
-        List<String> field =  headers.get(SESSION_KEY);
-
-        log.info("field:{}",field.get(0));
-        UUID sessionChatId =UUID.fromString(field.get(0));
-
-        sessionStore.get(sessionChatId).remove(session);
     }
 }
