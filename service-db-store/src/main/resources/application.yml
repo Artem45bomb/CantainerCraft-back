@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: 'service-db-store'
+  cloud:
+    stream:
+      bindings:
+        processMessage-in-0:
+          destination: my-queue
+        processMessage-out-0:
+          destination: my-queue
+      rabbit:
+        bindings:
+          processMessage-in-0:
+            consumer:
+              exchange-type: topic
+            producer:
+              exchange-type: topic
