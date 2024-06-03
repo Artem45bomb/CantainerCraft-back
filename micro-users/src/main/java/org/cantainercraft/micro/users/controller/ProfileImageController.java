@@ -1,5 +1,6 @@
 package org.cantainercraft.micro.users.controller;
 
+import jakarta.ws.rs.Path;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.users.dto.ProfileImageDTO;
 import org.cantainercraft.micro.users.service.ProfileImageService;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -20,8 +22,13 @@ public class ProfileImageController {
 
     private final ProfileImageService profileImageService;
 
-    @GetMapping("/uuid")
-    public ResponseEntity<Optional<Profile_Image>> findById(@RequestBody UUID uuid) {
+    @GetMapping("/all")
+    public ResponseEntity<List<Profile_Image>> findAll(){
+        return ResponseEntity.ok(profileImageService.findAll());
+    }
+
+    @GetMapping("/{uuid}")
+    public ResponseEntity<Profile_Image> findById(@PathVariable UUID uuid) {
         return ResponseEntity.ok(profileImageService.findById(uuid));
     }
 
@@ -32,14 +39,14 @@ public class ProfileImageController {
 
 
     @PutMapping("/update")
-    public ResponseEntity<Boolean> update(@RequestBody ProfileImageDTO profileImageDTO){
-        return new ResponseEntity(MessageError.of("profile is not exist"),HttpStatus.NOT_ACCEPTABLE);
+    public ResponseEntity<Profile_Image> update(@RequestBody ProfileImageDTO profileImageDTO){
+        return ResponseEntity.ok(profileImageService.update(profileImageDTO));
     }
 
 
-    @DeleteMapping("/delete/id")
-    public ResponseEntity<Boolean> deleteById(@RequestBody UUID uuid ){
-        return new ResponseEntity(MessageError.of("profile is not exist"),HttpStatus.NOT_ACCEPTABLE);
+    @DeleteMapping("/delete/{uuid}")
+    public void deleteById(@PathVariable UUID uuid ){
+        profileImageService.deleteById(uuid);
     }
 
 }

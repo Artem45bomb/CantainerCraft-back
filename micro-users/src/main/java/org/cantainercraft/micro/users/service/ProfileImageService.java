@@ -11,7 +11,7 @@ public interface ProfileImageService {
 
     List<Profile_Image> findAll();
 
-    Optional<Profile_Image> findById(UUID id);
+    Profile_Image findById(UUID id);
 
     Profile_Image save(ProfileImageDTO profileImageDTO);
 

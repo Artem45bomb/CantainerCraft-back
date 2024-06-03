@@ -13,7 +13,7 @@ public interface ChatInfoService {
 
     Chat_Info update(ChatInfoDTO ChatInfoDTO);
 
-    Optional<Chat_Info> findById(UUID uuid);
+    Chat_Info findById(UUID uuid);
 
     List<Chat_Info> findAll();
 

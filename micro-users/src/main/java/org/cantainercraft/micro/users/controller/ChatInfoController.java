@@ -35,9 +35,9 @@ public class ChatInfoController  {
         return ResponseEntity.ok(chatInfoService.save(chatInfoDTO));
     }
 
-    @GetMapping("/id")
-    public ResponseEntity<Chat_Info> findById(@RequestBody UUID uuid){
-        return ResponseEntity.ok(chatInfoService.findById(uuid).get());
+    @GetMapping("/{uuid}")
+    public ResponseEntity<Chat_Info> findById(@PathVariable UUID uuid){
+        return ResponseEntity.ok(chatInfoService.findById(uuid));
     }
 
     @GetMapping("/all")
@@ -50,9 +50,9 @@ public class ChatInfoController  {
         return ResponseEntity.ok(chatInfoService.update(chatInfoDTO));
     }
 
-    @DeleteMapping("/delete/id")
-    public ResponseEntity<Boolean> deleteById(@RequestBody UUID uuid ){
-        return new ResponseEntity(MessageError.of("chatInfo is not exist"),HttpStatus.NOT_ACCEPTABLE);
+    @DeleteMapping("/delete/{uuid}")
+    public void deleteById(@PathVariable UUID uuid ){
+        chatInfoService.deleteById(uuid);
     }
 
 

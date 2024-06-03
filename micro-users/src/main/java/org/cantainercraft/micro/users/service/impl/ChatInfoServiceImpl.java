@@ -22,35 +22,35 @@ public class ChatInfoServiceImpl implements ChatInfoService {
 
     @Override
     public Chat_Info save(ChatInfoDTO chatInfoDTO) {
-        Chat_Info ChatInfo = chatInfoDTOConvertor.convertDTOToEntity(chatInfoDTO);
+        Chat_Info entity = chatInfoDTOConvertor.convertDTOToEntity(chatInfoDTO);
         Optional<Chat_Info> chatInfo = chatInfoRepository.findById(chatInfoDTO.getUuid());
         if (chatInfo.isPresent()) {
             throw new NotResourceException("Chat info already exists");
         }
 
-        return chatInfoRepository.save(ChatInfo);
+        return chatInfoRepository.save(entity);
     }
 
 
     @Override
     public Chat_Info update(ChatInfoDTO chatInfoDTO) {
-        Chat_Info ChatInfo = chatInfoDTOConvertor.convertDTOToEntity(chatInfoDTO);
+        Chat_Info entity = chatInfoDTOConvertor.convertDTOToEntity(chatInfoDTO);
         Optional<Chat_Info> chatInfo = chatInfoRepository.findById(chatInfoDTO.getUuid());
         if (chatInfo.isEmpty()) {
             throw new NotResourceException("Chat Info not found");
         }
 
-        return chatInfoRepository.save(ChatInfo);
+        return chatInfoRepository.save(entity);
     }
 
     @Override
-    public Optional<Chat_Info> findById(UUID uuid) {
+    public Chat_Info findById(UUID uuid) {
         Optional<Chat_Info> chatInfo = chatInfoRepository.findById(uuid);
         if (chatInfo.isEmpty()) {
             throw new NotResourceException("No such chat info");
         }
 
-        return chatInfoRepository.findById(uuid);
+        return chatInfo.get();
     }
 
 

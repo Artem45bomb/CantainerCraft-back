@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -22,8 +23,13 @@ public class UserOnlineController {
 
     private final UserOnlineService userOnlineService;
 
-    @GetMapping("/uuid")
-    public ResponseEntity<Optional<User_Online>> findById(@RequestBody UUID uuid) {
+    @GetMapping("/all")
+    public ResponseEntity<List<User_Online>> findAll(){
+        return ResponseEntity.ok(userOnlineService.findAll());
+    }
+
+    @GetMapping("/{uuid}")
+    public ResponseEntity<Optional<User_Online>> findById(@PathVariable UUID uuid) {
         return ResponseEntity.ok(userOnlineService.findById(uuid));
     }
 
@@ -34,14 +40,16 @@ public class UserOnlineController {
 
 
     @PutMapping("/update")
-    public ResponseEntity<Boolean> update(@RequestBody UserOnlineDTO userOnlineDTO){
-        return new ResponseEntity(MessageError.of("profile is not exist"), HttpStatus.NOT_ACCEPTABLE);
+    public ResponseEntity<User_Online> update(@RequestBody UserOnlineDTO userOnlineDTO){
+        return ResponseEntity.ok(userOnlineService.update(userOnlineDTO));
     }
 
 
     @DeleteMapping("/delete/id")
-    public ResponseEntity<Boolean> deleteById(@RequestBody UUID uuid ){
-        return new ResponseEntity(MessageError.of("profile is not exist"),HttpStatus.NOT_ACCEPTABLE);
+    public void deleteById(@RequestBody UUID uuid ){
+
+        userOnlineService.deleteById(uuid);
+
     }
 
 }

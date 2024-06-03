@@ -22,7 +22,6 @@ public class UserOnlineServiceImpl implements UserOnlineService {
 
     @Override
     public List<User_Online> findAll() {
-
         return userOnlineRepository.findAll();
     }
 
@@ -39,7 +38,6 @@ public class UserOnlineServiceImpl implements UserOnlineService {
 
     @Override
     public User_Online save(UserOnlineDTO dto) {
-
         User_Online userOnline = userOnlineDTOConvertor.convertDTOToEntity(dto);
         if (userOnlineRepository.existsByUserId(dto.getUser().getId())) {
             throw new ExistResourceException("UserOnline already exists");
@@ -50,23 +48,23 @@ public class UserOnlineServiceImpl implements UserOnlineService {
 
     @Override
     public User_Online update(UserOnlineDTO userOnlineDTO) {
-        User_Online userOnline = userOnlineDTOConvertor.convertDTOToEntity(userOnlineDTO);
-        Optional<User_Online> userOnlineOptional = userOnlineRepository.findById(userOnlineDTO.getUuid());
-        if (userOnlineOptional.isEmpty()) {
+        User_Online entity = userOnlineDTOConvertor.convertDTOToEntity(userOnlineDTO);
+        Optional<User_Online> userOnline = userOnlineRepository.findById(userOnlineDTO.getUuid());
+        if (userOnline.isEmpty()) {
             throw new NotResourceException("UserOnline already exists");
         }
 
-        return userOnlineRepository.save(userOnline);
+        return userOnlineRepository.save(entity);
     }
 
     @Override
     public void deleteById(UUID uuid) {
-        Optional<User_Online> userOnlineOptional = userOnlineRepository.findById(uuid);
-        if(userOnlineOptional.isEmpty()) {
+        Optional<User_Online> userOnline = userOnlineRepository.findById(uuid);
+        if(userOnline.isEmpty()) {
             throw new NotResourceException("UserOnline does not exist");
         }
 
-    userOnlineRepository.deleteByUuid(uuid);
+        userOnlineRepository.deleteByUuid(uuid);
     }
 
 }

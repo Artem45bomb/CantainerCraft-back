@@ -33,9 +33,11 @@ public class UserServiceDetailsImpl implements UserDetailsService {
 
         CustomUserDetails customUserDetails = new CustomUserDetails(user.get());
         List<GrantedAuthority> grantedAuthorities  = new ArrayList<>();
+
         for(Role role : user.get().getRoles()){
             grantedAuthorities.add(new SimpleGrantedAuthority(role.getRole().toUpperCase()));
         }
+
         customUserDetails.setAuthorities(grantedAuthorities);
         return customUserDetails;
 
