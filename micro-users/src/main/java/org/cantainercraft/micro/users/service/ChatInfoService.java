@@ -15,15 +15,8 @@ public interface ChatInfoService {
 
     Optional<Chat_Info> findById(UUID uuid);
 
-    Optional<Chat_Info> findByChatId(Long chatId);
-
     List<Chat_Info> findAll();
 
     void deleteById(UUID uuid);
-
-    void deleteByChatId(Long chatId);
-
-    void deleteByUser(Long userId,String email);
-
 
 }

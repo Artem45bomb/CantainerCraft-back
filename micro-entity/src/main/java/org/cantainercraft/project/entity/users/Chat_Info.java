@@ -31,6 +31,10 @@ public class Chat_Info implements Serializable {
 
     private UUID chatId;
 
+    private boolean is_secured;
+
+    private boolean is_notification;
+
     @Override
     public boolean equals(Object object) {
         if (this == object) return true;

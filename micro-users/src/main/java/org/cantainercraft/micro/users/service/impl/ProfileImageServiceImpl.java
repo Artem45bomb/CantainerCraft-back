@@ -22,13 +22,12 @@ public class ProfileImageServiceImpl implements ProfileImageService {
 
     @Override
     public Profile_Image save(ProfileImageDTO profileImageDTO) {
+        Profile_Image Profile_Image = ProfileImageDTOConvertor.convertDTOToEntity(profileImageDTO);
         if (profileImageRepository.existsById(profileImageDTO.getUuid())) {
             throw  new NotResourceException("Profile image already exists");
         }
-        else {
-            Profile_Image Profile_Image = ProfileImageDTOConvertor.convertProfileImageDTOToProfileImage(profileImageDTO);
-            return profileImageRepository.save(Profile_Image);
-        }
+
+        return profileImageRepository.save(Profile_Image);
     }
 
     @Override
@@ -39,32 +38,32 @@ public class ProfileImageServiceImpl implements ProfileImageService {
 
     @Override
     public Optional<Profile_Image> findById(UUID uuid) {
-        if (profileImageRepository.existsById(uuid)) {
+        Optional<Profile_Image> profileImageOptional = profileImageRepository.findById(uuid);
+        if (profileImageOptional.isEmpty()) {
             throw new NotResourceException("Profile image already exists");
         }
-        else {
-            return profileImageRepository.findById(uuid);
-        }
-    }
 
-    @Override
-    public Profile_Image findByProfileId(String profileId) {
-        return null;
+            return profileImageRepository.findById(uuid);
     }
 
     @Override
     public Profile_Image update(ProfileImageDTO profileImageDTO) {
-        Profile_Image ProfileImage = ProfileImageDTOConvertor.convertProfileImageDTOToProfileImage(profileImageDTO);
-        ProfileImage.setUuid(profileImageDTO.getUuid());
-        profileImageRepository.save(ProfileImage);
+        Profile_Image ProfileImage = ProfileImageDTOConvertor.convertDTOToEntity(profileImageDTO);
+        Optional<Profile_Image> profileImageOptional = profileImageRepository.findById(profileImageDTO.getUuid());
+        if(profileImageOptional.isEmpty()){
+            throw new NotResourceException("Profile image already exists");
+        }
+
         return profileImageRepository.save(ProfileImage);
     }
 
     public void deleteById(UUID uuid) {
+        Optional<Profile_Image> profileImageOptional = profileImageRepository.findById(uuid);
+        if(profileImageOptional.isEmpty()){
+            throw new NotResourceException("Profile image does not exist");
+        }
+
         profileImageRepository.deleteById(uuid);
     }
-
-    @Override
-    public void deleteByProfileId(Long profileId) {}
 
 }

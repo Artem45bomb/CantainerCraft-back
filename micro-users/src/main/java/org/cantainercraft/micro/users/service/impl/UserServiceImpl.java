@@ -50,12 +50,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean update(UserDTO userDTO){
         User user = userDTOConvertor.convertUserDTOToUser(userDTO);
+        Optional<User> userOptional = userRepository.findById(userDTO.getId());
+        if(userOptional.isPresent()) {
+            throw new ExistResourceException("user is exist");
+        }
         userRepository.save(user);
         return true;
     }
 
     @Override
     public Optional<User> findByUsernameAndPassword(ServiceUserDTO dto){
+        Optional<User> userOptional = userRepository.findByUsernameAndPassword(dto.getUsername(), dto.getPassword());
         return userRepository.findByUsernameAndPassword(dto.getUsername(), dto.getUsername());
     }
 
