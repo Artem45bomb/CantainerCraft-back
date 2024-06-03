@@ -6,6 +6,7 @@ import org.cantainercraft.micro.chats.dto.ChatSettingsDTO;
 import org.cantainercraft.micro.chats.dto.ChatSettingsGroupDTO;
 import org.cantainercraft.micro.chats.dto.ChatSettingsGroupUpdateDTO;
 import org.cantainercraft.micro.chats.repository.ChatSettingsGroupRepository;
+import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.chats.Chat_Settings_Group;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +22,18 @@ public class ChatSettingsGroupServiceImpl {
     private final ChatSettingsGroupDTOConvertor chatSettingsGroupDTOConvertor;
 
     public boolean delete(UUID uuid) {
-        return chatSettingsGroupRepository.findById(uuid).isPresent();
+        if(!chatSettingsGroupRepository.existsById(uuid))
+        {
+            throw new NotResourceException("NoN");
+        }
+        chatSettingsGroupRepository.deleteById(uuid);
+        return true;
     }
 
     public boolean update(ChatSettingsGroupUpdateDTO chatSettingsGroupUpdateDTO) {
+        if(!chatSettingsGroupRepository.existsById(chatSettingsGroupUpdateDTO.getUuid())) {
+            throw new NotResourceException("NoN");
+        }
         Chat_Settings_Group chatSettingsGroup = chatSettingsGroupDTOConvertor.convertChatSettingsGroupDTOToChatSettingsGroup(chatSettingsGroupUpdateDTO);
         chatSettingsGroup.setUuid(chatSettingsGroupUpdateDTO.getUuid());
         chatSettingsGroupRepository.save(chatSettingsGroup);
