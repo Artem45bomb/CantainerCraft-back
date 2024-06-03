@@ -12,11 +12,9 @@ public interface ChatSettingsRepository extends JpaRepository<Chat_Settings, UUI
 
     //boolean update(UUID uuid, Chat_Settings settings);
 
-    boolean save(UUID uuid, Chat_Settings settings);
-
     //Optional<Chat_Settings> findByUuid(UUID uuid);
 
-    List<Chat_Settings> findByChatId(UUID chat_Id);
+    List<Chat_Settings> findByChatUuid(UUID chat_Id);
 
 
 }

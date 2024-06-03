@@ -75,7 +75,7 @@ public class ChatSettingsChanelController {
     @PreAuthorize("hasAnyRole('USER,ADMIN')") //<<<--------------------
     @PostMapping("/uuid")
     public ResponseEntity<Chat_Settings_Chanel> save(@RequestBody ChatSettingsChanelDTO chatSettingsChanelDTO) {
-        Optional<Chat_Settings_Chanel> chatSettingsChanel = chatSettingsChanelService.findByUUID(chatSettingsChanelDTO.getSettingChanelId());
+        Optional<Chat_Settings_Chanel> chatSettingsChanel = chatSettingsChanelService.findByUUID(chatSettingsChanelDTO.getChatSettings().getUuid());
         if(chatSettingsChanel.isPresent()) {
             throw new NotResourceException("NoN");
         }

@@ -52,7 +52,7 @@ public class ChatSettingsGroupServiceImpl {
     }
 
     public List<Chat_Settings_Group> findByGroupId(UUID id) {
-        return chatSettingsGroupRepository.findByChatSettingsGroupId(id);
+        return chatSettingsGroupRepository.findByChatSettingsId(id);
     }
 
 }

@@ -50,6 +50,6 @@ public class ChatSettingsServiceImpl implements ChatSettingsService {
     }
 
     public List<Chat_Settings> findByChatId(UUID chat_Id) {
-        return chatSettingsRepository.findByChatId(chat_Id);
+        return chatSettingsRepository.findByChatUuid(chat_Id);
     }
 }
