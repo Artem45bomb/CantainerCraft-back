@@ -35,44 +35,38 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    //@Cacheable(value = "users",key = "#id")
+    @Cacheable(value = "users",key = "#id")
     public Optional<User> findById(Long id) {
-        try {
-            Thread.sleep(3000);
-        }
-        catch (InterruptedException ex){
-            System.out.println(ex.getMessage());
-        }
         return userRepository.findById(id);
     }
 
     @Override
-    //@Cacheable(value = "users",key = "#userDTO.id")
+    @Cacheable(value = "users",key = "#result.id")
     public User save(UserDTO userDTO){
         if(existByUsername(userDTO.getUsername())){
             throw new ExistResourceException("user is exist");
         }
         User user = userDTOConvertor.convertDTOToEntity(userDTO);
 
-//        Profile profile = Profile
-//                .builder()
-//                .user(user)
-//                .build();
-//        profileInitService.init(profile);
+        var userSave = userRepository.save(user);
+        Profile profile = Profile
+                .builder()
+                .user(user)
+                .build();
+        profileInitService.init(profile);
 
-        return userRepository.save(user);
+        return userSave;
     }
 
     @Override
-    //@CachePut(value = "users",key = "#userDTO.id")
-    public boolean update(UserDTO userDTO){
+    @CachePut(value = "users",key = "#userDTO.id")
+    public User update(UserDTO userDTO){
         User user = userDTOConvertor.convertDTOToEntity(userDTO);
         Optional<User> userOptional = userRepository.findById(userDTO.getId());
         if(userOptional.isEmpty()) {
             throw new NotResourceException("user is not exist");
         }
-        userRepository.save(user);
-        return true;
+        return userRepository.save(user);
     }
 
     @Override
@@ -91,20 +85,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    //@CacheEvict("users")
+    @CacheEvict(value = "users",key = "#id")
     public void deleteById(Long id){
         userRepository.deleteById(id);
     }
 
     @Override
-    //@CacheEvict("users")
+    @CacheEvict(value = "users",allEntries = true)
     public void deleteByEmail(String email){
         userRepository.deleteByEmail(email);
     }
 
 
     @Override
-    //@Cacheable(value = "users",key = "#username")
     public Optional<User> findByUsername(String username){
         return userRepository.findByUsername(username);
     }

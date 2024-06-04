@@ -1,12 +1,16 @@
 package org.cantainercraft.micro.users.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.cantainercraft.micro.users.convertor.RoleDTOConvertor;
+import org.cantainercraft.micro.users.dto.RoleDTO;
 import org.cantainercraft.micro.users.service.RoleService;
+import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
+import org.cantainercraft.micro.utilits.service.ConvertorDTO;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.cantainercraft.micro.users.dto.RoleDTO;
 import org.cantainercraft.micro.users.dto.RoleUpdateDTO;
 import org.cantainercraft.project.entity.users.Role;
 import org.cantainercraft.micro.users.repository.RoleRepository;
@@ -18,37 +22,47 @@ import java.util.Optional;
 @Transactional
 @RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService {
-    
-    private final RoleDTOConvertor roleDTOConvertor;
+    private final ConvertorDTO<RoleDTO,Role> roleDTOConvertor;
     private final RoleRepository roleRepository;
 
 
+    @Override
     public List<Role> findAll(){
         return roleRepository.findAll();
     }
 
+    @Override
+    @Cacheable(value = "roles",key = "#id")
     public Role findById(Long id){
         Optional<Role> role = roleRepository.findById(id);
 
-        if(role.isEmpty()){
-            throw new NotResourceException("role is not exist");
-        }
+        if(role.isEmpty()) throw new NotResourceException("role is not exist");
 
         return role.get();
     }
-    
-    public Role save(RoleDTO RoleDTO){
-        Role Role = roleDTOConvertor.convertDTOToEntity(RoleDTO);
-        return roleRepository.save(Role);
+
+    @Override
+    @Cacheable(value = "roles",key = "#result.id")
+    public Role save(RoleDTO dto){
+        Optional<Role> entity = roleRepository.findByRole(dto.getRole());
+
+        if(entity.isPresent()) throw new ExistResourceException("role is exist");
+        Role role = roleDTOConvertor.convertDTOToEntity(dto);
+
+        return roleRepository.save(role);
     }
-    
-    public boolean update(RoleUpdateDTO RoleUpdateDTO){
-        Role Role = roleDTOConvertor.convertDTOToEntity(RoleUpdateDTO);
-        Role.setId(RoleUpdateDTO.getId());
+
+    @Override
+    @CachePut(value = "roles",key = "#dto.id")
+    public boolean update(RoleUpdateDTO dto){
+        Role Role = roleDTOConvertor.convertDTOToEntity(dto);
+        Role.setId(dto.getId());
         roleRepository.save(Role);
         return  true;
     }
 
+    @Override
+    @CacheEvict(value = "roles",key = "#id")
     public void deleteById(Long id){
         roleRepository.deleteById(id);
     }

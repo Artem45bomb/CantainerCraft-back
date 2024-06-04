@@ -9,7 +9,7 @@ import java.util.List;
 public interface SubscriptionService {
      List<Subscription> findAll();
 
-     Subscription findByID(Long id);
+     Subscription findById(Long id);
 
      Subscription save(SubscriptionDTO subscriptionDTO);
      boolean update(SubscriptionUpdateDTO subscriptionUpdateDTO);

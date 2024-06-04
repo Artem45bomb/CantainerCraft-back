@@ -14,7 +14,7 @@ public interface UserService {
 
      User save(UserDTO userDTO);
 
-     boolean update(UserDTO userUpdateDTO);
+     User update(UserDTO userUpdateDTO);
 
      Optional<User> findByEmail(String email);
 

@@ -8,6 +8,9 @@ import org.cantainercraft.micro.users.service.UserOnlineService;
 import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.users.User_Online;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -18,7 +21,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserOnlineServiceImpl implements UserOnlineService {
     private final UserOnlineRepository userOnlineRepository;
-    private final UserOnlineDTOConvertor userOnlineDTOConvertor;
+    private final UserOnlineDTOConvertor dtoConvertor;
 
     @Override
     public List<User_Online> findAll() {
@@ -26,6 +29,7 @@ public class UserOnlineServiceImpl implements UserOnlineService {
     }
 
     @Override
+    @Cacheable(value = "user-online",key = "#uuid")
     public User_Online findById(UUID uuid) {
         Optional<User_Online> userOnline = userOnlineRepository.findById(uuid);
         if (userOnline.isEmpty()) {
@@ -35,10 +39,10 @@ public class UserOnlineServiceImpl implements UserOnlineService {
         return userOnline.get();
     }
 
-
     @Override
+    @Cacheable(value = "user-online",key = "#result.uuid")
     public User_Online save(UserOnlineDTO dto) {
-        User_Online userOnline = userOnlineDTOConvertor.convertDTOToEntity(dto);
+        User_Online userOnline = dtoConvertor.convertDTOToEntity(dto);
         if (userOnlineRepository.existsByUserId(dto.getUser().getId())) {
             throw new ExistResourceException("UserOnline already exists");
         }
@@ -47,9 +51,10 @@ public class UserOnlineServiceImpl implements UserOnlineService {
     }
 
     @Override
-    public User_Online update(UserOnlineDTO userOnlineDTO) {
-        User_Online entity = userOnlineDTOConvertor.convertDTOToEntity(userOnlineDTO);
-        Optional<User_Online> userOnline = userOnlineRepository.findById(userOnlineDTO.getUuid());
+    @CachePut(value = "user-online",key = "#dto.uuid")
+    public User_Online update(UserOnlineDTO dto) {
+        User_Online entity = dtoConvertor.convertDTOToEntity(dto);
+        Optional<User_Online> userOnline = userOnlineRepository.findById(dto.getUuid());
         if (userOnline.isEmpty()) {
             throw new NotResourceException("UserOnline already exists");
         }
@@ -58,6 +63,7 @@ public class UserOnlineServiceImpl implements UserOnlineService {
     }
 
     @Override
+    @CacheEvict(value = "user-online",key = "#uuid")
     public void deleteById(UUID uuid) {
         Optional<User_Online> userOnline = userOnlineRepository.findById(uuid);
         if(userOnline.isEmpty()) {

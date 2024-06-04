@@ -23,7 +23,7 @@ public class SubscriptionController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Subscription> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(subscriptionService.findByID(id));
+        return ResponseEntity.ok(subscriptionService.findById(id));
     }
 
     @GetMapping("/all")
