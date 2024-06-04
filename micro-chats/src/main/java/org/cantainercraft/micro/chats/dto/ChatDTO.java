@@ -10,12 +10,14 @@ import org.cantainercraft.project.entity.chats.User_Chat;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChatDTO {
+    private UUID uuid;
     private String name;
     private Date date;
     private TypeChat typeChat;

@@ -8,5 +8,4 @@ import java.util.UUID;
 
 public interface ChatSettingsChanelRepository extends JpaRepository<Chat_Settings_Chanel, UUID>{
 
-
 }

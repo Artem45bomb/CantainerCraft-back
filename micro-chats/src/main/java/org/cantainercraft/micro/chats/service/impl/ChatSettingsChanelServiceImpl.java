@@ -3,7 +3,6 @@ package org.cantainercraft.micro.chats.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.convertor.ChatSettingsChanelDTOConvertor;
 import org.cantainercraft.micro.chats.dto.ChatSettingsChanelDTO;
-import org.cantainercraft.micro.chats.dto.ChatSettingsChanelUpdateDTO;
 import org.cantainercraft.micro.chats.repository.ChatSettingsChanelRepository;
 import org.cantainercraft.micro.chats.service.ChatSettingsChanelService;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
@@ -16,7 +15,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class ChatSettingsChanelServiceImpl  implements ChatSettingsChanelService {
+public class ChatSettingsChanelServiceImpl implements ChatSettingsChanelService {
 
     private final ChatSettingsChanelRepository chatSettingsChanelRepository;
     private final ChatSettingsChanelDTOConvertor chatSettingsChanelDTOConvertor;
@@ -34,12 +33,11 @@ public class ChatSettingsChanelServiceImpl  implements ChatSettingsChanelService
         return chatSettingsChanelRepository.save(chatSettingsChanel);
     }
 
-    public boolean update(ChatSettingsChanelUpdateDTO chatSettingsChanelUpdateDTO) {
+    public boolean update(ChatSettingsChanelDTO chatSettingsChanelUpdateDTO) {
         if(!chatSettingsChanelRepository.existsById(chatSettingsChanelUpdateDTO.getUuid())) {
             throw new NotResourceException("NoN");
         }
         Chat_Settings_Chanel chatSettingsChanel = chatSettingsChanelDTOConvertor.convertChatSettingsChanelDTOToChatSettingsChanel(chatSettingsChanelUpdateDTO);
-        chatSettingsChanel.setUuid(chatSettingsChanelUpdateDTO.getUuid());
         chatSettingsChanelRepository.save(chatSettingsChanel);
         return true;
     }
@@ -47,5 +45,4 @@ public class ChatSettingsChanelServiceImpl  implements ChatSettingsChanelService
     public Optional<Chat_Settings_Chanel> findByUUID(UUID uuid) {
         return chatSettingsChanelRepository.findById(uuid);
     }
-
 }

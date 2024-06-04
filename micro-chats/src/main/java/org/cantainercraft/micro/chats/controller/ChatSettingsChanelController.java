@@ -4,7 +4,6 @@ package org.cantainercraft.micro.chats.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.cantainercraft.micro.chats.dto.ChatSettingsChanelDTO;
-import org.cantainercraft.micro.chats.dto.ChatSettingsChanelUpdateDTO;
 import org.cantainercraft.micro.chats.service.ChatSettingsChanelService;
 import org.cantainercraft.micro.chats.service.impl.ChatSettingsChanelServiceImpl;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
@@ -60,15 +59,15 @@ public class ChatSettingsChanelController {
 
     @PreAuthorize("hasAnyRole('USER,ADMIN')") //<<<--------------------
     @PostMapping("/uuid")
-    public ResponseEntity<Boolean> update(@RequestBody ChatSettingsChanelUpdateDTO chatSettingsChanelUpdateDTO) {
-        Optional<Chat_Settings_Chanel> chatSettingsChanel = chatSettingsChanelService.findByUUID(chatSettingsChanelUpdateDTO.getUuid());
+    public ResponseEntity<Boolean> update(@RequestBody ChatSettingsChanelDTO chatSettingsChanelDTO) {
+        Optional<Chat_Settings_Chanel> chatSettingsChanel = chatSettingsChanelService.findByUUID(chatSettingsChanelDTO.getUuid());
         if(chatSettingsChanel.isEmpty()) {
             throw new NotResourceException("NoN");
         }
-        if(chatSettingsChanelUpdateDTO.getUuid() == null){
+        if(chatSettingsChanelDTO.getUuid() == null){
             throw new NotResourceException("NoN");
         } else {
-            return ResponseEntity.ok(chatSettingsChanelService.update(chatSettingsChanelUpdateDTO));
+            return ResponseEntity.ok(chatSettingsChanelService.update(chatSettingsChanelDTO));
         }
     }
 

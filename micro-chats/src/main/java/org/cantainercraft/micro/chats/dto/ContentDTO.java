@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.cantainercraft.project.entity.chats.Message;
 
+import java.math.BigInteger;
 import java.util.UUID;
 
 @Getter
@@ -15,5 +17,6 @@ public class ContentDTO {
     private UUID uuid;
     private String srcContent;
     private String type;
-    private UUID messageId;
+    private BigInteger sizeByte;
+    private Message message;
 }

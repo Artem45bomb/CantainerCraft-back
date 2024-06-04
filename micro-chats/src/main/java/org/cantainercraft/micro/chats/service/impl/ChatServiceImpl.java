@@ -4,7 +4,6 @@ package org.cantainercraft.micro.chats.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.convertor.ChatDTOConvertor;
 import org.cantainercraft.micro.chats.dto.ChatDTO;
-import org.cantainercraft.micro.chats.dto.ChatUpdateDTO;
 import org.cantainercraft.micro.chats.repository.ChatRepository;
 import org.cantainercraft.micro.chats.service.ChatService;
 import org.springframework.stereotype.Service;
@@ -27,7 +26,7 @@ public class ChatServiceImpl implements ChatService {
         return chatRepository.save(chat);
     }
 
-    public boolean update(ChatUpdateDTO chatUpdateDTO){
+    public boolean update(ChatDTO chatUpdateDTO){
         Chat chat = chatDTOConvertor.convertChatDTOToChat(chatUpdateDTO);
         chat.setUuid(chatUpdateDTO.getUuid());
         chatRepository.save(chat);

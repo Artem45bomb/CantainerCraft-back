@@ -3,7 +3,6 @@ package org.cantainercraft.micro.chats.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.convertor.ChatSettingsDTOConvertor;
 import org.cantainercraft.micro.chats.dto.ChatSettingsDTO;
-import org.cantainercraft.micro.chats.dto.ChatSettingsUpdateDTO;
 import org.cantainercraft.micro.chats.repository.ChatSettingsRepository;
 import org.cantainercraft.micro.chats.service.ChatSettingsService;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
@@ -30,7 +29,7 @@ public class ChatSettingsServiceImpl implements ChatSettingsService {
         return true;
     }
 
-    public boolean update(ChatSettingsUpdateDTO chatSettingsUpdateDTO) {
+    public boolean update(ChatSettingsDTO chatSettingsUpdateDTO) {
         if(!chatSettingsRepository.existsById(chatSettingsUpdateDTO.getUuid())){
             throw new NotResourceException("NoN");
         }

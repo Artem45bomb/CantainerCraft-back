@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.cantainercraft.micro.chats.dto.ChatDTO;
 import org.cantainercraft.micro.chats.dto.ChatSearchDTO;
-import org.cantainercraft.micro.chats.dto.ChatUpdateDTO;
+import org.cantainercraft.micro.chats.dto.ChatDTO;
 import org.cantainercraft.micro.chats.service.ChatService;
 import org.cantainercraft.micro.chats.service.UserChatService;
 import org.cantainercraft.micro.utilits.exception.ExistResourceException;
@@ -99,15 +99,15 @@ public class ChatController {
 
     @PreAuthorize("hasAnyRole('CHAT_ADMIN,ADMIN')")
     @PutMapping("/update")
-    public ResponseEntity<Boolean> update(@RequestBody ChatUpdateDTO chatUpdateDTO){
-        Optional<Chat> chat = chatService.findByUUID(chatUpdateDTO.getUuid());
+    public ResponseEntity<Boolean> update(@RequestBody ChatDTO chatDTO){
+        Optional<Chat> chat = chatService.findByUUID(chatDTO.getUuid());
         if (chat.isEmpty()) {
             throw new NotResourceException("No content to update");
         }
-            if(chatUpdateDTO.getUuid() == null){
+            if(chatDTO.getUuid() == null){
                 throw new NotValidateParamException("missed param: id");
             } else {
-                return ResponseEntity.ok(chatService.update(chatUpdateDTO));
+                return ResponseEntity.ok(chatService.update(chatDTO));
             }
     }
 

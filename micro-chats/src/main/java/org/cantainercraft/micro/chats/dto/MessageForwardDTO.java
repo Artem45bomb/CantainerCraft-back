@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.cantainercraft.project.entity.chats.Message;
 
 import java.util.UUID;
 
@@ -13,7 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class MessageForwardDTO {
     private UUID uuid;
-    private UUID messageFromId;
-    private UUID messageId;
+    private Message messageFrom;
+    private Message message;
 }
 

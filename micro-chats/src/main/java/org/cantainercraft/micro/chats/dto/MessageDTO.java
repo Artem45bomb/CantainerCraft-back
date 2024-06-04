@@ -18,9 +18,7 @@ public class MessageDTO {
 
     private String text;
 
-
     private Date date;
-
 
     private Long userId;
 
