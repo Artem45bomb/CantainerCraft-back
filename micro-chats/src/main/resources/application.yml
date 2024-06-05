@@ -2,7 +2,7 @@ spring:
   application:
     name: 'micro-chats'
   config:
-    import: configserver:http://localhost:8888/
+    import: optional:configserver:http://localhost:8888/
   profiles:
     active: dev
   error:
@@ -16,9 +16,21 @@ spring:
       definition: testUserGet
     stream:
       bindings:
-        testUserGet-out-0:
-          destination: micro-dest
-          group: micro-group
+        processMessage-in-0:
+          destination: my-queue
+          group: key
+        processMessage-out-1:
+          destination: my-queue
+          group: key
+      rabbit:
+        bindings:
+          processMessage-in-0:
+            consumer:
+              exchange-type: topic
+          processMessage-out-1:
+            producer:
+              exchange-type: topic
+
 logging:
   level:
     org.springframework.security: trace

@@ -30,9 +30,10 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-	//Spring Data
-	//implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	//runtimeOnly 'org.postgresql:postgresql'
+	//Spring Reactive Data
+	implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc:3.3.0'
+	implementation 'org.postgresql:r2dbc-postgresql:1.0.5.RELEASE'
+
 
 	//RabbitMq
 	implementation 'org.springframework.cloud:spring-cloud-starter-stream-rabbit:4.1.2'

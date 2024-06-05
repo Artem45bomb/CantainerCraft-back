@@ -5,6 +5,7 @@ import org.cantainercraft.micro.chats.service.MessageService;
 import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.micro.utilits.exception.NotValidateParamException;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -26,6 +27,7 @@ public class MessageController {
 
     private final MessageService messageService;
     private final UserFeignClient userFeignClient;
+    private final RabbitTemplate template;
     private final String COLUM_ID = "id";
 
     @PreAuthorize("hasAnyRole('ADMIN')")
@@ -51,23 +53,21 @@ public class MessageController {
        return ResponseEntity.ok(messageService.findByUserId(id));
     }
 
-    @PreAuthorize("hasAnyRole('USER,ADMIN')")
+    //@PreAuthorize("hasAnyRole('USER,ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<Message> save(@RequestBody MessageDTO messageDTO) {
 
         if (userFeignClient.userExist(messageDTO.getUserId()).getBody() == null) {
             throw new NotResourceException("user is not exist");
         }
-        Optional<Message> message = messageService.findByUUID(messageDTO.getUuid());
 
         messageDTO.setDate(new Date());
 
-        if (message.isPresent()) {
-            throw new ExistResourceException("Message is exist");
-        }
         if (messageDTO.getUuid() == null) {
             throw new NotValidateParamException("Missed param: id");
         }
+
+        template.convertAndSend("processMessage-out-1",messageDTO.getText());
 
         return ResponseEntity.ok(messageService.save(messageDTO));
     }

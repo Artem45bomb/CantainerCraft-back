@@ -1,13 +1,22 @@
 spring:
   application:
     name: 'service-db-store'
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5555/postgres
+    password: postgres
+    username: postgres
   cloud:
     stream:
       bindings:
         processMessage-in-0:
           destination: my-queue
-        processMessage-out-0:
+          group: key
+        processMessage-out-1:
           destination: my-queue
+          group: key
+#        getMessage-in-0:
+#          destination: my-queue
+#          group: key
       rabbit:
         bindings:
           processMessage-in-0:

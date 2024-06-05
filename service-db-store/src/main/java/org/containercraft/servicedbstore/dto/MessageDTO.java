@@ -1,5 +1,14 @@
 package org.containercraft.servicedbstore.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class MessageDTO {
-    public String value;
+    private String message;
 }

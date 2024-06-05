@@ -58,7 +58,7 @@ public class SpringSecurity {
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(STATELESS)) // Сессии не используются
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/emotions/**").permitAll() // Разрешение доступа без аутентификации к указанному пути
-                        .anyRequest().authenticated()) // Все остальные запросы требуют аутентификации
+                        .anyRequest().permitAll()) // Все остальные запросы требуют аутентификации
                 .authenticationProvider(authenticationProvider()) // Установка провайдера аутентификации
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class); // Добавление JWT фильтра перед фильтром аутентификации
         return http.build();
