@@ -12,8 +12,8 @@ import reactor.core.publisher.Mono;
 
 @SpringBootApplication(scanBasePackages = {"org.cantainercraft.micro.chats"})
 @EnableDiscoveryClient
-@EnableJpaRepositories(basePackages = {"org.cantainercraft.micro.chats.repository"})
 @EnableFeignClients
+@EnableRabbit
 @EntityScan({"org.cantainercraft.project.entity.chats"})
 @RequiredArgsConstructor
 public class MicroChatsDataApplication {

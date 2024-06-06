@@ -33,6 +33,7 @@ dependencies {
 	//Spring Reactive Data
 	implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc:3.3.0'
 	implementation 'org.postgresql:r2dbc-postgresql:1.0.5.RELEASE'
+	implementation 'org.springframework.cloud:spring-cloud-function-web:4.1.2'
 
 
 	//RabbitMq

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.convertor.ChatSettingsGroupDTOConvertor;
 import org.cantainercraft.micro.chats.dto.ChatSettingsGroupDTO;
 import org.cantainercraft.micro.chats.repository.ChatSettingsGroupRepository;
+import org.cantainercraft.micro.chats.service.ChatSettingsGroupService;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.chats.Chat_Settings_Group;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class ChatSettingsGroupServiceImpl {
+public class ChatSettingsGroupServiceImpl implements ChatSettingsGroupService {
 
     private final ChatSettingsGroupRepository chatSettingsGroupRepository;
     private final ChatSettingsGroupDTOConvertor chatSettingsGroupDTOConvertor;

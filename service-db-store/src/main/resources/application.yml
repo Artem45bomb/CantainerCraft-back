@@ -6,21 +6,27 @@ spring:
     password: postgres
     username: postgres
   cloud:
+    function:
+      definition: getMessage
     stream:
       bindings:
-        processMessage-in-0:
-          destination: my-queue
-          group: key
-        processMessage-out-1:
-          destination: my-queue
-          group: key
-#        getMessage-in-0:
+#        processMessage-in-0:
 #          destination: my-queue
 #          group: key
+#        processMessage-out-1:
+#          destination: my-queue
+#          group: key
+        getMessage-in-0:
+          destination: input
+          group: create
       rabbit:
         bindings:
-          processMessage-in-0:
+#          processMessage-in-0:
+#            consumer:
+#              exchange-type: topic
+#          processMessage-out-1:
+#            producer:
+#              exchange-type: topic
+          getMessage-in-0:
             consumer:
-              exchange-type: topic
-            producer:
               exchange-type: topic

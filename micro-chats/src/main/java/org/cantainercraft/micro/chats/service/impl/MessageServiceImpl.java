@@ -1,11 +1,18 @@
 package org.cantainercraft.micro.chats.service.impl;
 
-import lombok.RequiredArgsConstructor;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.cantainercraft.micro.chats.convertor.MessageDTOConvertor;
+import org.cantainercraft.micro.chats.dto.stream.MessageChannelDTO;
 import org.cantainercraft.micro.chats.repository.MessageRepository;
 import org.cantainercraft.micro.chats.service.MessageService;
+import org.modelmapper.ModelMapper;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 import org.cantainercraft.micro.chats.dto.MessageDTO;
 import org.cantainercraft.project.entity.chats.Message;
@@ -15,13 +22,29 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 public class MessageServiceImpl implements MessageService {
     private final MessageRepository messageRepository;
     private final MessageDTOConvertor messageDTOConvertor;
+    private final StreamBridge template;
+    private final ModelMapper mapper;
 
-    public Message save(MessageDTO messageDTO){
+    public MessageServiceImpl(MessageRepository messageRepository,
+                              MessageDTOConvertor messageDTOConvertor,
+                              StreamBridge template,
+                              @Qualifier("stream-mapper-message") ModelMapper mapper) {
+        this.messageRepository = messageRepository;
+        this.messageDTOConvertor = messageDTOConvertor;
+        this.template = template;
+        this.mapper = mapper;
+    }
+
+
+    public Message save(MessageDTO messageDTO) {
         Message message = messageDTOConvertor.convertMessageDTOToMessage(messageDTO);
+
+        var sendMessage = MessageBuilder.withPayload(mapper.map(messageDTO, MessageChannelDTO.class)).build();
+        template.send("submitMessage-out-0",sendMessage);
+
         return messageRepository.save(message);
     }
 

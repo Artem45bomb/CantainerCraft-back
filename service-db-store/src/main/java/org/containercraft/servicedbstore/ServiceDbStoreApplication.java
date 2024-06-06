@@ -24,10 +24,4 @@ public class ServiceDbStoreApplication {
 		SpringApplication.run(ServiceDbStoreApplication.class, args);
 	}
 
-	@Bean
-	public ApplicationRunner runner(RabbitTemplate rabbitTemplate){
-		return args -> {
-			rabbitTemplate.convertAndSend("processMessage-out-1","hi");
-		};
-	}
 }

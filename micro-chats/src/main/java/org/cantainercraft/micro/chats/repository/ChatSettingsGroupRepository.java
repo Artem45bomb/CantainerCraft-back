@@ -8,7 +8,5 @@ import java.util.UUID;
 
 public interface ChatSettingsGroupRepository extends JpaRepository<Chat_Settings_Group, UUID> {
 
-    boolean save(UUID uuid, Chat_Settings_Group chat_settings_group);
-
     List<Chat_Settings_Group> findByChatSettingsUuid(UUID uuid);
 }

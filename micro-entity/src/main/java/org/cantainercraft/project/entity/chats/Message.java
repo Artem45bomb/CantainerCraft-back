@@ -27,13 +27,17 @@ public class Message implements Serializable {
 
     private String text;
 
-    private boolean is_pinned;
+    @Column(name="is_penned")
+    private Boolean isPinned;
 
     private String type;
 
     private Date date;
 
+    @Column(unique = true)
     private Long userId;
+
+    private UUID clientId;
 
     @OneToMany(mappedBy = "message",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<Content> srcContent;

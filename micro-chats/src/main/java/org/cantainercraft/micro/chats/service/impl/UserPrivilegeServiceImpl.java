@@ -56,13 +56,13 @@ public class UserPrivilegeServiceImpl implements UserPrivilegeService {
 
     @Override
     public Optional<User_Privilege> findByUserId(Long id) {
-        return repository.findUser_PrivilegeByUserId(id);
+        return repository.findByUserId(id);
     }
 
     @Override
     public boolean deleteByUserId(Long id) {
-        if (repository.findUser_PrivilegeByUserId(id).isPresent()) {
-            repository.deleteUser_PrivilegeByUserId(id);
+        if (repository.findByUserId(id).isPresent()) {
+            repository.deleteByUserId(id);
             return true;
         }
         return false;

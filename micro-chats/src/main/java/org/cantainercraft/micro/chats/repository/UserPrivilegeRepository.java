@@ -9,6 +9,6 @@ import java.util.UUID;
 
 @Repository
 public interface UserPrivilegeRepository extends JpaRepository<User_Privilege, UUID> {
-    Optional<User_Privilege> findUser_PrivilegeByUserId(Long id);
-    void deleteUser_PrivilegeByUserId(Long id);
+    Optional<User_Privilege> findByUserId(Long id);
+    void deleteByUserId(Long id);
 }

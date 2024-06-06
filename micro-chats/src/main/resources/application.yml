@@ -5,34 +5,28 @@ spring:
     import: optional:configserver:http://localhost:8888/
   profiles:
     active: dev
-  error:
-    include-message: always
-  rabbitmq:
-    port: 5672
-    username: guest
-    password: guest
   cloud:
     function:
-      definition: testUserGet
+      definition: submitMessage
     stream:
       bindings:
-        processMessage-in-0:
-          destination: my-queue
-          group: key
-        processMessage-out-1:
-          destination: my-queue
-          group: key
+#        submitMessage-out-o:
+#          destination:
+        submitMessage-out-0:
+          destination: input
+          group: create
       rabbit:
         bindings:
-          processMessage-in-0:
-            consumer:
-              exchange-type: topic
-          processMessage-out-1:
+#          submitMessage-in-0:
+#            consumer:
+#              exchange-type: topic
+          submitMessage-out-0:
             producer:
               exchange-type: topic
-
 logging:
   level:
+    org.springframework.cloud: warn
+    org.springframework.cloud.stream: info
     org.springframework.security: trace
 service:
   key: Uieiej6895op
