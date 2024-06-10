@@ -1,6 +1,7 @@
 package org.containercraft.servicedbstore.dto;
 
 import lombok.*;
+import org.containercraft.servicedbstore.entity.TypeChat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -17,13 +18,13 @@ public class MessageDTO implements Serializable {
     private String text;
 
     private Date date;
+    private TypeChat type;
 
     private Boolean isPinned;
 
-
     private Long userId;
 
-    //private UUID chatId;
+    private UUID chatId;
 
     private UUID clientId;
 

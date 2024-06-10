@@ -13,14 +13,6 @@ import java.util.function.Function;
 @Slf4j
 public class MasseChannel {
 
-//    @Bean
-//    public Function<String,String> processMessage(){
-//        return messageDTO -> {
-//            log.info(messageDTO);
-//            return messageDTO;
-//        };
-//    }
-
     @Bean
     public Consumer<MessageDTO> getMessage() {
         return System.out::println;

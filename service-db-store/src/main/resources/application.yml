@@ -2,7 +2,7 @@ spring:
   application:
     name: 'service-db-store'
   r2dbc:
-    url: r2dbc:postgresql://localhost:5555/postgres
+    url: r2dbc:postgresql://localhost:5555/micro_chats
     password: postgres
     username: postgres
   cloud:
