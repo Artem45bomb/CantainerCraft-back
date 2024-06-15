@@ -1,0 +1,51 @@
+
+
+plugins {
+    id 'java'
+    id "com.google.protobuf" version "0.9.4"
+}
+
+group = 'org.containercraft.grpcservice'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '17'
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    protobuf_version = '3.21.2'
+    grpc_version = '1.47.0'
+    grpc_server_version = '2.13.1.RELEASE'
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:${protobuf_version}"
+    }
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:${grpc_version}"
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            grpc {}
+        }
+    }
+}
+sourceSets.main.java.srcDir new File(buildDir, 'generated/sources')
+
+dependencies {
+
+    //gRPC
+    runtimeOnly 'io.grpc:grpc-netty-shaded:1.49.2'
+    implementation 'io.grpc:grpc-protobuf:1.49.2'
+    implementation 'io.grpc:grpc-stub:1.49.2'
+    compileOnly 'org.apache.tomcat:annotations-api:6.0.53' // necessary for Java 9+
+}
+
+

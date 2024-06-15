@@ -30,3 +30,10 @@ spring:
           getMessage-in-0:
             consumer:
               exchange-type: topic
+grpc:
+  client:
+    message:
+      address: localhost:9090
+      negotiation-type: plaintext
+server:
+  port: 8082

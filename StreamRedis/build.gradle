@@ -2,7 +2,6 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.0'
 	id 'io.spring.dependency-management' version '1.1.5'
-	id 'com.google.protobuf' version '0.8.18'
 }
 
 group = 'org.containercraft'
@@ -31,33 +30,13 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-	//gRPC
-	implementation 'io.grpc:grpc-stub:1.64.0'
-	implementation 'io.grpc:grpc-protobuf:1.64.0'
-	implementation 'io.grpc:grpc-api:1.64.0'
-	compileOnly 'com.google.protobuf:protobuf-java:4.27.0'
+	//grpc
+	implementation 'net.devh:grpc-server-spring-boot-starter:3.1.0.RELEASE'
+	implementation "org.containercraft.grpcservice:grpc-service"
+
 }
 
-def generatedFilesBaseDir = "${buildDir}/generated/source/proto"
 
-protobuf {
-	protoc {
-		artifact = "com.google.protobuf:protoc:21.0-rc-1"
-	}
-	clean {
-		delete generatedFilesBaseDir
-	}
-	plugins {
-		grpc {
-			artifact = "io.grpc:protoc-gen-grpc-java:1.64.0"
-		}
-	}
-	generateProtoTasks {
-		all()*.plugins {
-			grpc {}
-		}
-	}
-}
 
 
 tasks.named('test') {

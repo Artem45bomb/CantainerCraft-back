@@ -1,9 +1,11 @@
 package org.containercraft.servicedbstore.cotroller;
 
+import com.service.message.MessageResponse;
 import lombok.RequiredArgsConstructor;
 import org.containercraft.servicedbstore.dto.MessageDTO;
 import org.containercraft.servicedbstore.entity.Message;
 import org.containercraft.servicedbstore.service.MessageService;
+import org.containercraft.servicedbstore.service.impl.GrpcMessageServiceImpl;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -15,6 +17,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class MessageController {
     private final MessageService service;
+    private final GrpcMessageServiceImpl grpcMessageService;
+
 
 
     @GetMapping("/all")

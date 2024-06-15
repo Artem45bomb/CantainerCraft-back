@@ -9,3 +9,6 @@ includeBuild('micro-gateway')
 includeBuild('micro-config')
 includeBuild('micro-utility')
 includeBuild("service-db-store")
+includeBuild("StreamRedis")
+includeBuild("grpc-service")
+

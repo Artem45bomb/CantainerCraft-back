@@ -21,6 +21,9 @@ repositories {
 	mavenCentral()
 }
 
+
+
+
 dependencies {
 
 	compileOnly 'org.projectlombok:lombok'
@@ -41,7 +44,16 @@ dependencies {
 	//RabbitMq
 	implementation 'org.springframework.cloud:spring-cloud-starter-stream-rabbit:4.1.2'
 	implementation 'org.springframework.cloud:spring-cloud-stream-binder-rabbit:4.1.2'
+
+	//grpc
+	implementation "org.containercraft.grpcservice:grpc-service"
+	implementation 'net.devh:grpc-client-spring-boot-starter:3.1.0.RELEASE'
 }
+
+
+
+
+
 
 tasks.named('test') {
 	useJUnitPlatform()

@@ -1,1 +1,2 @@
 rootProject.name = 'service-db-store'
+include ("CantainerCraft-back:grpc-service")
