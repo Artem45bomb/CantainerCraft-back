@@ -4,13 +4,24 @@ option java_multiple_files = true;
 
 package com.service.message;
 
+
+enum TypeChat{
+  GROUP = 0;
+  PERSONALLY = 1;
+}
+
 message MessageRequest{
   string text = 1;
+  bool  isPinned = 2;
+  TypeChat type = 3;
+  string date  = 4;
+  int64 userId = 5;
+  string clientId = 6;
+  string chatId = 7;
 }
 
 message MessageResponse{
-  string uuid =1;
-  string text = 2;
+  bool isSaveMessage = 1;
 }
 
 service MessageService {

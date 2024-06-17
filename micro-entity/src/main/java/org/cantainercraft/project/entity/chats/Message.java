@@ -27,7 +27,7 @@ public class Message implements Serializable {
 
     private String text;
 
-    @Column(name="is_penned")
+    @Column(name="is_pinned")
     private Boolean isPinned;
 
     private String type;
