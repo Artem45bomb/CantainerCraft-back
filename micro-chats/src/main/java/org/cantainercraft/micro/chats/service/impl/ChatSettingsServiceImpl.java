@@ -23,7 +23,7 @@ public class ChatSettingsServiceImpl implements ChatSettingsService {
     public boolean delete(UUID uuid) {
         if(!chatSettingsRepository.existsById(uuid))
         {
-            throw new NotResourceException("NoN");
+            throw new NotResourceException("no settings by id");
         }
         chatSettingsRepository.deleteById(uuid);
         return true;
@@ -31,7 +31,7 @@ public class ChatSettingsServiceImpl implements ChatSettingsService {
 
     public boolean update(ChatSettingsDTO chatSettingsUpdateDTO) {
         if(!chatSettingsRepository.existsById(chatSettingsUpdateDTO.getUuid())){
-            throw new NotResourceException("NoN");
+            throw new NotResourceException("no settings by id");
         }
         Chat_Settings chatSettings = chatSettingsDTOConvector.convertChatSettingsDTOToChatSettings(chatSettingsUpdateDTO);
         chatSettings.setUuid(chatSettingsUpdateDTO.getUuid());

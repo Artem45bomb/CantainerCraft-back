@@ -22,7 +22,7 @@ public class ChatSettingsChanelServiceImpl implements ChatSettingsChanelService 
 
     public boolean delete(UUID uuid) {
         if(!chatSettingsChanelRepository.existsById(uuid)) {
-            throw new NotResourceException("NoN");
+            throw new NotResourceException("no settingsChanel by id");
         }
         chatSettingsChanelRepository.deleteById(uuid);
         return true;
@@ -35,7 +35,7 @@ public class ChatSettingsChanelServiceImpl implements ChatSettingsChanelService 
 
     public boolean update(ChatSettingsChanelDTO chatSettingsChanelUpdateDTO) {
         if(!chatSettingsChanelRepository.existsById(chatSettingsChanelUpdateDTO.getUuid())) {
-            throw new NotResourceException("NoN");
+            throw new NotResourceException("no settingsChanel by id");
         }
         Chat_Settings_Chanel chatSettingsChanel = chatSettingsChanelDTOConvertor.convertChatSettingsChanelDTOToChatSettingsChanel(chatSettingsChanelUpdateDTO);
         chatSettingsChanelRepository.save(chatSettingsChanel);
