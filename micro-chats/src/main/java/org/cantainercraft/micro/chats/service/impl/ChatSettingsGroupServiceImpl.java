@@ -23,7 +23,7 @@ public class ChatSettingsGroupServiceImpl implements ChatSettingsGroupService {
     public boolean delete(UUID uuid) {
         if(!chatSettingsGroupRepository.existsById(uuid))
         {
-            throw new NotResourceException("NoN");
+            throw new NotResourceException("no settingsGroup by id");
         }
         chatSettingsGroupRepository.deleteById(uuid);
         return true;
@@ -31,7 +31,7 @@ public class ChatSettingsGroupServiceImpl implements ChatSettingsGroupService {
 
     public boolean update(ChatSettingsGroupDTO chatSettingsGroupDTO) {
         if(!chatSettingsGroupRepository.existsById(chatSettingsGroupDTO.getUuid())) {
-            throw new NotResourceException("NoN");
+            throw new NotResourceException("no settingsGroup by id");
         }
         Chat_Settings_Group chatSettingsGroup = chatSettingsGroupDTOConvertor.convertChatSettingsGroupDTOToChatSettingsGroup(chatSettingsGroupDTO);
         chatSettingsGroupRepository.save(chatSettingsGroup);
