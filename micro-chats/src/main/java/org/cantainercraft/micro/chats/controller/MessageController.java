@@ -1,15 +1,10 @@
 package org.cantainercraft.micro.chats.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.cantainercraft.micro.chats.dto.stream.MessageChannelDTO;
 import org.cantainercraft.micro.chats.service.MessageService;
-import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.micro.utilits.exception.NotValidateParamException;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -60,9 +55,9 @@ public class MessageController {
     @PostMapping("/add")
     public ResponseEntity<Message> save(@RequestBody MessageDTO messageDTO) throws JsonProcessingException {
 
-//        if (userFeignClient.userExist(messageDTO.getUserId()).getBody() == null) {
-//            throw new NotResourceException("user is not exist");
-//        }
+        if (userFeignClient.userExist(messageDTO.getUserId()).getBody() == null) {
+            throw new NotResourceException("user is not exist");
+        }
 
         messageDTO.setDate(new Date());
 

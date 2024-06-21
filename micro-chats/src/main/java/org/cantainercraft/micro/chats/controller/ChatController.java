@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.cantainercraft.micro.chats.dto.ChatDTO;
 import org.cantainercraft.micro.chats.dto.ChatSearchDTO;
-import org.cantainercraft.micro.chats.dto.ChatDTO;
 import org.cantainercraft.micro.chats.service.ChatService;
 import org.cantainercraft.micro.chats.service.UserChatService;
 import org.cantainercraft.micro.utilits.exception.ExistResourceException;

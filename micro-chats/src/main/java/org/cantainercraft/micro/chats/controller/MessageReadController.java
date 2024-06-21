@@ -26,7 +26,7 @@ public class MessageReadController {
     }
 
     @PostMapping("/uuid")
-    public ResponseEntity<MessageRead> findById(@PathVariable UUID id) {
+    public ResponseEntity<MessageRead> findById(@RequestBody UUID id) {
         Optional<MessageRead> messageRead = service.findById(id);
         if(messageRead.isEmpty()){
             throw new NotResourceException("No content");

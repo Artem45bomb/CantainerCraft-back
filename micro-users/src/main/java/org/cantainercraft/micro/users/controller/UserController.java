@@ -1,5 +1,11 @@
 package org.cantainercraft.micro.users.controller;
 
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.micro.utilits.exception.MessageError;
@@ -17,6 +23,7 @@ import org.cantainercraft.micro.users.service.UserService;
 import java.util.*;
 
 
+@Tag(name = "User",description = "API for User")
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -74,6 +81,18 @@ public class UserController {
 
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "user get all",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    array=@ArraySchema(schema = @Schema(implementation = User.class))
+                            )
+                    }
+            )
+    })
     @PostMapping("/all")
     public ResponseEntity<List<User>> findAll(){
         return ResponseEntity.ok(userService.findAll());

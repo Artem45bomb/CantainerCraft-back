@@ -4,7 +4,6 @@ import org.cantainercraft.micro.chats.dto.ChatImageProfileDTO;
 import org.cantainercraft.micro.chats.service.ChatImageProfileService;
 import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
-import org.cantainercraft.micro.utilits.exception.NotValidateParamException;
 import org.cantainercraft.project.entity.chats.Chat_Image_Profile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

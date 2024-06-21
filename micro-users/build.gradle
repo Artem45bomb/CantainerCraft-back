@@ -26,8 +26,18 @@ ext {
 }
 
 dependencies {
+
+    //info
+    implementation 'org.springframework.boot:spring-boot-starter-actuator:3.3.0'
+
+    //swagger
+    implementation 'io.swagger.core.v3:swagger-annotations:2.2.22'
+    implementation 'org.springdoc:springdoc-openapi-ui:1.8.0'
+
+
     implementation 'jakarta.validation:jakarta.validation-api:3.1.0-M2'
     implementation 'com.google.code.gson:gson:2.10.1'
+
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.cloud:spring-cloud-starter-config'
@@ -38,8 +48,6 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
     annotationProcessor 'org.projectlombok:lombok'
 
-
-
     //utility
     implementation 'org.cantainercraft.micro.utilits:micro-utility'
 
@@ -47,6 +55,8 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+
 
     //jwt & auth
     implementation 'io.jsonwebtoken:jjwt-api:0.12.5'

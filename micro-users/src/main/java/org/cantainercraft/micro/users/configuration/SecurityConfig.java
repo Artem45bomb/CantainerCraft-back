@@ -51,7 +51,7 @@ public class SecurityConfig {
                         //permitAll - this path is available even if the user is not authorized
                         .requestMatchers("/account/**").permitAll()
                         .requestMatchers("/auth/**").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 //disable login sessions
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))

@@ -1,5 +1,7 @@
 package org.cantainercraft.micro.users.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.users.dto.RoleDTO;
 import org.cantainercraft.micro.users.dto.RoleUpdateDTO;
@@ -27,6 +29,8 @@ public class RoleController {
         return ResponseEntity.ok(roleService.findById(id));
     }
 
+    @Operation(summary = "Get all roles")
+    @ApiResponse(responseCode = "200", description = "Successful response")
     @GetMapping("/all")
     public ResponseEntity<List<Role>> findAll(){
         return ResponseEntity.ok(roleService.findAll());

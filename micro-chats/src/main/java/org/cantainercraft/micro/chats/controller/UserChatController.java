@@ -9,7 +9,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.cantainercraft.micro.chats.dto.UserChatDTO;
 import org.cantainercraft.micro.chats.dto.UserChatSearchDTO;
-import org.cantainercraft.micro.chats.feign.UserFeignClient;
 import org.cantainercraft.project.entity.chats.User_Chat;
 
 import java.util.*;
@@ -81,7 +80,7 @@ class UserChatController {
         System.out.println("add user:"+userChatDTO.getUserId());
 
         System.out.println(userWebClient.userExist(userChatDTO.getUserId()));
-        if(userWebClient.userExist(userChatDTO.getUserId()) == false){
+        if(!userWebClient.userExist(userChatDTO.getUserId())){
             throw new NotResourceException("user is not exist");
         }
 
