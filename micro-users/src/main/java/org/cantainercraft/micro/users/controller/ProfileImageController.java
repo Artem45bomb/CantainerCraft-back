@@ -16,7 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/profileImage")
+@RequestMapping("/api/profileImage")
 @RequiredArgsConstructor
 public class ProfileImageController {
 

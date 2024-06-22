@@ -1,6 +1,7 @@
 package org.cantainercraft.micro.chats.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.cantainercraft.micro.chats.convertor.MessageDTOConvertor;
 import org.cantainercraft.micro.chats.dto.stream.MessageChannelDTO;
 import org.cantainercraft.micro.chats.repository.EmotionRepository;
@@ -22,31 +23,19 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class MessageServiceImpl implements MessageService {
     private final MessageRepository messageRepository;
     private final MessageDTOConvertor messageDTOConvertor;
-    private final StreamBridge template;
-    private final ModelMapper mapper;
-    private final EmotionRepository emotionRepository;
 
-    public MessageServiceImpl(MessageRepository messageRepository,
-                              MessageDTOConvertor messageDTOConvertor,
-                              StreamBridge template,
-                              @Qualifier("stream-mapper-message") ModelMapper mapper, EmotionRepository emotionRepository) {
-        this.messageRepository = messageRepository;
-        this.messageDTOConvertor = messageDTOConvertor;
-        this.template = template;
-        this.mapper = mapper;
-        this.emotionRepository = emotionRepository;
-    }
+
 
 
     public Message save(MessageDTO messageDTO) {
         Message message = messageDTOConvertor.convertMessageDTOToMessage(messageDTO);
 
-        var sendMessage = MessageBuilder.withPayload(mapper.map(messageDTO, MessageChannelDTO.class)).build();
-        template.send("submitMessage-out-0",sendMessage);
 
         return messageRepository.save(message);
     }
@@ -68,22 +57,6 @@ public class MessageServiceImpl implements MessageService {
             throw new NotResourceException("message is not exist");
         }
         messageRepository.deleteByClientId(clientId);
-    }
-
-
-    @Override
-    public Message addEmotion(MessageEmotionDTO dto) {
-        Optional<Message> message = messageRepository.findByClientId(dto.getMessageClientId());
-        Optional<Emotion> emotion = emotionRepository.findById(dto.getEmotionId());
-
-        return null;
-    }
-
-    @Override
-    public Message deleteEmotion(MessageEmotionDTO dto) {
-        Optional<Message> message = messageRepository.findByClientId(dto.getMessageClientId());
-        Optional<Emotion> emotion = emotionRepository.findById(dto.getEmotionId());
-        return null;
     }
 
     public List<Message> findAll(){

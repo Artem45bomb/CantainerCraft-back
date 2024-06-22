@@ -25,7 +25,7 @@ import java.util.*;
 
 @Tag(name = "User",description = "API for User")
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -169,10 +169,11 @@ public class UserController {
 
         Optional<User> user = userService.findByUsername(username);
 
-        if(user.isPresent()){
-            return ResponseEntity.ok(user.get());
+        if(user.isEmpty()){
+            throw new NotResourceException("user is not exist");
+
         }
-        else
-            return new ResponseEntity(new MessageError("not access"),HttpStatus.FORBIDDEN);
+        return ResponseEntity.ok(user.get());
+
     }
 }

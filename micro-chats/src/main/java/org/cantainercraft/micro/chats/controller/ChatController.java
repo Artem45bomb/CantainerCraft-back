@@ -20,7 +20,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/chat")
+@RequestMapping("/api/chat")
 @Slf4j
 @RequiredArgsConstructor
 public class ChatController {
@@ -69,7 +69,7 @@ public class ChatController {
             return ResponseEntity.ok(chatService.delete(uuid));
     }
 
-    @PreAuthorize("hasAnyRole('USER,ADMIN')")
+
     @PostMapping("/add")
     public ResponseEntity<Chat> save(@RequestBody ChatDTO chatDTO){
         Optional<Chat> chat = chatService.findByName(chatDTO.getName());

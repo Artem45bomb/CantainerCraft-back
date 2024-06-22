@@ -19,8 +19,6 @@ public interface MessageService {
 
     void deleteByClientId(UUID clientId);
 
-    Message addEmotion(MessageEmotionDTO dto);
-    Message deleteEmotion(MessageEmotionDTO dto);
 
     List<Message> findAll();
 

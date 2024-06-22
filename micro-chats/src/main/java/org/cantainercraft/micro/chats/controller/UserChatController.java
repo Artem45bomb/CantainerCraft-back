@@ -14,7 +14,7 @@ import org.cantainercraft.project.entity.chats.User_Chat;
 import java.util.*;
 
 @RestController
-@RequestMapping("/user_chat")
+@RequestMapping("/api/user_chat")
 @RequiredArgsConstructor
 class UserChatController {
     //UserFeignClient для взаимодействия с micro-users

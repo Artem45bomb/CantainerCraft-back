@@ -19,6 +19,7 @@ public class MessageServiceImpl implements MessageService {
         this.webClient = webClient;
     }
 
+    @Override
     public MessageDTO save(MessageDTO messageDTO){
         return webClient
                 .post()
@@ -28,6 +29,7 @@ public class MessageServiceImpl implements MessageService {
                 .bodyToFlux(MessageDTO.class)
                 .blockFirst();
     }
+    @Override
     public Flux<MessageDTO> asyncSave(MessageDTO messageDTO){
         return webClient
                 .post()
@@ -37,6 +39,7 @@ public class MessageServiceImpl implements MessageService {
                 .bodyToFlux(MessageDTO.class);
     }
 
+    @Override
     public Flux<Boolean> deleteByClientId(UUID uuid){
         return webClient
                 .post()
@@ -46,6 +49,7 @@ public class MessageServiceImpl implements MessageService {
                 .bodyToFlux(Boolean.class);
     }
 
+    @Override
     public Flux<MessageDTO> update(MessageDTO messageDTO){
         return webClient
                 .post()
@@ -55,20 +59,12 @@ public class MessageServiceImpl implements MessageService {
                 .bodyToFlux(MessageDTO.class);
     }
 
-    public MessageDTO findByUUID(UUID uuid){
-        return webClient
-                .post()
-                .uri("/message/id")
-                .bodyValue(uuid)
-                .retrieve()
-                .bodyToFlux(MessageDTO.class)
-                .blockFirst();
-    }
 
+    @Override
     public List<MessageDTO> findBySearch(MessageSearchDTO searchDTO){
         return webClient
                 .post()
-                .uri("/messages//search")
+                .uri("/messages/search")
                 .bodyValue(searchDTO)
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<List<MessageDTO>>() {

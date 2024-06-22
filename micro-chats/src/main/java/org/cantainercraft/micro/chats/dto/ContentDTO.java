@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.cantainercraft.project.entity.chats.Message;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.UUID;
 
@@ -13,7 +14,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ContentDTO {
+public class ContentDTO implements Serializable {
     private UUID uuid;
     private String srcContent;
     private String type;

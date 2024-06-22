@@ -9,8 +9,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class TemplateConfig {
 
-    private String SERVICE_URL_BASE = "http://localhost:8081/micro-users";
-    private String TEST_REACTIVE_BASE="https://6538cc17a543859d1bb1ef16.mockapi.io/api/posts";
+    private String SERVICE_URL_BASE = "http://localhost:8081/micro-users/api";
 
     @Primary
     @Bean("webclient")
@@ -20,11 +19,4 @@ public class TemplateConfig {
                 .build();
     }
 
-    @Bean("reactiveClient")
-    WebClient reactiveClient(){
-        return WebClient
-                .builder()
-                .baseUrl(TEST_REACTIVE_BASE)
-                .build();
-    }
 }

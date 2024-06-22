@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/emotions")
+@RequestMapping("/api/emotions")
 @RequiredArgsConstructor
 public class EmotionController {
     public final EmotionService service;

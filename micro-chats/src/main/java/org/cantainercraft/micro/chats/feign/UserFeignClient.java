@@ -20,10 +20,10 @@ import java.util.Optional;
 public interface UserFeignClient {
 
 
-    @PostMapping("/user/loadedUser")
+    @PostMapping("/api/user/loadedUser")
     ResponseEntity<Optional<User>> loadedUser(@RequestBody String username);
 
-    @PostMapping("/user/id")
+    @PostMapping("/api/user/id")
     ResponseEntity<User> userExist(@RequestBody Long id);
 }
 

@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("/subs")
+@RequestMapping("/api/subs")
 @RequiredArgsConstructor
 public class SubscriptionController {
 

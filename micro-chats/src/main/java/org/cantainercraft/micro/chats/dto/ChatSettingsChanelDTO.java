@@ -10,13 +10,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.cantainercraft.project.entity.chats.Chat_Settings;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChatSettingsChanelDTO {
+public class ChatSettingsChanelDTO implements Serializable {
     private UUID uuid;
     private boolean singMessage;
     private String type_channel;

@@ -18,6 +18,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/user_online")
 public class UserOnlineController {
 
 

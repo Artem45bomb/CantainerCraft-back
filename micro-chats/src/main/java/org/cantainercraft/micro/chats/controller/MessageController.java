@@ -20,7 +20,7 @@ import org.cantainercraft.project.entity.chats.Message;
 import java.util.*;
 
 @RestController
-@RequestMapping("/message")
+@RequestMapping("/api/message")
 @RequiredArgsConstructor
 public class MessageController {
 
@@ -53,7 +53,7 @@ public class MessageController {
 
     //@PreAuthorize("hasAnyRole('USER,ADMIN')")
     @PostMapping("/add")
-    public ResponseEntity<Message> save(@RequestBody MessageDTO messageDTO) throws JsonProcessingException {
+    public ResponseEntity<Message> save(@RequestBody MessageDTO messageDTO) {
 
         if (userFeignClient.userExist(messageDTO.getUserId()).getBody() == null) {
             throw new NotResourceException("user is not exist");
@@ -87,7 +87,6 @@ public class MessageController {
         messageService.deleteByClientId(clientId);
     }
 
-    @PreAuthorize("hasAnyRole('USER,ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<Message> update(@RequestBody MessageDTO messageDTO) {
             Optional<Message> message = messageService.findByUUID(messageDTO.getUuid());

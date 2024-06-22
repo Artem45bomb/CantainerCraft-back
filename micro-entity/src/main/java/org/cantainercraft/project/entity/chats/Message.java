@@ -47,9 +47,8 @@ public class Message implements Serializable {
     @JoinColumn(name = "chat_id", referencedColumnName = "uuid")
     private Chat chat;
 
-    @ManyToMany
-    @JoinTable(name = "messages_emotions", schema = "messenger_chats", catalog = "micro_chats", joinColumns = @JoinColumn(name = "message_id"), inverseJoinColumns = @JoinColumn(name = "emotion_id"))
-    private List<Emotion> emotions;
+    @OneToMany(mappedBy = "message")
+    private List<User_Emotion> userEmotions;
 
     @Override
     public boolean equals(Object object) {

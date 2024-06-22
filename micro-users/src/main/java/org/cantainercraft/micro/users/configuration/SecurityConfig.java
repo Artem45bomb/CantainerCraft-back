@@ -49,8 +49,8 @@ public class SecurityConfig {
                 // Настройка доступа к конечным точкам
                 .authorizeHttpRequests(request -> request
                         //permitAll - this path is available even if the user is not authorized
-                        .requestMatchers("/account/**").permitAll()
-                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/user/account/**").authenticated()
+                        .requestMatchers("/api/**").permitAll()
                         .anyRequest().permitAll()
                 )
                 //disable login sessions

@@ -28,6 +28,8 @@ public class Emotion implements Serializable {
 
     private String unicode;
 
+    @OneToMany(mappedBy = "emotion")
+    private List<User_Emotion > userEmotions;
 
     @Override
     public boolean equals(Object object) {

@@ -12,4 +12,5 @@ import java.util.UUID;
 public class EmotionServiceDTO implements Serializable {
     UUID messageClientId;
     UUID emotionId;
+    Long userId;
 }

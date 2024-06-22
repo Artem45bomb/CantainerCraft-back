@@ -17,7 +17,7 @@ import org.cantainercraft.project.entity.users.Role;
 
 
 @RestController
-@RequestMapping("/roles")
+@RequestMapping("/api/roles")
 @RequiredArgsConstructor
 public class RoleController {
 

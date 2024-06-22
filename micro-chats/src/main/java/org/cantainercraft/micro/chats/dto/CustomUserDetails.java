@@ -9,12 +9,13 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class CustomUserDetails extends User implements UserDetails {
+public class CustomUserDetails extends User implements UserDetails, Serializable {
     private final String password;
     private final String username;
     @Setter
