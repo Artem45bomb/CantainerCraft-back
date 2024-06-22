@@ -1,7 +1,6 @@
 package org.cantainercraft.messenger.service.impl;
 
 import org.cantainercraft.messenger.dto.ChatDTO;
-import org.cantainercraft.messenger.dto.UserChatDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;

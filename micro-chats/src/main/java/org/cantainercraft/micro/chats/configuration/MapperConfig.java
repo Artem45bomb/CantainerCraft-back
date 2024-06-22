@@ -1,10 +1,7 @@
 package org.cantainercraft.micro.chats.configuration;
 
 import org.cantainercraft.micro.chats.dto.MessageDTO;
-import org.cantainercraft.micro.chats.dto.stream.MessageChannelDTO;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

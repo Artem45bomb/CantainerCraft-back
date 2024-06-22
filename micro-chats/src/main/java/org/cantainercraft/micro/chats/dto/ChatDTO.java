@@ -4,9 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.cantainercraft.project.entity.chats.Message;
-import org.cantainercraft.project.entity.users.TypeChat;
-import org.cantainercraft.project.entity.chats.User_Chat;
 
 import java.util.Date;
 import java.util.List;
@@ -20,7 +17,7 @@ public class ChatDTO {
     private UUID uuid;
     private String name;
     private Date date;
-    private TypeChat typeChat;
-    private List<Message> messages;
-    private List<User_Chat> users;
+    private String typeChat;
+    private List<MessageDTO> messages;
+    private List<UserChatDTO> users;
 }

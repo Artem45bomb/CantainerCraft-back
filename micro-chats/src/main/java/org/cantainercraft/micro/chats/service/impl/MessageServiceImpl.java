@@ -1,13 +1,14 @@
 package org.cantainercraft.micro.chats.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.convertor.MessageDTOConvertor;
 import org.cantainercraft.micro.chats.dto.stream.MessageChannelDTO;
+import org.cantainercraft.micro.chats.repository.EmotionRepository;
 import org.cantainercraft.micro.chats.repository.MessageRepository;
 import org.cantainercraft.micro.chats.service.MessageService;
+import org.cantainercraft.micro.utilits.exception.NotResourceException;
+import org.cantainercraft.project.entity.chats.Emotion;
 import org.modelmapper.ModelMapper;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.data.domain.Page;
@@ -27,15 +28,17 @@ public class MessageServiceImpl implements MessageService {
     private final MessageDTOConvertor messageDTOConvertor;
     private final StreamBridge template;
     private final ModelMapper mapper;
+    private final EmotionRepository emotionRepository;
 
     public MessageServiceImpl(MessageRepository messageRepository,
                               MessageDTOConvertor messageDTOConvertor,
                               StreamBridge template,
-                              @Qualifier("stream-mapper-message") ModelMapper mapper) {
+                              @Qualifier("stream-mapper-message") ModelMapper mapper, EmotionRepository emotionRepository) {
         this.messageRepository = messageRepository;
         this.messageDTOConvertor = messageDTOConvertor;
         this.template = template;
         this.mapper = mapper;
+        this.emotionRepository = emotionRepository;
     }
 
 
@@ -58,6 +61,31 @@ public class MessageServiceImpl implements MessageService {
         return true;
     }
 
+    public void deleteByClientId(UUID clientId){
+        Optional<Message> message = messageRepository.findByClientId(clientId);
+
+        if(message.isEmpty()){
+            throw new NotResourceException("message is not exist");
+        }
+        messageRepository.deleteByClientId(clientId);
+    }
+
+
+    @Override
+    public Message addEmotion(MessageEmotionDTO dto) {
+        Optional<Message> message = messageRepository.findByClientId(dto.getMessageClientId());
+        Optional<Emotion> emotion = emotionRepository.findById(dto.getEmotionId());
+
+        return null;
+    }
+
+    @Override
+    public Message deleteEmotion(MessageEmotionDTO dto) {
+        Optional<Message> message = messageRepository.findByClientId(dto.getMessageClientId());
+        Optional<Emotion> emotion = emotionRepository.findById(dto.getEmotionId());
+        return null;
+    }
+
     public List<Message> findAll(){
         return messageRepository.findAll();
     }
@@ -73,4 +101,6 @@ public class MessageServiceImpl implements MessageService {
     public List<Message> findByUserId(Long id) {
         return messageRepository.findByUserId(id);
     }
+
+
 }

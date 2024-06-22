@@ -28,9 +28,6 @@ public class Emotion implements Serializable {
 
     private String unicode;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "emotions",fetch = FetchType.LAZY)
-    private List<Message> messages;
 
     @Override
     public boolean equals(Object object) {

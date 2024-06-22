@@ -82,9 +82,16 @@ public class MessageController {
     }
 
     @PreAuthorize("hasAnyRole('USER,ADMIN')")
+    @PutMapping("/delete/client/id")
+    public void deleteByClientId(@RequestBody UUID clientId){
+        messageService.deleteByClientId(clientId);
+    }
+
+    @PreAuthorize("hasAnyRole('USER,ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<Message> update(@RequestBody MessageDTO messageDTO) {
             Optional<Message> message = messageService.findByUUID(messageDTO.getUuid());
+
             if(message.isEmpty()) {
                 throw new NotResourceException("No content for update");
             }
@@ -94,11 +101,15 @@ public class MessageController {
             if (userFeignClient.userExist(messageDTO.getUserId()) == null) {
                 throw new NotResourceException("user is not exist");
             }
+            if(messageDTO.getUuid() == null && messageDTO.getClientId() != null){
+                messageDTO.setUuid(message.get().getUuid());
+            }
+
             return ResponseEntity.ok(messageService.update(messageDTO));
 
     }
 
-    @PreAuthorize("hasAnyRole('USER,ADMIN')")
+
     @PostMapping("/search")
     public ResponseEntity<Page<Message>> findBySearch(@RequestBody MessageSearchDTO messageSearchDTO){
 

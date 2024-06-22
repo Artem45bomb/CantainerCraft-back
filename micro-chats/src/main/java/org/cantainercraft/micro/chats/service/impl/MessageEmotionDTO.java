@@ -1,19 +1,17 @@
-package org.cantainercraft.micro.chats.dto;
+package org.cantainercraft.micro.chats.service.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
 import java.util.UUID;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class EmotionDTO {
-    private String unicode;
-    private UUID uuid;
-
+@AllArgsConstructor
+public class MessageEmotionDTO {
+    private UUID messageClientId;
+    private UUID emotionId;
 }

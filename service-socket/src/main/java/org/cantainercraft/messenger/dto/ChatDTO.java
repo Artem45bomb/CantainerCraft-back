@@ -1,4 +1,4 @@
-package org.cantainercraft.micro.chats.dto;
+package org.cantainercraft.messenger.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,21 +13,11 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MessageDTO {
+public class ChatDTO {
     private UUID uuid;
-
-    private String text;
-
+    private String name;
     private Date date;
-
-    private Boolean isPinned;
-
-
-    private Long userId;
-
-    public ChatDTO chat;
-
-    private UUID clientId;
-
-    private List<EmotionDTO> emotions;
+    private String typeChat;
+    private List<MessageDTO> messages;
+    private List<UserChatDTO> users;
 }

@@ -1,6 +1,7 @@
 package org.cantainercraft.micro.chats.service;
 
 import org.cantainercraft.micro.chats.dto.MessageDTO;
+import org.cantainercraft.micro.chats.service.impl.MessageEmotionDTO;
 import org.cantainercraft.project.entity.chats.Message;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,11 @@ public interface MessageService {
     Message update(MessageDTO messageDTO);
 
     boolean delete(UUID uuid);
+
+    void deleteByClientId(UUID clientId);
+
+    Message addEmotion(MessageEmotionDTO dto);
+    Message deleteEmotion(MessageEmotionDTO dto);
 
     List<Message> findAll();
 

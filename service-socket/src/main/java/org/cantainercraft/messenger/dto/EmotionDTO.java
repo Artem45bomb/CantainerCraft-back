@@ -5,12 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.io.Serializable;
+import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Message implements Serializable {
-    String value;
+public class EmotionDTO {
+    private String unicode;
+    private UUID uuid;
 }
