@@ -5,12 +5,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.cantainercraft.micro.chats.convertor.UserEmotionDTOConvertor;
 import org.cantainercraft.micro.chats.dto.EmotionAddDTO;
+import org.cantainercraft.micro.chats.dto.EmotionDeleteDTO;
 import org.cantainercraft.micro.chats.dto.UserEmotionDTO;
+import org.cantainercraft.micro.chats.repository.EmotionRepository;
+import org.cantainercraft.micro.chats.repository.MessageRepository;
 import org.cantainercraft.micro.chats.repository.UserEmotionRepository;
 import org.cantainercraft.micro.chats.service.UserEmotionService;
 import org.cantainercraft.micro.chats.webflux.UserWebClient;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.micro.utilits.exception.NotValidateParamException;
+import org.cantainercraft.project.entity.chats.Emotion;
+import org.cantainercraft.project.entity.chats.Message;
 import org.cantainercraft.project.entity.chats.User_Emotion;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +29,8 @@ import java.util.UUID;
 public class UserEmotionServiceImpl implements UserEmotionService {
     private final UserEmotionRepository repository;
     private final UserEmotionDTOConvertor convertor;
+    private final MessageRepository messageRepository;
+    private final EmotionRepository emotionRepository;
     private final UserWebClient webClient;
 
     @Override
@@ -76,8 +83,27 @@ public class UserEmotionServiceImpl implements UserEmotionService {
     }
 
     @Override
-    public  User_Emotion add(EmotionAddDTO dto){
+    public  User_Emotion addEmotion(EmotionAddDTO dto){
+        Optional<Message> message = messageRepository.findByClientId(dto.getMessageClientId());
+        Optional<Emotion> emotion = emotionRepository.findById(dto.getEmotionId());
 
-        return  User_Emotion.builder().build();
+        if(message.isEmpty()) throw new NotResourceException("message is not exist");
+        if(emotion.isEmpty()) throw new NotResourceException("emotion is not exist");
+        if(!webClient.userExist(dto.getUserId())) throw new NotResourceException("user is not exist");
+
+        return  repository.save(User_Emotion.builder()
+                .userId(dto.getUserId())
+                .emotion(emotion.get())
+                .message(message.get())
+                .build());
+    }
+
+    @Override
+    public void deleteEmotion(EmotionDeleteDTO dto){
+        Optional<User_Emotion> userEmotion = repository.findById(dto.getUuid());
+
+        if(userEmotion.isEmpty()) throw new NotResourceException("this user not add emotion");
+
+        repository.deleteById(dto.getUuid());
     }
 }

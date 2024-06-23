@@ -2,6 +2,8 @@ package org.cantainercraft.micro.chats.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.dto.EmotionAddDTO;
+import org.cantainercraft.micro.chats.dto.EmotionDTO;
+import org.cantainercraft.micro.chats.dto.EmotionDeleteDTO;
 import org.cantainercraft.micro.chats.dto.UserEmotionDTO;
 import org.cantainercraft.micro.chats.service.UserEmotionService;
 import org.cantainercraft.project.entity.chats.User_Emotion;
@@ -34,10 +36,14 @@ public class UserEmotionController {
     }
 
     @PostMapping("/message/add")
-    public ResponseEntity<User_Emotion> add(@RequestBody EmotionAddDTO emotionAddDTO){
-        return ResponseEntity.ok(service.add(emotionAddDTO));
+    public ResponseEntity<User_Emotion> addEmotion(@RequestBody EmotionAddDTO emotionAddDTO){
+        return ResponseEntity.ok(service.addEmotion(emotionAddDTO));
     }
 
+    @PostMapping("/message/delete")
+    public void deleteEmotion(@RequestBody EmotionDeleteDTO emotionDeleteDTO){
+        service.deleteEmotion(emotionDeleteDTO);
+    }
     @PutMapping("/update")
     public ResponseEntity<User_Emotion> update(@RequestBody UserEmotionDTO contentDTO) {
         return ResponseEntity.ok(service.update(contentDTO));
