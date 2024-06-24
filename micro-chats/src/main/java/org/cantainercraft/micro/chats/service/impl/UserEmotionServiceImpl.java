@@ -91,11 +91,13 @@ public class UserEmotionServiceImpl implements UserEmotionService {
         if(emotion.isEmpty()) throw new NotResourceException("emotion is not exist");
         if(!webClient.userExist(dto.getUserId())) throw new NotResourceException("user is not exist");
 
-        return  repository.save(User_Emotion.builder()
+
+        return repository.save(User_Emotion.builder()
                 .userId(dto.getUserId())
                 .emotion(emotion.get())
                 .message(message.get())
                 .build());
+
     }
 
     @Override

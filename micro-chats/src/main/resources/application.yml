@@ -25,6 +25,7 @@ spring:
               exchange-type: topic
 logging:
   level:
+    org.cantainercraft.micro: info
     org.springframework.cloud: warn
     org.springframework.cloud.stream: info
     org.springframework.security: trace

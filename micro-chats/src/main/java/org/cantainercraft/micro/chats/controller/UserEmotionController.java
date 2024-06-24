@@ -2,7 +2,6 @@ package org.cantainercraft.micro.chats.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.dto.EmotionAddDTO;
-import org.cantainercraft.micro.chats.dto.EmotionDTO;
 import org.cantainercraft.micro.chats.dto.EmotionDeleteDTO;
 import org.cantainercraft.micro.chats.dto.UserEmotionDTO;
 import org.cantainercraft.micro.chats.service.UserEmotionService;
@@ -14,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/user_emotion")
+@RequestMapping("/api/user_emotion")
 @RequiredArgsConstructor
 public class UserEmotionController {
 
@@ -36,11 +35,18 @@ public class UserEmotionController {
     }
 
     @PostMapping("/message/add")
-    public ResponseEntity<User_Emotion> addEmotion(@RequestBody EmotionAddDTO emotionAddDTO){
-        return ResponseEntity.ok(service.addEmotion(emotionAddDTO));
+    public ResponseEntity<EmotionAddDTO> addEmotion(@RequestBody EmotionAddDTO emotionAddDTO){
+        User_Emotion userEmotion = service.addEmotion(emotionAddDTO);
+
+        return ResponseEntity.ok(EmotionAddDTO.builder()
+                        .userId(userEmotion.getUserId())
+                        .uuid(userEmotion.getUuid())
+                        .emotionId(userEmotion.getEmotion().getUuid())
+                        .messageClientId(userEmotion.getMessage().getClientId())
+                        .build());
     }
 
-    @PostMapping("/message/delete")
+    @PutMapping("/message/delete")
     public void deleteEmotion(@RequestBody EmotionDeleteDTO emotionDeleteDTO){
         service.deleteEmotion(emotionDeleteDTO);
     }

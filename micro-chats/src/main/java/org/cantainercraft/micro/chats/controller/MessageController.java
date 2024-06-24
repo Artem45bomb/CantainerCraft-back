@@ -26,7 +26,7 @@ public class MessageController {
 
     private final MessageService messageService;
     private final UserFeignClient userFeignClient;
-    private final String COLUM_ID = "id";
+    private static final String COLUM_ID = "id";
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/all")
@@ -65,11 +65,11 @@ public class MessageController {
             throw new NotValidateParamException("Missed param: clientId");
         }
 
-
-        return ResponseEntity.ok(messageService.save(messageDTO));
+        Message result = messageService.save(messageDTO);
+        return ResponseEntity.ok(result);
     }
 
-    @PreAuthorize("hasAnyRole('USER,ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/delete")
     public ResponseEntity<Boolean> delete(@RequestBody UUID uuid){
             Optional<Message> message = messageService.findByUUID(uuid);
@@ -81,7 +81,7 @@ public class MessageController {
             return ResponseEntity.ok(messageService.delete(uuid));
     }
 
-    @PreAuthorize("hasAnyRole('USER,ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/delete/client/id")
     public void deleteByClientId(@RequestBody UUID clientId){
         messageService.deleteByClientId(clientId);

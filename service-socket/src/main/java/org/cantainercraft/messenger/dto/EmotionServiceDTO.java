@@ -10,6 +10,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmotionServiceDTO implements Serializable {
+    UUID uuid;
     UUID messageClientId;
     UUID emotionId;
     Long userId;

@@ -34,7 +34,6 @@ public class Message implements Serializable {
 
     private Date date;
 
-    @Column(unique = true)
     private Long userId;
 
     private UUID clientId;
