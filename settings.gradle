@@ -11,4 +11,5 @@ includeBuild('micro-utility')
 includeBuild("service-db-store")
 includeBuild("StreamRedis")
 includeBuild("grpc-service")
+includeBuild("service-realtime")
 
