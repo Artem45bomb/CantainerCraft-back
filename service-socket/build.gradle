@@ -21,6 +21,9 @@ repositories {
 }
 
 dependencies {
+    //GraphQl
+    implementation 'org.springframework.boot:spring-boot-starter-graphql:3.3.1'
+
     implementation 'org.springframework.cloud:spring-cloud-starter-loadbalancer:4.1.2'
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:+'
     implementation 'org.springframework.boot:spring-boot-starter-webflux:3.2.4'

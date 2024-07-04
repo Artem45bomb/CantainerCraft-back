@@ -18,6 +18,13 @@ import org.springframework.stereotype.Controller;
 public class SignalController {
     private final RoomService roomService;
 
+
+    @MessageMapping("/hi")
+    @SendTo("/topic/hi")
+    public String test(@Payload String message){
+        return message;
+    }
+
     @MessageMapping("/join")
     @SendTo("/topic/join")
     public RoomServiceDTO joinRoom(@Payload RoomServiceDTO dto){

@@ -16,5 +16,5 @@ import java.util.Date;
 public class SignalData {
     private Long userId;
     private String body;
-    private SignalType typeSignal;
+    private String typeSignal;
 }

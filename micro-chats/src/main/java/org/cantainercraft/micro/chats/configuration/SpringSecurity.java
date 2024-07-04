@@ -2,6 +2,7 @@ package org.cantainercraft.micro.chats.configuration;
 
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.configuration.filter.JwtAuthFilter;
+import org.cantainercraft.micro.chats.configuration.filter.ServiceAuthHandler;
 import org.cantainercraft.micro.chats.service.impl.UserDetailServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,6 +39,7 @@ public class SpringSecurity {
     // Поля
     private final UserDetailServiceImpl userDetailServiceImpl; // Сервис для получения информации о пользователях
     private final JwtAuthFilter jwtAuthFilter; // Фильтр для обработки JWT аутентификации
+    private final ServiceAuthHandler serviceAuthHandler;
 
     /**
      * Конфигурирует цепочку фильтров безопасности.
@@ -59,9 +61,10 @@ public class SpringSecurity {
                 }))
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(STATELESS)) // Сессии не используются
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/**").authenticated()
-                        .anyRequest().permitAll()) // Все остальные запросы требуют аутентификации
+                        .requestMatchers("/api/**").permitAll()
+                        .anyRequest().authenticated()) // Все остальные запросы требуют аутентификации
                 .authenticationProvider(authenticationProvider()) // Установка провайдера аутентификации
+                .addFilterBefore(serviceAuthHandler,UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class); // Добавление JWT фильтра перед фильтром аутентификации
         return http.build();
     }

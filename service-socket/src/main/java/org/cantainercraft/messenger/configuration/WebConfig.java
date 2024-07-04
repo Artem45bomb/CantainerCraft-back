@@ -10,9 +10,8 @@ import org.springframework.web.socket.server.support.HttpSessionHandshakeInterce
 @EnableWebSocketMessageBroker
 @EnableWebSocket
 @RequiredArgsConstructor
-public class WebConfig implements WebSocketMessageBrokerConfigurer, WebSocketConfigurer {
+public class WebConfig implements WebSocketMessageBrokerConfigurer {
 
-    private final WebSocketFileHandler webSocketFileHandler;
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
@@ -23,13 +22,7 @@ public class WebConfig implements WebSocketMessageBrokerConfigurer, WebSocketCon
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/gs-guide-websocket").setAllowedOriginPatterns("*").withSockJS();
+        registry.addEndpoint("/gs-guide-websocket").setAllowedOriginPatterns("*");
     }
 
-    @Override
-    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(webSocketFileHandler,"/file-handler")
-                .addInterceptors(new HttpSessionHandshakeInterceptor())
-                .setAllowedOriginPatterns("*");
-    }
 }

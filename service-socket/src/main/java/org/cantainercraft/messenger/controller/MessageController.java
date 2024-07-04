@@ -17,27 +17,27 @@ import java.util.UUID;
 public class MessageController {
     private final MessageServiceImpl messageService;
 
-    @MessageMapping("/submit")
-    @SendTo("/topic/public")
-    private MessageDTO submitMessage(@Payload MessageDTO submitMessage) throws Exception{
+    @MessageMapping("/message/add")
+    @SendTo("/topic/message/add")
+    private MessageDTO submitMessage(@Payload MessageDTO message) throws Exception{
 
         UUID uuid = UUID.randomUUID();
-        submitMessage.setClientId(uuid);
-        messageService.asyncSave(submitMessage).subscribe(System.out::println);
+        message.setClientId(uuid);
+        messageService.asyncSave(message).subscribe(System.out::println);
 
-        return submitMessage;
+        return message;
     }
 
-    @MessageMapping("/submit/delete")
-    @SendTo("/topic/public")
+    @MessageMapping("/message/delete")
+    @SendTo("/topic/message/delete")
     private UUID deleteMessage(@Payload UUID clientId) throws Exception {
 
         messageService.deleteByClientId(clientId).subscribe(System.out::println);
         return clientId;
     }
 
-    @MessageMapping("/submit/update")
-    @SendTo("/topic/public")
+    @MessageMapping("/message/update")
+    @SendTo("/topic/message/update")
     private MessageDTO updateMessage(@Payload MessageDTO messageDTO) throws Exception{
 
         messageService.update(messageDTO).subscribe(System.out::println);

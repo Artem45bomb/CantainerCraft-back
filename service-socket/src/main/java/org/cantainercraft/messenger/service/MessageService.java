@@ -18,4 +18,6 @@ public interface MessageService {
 
     List<MessageDTO> findBySearch(MessageSearchDTO searchDTO);
 
+    MessageDTO findById(UUID uuid);
+
 }

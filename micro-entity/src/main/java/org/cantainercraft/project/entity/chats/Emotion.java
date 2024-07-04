@@ -28,7 +28,8 @@ public class Emotion implements Serializable {
 
     private String unicode;
 
-    @OneToMany(mappedBy = "emotion")
+    @JsonIgnore
+    @OneToMany(mappedBy = "emotion",fetch = FetchType.LAZY)
     private List<User_Emotion > userEmotions;
 
     @Override

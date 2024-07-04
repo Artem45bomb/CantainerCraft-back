@@ -1,0 +1,27 @@
+type Query {
+    messageId(id:ID):MessageDTO
+}
+
+
+type MessageDTO {
+    uuid:ID,
+    text:String,
+    date:String,
+    isPinned:Boolean,
+    userId:Int,
+    clientId:String,
+    emotions:[UserEmotion!]!
+}
+
+
+type Emotion{
+    uuid:ID,
+    unicode:String
+}
+
+
+type UserEmotion{
+        uuid:ID,
+        emotion:Emotion!,
+        userId:String
+}

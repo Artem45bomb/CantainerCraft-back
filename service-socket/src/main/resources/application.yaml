@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: socket-chats
+  profiles:
+    active: dev
+
+  graphql:
+    graphiql:
+      enabled: true
+
+logging:
+  level:
+    org.springframework.web:  info
+    org.cantainercraft.messenger.controller: trace

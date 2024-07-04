@@ -35,7 +35,7 @@ public class MessageController {
     }
 
 
-    @PreAuthorize("hasAnyRole('USER,ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/uuid")
     public ResponseEntity<Message> findByUUID(@RequestBody UUID uuid) {
         Optional<Message> message = messageService.findByUUID(uuid);

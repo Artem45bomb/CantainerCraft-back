@@ -1,5 +1,4 @@
 rootProject.name = 'CantainerCraft-back'
-includeBuild("service-file-api")
 includeBuild('micro-server')
 includeBuild('micro-users')
 includeBuild('micro-entity')

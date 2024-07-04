@@ -1,6 +1,7 @@
 package org.cantainercraft.project.entity.chats;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -21,7 +22,8 @@ public class User_Emotion implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID uuid;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Message message;
     @ManyToOne(cascade = CascadeType.ALL)
     private Emotion emotion;
