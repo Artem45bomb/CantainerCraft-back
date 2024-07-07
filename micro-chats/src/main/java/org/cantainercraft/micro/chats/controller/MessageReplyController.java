@@ -35,7 +35,7 @@ public class MessageReplyController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Message_Reply> create(@RequestBody MessageReplyDTO messageReplyDTO) {
+    public ResponseEntity<Message_Reply> save(@RequestBody MessageReplyDTO messageReplyDTO) {
         if (service.findById(messageReplyDTO.getUuid()).isPresent()) {
             throw new ExistResourceException("Content is already exist");
         }

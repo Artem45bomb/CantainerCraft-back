@@ -24,7 +24,7 @@ public class EmotionController {
     }
 
     @MessageMapping("/emotion/delete")
-    @SendTo("/topic/emotionn/delete")
+    @SendTo("/topic/emotion/delete")
     public UUID deleteEmotion(@Payload UUID uuid){
 
         emotionService.deleteEmotion(uuid);

@@ -1,11 +1,9 @@
 package org.cantainercraft.micro.chats.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.service.MessageService;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.micro.utilits.exception.NotValidateParamException;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +36,7 @@ public class MessageController {
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/uuid")
     public ResponseEntity<Message> findByUUID(@RequestBody UUID uuid) {
-        Optional<Message> message = messageService.findByUUID(uuid);
+        Optional<Message> message = messageService.findByUuid(uuid);
 
         if(message.isEmpty()) {
             throw new NotResourceException("No content");
@@ -72,7 +70,7 @@ public class MessageController {
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/delete")
     public ResponseEntity<Boolean> delete(@RequestBody UUID uuid){
-            Optional<Message> message = messageService.findByUUID(uuid);
+            Optional<Message> message = messageService.findByUuid(uuid);
 
             if(message.isEmpty()){
                 throw new NotResourceException("No content for delete");
@@ -89,7 +87,7 @@ public class MessageController {
 
     @PutMapping("/update")
     public ResponseEntity<Message> update(@RequestBody MessageDTO messageDTO) {
-            Optional<Message> message = messageService.findByUUID(messageDTO.getUuid());
+            Optional<Message> message = messageService.findByUuidOrClientId(messageDTO.getUuid(),messageDTO.getClientId());
 
             if(message.isEmpty()) {
                 throw new NotResourceException("No content for update");
@@ -110,7 +108,7 @@ public class MessageController {
 
 
     @PostMapping("/search")
-    public ResponseEntity<Page<Message>> findBySearch(@RequestBody MessageSearchDTO messageSearchDTO){
+    public ResponseEntity<List<Message>> findBySearch(@RequestBody MessageSearchDTO messageSearchDTO){
 
         UUID uuid = messageSearchDTO.getUuid() == null ? null :messageSearchDTO.getUuid();
         String valueMessage = messageSearchDTO.getValue() == null ? null :messageSearchDTO.getValue();
@@ -149,12 +147,12 @@ public class MessageController {
         int pageSize =  messageSearchDTO.getPageSize() == null ? 1 : messageSearchDTO.getPageSize();
         String sortColumn = messageSearchDTO.getSortColumn() == null? "id" :messageSearchDTO.getSortColumn();
 
-        Sort.Direction direction = sortDirection.isEmpty() || sortDirection.toUpperCase().equals("ASK") ?
+        Sort.Direction direction = sortDirection.isEmpty() || sortDirection.equalsIgnoreCase("ASK") ?
                 Sort.Direction.ASC : Sort.Direction.DESC;
         Sort sort = Sort.by(direction,sortColumn,COLUM_ID);
         PageRequest pageRequest = PageRequest.of(pageNumber,pageSize,sort);
 
-        return ResponseEntity.ok(messageService.findBySearch(dateStart,dateEnd,valueMessage,uuid,userId,chatId,pageRequest));
+        return ResponseEntity.ok(messageService.findBySearch(dateStart,dateEnd,valueMessage,uuid,userId,chatId,pageRequest).getContent());
 
     }
 }

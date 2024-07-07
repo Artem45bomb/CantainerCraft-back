@@ -5,9 +5,7 @@ import org.cantainercraft.messenger.dto.MessageDTO;
 import org.cantainercraft.messenger.dto.MessageSearchDTO;
 import org.cantainercraft.messenger.service.MessageService;
 import org.cantainercraft.messenger.webclient.MessageClient;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
 import java.util.List;

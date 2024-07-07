@@ -18,6 +18,8 @@ import java.util.UUID;
 public interface MessageRepository extends JpaRepository<Message, UUID> {
     List<Message> findByUserId(Long userId);
 
+    Optional<Message> findByUuidOrClientId(UUID uuid,UUID clientId);
+
     Optional<Message> findByClientId(UUID clientId);
 
     void deleteByClientId(UUID clientId);

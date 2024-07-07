@@ -30,9 +30,7 @@ public class MessageServiceImpl implements MessageService {
     private final MessageRepository messageRepository;
     private final MessageDTOConvertor messageDTOConvertor;
 
-
-
-
+    @Override
     public Message save(MessageDTO messageDTO) {
         Message message = messageDTOConvertor.convertMessageDTOToMessage(messageDTO);
 
@@ -40,16 +38,19 @@ public class MessageServiceImpl implements MessageService {
         return messageRepository.save(message);
     }
 
+    @Override
     public Message update(MessageDTO messageDTO){
         Message message = messageDTOConvertor.convertMessageDTOToMessage(messageDTO);
         return messageRepository.save(message);
     }
 
+    @Override
     public boolean delete(UUID uuid){
         messageRepository.deleteById(uuid);
         return true;
     }
 
+    @Override
     public void deleteByClientId(UUID clientId){
         Optional<Message> message = messageRepository.findByClientId(clientId);
 
@@ -59,18 +60,27 @@ public class MessageServiceImpl implements MessageService {
         messageRepository.deleteByClientId(clientId);
     }
 
+    @Override
     public List<Message> findAll(){
         return messageRepository.findAll();
     }
 
-    public Optional<Message> findByUUID(UUID uuid){
+    @Override
+    public Optional<Message> findByUuid(UUID uuid){
         return messageRepository.findById(uuid);
     }
 
+    @Override
+    public Optional<Message> findByUuidOrClientId(UUID uuid,UUID clientId){
+        return messageRepository.findByUuidOrClientId(uuid,clientId);
+    }
+
+    @Override
     public Page<Message> findBySearch(Date dateStart, Date dateEnd, String text, UUID uuid, Long userId, UUID chatId, Pageable pageable){
         return messageRepository.findBySearch(dateStart,dateEnd,text,uuid,userId,chatId,pageable);
     }
 
+    @Override
     public List<Message> findByUserId(Long id) {
         return messageRepository.findByUserId(id);
     }

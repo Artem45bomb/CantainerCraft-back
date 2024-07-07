@@ -3,6 +3,8 @@ package org.cantainercraft.messenger.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.cantainercraft.messenger.dto.MessageDTO;
+import org.cantainercraft.messenger.dto.MessageForwardDTO;
+import org.cantainercraft.messenger.dto.MessageReplyDTO;
 import org.cantainercraft.messenger.service.impl.MessageServiceImpl;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -19,7 +21,7 @@ public class MessageController {
 
     @MessageMapping("/message/add")
     @SendTo("/topic/message/add")
-    private MessageDTO submitMessage(@Payload MessageDTO message) throws Exception{
+    public MessageDTO submitMessage(@Payload MessageDTO message) throws Exception{
 
         UUID uuid = UUID.randomUUID();
         message.setClientId(uuid);
@@ -30,19 +32,36 @@ public class MessageController {
 
     @MessageMapping("/message/delete")
     @SendTo("/topic/message/delete")
-    private UUID deleteMessage(@Payload UUID clientId) throws Exception {
+    public UUID deleteMessage(@Payload UUID clientId) throws Exception {
 
         messageService.deleteByClientId(clientId).subscribe(System.out::println);
         return clientId;
     }
 
-    @MessageMapping("/message/update")
-    @SendTo("/topic/message/update")
-    private MessageDTO updateMessage(@Payload MessageDTO messageDTO) throws Exception{
+    @MessageMapping("/message/pinned")
+    @SendTo("/topic/message/pinned")
+    public MessageDTO updateMessage(@Payload MessageDTO dto) throws Exception{
+        MessageDTO pinnedMessage = MessageDTO.builder()
+                .isPinned(dto.getIsPinned())
+                .clientId(dto.getClientId())
+                .build();
 
-        messageService.update(messageDTO).subscribe(System.out::println);
+        messageService.update(dto).subscribe(System.out::println);
+        return pinnedMessage;
+    }
 
-        return messageDTO;
+    @MessageMapping("/message/answer")
+    @SendTo("/topic/message/answer")
+    public MessageReplyDTO answerMessage(MessageReplyDTO dto){
+        //logic
+        return dto;
+    }
+
+    @MessageMapping("/message/forward")
+    @SendTo("/topic/message/forward")
+    public MessageForwardDTO forwardMessage(MessageForwardDTO dto){
+        //logic
+        return dto;
     }
 
 }

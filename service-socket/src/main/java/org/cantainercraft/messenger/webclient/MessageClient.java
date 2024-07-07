@@ -28,10 +28,22 @@ public class MessageClient {
         return webClient
                 .post()
                 .uri("/message/uuid")
-                .header("micro-service-key", "Uieiej6895op")
+                .header("micro-service-key", serviceKey)
                 .bodyValue(uuid)
                 .retrieve()
                 .bodyToMono(MessageDTO.class)
+                .block();
+    }
+
+    public List<MessageDTO> findBySearch(MessageSearchDTO dto){
+        return webClient
+                .post()
+                .uri("/message/search")
+                .header("micro-service-key", serviceKey)
+                .bodyValue(dto)
+                .retrieve()
+                .bodyToFlux(MessageDTO.class)
+                .collectList()
                 .block();
     }
     
@@ -76,19 +88,5 @@ public class MessageClient {
                 .bodyValue(messageDTO)
                 .retrieve()
                 .bodyToFlux(MessageDTO.class);
-    }
-
-
-    
-    public List<MessageDTO> findBySearch(MessageSearchDTO searchDTO){
-        return webClient
-                .post()
-                .uri("/messages/search")
-                .header("micro-service-key", serviceKey)
-                .bodyValue(searchDTO)
-                .retrieve()
-                .bodyToMono(new ParameterizedTypeReference<List<MessageDTO>>() {
-                })
-                .block();
     }
 }

@@ -1,7 +1,24 @@
-type Query {
+type Query{
     messageId(id:ID):MessageDTO
+    messagesSearch(input:MessageSearch):[MessageDTO]!
 }
 
+
+
+input MessageSearch{
+    uuid:ID,
+    userId:Int
+    chatId:ID
+
+    dateStart:String
+    dateEnd:String
+    value:String
+
+    pageNumber:Int
+    pageSize:Int
+    sortDirection:String
+    sortColumn:String
+}
 
 type MessageDTO {
     uuid:ID,
