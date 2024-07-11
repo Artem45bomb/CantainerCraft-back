@@ -17,8 +17,7 @@ duration:
 time:
   token:
     refresh: 90080
-application-description: service for work user
-application-version: 1.1.1
 springdoc:
   swagger-ui:
-    path: /swagger-ui.html
+    filter: users
+

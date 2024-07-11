@@ -26,6 +26,7 @@ ext {
 }
 
 dependencies {
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
 
     //info
     implementation 'org.springframework.boot:spring-boot-starter-actuator:3.3.0'

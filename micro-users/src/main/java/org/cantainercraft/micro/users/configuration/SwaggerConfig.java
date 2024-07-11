@@ -18,20 +18,20 @@ public class SwaggerConfig {
     @Bean
     public GroupedOpenApi publicUserApi() {
         return GroupedOpenApi.builder()
-                .group("Users")
-                .pathsToMatch("/user/**")
+                .group("users")
+                .pathsToMatch("/api/user/**")
                 .build();
     }
-
-    @Bean
-    public OpenAPI customOpenApi(@Value("${application-description}") String appDescription,
-                                 @Value("${application-version}")String appVersion) {
-        return new OpenAPI()
-                .servers(List.of(new Server().url("http://localhost:8080")))
-                .info(new Info().title("Application API")
-                        .version(appVersion)
-                        .description(appDescription)
-                        .contact(new Contact().name("username")
-                                .email("test@gmail.com")));
-    }
+//
+//    @Bean
+//    public OpenAPI customOpenApi(@Value("${application-description}") String appDescription,
+//                                 @Value("${application-version}")String appVersion) {
+//        return new OpenAPI()
+//                .servers(List.of(new Server().url("http://localhost:8080")))
+//                .info(new Info().title("Application API")
+//                        .version(appVersion)
+//                        .description(appDescription)
+//                        .contact(new Contact().name("username")
+//                                .email("test@gmail.com")));
+//    }
 }
