@@ -156,12 +156,9 @@ public class UserController {
     }
 
     @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
+            @ApiResponse(responseCode = "200",
                     description = "user get all",
-                    content = {
-                            @Content(
-                                    mediaType = "application/json",
+                    content = {@Content(mediaType = "application/json",
                                     array=@ArraySchema(schema = @Schema(implementation = User.class))
                             )
                     }

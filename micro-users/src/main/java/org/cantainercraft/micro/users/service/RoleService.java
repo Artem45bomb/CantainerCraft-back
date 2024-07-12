@@ -1,7 +1,6 @@
 package org.cantainercraft.micro.users.service;
 
 import org.cantainercraft.micro.users.dto.RoleDTO;
-import org.cantainercraft.micro.users.dto.RoleUpdateDTO;
 import org.cantainercraft.project.entity.users.Role;
 
 import java.util.List;
@@ -11,9 +10,9 @@ public interface RoleService {
 
       Role findById(Long id);
 
-      Role save(RoleDTO RoleDTO);
+      Role save(RoleDTO roleDTO);
 
-      boolean update(RoleUpdateDTO RoleUpdateDTO);
+      Role update(RoleDTO roleDTO);
 
       void deleteById(Long id);
 }

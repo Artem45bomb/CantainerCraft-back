@@ -11,7 +11,6 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.cantainercraft.micro.users.dto.RoleUpdateDTO;
 import org.cantainercraft.project.entity.users.Role;
 import org.cantainercraft.micro.users.repository.RoleRepository;
 
@@ -54,16 +53,23 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     @CachePut(value = "roles",key = "#dto.id")
-    public boolean update(RoleUpdateDTO dto){
-        Role Role = roleDTOConvertor.convertDTOToEntity(dto);
-        Role.setId(dto.getId());
-        roleRepository.save(Role);
-        return  true;
+    public Role update(RoleDTO dto){
+        Optional<Role> role = roleRepository.findById(dto.getId());
+        Optional<Role> roleExist = roleRepository.findByRole(dto.getRole());
+
+        if(role.isEmpty()) throw new NotResourceException("role is not exist");
+        if(roleExist.isPresent()) throw new ExistResourceException("a role with the same name exists");
+
+        return roleRepository.save(roleDTOConvertor.convertDTOToEntity(dto));
     }
 
     @Override
     @CacheEvict(value = "roles",key = "#id")
     public void deleteById(Long id){
+        Optional<Role> role = roleRepository.findById(id);
+
+        if(role.isEmpty()) throw new NotResourceException("role is not exist");
+
         roleRepository.deleteById(id);
     }
 }
