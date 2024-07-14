@@ -72,7 +72,7 @@ public class User implements Serializable {
 
 
     @JsonIgnore
-    @OneToOne(mappedBy = "user",fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private Profile profile;
 
     @Override

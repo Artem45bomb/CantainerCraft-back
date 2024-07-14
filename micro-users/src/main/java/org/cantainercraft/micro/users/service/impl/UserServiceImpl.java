@@ -1,9 +1,12 @@
 package org.cantainercraft.micro.users.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.cantainercraft.micro.users.convertor.ProfileDTOConvertor;
 import org.cantainercraft.micro.users.convertor.UserDTOConvertor;
 import org.cantainercraft.micro.users.dto.ServiceUserDTO;
 import org.cantainercraft.micro.users.service.InitService;
+import org.cantainercraft.micro.users.service.ProfileService;
 import org.cantainercraft.micro.users.service.UserService;
 import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
@@ -19,14 +22,17 @@ import org.cantainercraft.micro.users.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
+@Slf4j
 @Component
 @Transactional
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     
     private final UserDTOConvertor userDTOConvertor;
-    private final InitService<Profile> profileInitService;
+    private final ProfileService profileService;
+    private final ProfileDTOConvertor profileDTOConvertor;
     private final UserRepository userRepository;
 
     @Override
@@ -41,21 +47,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Cacheable(value = "users",key = "#result.id")
+    //@Cacheable(value = "users",key = "#result.id")
     public User save(UserDTO userDTO){
         if(existByUsername(userDTO.getUsername())){
             throw new ExistResourceException("user is exist");
         }
+
+//        Profile profile = Profile.builder()
+//                .build();
+//        Profile profileSave=  profileService.save(profileDTOConvertor.convertEntityToDTO(profile));
+
         User user = userDTOConvertor.convertDTOToEntity(userDTO);
+//        user.setProfile(profileSave);
 
-        var userSave = userRepository.save(user);
-        Profile profile = Profile
-                .builder()
-                .user(user)
-                .build();
-        profileInitService.init(profile);
-
-        return userSave;
+        return userRepository.save(user);
     }
 
     @Override

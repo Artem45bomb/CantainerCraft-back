@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.cantainercraft.messenger.dto.MessageDTO;
 import org.cantainercraft.messenger.dto.MessageForwardDTO;
 import org.cantainercraft.messenger.dto.MessageReplyDTO;
+import org.cantainercraft.messenger.dto.NoOrYesPrintSignal;
 import org.cantainercraft.messenger.service.impl.MessageServiceImpl;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -18,6 +19,18 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class MessageController {
     private final MessageServiceImpl messageService;
+
+    @MessageMapping("/message/print")
+    @SendTo("/topic/message/print")
+    private NoOrYesPrintSignal printSignal(@Payload NoOrYesPrintSignal signal){
+        return signal;
+    }
+
+    @MessageMapping("/message/no-print")
+    @SendTo("/topic/message/no-print")
+    private NoOrYesPrintSignal noPrintSignal(@Payload NoOrYesPrintSignal signal){
+        return signal;
+    }
 
     @MessageMapping("/message/add")
     @SendTo("/topic/message/add")

@@ -1,5 +1,6 @@
 package org.cantainercraft.project.entity.users;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -37,8 +38,9 @@ public class Profile implements Serializable {
     @Column(name = "about_user")
     private String about;
 
-    @OneToOne
-    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    @JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Override

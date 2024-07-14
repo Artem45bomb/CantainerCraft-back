@@ -35,11 +35,10 @@ public class UserController {
     private final UserService userService;
 
 
-    @Operation(
-            parameters = {@Parameter(name = "id",description = "User Id",schema = @Schema(implementation = Long.class),required = true)},
+    @Operation(parameters = {@Parameter(name = "id",description = "User Id",schema = @Schema(implementation = Long.class),required = true)},
             summary = "Retrieve a User for by Id",
             description = "We get the user by Id. If the request is successful, we get the user with information about him including personal information",
-            tags = {"users","get"})
+            tags = {"get"})
     @ApiResponses({
             @ApiResponse(responseCode = "200",
                     content = @Content(
@@ -122,7 +121,7 @@ public class UserController {
 
     @Operation(
             parameters = @Parameter(name = "name",description = "User name",schema = @Schema(implementation = String.class)),
-            summary = "search user by email",
+            summary = "search user by name",
             tags = {"get"}
     )
     @ApiResponses({
@@ -206,9 +205,10 @@ public class UserController {
             throw new ExistResourceException("user is exist");
         }
 
-        if(userDTO.getId() != null ){
+        if(userDTO.getId() != null){
             throw new NotValidateParamException("missed param:id");
         }
+
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
