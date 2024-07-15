@@ -1,0 +1,35 @@
+
+type Mutation{
+    updateProfile(input:ProfileInput):ProfileDTO
+}
+
+
+type ProfileDTO{
+    uuid:ID,
+
+    telephone:String,
+
+    sunsetTime:String,
+
+    srcImage:String
+
+    about:String
+}
+
+input ProfileInput{
+    uuid:ID,
+
+    telephone:String,
+
+    sunsetTime:String,
+
+    srcImage:String
+
+    about:String
+
+    user:UserDTO!
+}
+
+input  UserDTO{
+    id:ID
+}

@@ -27,7 +27,7 @@ type MessageDTO {
     isPinned:Boolean,
     userId:Int,
     clientId:String,
-    emotions:[UserEmotion!]!
+    userEmotions:[UserEmotion!]
 }
 
 

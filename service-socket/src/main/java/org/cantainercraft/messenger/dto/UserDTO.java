@@ -1,7 +1,11 @@
 package org.cantainercraft.messenger.dto;
 
+import lombok.Data;
+import lombok.Getter;
+
 import java.util.List;
 
+@Data
 public class UserDTO {
     private Long id;
     private String name;

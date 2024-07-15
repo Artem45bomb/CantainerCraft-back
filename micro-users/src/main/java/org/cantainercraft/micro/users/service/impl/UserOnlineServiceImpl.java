@@ -40,7 +40,7 @@ public class UserOnlineServiceImpl implements UserOnlineService {
     }
 
     @Override
-    @Cacheable(value = "user-online",key = "#result.uuid")
+    //@Cacheable(value = "user-online",key = "#result.uuid")
     public User_Online save(UserOnlineDTO dto) {
         User_Online userOnline = dtoConvertor.convertDTOToEntity(dto);
         if (userOnlineRepository.existsByUserId(dto.getUser().getId())) {

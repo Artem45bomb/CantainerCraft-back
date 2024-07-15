@@ -27,5 +27,5 @@ public class MessageDTO {
 
     private UUID clientId;
 
-    private List<EmotionDTO> emotions;
+    private List<UserEmotionDTO> userEmotions;
 }

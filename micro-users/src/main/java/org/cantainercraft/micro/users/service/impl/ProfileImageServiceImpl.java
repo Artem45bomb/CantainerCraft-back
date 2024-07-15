@@ -25,7 +25,7 @@ public class ProfileImageServiceImpl implements ProfileImageService {
 
 
     @Override
-    @Cacheable(value = "profile-image",key = "#result.uuid")
+    //@Cacheable(value = "profile-image",key = "#result.uuid")
     public Profile_Image save(ProfileImageDTO profileImageDTO) {
         Profile_Image profileImage = profileImageDTOConvertor.convertDTOToEntity(profileImageDTO);
         if (profileImageRepository.existsById(profileImageDTO.getUuid())) {

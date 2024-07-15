@@ -18,4 +18,6 @@ public class ProfileDTO {
     private String srcImage;
 
     private String about;
+
+    private UserDTO user;
 }

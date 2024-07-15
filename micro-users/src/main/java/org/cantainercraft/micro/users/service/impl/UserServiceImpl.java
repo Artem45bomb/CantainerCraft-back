@@ -52,13 +52,7 @@ public class UserServiceImpl implements UserService {
         if(existByUsername(userDTO.getUsername())){
             throw new ExistResourceException("user is exist");
         }
-
-//        Profile profile = Profile.builder()
-//                .build();
-//        Profile profileSave=  profileService.save(profileDTOConvertor.convertEntityToDTO(profile));
-
         User user = userDTOConvertor.convertDTOToEntity(userDTO);
-//        user.setProfile(profileSave);
 
         return userRepository.save(user);
     }

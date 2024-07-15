@@ -21,13 +21,11 @@ public class GMessageController {
 
     @QueryMapping
     public MessageDTO messageId(@Argument String id){
-        log.info(id);
         return messageService.findById(UUID.fromString(id));
     }
 
     @QueryMapping
     public List<MessageDTO> messagesSearch(@Argument MessageSearchDTO input){
-        log.info("chatId:{}",input.getChatId());
         return messageService.findBySearch(input);
     }
 }
