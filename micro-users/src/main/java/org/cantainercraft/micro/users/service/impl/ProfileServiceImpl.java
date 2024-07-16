@@ -29,7 +29,6 @@ public class ProfileServiceImpl implements ProfileService {
     public final UserRepository userRepository;
 
     @Override
-    //@Cacheable(value = "profiles",key = "#result.uuid")
     public Profile save (ProfileDTO profileDTO){
         Profile profile = profileDTOConvertor.convertDTOToEntity(profileDTO);
 

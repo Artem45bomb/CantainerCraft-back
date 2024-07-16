@@ -24,7 +24,6 @@ public class ChatInfoServiceImpl implements ChatInfoService {
     private final ChatInfoDTOConvertor chatInfoDTOConvertor;
 
     @Override
-    //@Cacheable(value = "chat-info",key = "#chatInfoDTO.uuid")
     public Chat_Info save(ChatInfoDTO chatInfoDTO) {
         Chat_Info entity = chatInfoDTOConvertor.convertDTOToEntity(chatInfoDTO);
         Optional<Chat_Info> chatInfo = chatInfoRepository.findById(chatInfoDTO.getUuid());

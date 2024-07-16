@@ -37,7 +37,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    //@Cacheable(value = "subscriptions",key = "#result.id")
     public Subscription save(SubscriptionDTO subscriptionDTO){
         Subscription subscription = subscriptionDTOConvertor.convertDTOToEntity(subscriptionDTO);
         return subscriptionRepository.save(subscription);
