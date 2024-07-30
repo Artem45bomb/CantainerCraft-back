@@ -6,9 +6,9 @@ spring:
       server:
         git:
           username: weather
-          password: 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
+          password: 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
           basedir: file://c:\weather/git-prop
           clone-on-start: true
-          uri: https://github.com/Artem45bomb/WeatherApp-prop.git
+          uri: https://github.com/Artem45bomb/LinkNet-prop.git
 server:
   port: 8888

@@ -1,4 +1,6 @@
 
+
+
 type Mutation{
     updateProfile(input:ProfileInput):ProfileDTO
 }

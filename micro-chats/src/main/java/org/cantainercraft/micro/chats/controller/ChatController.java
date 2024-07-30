@@ -2,6 +2,7 @@ package org.cantainercraft.micro.chats.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.cantainercraft.micro.chats.convertor.ChatDTOConvertor;
 import org.cantainercraft.micro.chats.dto.ChatDTO;
 import org.cantainercraft.micro.chats.dto.ChatSearchDTO;
 import org.cantainercraft.micro.chats.service.ChatService;
@@ -9,6 +10,8 @@ import org.cantainercraft.micro.chats.service.UserChatService;
 import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.micro.utilits.exception.NotValidateParamException;
+import org.cantainercraft.micro.utilits.method.ObjectUtility;
+import org.cantainercraft.micro.utilits.service.ConvertorDTO;
 import org.cantainercraft.project.entity.users.TypeChat;
 import org.cantainercraft.project.entity.chats.Chat;
 import org.cantainercraft.project.entity.chats.User_Chat;
@@ -27,6 +30,7 @@ public class ChatController {
 
     private final ChatService chatService;
     private final UserChatService userChatService;
+    private final ChatDTOConvertor convertor;
 
 
     @PreAuthorize("hasAnyRole('ADMIN')")
@@ -36,7 +40,7 @@ public class ChatController {
     }
 
 
-    @PreAuthorize("hasAnyRole('USER,ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/uuid")
     public ResponseEntity<Chat> findByUUID(@RequestBody UUID uuid){
         Optional<Chat> chat = chatService.findByUUID(uuid);
@@ -53,13 +57,11 @@ public class ChatController {
     public ResponseEntity<Chat> findByName(@RequestBody String name){
         Optional<Chat> chat = chatService.findByName(name);
 
-        if(chat.isEmpty()) {
-            throw new NotResourceException("No content");
-        }
+        if(chat.isEmpty()) throw new NotResourceException("No content");
         return ResponseEntity.ok(chat.get());
     }
 
-    @PreAuthorize("hasAnyRole('CHAT_ADMIN,ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/delete")
     public ResponseEntity<Boolean> delete(@RequestBody UUID uuid){
         Optional<Chat> chat = chatService.findByUUID(uuid);
@@ -83,7 +85,7 @@ public class ChatController {
         return ResponseEntity.ok(chatService.save(chatDTO));
     }
 
-    @PreAuthorize("hasAnyRole('CHAT_ADMIN,ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/delete/name")
     public ResponseEntity<Boolean> delete(@RequestBody String name){
         Optional<Chat> chat = chatService.findByName(name);
@@ -96,22 +98,20 @@ public class ChatController {
         return ResponseEntity.ok(chatService.deleteByName(name));
     }
 
-    @PreAuthorize("hasAnyRole('CHAT_ADMIN,ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/update")
-    public ResponseEntity<Boolean> update(@RequestBody ChatDTO chatDTO){
+    public ResponseEntity<Boolean> update(@RequestBody ChatDTO chatDTO) throws Exception{
         Optional<Chat> chat = chatService.findByUUID(chatDTO.getUuid());
         if (chat.isEmpty()) {
             throw new NotResourceException("No content to update");
         }
-            if(chatDTO.getUuid() == null){
-                throw new NotValidateParamException("missed param: id");
-            } else {
-                return ResponseEntity.ok(chatService.update(chatDTO));
-            }
+
+        if(chatDTO.getUuid() == null) throw new NotValidateParamException("missed param: id");
+
+        return ResponseEntity.ok(chatService.update(chatDTO));
     }
 
 
-    @PreAuthorize("hasAnyRole('USER,ADMIN')")
     @PostMapping("/search")
     public ResponseEntity<List<Chat>> findBySearch(@RequestBody ChatSearchDTO chatSearchDTO){
 
@@ -151,7 +151,7 @@ public class ChatController {
     }
 
     //ищет пользователей по userId через userChatService так как все пользователи хранятся в user_chat
-    @PreAuthorize("hasAnyRole('CHAT_USER,ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/user/search")
     public ResponseEntity<List<Chat>> search(@RequestBody Long userId){
 

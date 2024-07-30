@@ -33,7 +33,7 @@ public class Content implements Serializable {
     private BigInteger sizeByte;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Message message;
 
     @Override

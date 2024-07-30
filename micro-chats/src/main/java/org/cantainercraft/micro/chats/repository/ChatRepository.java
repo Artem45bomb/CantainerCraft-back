@@ -2,11 +2,13 @@ package org.cantainercraft.micro.chats.repository;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.cantainercraft.project.entity.users.TypeChat;
 import org.cantainercraft.project.entity.chats.Chat;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -14,8 +16,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
+@Transactional
 public interface ChatRepository extends JpaRepository<Chat, UUID> {
 
+    @Modifying
     boolean deleteByName(String name);
 
     Optional<Chat> findByName(String name);

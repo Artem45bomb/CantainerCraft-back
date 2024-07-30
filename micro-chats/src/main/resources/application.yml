@@ -31,3 +31,5 @@ logging:
     org.springframework.security: trace
 service:
   key: Uieiej6895op
+server:
+  port: 8080

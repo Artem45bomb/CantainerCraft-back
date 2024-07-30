@@ -23,7 +23,7 @@ public class Message_Reply implements Serializable {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID uuid;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Message message;
 
     @ManyToOne(cascade = CascadeType.ALL)

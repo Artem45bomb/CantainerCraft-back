@@ -43,6 +43,7 @@ public class Chat implements Serializable {
     @Column(name = "create_date",updatable = false)
     private Date date;
 
+    @Column(nullable = false)
     private TypeChat typeChat;
 
     @OneToMany(mappedBy = "chat",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
