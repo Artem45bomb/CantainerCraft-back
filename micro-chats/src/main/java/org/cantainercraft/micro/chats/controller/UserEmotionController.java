@@ -7,6 +7,7 @@ import org.cantainercraft.micro.chats.dto.UserEmotionDTO;
 import org.cantainercraft.micro.chats.service.UserEmotionService;
 import org.cantainercraft.project.entity.chats.User_Emotion;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class UserEmotionController {
 
     private final UserEmotionService service;
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/all")
     public ResponseEntity<List<User_Emotion>> findAll() {
         return ResponseEntity.ok(service.findAll());

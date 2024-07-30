@@ -33,7 +33,7 @@ public class MessageController {
     }
 
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+
     @PostMapping("/uuid")
     public ResponseEntity<Message> findByUUID(@RequestBody UUID uuid) {
         Optional<Message> message = messageService.findByUuid(uuid);
@@ -79,7 +79,7 @@ public class MessageController {
             return ResponseEntity.ok(messageService.delete(uuid));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+
     @PutMapping("/delete/client/id")
     public void deleteByClientId(@RequestBody UUID clientId){
         messageService.deleteByClientId(clientId);

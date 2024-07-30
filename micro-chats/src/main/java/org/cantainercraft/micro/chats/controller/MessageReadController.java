@@ -7,6 +7,7 @@ import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.chats.MessageRead;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class MessageReadController {
 
     private final MessageReadService service;
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/all")
     public ResponseEntity<List<MessageRead>> findAll() {
         return ResponseEntity.ok(service.findAll());
@@ -36,9 +38,6 @@ public class MessageReadController {
 
     @PostMapping("/add")
     public ResponseEntity<MessageRead> create(@RequestBody MessageReadDTO messageReadDTO) {
-        if (service.findById(messageReadDTO.getUuid()).isPresent()) {
-            throw new ExistResourceException("Content is already exist");
-        }
         return ResponseEntity.ok(service.save(messageReadDTO));
     }
 

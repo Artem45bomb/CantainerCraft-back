@@ -6,6 +6,7 @@ import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.chats.Chat_Image_Profile;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class ChatImageProfileController {
 
     private final ChatImageProfileService service;
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/all")
     public ResponseEntity<List<Chat_Image_Profile>> findAll() {
         return ResponseEntity.ok(service.findAll());
@@ -34,7 +36,7 @@ public class ChatImageProfileController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Chat_Image_Profile> create(@RequestBody ChatImageProfileDTO chatImageProfileDTO) {
+    public ResponseEntity<Chat_Image_Profile> add(@RequestBody ChatImageProfileDTO chatImageProfileDTO) {
         if (service.findById(chatImageProfileDTO.getUuid()).isPresent()) {
             throw new ExistResourceException("Image is already exist!");
         }

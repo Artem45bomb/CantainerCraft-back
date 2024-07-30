@@ -1,10 +1,10 @@
 package org.cantainercraft.micro.chats.service.impl;
 
-import org.cantainercraft.micro.utilits.service.JwtServiceBase;
 import org.cantainercraft.micro.utilits.service.impl.JwtBaseServiceImpl;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+
+import java.util.Map;
 
 @Component
 public class JwtService extends JwtBaseServiceImpl {
@@ -20,8 +20,10 @@ public class JwtService extends JwtBaseServiceImpl {
         super(SECRET_KEY,cookieTime);
     }
 
-    public boolean isTokenValid(String token, UserDetails userDetails){
+    @Override
+    public boolean isTokenValid(String token, Map<String,String> param){
+        String usernameCheck = param.get("username");
         String username = extractUsername(token);
-        return  username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+        return  username.equals(usernameCheck) && !isTokenExpired(token);
     }
 }

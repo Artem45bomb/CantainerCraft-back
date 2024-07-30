@@ -5,6 +5,7 @@ import org.cantainercraft.micro.chats.convertor.ChatSecuredDTOConvertor;
 import org.cantainercraft.micro.chats.dto.ChatSecuredDTO;
 import org.cantainercraft.micro.chats.service.ChatSecuredService;
 import org.cantainercraft.project.entity.chats.Chat_Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,6 +36,7 @@ public class ChatSecuredController {
         service.delete(dto);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/all")
     public List<ChatSecuredDTO> findAll(){
         return service.findAll();

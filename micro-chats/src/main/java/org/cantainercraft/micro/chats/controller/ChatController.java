@@ -40,7 +40,6 @@ public class ChatController {
     }
 
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/uuid")
     public ResponseEntity<Chat> findByUUID(@RequestBody UUID uuid){
         Optional<Chat> chat = chatService.findByUUID(uuid);
@@ -52,7 +51,6 @@ public class ChatController {
         return ResponseEntity.ok(chat.get());
     }
 
-    @PreAuthorize("hasRole('USER')")
     @PostMapping("/name")
     public ResponseEntity<Chat> findByName(@RequestBody String name){
         Optional<Chat> chat = chatService.findByName(name);
@@ -61,7 +59,6 @@ public class ChatController {
         return ResponseEntity.ok(chat.get());
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/delete")
     public ResponseEntity<Boolean> delete(@RequestBody UUID uuid){
         Optional<Chat> chat = chatService.findByUUID(uuid);
@@ -85,7 +82,6 @@ public class ChatController {
         return ResponseEntity.ok(chatService.save(chatDTO));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/delete/name")
     public ResponseEntity<Boolean> delete(@RequestBody String name){
         Optional<Chat> chat = chatService.findByName(name);
@@ -98,7 +94,6 @@ public class ChatController {
         return ResponseEntity.ok(chatService.deleteByName(name));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<Boolean> update(@RequestBody ChatDTO chatDTO) throws Exception{
         Optional<Chat> chat = chatService.findByUUID(chatDTO.getUuid());
@@ -151,7 +146,6 @@ public class ChatController {
     }
 
     //ищет пользователей по userId через userChatService так как все пользователи хранятся в user_chat
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/user/search")
     public ResponseEntity<List<Chat>> search(@RequestBody Long userId){
 

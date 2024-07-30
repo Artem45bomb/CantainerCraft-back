@@ -6,14 +6,15 @@ import org.cantainercraft.micro.chats.dto.PrivilegeDTO;
 import org.cantainercraft.micro.chats.service.PrivilegeService;
 import org.cantainercraft.project.entity.chats.Privilege;
 import org.cantainercraft.micro.chats.repository.PrivilegeRepository;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class PrivilegeServiceImpl implements PrivilegeService {
 
@@ -58,5 +59,10 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     @Override
     public List<Privilege> findByChat(UUID uuid, String name) {
         return repository.findPrivilegeByChatUuidOrChatName(uuid, name);
+    }
+
+    @Override
+    public boolean findByChatIdAndNameRole(UUID chatId, String role) {
+        return repository.findByChatUuidAndAndNameRole(chatId, role);
     }
 }

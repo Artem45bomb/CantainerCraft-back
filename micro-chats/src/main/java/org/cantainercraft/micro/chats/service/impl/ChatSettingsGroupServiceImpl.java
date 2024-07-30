@@ -8,12 +8,14 @@ import org.cantainercraft.micro.chats.service.ChatSettingsGroupService;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.chats.Chat_Settings_Group;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ChatSettingsGroupServiceImpl implements ChatSettingsGroupService {
 

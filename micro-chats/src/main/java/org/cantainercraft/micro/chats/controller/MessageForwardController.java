@@ -7,6 +7,7 @@ import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.chats.Message_Forward;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class MessageForwardController {
 
     private final MessageForwardService service;
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/all")
     public ResponseEntity<List<Message_Forward>> findAll() {
         return ResponseEntity.ok(service.findAll());
@@ -35,10 +37,7 @@ public class MessageForwardController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Message_Forward> create(@RequestBody MessageForwardDTO messageForwardDTO) {
-        if (service.findById(messageForwardDTO.getUuid()).isPresent()) {
-            throw new ExistResourceException("Content is already exist");
-        }
+    public ResponseEntity<Message_Forward> save(@RequestBody MessageForwardDTO messageForwardDTO) {
         return ResponseEntity.ok(service.save(messageForwardDTO));
     }
 

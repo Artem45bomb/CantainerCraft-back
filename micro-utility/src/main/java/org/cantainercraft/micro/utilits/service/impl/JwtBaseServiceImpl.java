@@ -17,7 +17,7 @@ import java.util.function.Function;
 
 @Getter
 @Setter
-public class JwtBaseServiceImpl implements JwtServiceBase {
+public abstract class JwtBaseServiceImpl implements JwtServiceBase {
     //SECRET_KEY needed for encryption and decryption of data
     protected final String SECRET_KEY;
     // lifetime token
@@ -80,4 +80,6 @@ public class JwtBaseServiceImpl implements JwtServiceBase {
         byte[] keys = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keys);
     }
+
+    public abstract boolean isTokenValid(String token,Map<String,String> param);
 }

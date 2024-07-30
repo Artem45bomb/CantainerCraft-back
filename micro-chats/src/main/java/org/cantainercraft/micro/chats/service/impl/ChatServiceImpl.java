@@ -9,6 +9,7 @@ import org.cantainercraft.micro.chats.service.ChatService;
 import org.springframework.stereotype.Service;
 import org.cantainercraft.project.entity.users.TypeChat;
 import org.cantainercraft.project.entity.chats.Chat;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ChatServiceImpl implements ChatService {
     private final ChatRepository chatRepository;

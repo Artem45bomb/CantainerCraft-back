@@ -10,4 +10,6 @@ import java.util.UUID;
 @Repository
 public interface PrivilegeRepository extends JpaRepository<Privilege, UUID> {
     List<Privilege> findPrivilegeByChatUuidOrChatName(UUID uuid, String name);
+
+    Boolean findByChatUuidAndAndNameRole(UUID chatId,String role);
 }

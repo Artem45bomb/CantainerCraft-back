@@ -7,6 +7,7 @@ import org.cantainercraft.micro.chats.service.ChatImageProfileService;
 import org.cantainercraft.project.entity.chats.Chat_Image_Profile;
 import org.cantainercraft.micro.chats.repository.ChatImageProfileRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +15,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ChatImageProfileServiceImpl implements ChatImageProfileService {
 

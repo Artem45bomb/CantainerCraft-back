@@ -20,9 +20,11 @@ public class JwtService extends JwtBaseServiceImpl {
         super(SECRET_KEY,cookieTime);
     }
 
-    public boolean isTokenValid(String token,UserDetails userDetails){
+    @Override
+    public boolean isTokenValid(String token, Map<String,String> param){
+        String usernameCheck = param.get("username");
         String username = extractUsername(token);
-        return  username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+        return  username.equals(usernameCheck) && !isTokenExpired(token);
     }
 
     public String GenerateToken(Token token){

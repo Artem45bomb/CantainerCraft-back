@@ -41,18 +41,17 @@ public class PrivilegeController {
         String chatName = privilegeSearchDTO.getChatName();
 
         List<Privilege> privileges = service.findByChat(chatId, chatName);
-        if (privileges.isEmpty()) {
-            throw new NotResourceException("No content");
-        }
+        if (privileges.isEmpty()) throw new NotResourceException("No content");
+
         return ResponseEntity.ok(privileges);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Privilege> create(@RequestBody PrivilegeDTO privilegeDTO) {
-        if (service.findById(privilegeDTO.getUuid()).isPresent()) {
-            throw new ExistResourceException("Content is already exist");
+    public ResponseEntity<Privilege> save(@RequestBody PrivilegeDTO dto) {
+        if(service.findByChatIdAndNameRole(dto.getChat().getUuid(),dto.getNameRole())){
+            throw new  ExistResourceException("content is exist");
         }
-        return ResponseEntity.ok(service.save(privilegeDTO));
+        return ResponseEntity.ok(service.save(dto));
     }
 
     @PutMapping("/update")
