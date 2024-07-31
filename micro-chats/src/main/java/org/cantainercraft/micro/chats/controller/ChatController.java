@@ -54,7 +54,6 @@ public class ChatController {
     @PostMapping("/name")
     public ResponseEntity<Chat> findByName(@RequestBody String name){
         Optional<Chat> chat = chatService.findByName(name);
-
         if(chat.isEmpty()) throw new NotResourceException("No content");
         return ResponseEntity.ok(chat.get());
     }
@@ -76,9 +75,7 @@ public class ChatController {
         if(chat.isPresent()){
             throw new ExistResourceException("chat is exist");
         }
-
-        Date date = Calendar.getInstance().getTime();
-        chatDTO.setDate(date);
+        chatDTO.setDate(Calendar.getInstance().getTime());
         return ResponseEntity.ok(chatService.save(chatDTO));
     }
 

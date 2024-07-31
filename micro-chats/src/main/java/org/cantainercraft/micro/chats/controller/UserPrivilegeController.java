@@ -3,7 +3,6 @@ package org.cantainercraft.micro.chats.controller;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.dto.UserPrivilegeDTO;
 import org.cantainercraft.micro.chats.service.UserPrivilegeService;
-import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.chats.User_Privilege;
 import org.springframework.http.ResponseEntity;
@@ -45,16 +44,16 @@ public class UserPrivilegeController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<User_Privilege> create(@RequestBody UserPrivilegeDTO userPrivilegeDTO) {
-        return ResponseEntity.ok(service.save(userPrivilegeDTO));
+    public ResponseEntity<User_Privilege> create(@RequestBody UserPrivilegeDTO dto) {
+        return ResponseEntity.ok(service.save(dto));
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Boolean> update(@RequestBody UserPrivilegeDTO userPrivilegeDTO) {
-        if (service.findById(userPrivilegeDTO.getUuid()).isEmpty()) {
+    public ResponseEntity<Boolean> update(@RequestBody UserPrivilegeDTO dto) {
+        if (service.findById(dto.getUuid()).isEmpty()) {
             throw new NotResourceException("No content to update");
         }
-        return ResponseEntity.ok(service.update(userPrivilegeDTO));
+        return ResponseEntity.ok(service.update(dto));
     }
 
     @PutMapping("/delete")

@@ -6,6 +6,7 @@ import org.cantainercraft.micro.chats.repository.ChatRepository;
 import org.cantainercraft.micro.chats.repository.ChatSecuredRepository;
 import org.cantainercraft.micro.chats.service.ChatSecuredService;
 import org.cantainercraft.micro.chats.webflux.UserWebClient;
+import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.chats.Chat;
 import org.cantainercraft.project.entity.chats.Chat_Secured;
@@ -30,8 +31,10 @@ public class ChatSecuredServiceImpl implements ChatSecuredService {
     public Chat_Secured save(ChatSecuredDTO dto) {
         Optional<Chat> chat = chatRepository.findById(dto.getChatId());
 
-        //if(!userClient.userExist(dto.getUserId())) throw new NotResourceException("user is not exist");
+
+        if(!userClient.userExist(dto.getUserId())) throw new NotResourceException("user is not exist");
         if(chat.isEmpty()) throw new NotResourceException("chat is not exist");
+        if(!repository.existsByUserIdAndChat(dto.getUserId(),chat.get())) throw new ExistResourceException("chat is secured");
 
         Chat_Secured chatSecured = Chat_Secured.builder()
                 .chat(chat.get())
@@ -83,4 +86,5 @@ public class ChatSecuredServiceImpl implements ChatSecuredService {
                         .build())
                 .collect(Collectors.toList());
     }
+
 }

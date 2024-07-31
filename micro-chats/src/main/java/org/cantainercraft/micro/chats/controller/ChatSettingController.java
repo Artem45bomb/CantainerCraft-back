@@ -24,11 +24,6 @@ public class ChatSettingController {
     @PostMapping("/add")
     public ResponseEntity<Chat_Settings> save(@RequestBody ChatSettingsDTO chatSettingsDTO)
     {
-        Optional<Chat_Settings> chatSettings = chatSettingsService.findByUUID(chatSettingsDTO.getUuid());
-
-        if (chatSettings.isPresent()) {
-            throw new ExistResourceException("Setting is exist");
-        }
         return ResponseEntity.ok(chatSettingsService.save(chatSettingsDTO));
     }
 

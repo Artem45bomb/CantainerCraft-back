@@ -44,10 +44,6 @@ public class EmotionController {
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<Emotion> save(@RequestBody EmotionDTO emotionDTO){
-        Optional<Emotion> emotion = service.findById(emotionDTO.getUuid());
-        if (emotion.isPresent()) {
-            throw new ExistResourceException("Emotion is exist");
-        }
         return ResponseEntity.ok(service.save(emotionDTO));
     }
 
@@ -61,7 +57,6 @@ public class EmotionController {
         return ResponseEntity.ok(service.update(emotionDTO));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/all")
     public ResponseEntity<List<Emotion>> findAll() { return ResponseEntity.ok(service.findAll()); }
 

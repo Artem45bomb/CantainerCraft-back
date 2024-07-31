@@ -22,6 +22,8 @@ public class ChatSecuredController {
     public ChatSecuredDTO save(@RequestBody ChatSecuredDTO dto){
         Chat_Secured entity = service.save(dto);
         ChatSecuredDTO chatSecured = convertor.convertEntityToDTO(entity);
+
+        //mapper is not convert chatId
         chatSecured.setChatId(entity.getChat().getUuid());
         return chatSecured;
     }
@@ -42,6 +44,7 @@ public class ChatSecuredController {
         return service.findAll();
     }
 
+    @PreAuthorize("hasAnyRole('USER')")
     @GetMapping("/user/{userId}")
     public List<ChatSecuredDTO> findByUserId(@PathVariable Long userId){
         return service.findByUserId(userId);

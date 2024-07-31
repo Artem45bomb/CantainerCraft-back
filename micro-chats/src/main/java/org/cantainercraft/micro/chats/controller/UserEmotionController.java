@@ -32,13 +32,13 @@ public class UserEmotionController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<User_Emotion> save(@RequestBody UserEmotionDTO contentDTO) {
-        return ResponseEntity.ok(service.save(contentDTO));
+    public ResponseEntity<User_Emotion> save(@RequestBody UserEmotionDTO dto) {
+        return ResponseEntity.ok(service.save(dto));
     }
 
     @PostMapping("/message/add")
-    public ResponseEntity<EmotionAddDTO> addEmotion(@RequestBody EmotionAddDTO emotionAddDTO){
-        User_Emotion userEmotion = service.addEmotion(emotionAddDTO);
+    public ResponseEntity<EmotionAddDTO> addEmotion(@RequestBody EmotionAddDTO dto){
+        User_Emotion userEmotion = service.addEmotion(dto);
 
         return ResponseEntity.ok(EmotionAddDTO.builder()
                         .userId(userEmotion.getUserId())
@@ -49,12 +49,12 @@ public class UserEmotionController {
     }
 
     @PutMapping("/message/delete")
-    public void deleteEmotion(@RequestBody EmotionDeleteDTO emotionDeleteDTO){
-        service.deleteEmotion(emotionDeleteDTO);
+    public void deleteEmotion(@RequestBody EmotionDeleteDTO dto){
+        service.deleteEmotion(dto);
     }
     @PutMapping("/update")
-    public ResponseEntity<User_Emotion> update(@RequestBody UserEmotionDTO contentDTO) {
-        return ResponseEntity.ok(service.update(contentDTO));
+    public ResponseEntity<User_Emotion> update(@RequestBody UserEmotionDTO dto) {
+        return ResponseEntity.ok(service.update(dto));
     }
 
     @PutMapping("/delete")

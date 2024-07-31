@@ -71,29 +71,27 @@ class UserChatController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<User_Chat> save(@RequestBody UserChatDTO userChatDTO){
-        System.out.println("add user:"+userChatDTO.getUserId());
+    public ResponseEntity<User_Chat> save(@RequestBody UserChatDTO dto){
 
-        System.out.println(userWebClient.userExist(userChatDTO.getUserId()));
-        if(!userWebClient.userExist(userChatDTO.getUserId())){
+        if(!userWebClient.userExist(dto.getUserId())){
             throw new NotResourceException("user is not exist");
         }
 
-        return ResponseEntity.ok(userChatService.save(userChatDTO));
+        return ResponseEntity.ok(userChatService.save(dto));
     }
 
 
     @PutMapping("/update")
-    public ResponseEntity<User_Chat> update(@RequestBody UserChatDTO userChatDTO){
-        Optional<User_Chat> userChat= userChatService.findById(userChatDTO.getId());
+    public ResponseEntity<User_Chat> update(@RequestBody UserChatDTO dto){
+        Optional<User_Chat> userChat= userChatService.findById(dto.getId());
         if(userChat.isEmpty()){
             throw new NotResourceException("No content for update");
         }
 
-        if(userWebClient.userExist(userChatDTO.getUserId()) == null){
+        if(userWebClient.userExist(dto.getUserId()) == null){
             throw new NotResourceException("user is not exist");
         }
 
-        return ResponseEntity.ok(userChatService.update(userChatDTO));
+        return ResponseEntity.ok(userChatService.update(dto));
     }
 }

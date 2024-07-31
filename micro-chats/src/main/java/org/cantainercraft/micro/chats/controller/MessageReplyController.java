@@ -36,16 +36,16 @@ public class MessageReplyController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Message_Reply> save(@RequestBody MessageReplyDTO messageReplyDTO) {
-        return ResponseEntity.ok(service.save(messageReplyDTO));
+    public ResponseEntity<Message_Reply> save(@RequestBody MessageReplyDTO dto) {
+        return ResponseEntity.ok(service.save(dto));
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Boolean> update(@RequestBody MessageReplyDTO messageReplyDTO) {
-        if (service.findById(messageReplyDTO.getUuid()).isEmpty()) {
+    public ResponseEntity<Boolean> update(@RequestBody MessageReplyDTO dto) {
+        if (service.findById(dto.getUuid()).isEmpty()) {
             throw new NotResourceException("No content to update");
         }
-        return ResponseEntity.ok(service.update(messageReplyDTO));
+        return ResponseEntity.ok(service.update(dto));
     }
 
     @PutMapping("/delete")
@@ -57,10 +57,10 @@ public class MessageReplyController {
     }
 
     @PutMapping("/delete/user")
-    public void deleteByMessageReplyUserId(@RequestBody MessageReplyDTO messageReplyDTO) {
-        if (service.findByMessageReplyUserId(messageReplyDTO.getMessageReply().getUserId()).isEmpty()) {
+    public void deleteByMessageReplyUserId(@RequestBody MessageReplyDTO dto) {
+        if (service.findByMessageReplyUserId(dto.getMessageReply().getUserId()).isEmpty()) {
            throw new NotResourceException("No content to delete");
         }
-        service.deleteByMessageReplyUserId(messageReplyDTO.getMessageReply().getUserId());
+        service.deleteByMessageReplyUserId(dto.getMessageReply().getUserId());
     }
 }

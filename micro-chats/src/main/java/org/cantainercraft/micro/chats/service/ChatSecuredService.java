@@ -17,4 +17,5 @@ public interface ChatSecuredService {
     List<ChatSecuredDTO> findAll();
 
     List<ChatSecuredDTO> findByUserId(Long userId);
+
 }

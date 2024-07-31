@@ -38,9 +38,6 @@ public class ContentController {
 
     @PostMapping("/add")
     public ResponseEntity<Content> save(@RequestBody ContentDTO contentDTO) {
-        if (service.findById(contentDTO.getUuid()).isPresent()) {
-            throw new ExistResourceException("Content is already exist");
-        }
         return ResponseEntity.ok(service.save(contentDTO));
     }
 

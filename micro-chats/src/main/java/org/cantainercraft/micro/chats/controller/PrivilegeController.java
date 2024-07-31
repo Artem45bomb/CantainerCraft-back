@@ -55,11 +55,11 @@ public class PrivilegeController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Boolean> update(@RequestBody PrivilegeDTO privilegeDTO) {
-        if (service.findById(privilegeDTO.getUuid()).isEmpty()) {
+    public ResponseEntity<Boolean> update(@RequestBody PrivilegeDTO dto) {
+        if (service.findById(dto.getUuid()).isEmpty()) {
             throw new NotResourceException("No content to update");
         }
-        return ResponseEntity.ok(service.update(privilegeDTO));
+        return ResponseEntity.ok(service.update(dto));
     }
 
     @PutMapping("/delete")

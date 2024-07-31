@@ -37,16 +37,16 @@ public class MessageReadController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<MessageRead> create(@RequestBody MessageReadDTO messageReadDTO) {
-        return ResponseEntity.ok(service.save(messageReadDTO));
+    public ResponseEntity<MessageRead> save(@RequestBody MessageReadDTO dto) {
+        return ResponseEntity.ok(service.save(dto));
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Boolean> update(@RequestBody MessageReadDTO messageReadDTO) {
-        if (service.findById(messageReadDTO.getUuid()).isEmpty()) {
+    public ResponseEntity<Boolean> update(@RequestBody MessageReadDTO dto) {
+        if (service.findById(dto.getUuid()).isEmpty()) {
             throw new NotResourceException("No content to update");
         }
-        return ResponseEntity.ok(service.update(messageReadDTO));
+        return ResponseEntity.ok(service.update(dto));
     }
 
     @PutMapping("/delete")

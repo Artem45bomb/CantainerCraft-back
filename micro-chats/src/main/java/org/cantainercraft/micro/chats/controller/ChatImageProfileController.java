@@ -4,6 +4,7 @@ import org.cantainercraft.micro.chats.dto.ChatImageProfileDTO;
 import org.cantainercraft.micro.chats.service.ChatImageProfileService;
 import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
+import org.cantainercraft.micro.utilits.exception.NotValidateParamException;
 import org.cantainercraft.project.entity.chats.Chat_Image_Profile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,33 +30,36 @@ public class ChatImageProfileController {
     @PostMapping("/uuid")
     public ResponseEntity<Chat_Image_Profile> findById(@RequestBody UUID uuid) {
         Optional<Chat_Image_Profile> chatImageProfile = service.findById(uuid);
-        if(chatImageProfile.isEmpty()){
-            throw new NotResourceException("No content");
-        }
+
+        if(chatImageProfile.isEmpty()) throw new NotResourceException("No content");
+
         return ResponseEntity.ok(chatImageProfile.get());
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Chat_Image_Profile> add(@RequestBody ChatImageProfileDTO chatImageProfileDTO) {
-        if (service.findById(chatImageProfileDTO.getUuid()).isPresent()) {
-            throw new ExistResourceException("Image is already exist!");
+    public ResponseEntity<Chat_Image_Profile> save(@RequestBody ChatImageProfileDTO dto) {
+        if(dto.getSrcContent() == null || dto.getSrcContent().isEmpty()) {
+            throw new NotValidateParamException("missed parma: srcContent");
         }
-        return ResponseEntity.ok(service.save(chatImageProfileDTO));
+        
+        return ResponseEntity.ok(service.save(dto));
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Boolean> update(@RequestBody ChatImageProfileDTO chatImageProfileDTO) {
-        if (service.findById(chatImageProfileDTO.getUuid()).isEmpty()) {
-            throw new NotResourceException("No content to update");
+    public ResponseEntity<Boolean> update(@RequestBody ChatImageProfileDTO dto) {
+        if(dto.getSrcContent() == null || dto.getSrcContent().isEmpty()) {
+            throw new NotValidateParamException("missed parma: srcContent");
         }
-        return ResponseEntity.ok(service.update(chatImageProfileDTO));
+
+        if (!service.existById(dto.getUuid())) throw new NotResourceException("No content to update");
+
+        return ResponseEntity.ok(service.update(dto));
     }
 
     @PutMapping("/delete")
     public ResponseEntity<Void> delete(@RequestBody UUID id) {
-        if (service.findById(id).isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
+        if (!service.existById(id)) throw new NotResourceException("No content to update");
+
         service.delete(id);
         return ResponseEntity.noContent().build();
     }

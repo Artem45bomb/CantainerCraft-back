@@ -33,7 +33,6 @@ public class MessageController {
     }
 
 
-
     @PostMapping("/uuid")
     public ResponseEntity<Message> findByUUID(@RequestBody UUID uuid) {
         Optional<Message> message = messageService.findByUuid(uuid);

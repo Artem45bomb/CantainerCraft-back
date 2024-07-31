@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.convertor.ChatImageProfileDTOConvertor;
 import org.cantainercraft.micro.chats.dto.ChatImageProfileDTO;
 import org.cantainercraft.micro.chats.service.ChatImageProfileService;
+import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.project.entity.chats.Chat_Image_Profile;
 import org.cantainercraft.micro.chats.repository.ChatImageProfileRepository;
 import org.springframework.stereotype.Service;
@@ -12,19 +13,20 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class ChatImageProfileServiceImpl implements ChatImageProfileService {
-
     private final ChatImageProfileRepository repository;
     private final ChatImageProfileDTOConvertor convertor;
 
     @Override
     public Chat_Image_Profile save(ChatImageProfileDTO chatImageProfileDTO) {
+        if(!repository.existsBySrcContent(chatImageProfileDTO.getSrcContent())) throw new ExistResourceException("src is exist");
+
         Chat_Image_Profile entity = convertor.convertChatImageProfileDTOToChatImageProfile(chatImageProfileDTO);
+
         return repository.save(entity);
     }
 
@@ -55,5 +57,10 @@ public class ChatImageProfileServiceImpl implements ChatImageProfileService {
     @Override
     public Optional<Chat_Image_Profile> findById(UUID uuid) {
         return repository.findById(uuid);
+    }
+
+    @Override
+    public boolean existById(UUID uuid) {
+        return repository.existsById(uuid);
     }
 }
