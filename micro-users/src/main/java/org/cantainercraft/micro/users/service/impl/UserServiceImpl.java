@@ -7,10 +7,12 @@ import org.cantainercraft.micro.users.convertor.UserDTOConvertor;
 import org.cantainercraft.micro.users.dto.ServiceUserDTO;
 import org.cantainercraft.micro.users.service.InitService;
 import org.cantainercraft.micro.users.service.ProfileService;
+import org.cantainercraft.micro.users.service.RoleService;
 import org.cantainercraft.micro.users.service.UserService;
 import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.users.Profile;
+import org.cantainercraft.project.entity.users.Role;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -31,8 +33,6 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
     
     private final UserDTOConvertor userDTOConvertor;
-    private final ProfileService profileService;
-    private final ProfileDTOConvertor profileDTOConvertor;
     private final UserRepository userRepository;
 
     @Override
@@ -85,12 +85,16 @@ public class UserServiceImpl implements UserService {
     @Override
     @CacheEvict(value = "users",key = "#id")
     public void deleteById(Long id){
+        if(!userRepository.existsById(id)) throw new NotResourceException("user is not exist");
+
         userRepository.deleteById(id);
     }
 
     @Override
     @CacheEvict(value = "users",allEntries = true)
     public void deleteByEmail(String email){
+        if(!userRepository.existsByEmail(email)) throw new NotResourceException("user is not exist");
+
         userRepository.deleteByEmail(email);
     }
 

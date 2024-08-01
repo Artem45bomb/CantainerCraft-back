@@ -120,7 +120,7 @@ public class ProfileController {
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Profile.class))),
             @ApiResponse(responseCode = "409",
-                    description = "if profile exist",
+                    description = "if profile for user is  exist",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema())
             ),
@@ -132,13 +132,6 @@ public class ProfileController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<Profile> save(@RequestBody ProfileDTO profileDTO){
-        Long userId = profileDTO.getUser() == null? 0 : profileDTO.getUser().getId();
-        Optional<Profile> profile = profileService.findByUser(userId,"");
-
-        if(profile.isPresent()){
-            throw new ExistResourceException("profile is exist");
-        }
-
         if(profileDTO.getUuid() != null){
             throw new NotValidateParamException("param missed: uuid");
         }
@@ -165,10 +158,6 @@ public class ProfileController {
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<Profile> update(@RequestBody ProfileDTO profileDTO){
-            Optional<Profile> profile = profileService.findById(profileDTO.getUuid());
-
-            if(profile.isEmpty()) throw new NotResourceException("profile is not exist");
-
             return ResponseEntity.ok(profileService.update(profileDTO));
     }
 
@@ -180,8 +169,7 @@ public class ProfileController {
     @ApiResponses({
             @ApiResponse(responseCode = "200",
                     description = "if the operation is successful,return true",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Boolean.class))),
+                    content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "404",
                     description = "if profile is not exist",
                     content = @Content(mediaType = "application/json",
@@ -189,13 +177,8 @@ public class ProfileController {
     })
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/delete/id")
-    public ResponseEntity<Boolean> deleteById(@RequestBody UUID id ){
-        Optional<Profile> profile = profileService.findById(id);
-
-        if(profile.isEmpty()) throw new NotResourceException("profile is not exist");
-
+    public void deleteById(@RequestBody UUID id ){
         profileService.deleteById(id);
-        return ResponseEntity.ok(true);
     }
 
     @Operation(parameters = @Parameter(
@@ -207,8 +190,7 @@ public class ProfileController {
     @ApiResponses({
             @ApiResponse(responseCode = "200",
                     description = "if the operation is successful,return true",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Boolean.class))),
+                    content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "409",
                     description = "if param is not validate",
                     content = @Content(mediaType = "application/json",
@@ -216,7 +198,7 @@ public class ProfileController {
     })
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/delete/user")
-    public ResponseEntity<Boolean> deleteByUser(@RequestBody ProfileSearchDTO profileSearchDTO){
+    public void deleteByUser(@RequestBody ProfileSearchDTO profileSearchDTO){
 
         String email = profileSearchDTO.getEmail() == null ? null :profileSearchDTO.getEmail().trim();
         Long userId = profileSearchDTO.getUserId();
@@ -230,6 +212,5 @@ public class ProfileController {
         }
 
         profileService.deleteByUser(userId,email);
-        return ResponseEntity.ok(true);
     }
 }

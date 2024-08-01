@@ -3,13 +3,11 @@ package org.cantainercraft.micro.users.service.impl;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.cantainercraft.micro.users.convertor.UserDTOConvertor;
 import org.cantainercraft.micro.users.dto.*;
 import org.cantainercraft.micro.users.factory.AccessTokenFactory;
 import org.cantainercraft.micro.users.service.AuthService;
-import org.cantainercraft.micro.users.service.UserService;
+import org.cantainercraft.micro.users.service.UserAuthService;
 import org.cantainercraft.project.entity.users.Token;
-import org.cantainercraft.project.entity.users.Role;
 import org.cantainercraft.project.entity.users.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -20,28 +18,23 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class AuthServiceImpl implements AuthService {
-
     private final AccessTokenFactory accessTokenFactory;
-    private final UserService userService;
-    private final UserDTOConvertor convertor;
+    private final UserAuthService userAuthService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final RefreshTokenService refreshService;
     @Value("${duration.time.cookie}")
     private Long cookieTime;
 
+    @Override
     public JwtAuthResponse signup( SignUpAuthDTO signUpAuthDTO,HttpServletResponse response){
-            Role roleUser = new Role(1L,"ROLE_USER");
 
             User user = User.builder()
                     .username(signUpAuthDTO.getUsername())
-                    .roles(List.of(roleUser))
                     .email(signUpAuthDTO.getEmail())
                     .password(passwordEncoder.encode(signUpAuthDTO.getPassword()))
                     .build();
@@ -50,9 +43,7 @@ public class AuthServiceImpl implements AuthService {
             var authentication = new UsernamePasswordAuthenticationToken(signUpAuthDTO.getUsername()
                     ,signUpAuthDTO.getPassword());
 
-            UserDTO userDTO = convertor.convertEntityToDTO(user);
-
-            userService.save(userDTO);
+            userAuthService.authUser(user);
 
             //create jwt tokens
             Token token = refreshService.createRefreshToken(authentication);
@@ -73,6 +64,7 @@ public class AuthServiceImpl implements AuthService {
                     .build();
     }
 
+    @Override
    public JwtAuthResponse login(SignInAuthDTO signInAuthDTO, HttpServletResponse response){
        var authenticationToken  = new UsernamePasswordAuthenticationToken(
                signInAuthDTO.getUsername(),

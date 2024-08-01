@@ -399,9 +399,8 @@ public class UserController {
 
         Optional<User> user = userService.findByUsername(username);
 
-        if(user.isEmpty()){
-            throw new NotResourceException("user is not exist");
-        }
+        if(user.isEmpty()) throw new NotResourceException("user is not exist");
+
 
         return ResponseEntity.ok(user.get());
 

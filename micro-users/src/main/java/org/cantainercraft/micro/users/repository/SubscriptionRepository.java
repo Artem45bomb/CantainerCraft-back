@@ -6,4 +6,5 @@ import org.cantainercraft.project.entity.users.Subscription;
 
 @Repository
 public interface SubscriptionRepository extends JpaRepository<Subscription,Long> {
+    boolean existsByName(String name);
 }

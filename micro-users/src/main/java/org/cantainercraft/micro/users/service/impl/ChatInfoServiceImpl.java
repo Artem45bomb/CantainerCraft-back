@@ -20,36 +20,34 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 public class ChatInfoServiceImpl implements ChatInfoService {
-    private final ChatInfoRepository chatInfoRepository;
-    private final ChatInfoDTOConvertor chatInfoDTOConvertor;
+    private final ChatInfoRepository repository;
+    private final ChatInfoDTOConvertor dtoConvertor;
 
     @Override
-    public Chat_Info save(ChatInfoDTO chatInfoDTO) {
-        Chat_Info entity = chatInfoDTOConvertor.convertDTOToEntity(chatInfoDTO);
-        Optional<Chat_Info> chatInfo = chatInfoRepository.findById(chatInfoDTO.getUuid());
-        if (chatInfo.isPresent()) {
-            throw new NotResourceException("Chat info already exists");
-        }
-
-        return chatInfoRepository.save(entity);
-    }
-
-    @Override
-    @CachePut(value = "chat-info",key = "#chatInfoDTO.uuid")
-    public Chat_Info update(ChatInfoDTO chatInfoDTO) {
-        Chat_Info entity = chatInfoDTOConvertor.convertDTOToEntity(chatInfoDTO);
-        Optional<Chat_Info> chatInfo = chatInfoRepository.findById(chatInfoDTO.getUuid());
-        if (chatInfo.isEmpty()) {
+    public Chat_Info save(ChatInfoDTO dto) {
+        Chat_Info entity = dtoConvertor.convertDTOToEntity(dto);
+        if (!repository.existsById(dto.getUuid())) {
             throw new NotResourceException("Chat Info not found");
         }
 
-        return chatInfoRepository.save(entity);
+        return repository.save(entity);
+    }
+
+    @Override
+    @CachePut(value = "chat-info",key = "#dto.uuid")
+    public Chat_Info update(ChatInfoDTO dto) {
+        Chat_Info entity = dtoConvertor.convertDTOToEntity(dto);
+        if (!repository.existsById(dto.getUuid())) {
+            throw new NotResourceException("Chat Info not found");
+        }
+
+        return repository.save(entity);
     }
 
     @Override
     @Cacheable(value = "chat-info",key = "#uuid")
     public Chat_Info findById(UUID uuid) {
-        Optional<Chat_Info> chatInfo = chatInfoRepository.findById(uuid);
+        Optional<Chat_Info> chatInfo = repository.findById(uuid);
         if (chatInfo.isEmpty()) {
             throw new NotResourceException("No such chat info");
         }
@@ -60,17 +58,16 @@ public class ChatInfoServiceImpl implements ChatInfoService {
 
     @Override
     public List<Chat_Info> findAll() {
-        return chatInfoRepository.findAll();
+        return repository.findAll();
     }
 
     @Override
     @CacheEvict(value = "chat-info",key = "#uuid")
     public void deleteById(UUID uuid) {
-        Optional<Chat_Info> chatInfo = chatInfoRepository.findById(uuid);
-        if (chatInfo.isEmpty()) {
-            throw new NotResourceException("No such chat info");
+        if (!repository.existsById(uuid)){
+            throw new NotResourceException("Chat Info not found");
         }
-        chatInfoRepository.deleteById(uuid);
+        repository.deleteById(uuid);
     }
 
 }
