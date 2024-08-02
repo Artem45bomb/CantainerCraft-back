@@ -10,14 +10,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.users.dto.ProfileDTO;
 import org.cantainercraft.micro.users.dto.ProfileSearchDTO;
-import org.cantainercraft.micro.users.dto.UserDTO;
-import org.cantainercraft.micro.utilits.exception.ExistResourceException;
-import org.cantainercraft.micro.utilits.exception.MessageError;
 import org.cantainercraft.micro.users.service.ProfileService;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.micro.utilits.exception.NotValidateParamException;
-import org.cantainercraft.project.entity.users.User;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -54,11 +49,9 @@ public class ProfileController {
 
         Optional<Profile> profile = profileService.findById(id);
 
-        if(profile.isEmpty()){
-            throw  new NotResourceException("profile is not exist");
-        }
+        if(profile.isEmpty()) throw  new NotResourceException("profile is not exist");
 
-        return ResponseEntity.ok(profileService.findById(id).get());
+        return ResponseEntity.ok(profile.get());
     }
 
     @Operation(summary = "get profile",
@@ -132,9 +125,7 @@ public class ProfileController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<Profile> save(@RequestBody ProfileDTO profileDTO){
-        if(profileDTO.getUuid() != null){
-            throw new NotValidateParamException("param missed: uuid");
-        }
+        if(profileDTO.getUuid() != null) throw new NotValidateParamException("param missed: uuid");
 
         return ResponseEntity
                 .status(201)

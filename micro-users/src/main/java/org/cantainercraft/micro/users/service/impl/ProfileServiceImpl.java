@@ -25,67 +25,67 @@ import java.util.UUID;
 @Transactional
 @RequiredArgsConstructor
 public class ProfileServiceImpl implements ProfileService {
-    public final ProfileRepository profileRepository;
-    public final ProfileDTOConvertor profileDTOConvertor;
+    public final ProfileRepository repository;
+    public final ProfileDTOConvertor convertor;
     public final UserRepository userRepository;
 
     @Override
-    public Profile save (ProfileDTO profileDTO){
-        Profile profile = profileDTOConvertor.convertDTOToEntity(profileDTO);
+    public Profile save (ProfileDTO dto){
+        Profile profile = convertor.convertDTOToEntity(dto);
 
-        if(profileRepository.existsByUser(profile.getUser())) throw new ExistResourceException("profile for user is create");
+        if(repository.existsByUser(profile.getUser())) throw new ExistResourceException("profile for user is create");
 
-        return profileRepository.save(profile);
+        return repository.save(profile);
     }
 
     @Override
-    public Profile update(ProfileDTO profileDTO) {
+    public Profile update(ProfileDTO dto) {
 
-        if(!profileRepository.existsById(profileDTO.getUuid())) throw new NotResourceException("profile is not exist");
+        if(!repository.existsById(dto.getUuid())) throw new NotResourceException("profile is not exist");
 
-        Profile profile = profileDTOConvertor.convertDTOToEntity(profileDTO);
-        Optional<User> user = userRepository.findById(profileDTO.getUser().getId());
+        Profile profile = convertor.convertDTOToEntity(dto);
+        Optional<User> user = userRepository.findById(dto.getUser().getId());
 
         user.map((e) -> {
             profile.setUser(e);
             return null;
         });
 
-        return profileRepository.save(profile);
+        return repository.save(profile);
     }
 
     @Override
     @Cacheable(value = "profiles",key = "#uuid")
     public Optional<Profile> findById(UUID uuid){
-        return profileRepository.findById(uuid);
+        return repository.findById(uuid);
     }
 
     @Override
     public Optional<Profile> findByUser(Long userId,String email){
-        return  profileRepository.findByUserIdOrUserEmail(userId,email);
+        return  repository.findByUserIdOrUserEmail(userId,email);
     }
 
 
     @Override
     public List<Profile> findAll(){
-        return profileRepository.findAll();
+        return repository.findAll();
     }
 
     @Override
     @CacheEvict(value = "profiles",key = "#uuid")
     public void deleteById(UUID uuid){
-        if(!profileRepository.existsById(uuid)) throw new NotResourceException("profile is not exist");
+        if(!repository.existsById(uuid)) throw new NotResourceException("profile is not exist");
 
-        profileRepository.deleteById(uuid);
+        repository.deleteById(uuid);
     }
 
     @Override
     @CacheEvict(value = "profiles",allEntries = true)
     public void deleteByUser(Long userId,String email){
-        if(profileRepository.existsByUserIdOrUserEmail(userId,email)){
+        if(repository.existsByUserIdOrUserEmail(userId,email)){
             throw new NotResourceException("profile is not exist");
         }
 
-        profileRepository.deleteByUserIdOrUserEmail(userId,email);
+        repository.deleteByUserIdOrUserEmail(userId,email);
     }
 }

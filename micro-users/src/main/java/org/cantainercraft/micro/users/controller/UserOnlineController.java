@@ -16,37 +16,33 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping("/api/user_online")
 public class UserOnlineController {
-
-
-    private final UserOnlineService userOnlineService;
+    private final UserOnlineService service;
 
     @GetMapping("/all")
     public ResponseEntity<List<User_Online>> findAll(){
-        return ResponseEntity.ok(userOnlineService.findAll());
+        return ResponseEntity.ok(service.findAll());
     }
 
     @GetMapping("/{uuid}")
     public ResponseEntity<User_Online> findById(@PathVariable UUID uuid) {
-        return ResponseEntity.ok(userOnlineService.findById(uuid));
+        return ResponseEntity.ok(service.findById(uuid));
     }
 
     @PostMapping("/add")
     public ResponseEntity<User_Online> save(@RequestBody UserOnlineDTO dto){
-         return ResponseEntity.ok(userOnlineService.save(dto));
+         return ResponseEntity.ok(service.save(dto));
     }
 
 
     @PutMapping("/update")
     public ResponseEntity<User_Online> update(@RequestBody UserOnlineDTO dto){
-        return ResponseEntity.ok(userOnlineService.update(dto));
+        return ResponseEntity.ok(service.update(dto));
     }
 
 
     @DeleteMapping("/delete/id")
     public void deleteById(@RequestBody UUID uuid ){
-
-        userOnlineService.deleteById(uuid);
-
+        service.deleteById(uuid);
     }
 
 }

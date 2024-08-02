@@ -115,8 +115,9 @@ public class UserController {
 
         Optional<User> user = userService.findByEmail(email);
 
-        return user.map(ResponseEntity::ok)
-                .orElseGet(() -> {throw new NotResourceException("user is not exist");});
+        if(user.isEmpty()) throw new NotResourceException("user is not exist");
+
+        return ResponseEntity.ok(user.get());
 
     }
 
@@ -251,11 +252,6 @@ public class UserController {
                 throw new NotValidateParamException("missed param: id");
             }
 
-            Optional<User> user = userService.findById(dto.getId());
-
-            if(user.isEmpty())  throw new NotResourceException("user is not exist");
-
-
             return ResponseEntity.ok(userService.update(dto));
     }
 
@@ -280,13 +276,8 @@ public class UserController {
             )
     })
     @PutMapping("/delete/email")
-    public ResponseEntity<String> deleteByEmail(@RequestBody String email){
-            Optional<User> user = userService.findByEmail(email);
-
-            if(user.isEmpty()) throw new NotResourceException("user is not exist");;
-
+    public void deleteByEmail(@RequestBody String email){
             userService.deleteByEmail(email);
-            return ResponseEntity.ok("delete user");
     }
 
 
@@ -311,13 +302,8 @@ public class UserController {
             )
     })
     @PutMapping("/delete/id")
-    public ResponseEntity<String> deleteById(@RequestBody Long id ){
-            Optional<User> user= userService.findById(id);
-
-            if(user.isEmpty())  throw new NotResourceException("user is not exist");
-
+    public void deleteById(@RequestBody Long id ){
             userService.deleteById(id);
-            return ResponseEntity.ok("delete user");
     }
 
     @Operation(summary = "exist user",
@@ -353,8 +339,7 @@ public class UserController {
         if(!serviceKey.equals(header))
             return new ResponseEntity(new MessageError("not access"),HttpStatus.FORBIDDEN);
 
-        return ResponseEntity
-                .ok(userService.existById(id));
+        return ResponseEntity.ok(userService.existById(id));
     }
 
 

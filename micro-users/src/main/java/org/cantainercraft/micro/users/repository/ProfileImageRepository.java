@@ -9,8 +9,6 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 @Repository
 public interface ProfileImageRepository extends JpaRepository<Profile_Image, UUID> {
-
-
-
+    boolean existsBySrcContent(String srcContent);
 }
 

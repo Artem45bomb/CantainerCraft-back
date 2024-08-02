@@ -5,6 +5,7 @@ import org.cantainercraft.micro.users.convertor.ProfileImageDTOConvertor;
 import org.cantainercraft.micro.users.dto.ProfileImageDTO;
 import org.cantainercraft.micro.users.repository.ProfileImageRepository;
 import org.cantainercraft.micro.users.service.ProfileImageService;
+import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.users.Profile_Image;
 import org.springframework.cache.annotation.CacheEvict;
@@ -20,29 +21,28 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 public class ProfileImageServiceImpl implements ProfileImageService {
-    private final ProfileImageDTOConvertor profileImageDTOConvertor;
-    private final ProfileImageRepository profileImageRepository;
+    private final ProfileImageDTOConvertor convertor;
+    private final ProfileImageRepository repository;
 
 
     @Override
-    public Profile_Image save(ProfileImageDTO profileImageDTO) {
-        Profile_Image profileImage = profileImageDTOConvertor.convertDTOToEntity(profileImageDTO);
-        if (profileImageRepository.existsById(profileImageDTO.getUuid())) {
-            throw  new NotResourceException("Profile image already exists");
-        }
+    public Profile_Image save(ProfileImageDTO dto) {
+        Profile_Image profileImage = convertor.convertDTOToEntity(dto);
 
-        return profileImageRepository.save(profileImage);
+        if(repository.existsBySrcContent(dto.getSrcContent())) throw new ExistResourceException("this content is exist");
+
+        return repository.save(profileImage);
     }
 
     @Override
     public List<Profile_Image> findAll() {
-        return profileImageRepository.findAll();
+        return repository.findAll();
     }
 
     @Override
     @Cacheable(value = "profile-image",key = "#uuid")
     public Profile_Image findById(UUID uuid) {
-        Optional<Profile_Image> profileImage = profileImageRepository.findById(uuid);
+        Optional<Profile_Image> profileImage = repository.findById(uuid);
         if (profileImage.isEmpty()) {
             throw new NotResourceException("Profile image already exists");
         }
@@ -51,26 +51,24 @@ public class ProfileImageServiceImpl implements ProfileImageService {
     }
 
     @Override
-    @CachePut(value = "profile-image",key = "#profileImageDTO.uuid")
-    public Profile_Image update(ProfileImageDTO profileImageDTO) {
-        Profile_Image entity = profileImageDTOConvertor.convertDTOToEntity(profileImageDTO);
-        Optional<Profile_Image> profileImageOptional = profileImageRepository.findById(profileImageDTO.getUuid());
-        if(profileImageOptional.isEmpty()){
+    @CachePut(value = "profile-image",key = "#dto.uuid")
+    public Profile_Image update(ProfileImageDTO dto) {
+        Profile_Image entity = convertor.convertDTOToEntity(dto);
+        if(repository.existsById(dto.getUuid())){
             throw new NotResourceException("Profile image already exists");
         }
 
-        return profileImageRepository.save(entity);
+        return repository.save(entity);
     }
 
     @Override
     @CacheEvict(value = "profile-image",key = "#uuid")
     public void deleteById(UUID uuid) {
-        Optional<Profile_Image> profileImage = profileImageRepository.findById(uuid);
-        if(profileImage.isEmpty()){
-            throw new NotResourceException("Profile image does not exist");
+        if(repository.existsById(uuid)){
+            throw new NotResourceException("Profile image already exists");
         }
 
-        profileImageRepository.deleteById(uuid);
+        repository.deleteById(uuid);
     }
 
 }

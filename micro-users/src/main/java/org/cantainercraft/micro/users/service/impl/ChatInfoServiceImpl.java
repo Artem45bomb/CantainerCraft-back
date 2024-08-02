@@ -21,11 +21,11 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ChatInfoServiceImpl implements ChatInfoService {
     private final ChatInfoRepository repository;
-    private final ChatInfoDTOConvertor dtoConvertor;
+    private final ChatInfoDTOConvertor convertor;
 
     @Override
     public Chat_Info save(ChatInfoDTO dto) {
-        Chat_Info entity = dtoConvertor.convertDTOToEntity(dto);
+        Chat_Info entity = convertor.convertDTOToEntity(dto);
         if (!repository.existsById(dto.getUuid())) {
             throw new NotResourceException("Chat Info not found");
         }
@@ -36,7 +36,7 @@ public class ChatInfoServiceImpl implements ChatInfoService {
     @Override
     @CachePut(value = "chat-info",key = "#dto.uuid")
     public Chat_Info update(ChatInfoDTO dto) {
-        Chat_Info entity = dtoConvertor.convertDTOToEntity(dto);
+        Chat_Info entity = convertor.convertDTOToEntity(dto);
         if (!repository.existsById(dto.getUuid())) {
             throw new NotResourceException("Chat Info not found");
         }

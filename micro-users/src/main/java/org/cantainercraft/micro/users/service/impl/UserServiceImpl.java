@@ -2,17 +2,10 @@ package org.cantainercraft.micro.users.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.cantainercraft.micro.users.convertor.ProfileDTOConvertor;
 import org.cantainercraft.micro.users.convertor.UserDTOConvertor;
-import org.cantainercraft.micro.users.dto.ServiceUserDTO;
-import org.cantainercraft.micro.users.service.InitService;
-import org.cantainercraft.micro.users.service.ProfileService;
-import org.cantainercraft.micro.users.service.RoleService;
 import org.cantainercraft.micro.users.service.UserService;
 import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
-import org.cantainercraft.project.entity.users.Profile;
-import org.cantainercraft.project.entity.users.Role;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -24,94 +17,88 @@ import org.cantainercraft.micro.users.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
+
 
 @Slf4j
 @Component
 @Transactional
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    
-    private final UserDTOConvertor userDTOConvertor;
-    private final UserRepository userRepository;
+    private final UserDTOConvertor convertor;
+    private final UserRepository repository;
 
     @Override
     public List<User> findAll(){
-        return userRepository.findAll();
+        return repository.findAll();
     }
 
     @Override
     @Cacheable(value = "users",key = "#id")
     public Optional<User> findById(Long id) {
-        return userRepository.findById(id);
+        return repository.findById(id);
     }
 
     @Override
-    public User save(UserDTO userDTO){
-        if(existByUsername(userDTO.getUsername())){
+    public User save(UserDTO dto){
+        if(existByUsername(dto.getUsername())){
             throw new ExistResourceException("user is exist");
         }
-        User user = userDTOConvertor.convertDTOToEntity(userDTO);
+        User user = convertor.convertDTOToEntity(dto);
 
-        return userRepository.save(user);
+        return repository.save(user);
     }
 
     @Override
-    @CachePut(value = "users",key = "#userDTO.id")
-    public User update(UserDTO userDTO){
-        User user = userDTOConvertor.convertDTOToEntity(userDTO);
-        Optional<User> userOptional = userRepository.findById(userDTO.getId());
-        if(userOptional.isEmpty()) {
+    @CachePut(value = "users",key = "#dto.id")
+    public User update(UserDTO dto){
+        User user = convertor.convertDTOToEntity(dto);
+       
+        if(!repository.existsById(dto.getId())) {
             throw new NotResourceException("user is not exist");
         }
-        return userRepository.save(user);
-    }
-
-    @Override
-    public Optional<User> findByUsernameAndPassword(ServiceUserDTO dto){
-        return userRepository.findByUsernameAndPassword(dto.getUsername(), dto.getPassword());
+        return repository.save(user);
     }
 
     @Override
     public Optional<User> findByEmail(String email){
-        return userRepository.findByEmail(email);
+        return repository.findByEmail(email);
     }
 
     @Override
     public List<User> findBySearch(String email,String password){
-        return userRepository.findBySearch(email,password);
+        return repository.findBySearch(email,password);
     }
 
     @Override
     @CacheEvict(value = "users",key = "#id")
     public void deleteById(Long id){
-        if(!userRepository.existsById(id)) throw new NotResourceException("user is not exist");
+        if(!repository.existsById(id)) throw new NotResourceException("user is not exist");
 
-        userRepository.deleteById(id);
+        repository.deleteById(id);
     }
 
     @Override
     @CacheEvict(value = "users",allEntries = true)
     public void deleteByEmail(String email){
-        if(!userRepository.existsByEmail(email)) throw new NotResourceException("user is not exist");
+        if(!repository.existsByEmail(email)) throw new NotResourceException("user is not exist");
 
-        userRepository.deleteByEmail(email);
+        repository.deleteByEmail(email);
     }
 
 
     @Override
     public Optional<User> findByUsername(String username){
-        return userRepository.findByUsername(username);
+        return repository.findByUsername(username);
     }
 
     @Override
     public boolean existByUsername(String username){
-        return userRepository.existsByUsername(username);
+        return repository.existsByUsername(username);
     }
 
     @Override
     public boolean existById(Long id){
-        return userRepository.existsById(id);
+        return repository.existsById(id);
     }
 
 

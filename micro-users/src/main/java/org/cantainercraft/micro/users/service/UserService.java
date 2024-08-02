@@ -30,7 +30,4 @@ public interface UserService {
      boolean existByUsername(String username);
 
      boolean existById(Long id);
-
-     Optional<User> findByUsernameAndPassword(ServiceUserDTO dto);
-
 }

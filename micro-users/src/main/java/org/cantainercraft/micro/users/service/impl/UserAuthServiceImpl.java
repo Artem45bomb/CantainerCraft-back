@@ -23,7 +23,7 @@ public class UserAuthServiceImpl implements UserAuthService {
 
     @Override
     public User authUser(User user) {
-        Optional<Role> role = roleService.findByRole("User");
+        Optional<Role> role = roleService.findByRole("USER");
 
         if(role.isEmpty()) throw new NotResourceException("service not create role");
 

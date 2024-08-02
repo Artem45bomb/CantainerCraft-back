@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserAccountController {
     private final AccountService accountService;
 
-
+    // как правильно
     @PostMapping("/update")
     public JwtAuthResponse accountUpdate(@RequestBody UserDTO userDTO, @NonNull HttpServletResponse response){
         return accountService.update(userDTO,response);
