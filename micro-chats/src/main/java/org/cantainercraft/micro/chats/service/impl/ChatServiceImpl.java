@@ -2,10 +2,12 @@ package org.cantainercraft.micro.chats.service.impl;
 
 
 import lombok.RequiredArgsConstructor;
-import org.cantainercraft.micro.chats.convertor.ChatDTOConvertor;
 import org.cantainercraft.micro.chats.dto.ChatDTO;
 import org.cantainercraft.micro.chats.repository.ChatRepository;
 import org.cantainercraft.micro.chats.service.ChatService;
+import org.cantainercraft.micro.utilits.exception.ExistResourceException;
+import org.cantainercraft.micro.utilits.exception.NotResourceException;
+import org.cantainercraft.micro.utilits.service.ConvertorDTO;
 import org.springframework.stereotype.Service;
 import org.cantainercraft.project.entity.users.TypeChat;
 import org.cantainercraft.project.entity.chats.Chat;
@@ -20,44 +22,47 @@ import java.util.UUID;
 @Transactional
 @RequiredArgsConstructor
 public class ChatServiceImpl implements ChatService {
-    private final ChatRepository chatRepository;
-    private final ChatDTOConvertor chatDTOConvertor;
+    private final ChatRepository repository;
+    private final ConvertorDTO<ChatDTO,Chat> convertor;
 
-    public Chat save(ChatDTO chatDTO){
-        Chat chat = chatDTOConvertor.convertChatDTOToChat(chatDTO);
-        return chatRepository.save(chat);
+    public Chat save(ChatDTO dto){
+        Chat chat = convertor.convertDTOToEntity(dto);
+        
+        if(repository.existsByLink(dto.getLink())){ 
+            throw new ExistResourceException("link for chat is exist");
+        }
+        
+        return repository.save(chat);
     }
 
-    public boolean update(ChatDTO chatUpdateDTO){
-        Chat chat = chatDTOConvertor.convertChatDTOToChat(chatUpdateDTO);
-        chat.setUuid(chatUpdateDTO.getUuid());
-        chatRepository.save(chat);
-        return true;
+    public Chat update(ChatDTO dto){
+        Chat chat = convertor.convertDTOToEntity(dto);
+
+        if(repository.existsByLink(dto.getLink())){
+            throw new ExistResourceException("link for chat is exist");
+        }
+        
+        return repository.save(chat);
     }
 
-     public boolean delete(UUID uuid){
-        chatRepository.deleteById(uuid);
-        return true;
-    }
+     public void delete(UUID uuid){
+        if(!repository.existsById(uuid)){
+            throw new NotResourceException("chat is not exist");
+        }
 
-    public boolean deleteByName(String name){
-       return chatRepository.deleteByName(name);
+        repository.deleteById(uuid);
     }
 
 
     public List<Chat> findBySearch(UUID uuid, String name, TypeChat typeChat, Date dateStart, Date dateEnd){
-        return chatRepository.findBySearch(uuid,name,typeChat,dateStart,dateEnd);
-    }
-
-    public Optional<Chat> findByName(String chatName){
-        return chatRepository.findByName(chatName);
+        return repository.findBySearch(uuid,name,typeChat,dateStart,dateEnd);
     }
 
     public List<Chat> findAll(){
-        return chatRepository.findAll();
+        return repository.findAll();
     }
 
     public Optional<Chat> findByUUID(UUID uuid){
-        return chatRepository.findById(uuid);
+        return repository.findById(uuid);
     }
 }

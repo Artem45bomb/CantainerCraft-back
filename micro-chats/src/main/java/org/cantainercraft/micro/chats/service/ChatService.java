@@ -13,16 +13,11 @@ public interface ChatService {
 
      Chat save(ChatDTO chatDTO);
 
-     boolean update(ChatDTO chatUpdateDTO);
+     Chat update(ChatDTO chatUpdateDTO);
 
-     boolean delete(UUID uuid);
-
-     boolean deleteByName(String name);
-
+     void delete(UUID uuid);
 
     List<Chat> findBySearch(UUID uuid, String name, TypeChat typeChat, Date dateStart, Date dateEnd);
-
-    Optional<Chat> findByName(String chatName);
 
     List<Chat> findAll();
 

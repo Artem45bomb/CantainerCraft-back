@@ -40,6 +40,9 @@ public class Chat implements Serializable {
     @Column(name = "chat_name")
     private String name;
 
+    @Column(unique = true)
+    private String link;
+
     @Column(name = "create_date",updatable = false)
     private Date date;
 

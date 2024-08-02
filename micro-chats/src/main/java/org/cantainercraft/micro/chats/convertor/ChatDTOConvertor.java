@@ -1,6 +1,7 @@
 package org.cantainercraft.micro.chats.convertor;
 
 import lombok.RequiredArgsConstructor;
+import org.cantainercraft.micro.utilits.service.ConvertorDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import org.cantainercraft.micro.chats.dto.ChatDTO;
@@ -8,14 +9,16 @@ import org.cantainercraft.project.entity.chats.Chat;
 
 @Component
 @RequiredArgsConstructor
-public class ChatDTOConvertor {
+public class ChatDTOConvertor implements ConvertorDTO<ChatDTO,Chat> {
     private final ModelMapper modelMapper;
 
-    public ChatDTO convertChatToChatDTO(Chat chat){
-        return modelMapper.map(chat,ChatDTO.class);
+    @Override
+    public ChatDTO convertEntityToDTO(Chat object) {
+        return modelMapper.map(object,ChatDTO.class);
     }
 
-    public Chat convertChatDTOToChat(ChatDTO chatDTO){
+    @Override
+    public Chat convertDTOToEntity(ChatDTO chatDTO) {
         return modelMapper.map(chatDTO,Chat.class);
     }
 }

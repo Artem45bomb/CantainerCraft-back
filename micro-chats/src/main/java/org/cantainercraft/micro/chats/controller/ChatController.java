@@ -2,16 +2,12 @@ package org.cantainercraft.micro.chats.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.cantainercraft.micro.chats.convertor.ChatDTOConvertor;
 import org.cantainercraft.micro.chats.dto.ChatDTO;
 import org.cantainercraft.micro.chats.dto.ChatSearchDTO;
 import org.cantainercraft.micro.chats.service.ChatService;
 import org.cantainercraft.micro.chats.service.UserChatService;
-import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.micro.utilits.exception.NotValidateParamException;
-import org.cantainercraft.micro.utilits.method.ObjectUtility;
-import org.cantainercraft.micro.utilits.service.ConvertorDTO;
 import org.cantainercraft.project.entity.users.TypeChat;
 import org.cantainercraft.project.entity.chats.Chat;
 import org.cantainercraft.project.entity.chats.User_Chat;
@@ -27,22 +23,19 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class ChatController {
-
-    private final ChatService chatService;
+    private final ChatService service;
     private final UserChatService userChatService;
-    private final ChatDTOConvertor convertor;
 
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/all")
     public ResponseEntity<List<Chat>> findAll(){
-        return ResponseEntity.ok(chatService.findAll());
+        return ResponseEntity.ok(service.findAll());
     }
-
 
     @PostMapping("/uuid")
     public ResponseEntity<Chat> findByUUID(@RequestBody UUID uuid){
-        Optional<Chat> chat = chatService.findByUUID(uuid);
+        Optional<Chat> chat = service.findByUUID(uuid);
 
         if(chat.isEmpty()){
             throw new NotResourceException("No content");
@@ -51,56 +44,24 @@ public class ChatController {
         return ResponseEntity.ok(chat.get());
     }
 
-    @PostMapping("/name")
-    public ResponseEntity<Chat> findByName(@RequestBody String name){
-        Optional<Chat> chat = chatService.findByName(name);
-        if(chat.isEmpty()) throw new NotResourceException("No content");
-        return ResponseEntity.ok(chat.get());
-    }
-
     @PutMapping("/delete")
-    public ResponseEntity<Boolean> delete(@RequestBody UUID uuid){
-        Optional<Chat> chat = chatService.findByUUID(uuid);
-        if(chat.isEmpty()) {
-            throw new NotResourceException("No content to delete");
-        }
-            return ResponseEntity.ok(chatService.delete(uuid));
+    public void  delete(@RequestBody UUID uuid){
+        service.delete(uuid);
     }
 
 
     @PostMapping("/add")
     public ResponseEntity<Chat> save(@RequestBody ChatDTO chatDTO){
-        Optional<Chat> chat = chatService.findByName(chatDTO.getName());
-
-        if(chat.isPresent()){
-            throw new ExistResourceException("chat is exist");
-        }
-        chatDTO.setDate(Calendar.getInstance().getTime());
-        return ResponseEntity.ok(chatService.save(chatDTO));
-    }
-
-    @PutMapping("/delete/name")
-    public ResponseEntity<Boolean> delete(@RequestBody String name){
-        Optional<Chat> chat = chatService.findByName(name);
-        if(chat.isEmpty()) {
-            throw new NotResourceException("No content to delete");
-        }
-        if(name == null) {
-            throw new NotValidateParamException("Missed param: name");
-        }
-        return ResponseEntity.ok(chatService.deleteByName(name));
+        return ResponseEntity.ok(service.save(chatDTO));
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Boolean> update(@RequestBody ChatDTO chatDTO) throws Exception{
-        Optional<Chat> chat = chatService.findByUUID(chatDTO.getUuid());
-        if (chat.isEmpty()) {
-            throw new NotResourceException("No content to update");
+    public ResponseEntity<Chat> update(@RequestBody ChatDTO chatDTO) throws Exception{
+        if(chatDTO.getUuid() == null){
+            throw new NotValidateParamException("missed param: id");
         }
 
-        if(chatDTO.getUuid() == null) throw new NotValidateParamException("missed param: id");
-
-        return ResponseEntity.ok(chatService.update(chatDTO));
+        return ResponseEntity.ok(service.update(chatDTO));
     }
 
 
@@ -122,7 +83,6 @@ public class ChatController {
             calendarEnd.set(Calendar.MINUTE, 59);
             calendarEnd.set(Calendar.SECOND, 59);
             calendarEnd.set(Calendar.MILLISECOND, 999);
-
             dateEnd = calendarEnd.getTime(); // записываем конечную дату с 23:59
         }
 
@@ -135,23 +95,21 @@ public class ChatController {
             calendarStart.set(Calendar.SECOND, 0);
             calendarStart.set(Calendar.MILLISECOND, 0);
 
-            dateEnd = calendarStart.getTime(); // записываем конечную дату с 23:59
+            dateStart = calendarStart.getTime(); // записываем конечную дату с 23:59
         }
 
-        return ResponseEntity.ok(chatService.findBySearch(uuid,chatName,typeChat,dateStart,dateEnd));
+        return ResponseEntity.ok(service.findBySearch(uuid,chatName,typeChat,dateStart,dateEnd));
 
     }
 
     //ищет пользователей по userId через userChatService так как все пользователи хранятся в user_chat
     @PostMapping("/user/search")
     public ResponseEntity<List<Chat>> search(@RequestBody Long userId){
-
         List<User_Chat> userChats =userChatService.findBySearch(null,userId,null);
-        log.info(userChats.toString());
-        List<Chat> chats= userChats.stream()
+        
+        return ResponseEntity.ok(userChats.stream()
                 .map(User_Chat::getChat)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(chats);
+                .collect(Collectors.toList()));
     }
 
 }

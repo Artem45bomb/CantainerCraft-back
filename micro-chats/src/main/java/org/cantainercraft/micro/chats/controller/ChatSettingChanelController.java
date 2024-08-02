@@ -17,39 +17,34 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ChatSettingChanelController {
 
-    private final ChatSettingsChanelService chatSettingsChanelService;
+    private final ChatSettingsChanelService service;
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<Chat_Settings_Chanel> save(@RequestBody ChatSettingsChanelDTO chatSettingsChanelDTO){
 
-        return ResponseEntity.ok(chatSettingsChanelService.save(chatSettingsChanelDTO));
+        return ResponseEntity.ok(service.save(chatSettingsChanelDTO));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/delete/chat_settings_chanel")
-    public ResponseEntity<Boolean> delete(@RequestBody UUID uuid) {
-        Optional<Chat_Settings_Chanel> chatSettings = chatSettingsChanelService.findByUUID(uuid);
-
-        if (chatSettings.isEmpty()) {
-            throw new ExistResourceException("No SettingsChanel to delete");
-        }
-        return ResponseEntity.ok(chatSettingsChanelService.delete(uuid));
+    public void delete(@RequestBody UUID uuid) {
+        service.delete(uuid);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Boolean> update(@RequestBody ChatSettingsChanelDTO chatSettingsDTO) {
+    public ResponseEntity<Chat_Settings_Chanel> update(@RequestBody ChatSettingsChanelDTO chatSettingsDTO) {
         if (chatSettingsDTO.getUuid() == null) {
             throw new ExistResourceException("No SettingsChanel to update");
         }
         //chatSettingsService.update(chatSettingsDTO);
-        return ResponseEntity.ok(chatSettingsChanelService.update(chatSettingsDTO));
+        return ResponseEntity.ok(service.update(chatSettingsDTO));
     }
 
 
     @PostMapping("/id")
     public ResponseEntity<Chat_Settings_Chanel> findByUUID(UUID uuid) {
-        Optional<Chat_Settings_Chanel> chatSettings = chatSettingsChanelService.findByUUID(uuid);
+        Optional<Chat_Settings_Chanel> chatSettings = service.findByUUID(uuid);
         if (chatSettings.isEmpty()) {
             throw new ExistResourceException("No SettingsChanel");
         }

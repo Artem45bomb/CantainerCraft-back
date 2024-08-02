@@ -3,7 +3,6 @@ package org.cantainercraft.micro.users.service.impl;
 import org.cantainercraft.micro.utilits.service.impl.JwtBaseServiceImpl;
 import org.cantainercraft.project.entity.users.Token;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;

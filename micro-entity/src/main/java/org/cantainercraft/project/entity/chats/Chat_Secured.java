@@ -22,10 +22,10 @@ public class Chat_Secured {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID uuid;
 
-
     @JoinColumn(name = "chat_id",unique = true,nullable = false)
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private Chat chat;
 
+    @Column(nullable = false)
     private Long userId;
 }

@@ -5,6 +5,7 @@ import org.cantainercraft.micro.chats.convertor.ChatImageProfileDTOConvertor;
 import org.cantainercraft.micro.chats.dto.ChatImageProfileDTO;
 import org.cantainercraft.micro.chats.service.ChatImageProfileService;
 import org.cantainercraft.micro.utilits.exception.ExistResourceException;
+import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.chats.Chat_Image_Profile;
 import org.cantainercraft.micro.chats.repository.ChatImageProfileRepository;
 import org.springframework.stereotype.Service;
@@ -22,31 +23,32 @@ public class ChatImageProfileServiceImpl implements ChatImageProfileService {
     private final ChatImageProfileDTOConvertor convertor;
 
     @Override
-    public Chat_Image_Profile save(ChatImageProfileDTO chatImageProfileDTO) {
-        if(!repository.existsBySrcContent(chatImageProfileDTO.getSrcContent())) throw new ExistResourceException("src is exist");
+    public Chat_Image_Profile save(ChatImageProfileDTO dto) {
+        if(!repository.existsBySrcContent(dto.getSrcContent())) throw new ExistResourceException("src is exist");
 
-        Chat_Image_Profile entity = convertor.convertChatImageProfileDTOToChatImageProfile(chatImageProfileDTO);
+        Chat_Image_Profile entity = convertor.convertDTOToEntity(dto);
 
         return repository.save(entity);
     }
 
     @Override
-    public boolean update(ChatImageProfileDTO chatImageProfileDTO) {
-        if (repository.existsById(chatImageProfileDTO.getUuid())) {
-            Chat_Image_Profile entity = convertor.convertChatImageProfileDTOToChatImageProfile(chatImageProfileDTO);
-            repository.save(entity);
-            return true;
+    public Chat_Image_Profile update(ChatImageProfileDTO dto) {
+        Chat_Image_Profile entity = convertor.convertDTOToEntity(dto);
+
+        if (!repository.existsById(dto.getUuid())){
+            throw new NotResourceException("No content to update");
         }
-        return false;
+
+        return repository.save(entity);
     }
 
     @Override
-    public boolean delete(UUID uuid) {
-        if (repository.existsById(uuid)) {
-            repository.deleteById(uuid);
-            return true;
+    public void delete(UUID uuid) {
+        if (!repository.existsById(uuid)){
+            throw new NotResourceException("No content to update");
         }
-        return false;
+
+        repository.deleteById(uuid);
     }
 
     @Override

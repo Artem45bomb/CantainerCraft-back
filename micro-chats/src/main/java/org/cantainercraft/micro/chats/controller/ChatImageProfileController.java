@@ -2,7 +2,6 @@ package org.cantainercraft.micro.chats.controller;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.dto.ChatImageProfileDTO;
 import org.cantainercraft.micro.chats.service.ChatImageProfileService;
-import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.micro.utilits.exception.NotValidateParamException;
 import org.cantainercraft.project.entity.chats.Chat_Image_Profile;
@@ -18,7 +17,6 @@ import java.util.UUID;
 @RequestMapping("/api/chat-image-profiles")
 @RequiredArgsConstructor
 public class ChatImageProfileController {
-
     private final ChatImageProfileService service;
 
     @PreAuthorize("hasAnyRole('ADMIN')")
@@ -46,21 +44,18 @@ public class ChatImageProfileController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Boolean> update(@RequestBody ChatImageProfileDTO dto) {
+    public ResponseEntity<Chat_Image_Profile> update(@RequestBody ChatImageProfileDTO dto) {
         if(dto.getSrcContent() == null || dto.getSrcContent().isEmpty()) {
             throw new NotValidateParamException("missed parma: srcContent");
         }
-
-        if (!service.existById(dto.getUuid())) throw new NotResourceException("No content to update");
 
         return ResponseEntity.ok(service.update(dto));
     }
 
     @PutMapping("/delete")
-    public ResponseEntity<Void> delete(@RequestBody UUID id) {
-        if (!service.existById(id)) throw new NotResourceException("No content to update");
+    public void delete(@RequestBody UUID id) {
+
 
         service.delete(id);
-        return ResponseEntity.noContent().build();
     }
 }

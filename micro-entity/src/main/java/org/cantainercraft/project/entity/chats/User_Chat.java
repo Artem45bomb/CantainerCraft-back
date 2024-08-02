@@ -25,12 +25,12 @@ public class User_Chat implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id",nullable = false)
     private Long userId;
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "chat_id",referencedColumnName = "uuid")
+    @JoinColumn(name = "chat_id",referencedColumnName = "uuid",nullable = false)
     private Chat chat;
 
     @Override

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.convertor.ChatSecuredDTOConvertor;
 import org.cantainercraft.micro.chats.dto.ChatSecuredDTO;
 import org.cantainercraft.micro.chats.service.ChatSecuredService;
+import org.cantainercraft.micro.utilits.service.ConvertorDTO;
 import org.cantainercraft.project.entity.chats.Chat_Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ChatSecuredController {
     private final ChatSecuredService service;
-    private final ChatSecuredDTOConvertor convertor;
+    private final ConvertorDTO<ChatSecuredDTO, Chat_Secured> convertor;
 
     @PostMapping("/add")
     public ChatSecuredDTO save(@RequestBody ChatSecuredDTO dto){

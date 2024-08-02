@@ -1,6 +1,7 @@
 package org.cantainercraft.micro.chats.service;
 
 import org.cantainercraft.micro.chats.dto.ChatSettingsChanelDTO;
+import org.cantainercraft.project.entity.chats.Chat;
 import org.cantainercraft.project.entity.chats.Chat_Settings_Chanel;
 
 import java.util.List;
@@ -9,9 +10,9 @@ import java.util.UUID;
 
 public interface ChatSettingsChanelService {
 
-    boolean delete(UUID uuid);
+    void delete(UUID uuid);
 
-    boolean update(ChatSettingsChanelDTO chatSettingsChanelDTO);
+    Chat_Settings_Chanel update(ChatSettingsChanelDTO chatSettingsChanelDTO);
 
     Chat_Settings_Chanel save(ChatSettingsChanelDTO settings);
 

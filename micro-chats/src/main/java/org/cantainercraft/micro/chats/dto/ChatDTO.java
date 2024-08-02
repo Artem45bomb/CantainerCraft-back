@@ -18,6 +18,7 @@ public class ChatDTO implements Serializable {
     private UUID uuid;
     private String name;
     private Date date;
+    private String link;
     private String typeChat;
     private List<MessageDTO> messages;
     private List<UserChatDTO> users;

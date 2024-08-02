@@ -9,8 +9,6 @@ import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.chats.Chat_Settings_Chanel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,32 +17,30 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ChatSettingsChanelServiceImpl implements ChatSettingsChanelService {
 
-    private final ChatSettingsChanelRepository chatSettingsChanelRepository;
-    private final ChatSettingsChanelDTOConvertor chatSettingsChanelDTOConvertor;
+    private final ChatSettingsChanelRepository repository;
+    private final ChatSettingsChanelDTOConvertor convertor;
 
-    public boolean delete(UUID uuid) {
-        if(!chatSettingsChanelRepository.existsById(uuid)) {
+    public void delete(UUID uuid) {
+        if(!repository.existsById(uuid)) {
             throw new NotResourceException("no settingsChanel by id");
         }
-        chatSettingsChanelRepository.deleteById(uuid);
-        return true;
+        repository.deleteById(uuid);
     }
 
-    public Chat_Settings_Chanel save(ChatSettingsChanelDTO chatSettingsChanelDTO) {
-        Chat_Settings_Chanel chatSettingsChanel = chatSettingsChanelDTOConvertor.convertChatSettingsChanelDTOToChatSettingsChanel(chatSettingsChanelDTO);
-        return chatSettingsChanelRepository.save(chatSettingsChanel);
+    public Chat_Settings_Chanel save(ChatSettingsChanelDTO dto) {
+        Chat_Settings_Chanel chatSettingsChanel = convertor.convertDTOToEntity(dto);
+        return repository.save(chatSettingsChanel);
     }
 
-    public boolean update(ChatSettingsChanelDTO chatSettingsChanelUpdateDTO) {
-        if(!chatSettingsChanelRepository.existsById(chatSettingsChanelUpdateDTO.getUuid())) {
+    public Chat_Settings_Chanel update(ChatSettingsChanelDTO dto) {
+        if(!repository.existsById(dto.getUuid())) {
             throw new NotResourceException("no settingsChanel by id");
         }
-        Chat_Settings_Chanel chatSettingsChanel = chatSettingsChanelDTOConvertor.convertChatSettingsChanelDTOToChatSettingsChanel(chatSettingsChanelUpdateDTO);
-        chatSettingsChanelRepository.save(chatSettingsChanel);
-        return true;
+        Chat_Settings_Chanel chatSettingsChanel = convertor.convertDTOToEntity(dto);
+        return repository.save(chatSettingsChanel);
     }
 
     public Optional<Chat_Settings_Chanel> findByUUID(UUID uuid) {
-        return chatSettingsChanelRepository.findById(uuid);
+        return repository.findById(uuid);
     }
 }

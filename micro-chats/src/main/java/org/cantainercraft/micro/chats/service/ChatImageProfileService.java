@@ -11,9 +11,9 @@ public interface ChatImageProfileService {
 
     Chat_Image_Profile save(ChatImageProfileDTO chatImageProfileDTO);
 
-    boolean update(ChatImageProfileDTO chatImageProfileDTO);
+    Chat_Image_Profile update(ChatImageProfileDTO chatImageProfileDTO);
 
-    boolean delete(UUID uuid);
+    void delete(UUID uuid);
 
     List<Chat_Image_Profile> findAll();
 
