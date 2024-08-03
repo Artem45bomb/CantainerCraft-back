@@ -15,7 +15,7 @@ public class UserPrivilegeDTOConvertor {
         return modelMapper.map(userPrivilege, UserPrivilegeDTO.class);
     }
 
-    public User_Privilege convertUserPrivilegeDTOToUserPrivilege(UserPrivilegeDTO userPrivilegeDTO) {
-        return modelMapper.map(userPrivilegeDTO, User_Privilege.class);
+    public User_Privilege convertUserPrivilegeDTOToUserPrivilege(UserPrivilegeDTO dto) {
+        return modelMapper.map(dto, User_Privilege.class);
     }
 }

@@ -18,7 +18,7 @@ public class UserEmotionDTOConvertor implements ConvertorDTO<UserEmotionDTO, Use
         return modelMapper.map(userEmotion, UserEmotionDTO.class);
     }
     @Override
-    public User_Emotion convertDTOToEntity(UserEmotionDTO userEmotionDTO) {
-        return modelMapper.map(userEmotionDTO,User_Emotion.class);
+    public User_Emotion convertDTOToEntity(UserEmotionDTO dto) {
+        return modelMapper.map(dto, User_Emotion.class);
     }
 }

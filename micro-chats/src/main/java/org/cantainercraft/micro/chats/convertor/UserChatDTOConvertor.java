@@ -12,10 +12,10 @@ public class UserChatDTOConvertor {
     private ModelMapper modelMapper;
 
     public UserChatDTO convertUserChatToUserChatDTO(User_Chat userChat){
-        return modelMapper.map(userChat,UserChatDTO.class);
+        return modelMapper.map(userChat, UserChatDTO.class);
     }
 
-    public User_Chat convertUserChatDTOToUserChat(UserChatDTO userChatDTO){
-        return modelMapper.map(userChatDTO,User_Chat.class);
+    public User_Chat convertUserChatDTOToUserChat(UserChatDTO dto){
+        return modelMapper.map(dto, User_Chat.class);
     }
 }

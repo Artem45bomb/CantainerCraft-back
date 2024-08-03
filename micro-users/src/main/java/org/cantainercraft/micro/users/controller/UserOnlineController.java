@@ -12,16 +12,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
-
+import java.util.logging.ConsoleHandler;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/user_online")
 public class UserOnlineController {
-
-
     private final UserOnlineService userOnlineService;
 
     @GetMapping("/all")
@@ -48,9 +45,7 @@ public class UserOnlineController {
 
     @DeleteMapping("/delete/id")
     public void deleteById(@RequestBody UUID uuid ){
-
         userOnlineService.deleteById(uuid);
-
     }
 
 }
