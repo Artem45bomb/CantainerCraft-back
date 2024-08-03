@@ -29,7 +29,7 @@ public class Emotion implements Serializable {
     private String unicode;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "emotion",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "emotion",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<User_Emotion > userEmotions;
 
     @Override

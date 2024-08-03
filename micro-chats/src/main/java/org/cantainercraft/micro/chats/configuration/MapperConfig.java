@@ -1,8 +1,9 @@
 package org.cantainercraft.micro.chats.configuration;
 
-import org.cantainercraft.micro.chats.dto.MessageDTO;
+import org.cantainercraft.micro.chats.dto.ChatSecuredDTO;
+import org.cantainercraft.project.entity.chats.Chat_Secured;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.modelmapper.PropertyMap;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -23,6 +24,23 @@ public class MapperConfig {
 //            }
 //        });
 
+        return mapper;
+    }
+
+    @Bean(name = "chat-secured")
+    public ModelMapper chatSecuredMapper(){
+        var mapper = new ModelMapper();
+        mapper.addMappings(new PropertyMap< Chat_Secured,ChatSecuredDTO>() {
+            protected void configure(){
+                skip(destination.getChatId());
+            }
+        });
+        mapper.addMappings(new PropertyMap<ChatSecuredDTO,Chat_Secured>() {
+            @Override
+            protected void configure(){
+                skip(destination.getChat());
+            }
+        });
         return mapper;
     }
 }

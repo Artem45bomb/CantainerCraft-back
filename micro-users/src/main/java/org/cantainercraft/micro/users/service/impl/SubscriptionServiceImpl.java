@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.users.convertor.SubscriptionDTOConvertor;
 import org.cantainercraft.micro.users.service.SubscriptionService;
+import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -20,41 +21,56 @@ import java.util.Optional;
 @Transactional
 @RequiredArgsConstructor
 public class SubscriptionServiceImpl implements SubscriptionService {
-    private final SubscriptionRepository subscriptionRepository;
-    private final SubscriptionDTOConvertor subscriptionDTOConvertor;
+    private final SubscriptionRepository repository;
+    private final SubscriptionDTOConvertor convertor;
 
     @Override
-    public List<Subscription> findAll() { return subscriptionRepository.findAll(); }
+    public List<Subscription> findAll() { return repository.findAll(); }
     
     @Override
-    @Cacheable(value = "subscriptions",key = "#id")
+    @Cacheable(value = "subscriptions",key = "id")
     public Subscription findById(Long id) {
-        Optional<Subscription> subscription = subscriptionRepository.findById(id);
+        Optional<Subscription> subscription = repository.findById(id);
 
-        if(subscription.isEmpty()) throw new NotResourceException("subscription is not exist");
+        if(subscription.isEmpty()){
+            throw new NotResourceException("subscription is not exist");
+        }
 
         return subscription.get();
     }
 
     @Override
-    public Subscription save(SubscriptionDTO subscriptionDTO){
-        Subscription subscription = subscriptionDTOConvertor.convertDTOToEntity(subscriptionDTO);
-        return subscriptionRepository.save(subscription);
+    public Subscription save(SubscriptionDTO dto){
+        Subscription subscription = convertor.convertDTOToEntity(dto);
+        
+        if(!repository.existsByName(dto.getName())){
+            throw new ExistResourceException("subscription is exist");
+        }
+        
+        return repository.save(subscription);
     }
     
     @Override
     @CachePut(value = "subscriptions",key = "dto.id")
-    public boolean update(SubscriptionUpdateDTO dto){
-        Subscription subscription = subscriptionDTOConvertor.convertDTOToEntity(dto);
+    public Subscription update(SubscriptionUpdateDTO dto){
+        Subscription subscription = convertor.convertDTOToEntity(dto);
         subscription.setId(dto.getId());
-        subscriptionRepository.save(subscription);
-        return true;
+        
+        if(!repository.existsById(subscription.getId())){
+            throw new NotResourceException("subscription is not exist");
+        }
+        
+        return repository.save(subscription);
     }
 
     @Override
-    @CacheEvict(value = "subscriptions",key = "#id")
+    @CacheEvict(value = "subscriptions",key = "id")
     public void deleteById(Long id){
-        subscriptionRepository.deleteById(id);
+        if(!repository.existsById(id)){
+            throw new NotResourceException("subscription is exist");
+        }
+
+        repository.deleteById(id);
     }
 
 

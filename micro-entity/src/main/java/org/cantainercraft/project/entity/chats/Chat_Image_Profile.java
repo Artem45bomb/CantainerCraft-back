@@ -28,7 +28,7 @@ public class Chat_Image_Profile implements Serializable {
     private String srcContent;
 
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Chat chat;
 
     @Override

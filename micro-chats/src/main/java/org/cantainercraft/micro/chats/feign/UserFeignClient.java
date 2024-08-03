@@ -30,7 +30,6 @@ public interface UserFeignClient {
 
 @Component
 class  UserErrorDecoder implements ErrorDecoder{
-
     @Override
     public Exception decode(String methodKey, Response response) {
         switch(response.status()){

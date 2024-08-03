@@ -79,10 +79,10 @@ public class UserController {
                                         schema = @Schema(
                                                 implementation = UserDTO.class))))
     @PostMapping("/search")
-    public ResponseEntity<List<User>> findBySearch(@RequestBody UserSearchDTO userSearchDTO){
+    public ResponseEntity<List<User>> findBySearch(@RequestBody UserSearchDTO dto){
 
-        String email = userSearchDTO.getEmail() == null ? null : userSearchDTO.getEmail();
-        String password = userSearchDTO.getPassword() ==null ? null :userSearchDTO.getPassword();
+        String email = dto.getEmail() == null ? null : dto.getEmail();
+        String password = dto.getPassword() ==null ? null :dto.getPassword();
 
         return ResponseEntity.ok(userService.findBySearch(email,password));
     }
@@ -112,10 +112,12 @@ public class UserController {
         if(email ==null || email.trim().isEmpty()){
             throw  new NotValidateParamException("email is null");
         }
+
         Optional<User> user = userService.findByEmail(email);
 
-        return user.map(ResponseEntity::ok)
-                .orElseGet(() -> {throw new NotResourceException("user is not exist");});
+        if(user.isEmpty()) throw new NotResourceException("user is not exist");
+
+        return ResponseEntity.ok(user.get());
 
     }
 
@@ -198,21 +200,21 @@ public class UserController {
             )
     })
     @PostMapping("/add")
-    public ResponseEntity<User> save(@RequestBody UserDTO userDTO){
-        Optional<User> user = userService.findByEmail(userDTO.getEmail());
+    public ResponseEntity<User> save(@RequestBody UserDTO dto){
+        Optional<User> user = userService.findByEmail(dto.getEmail());
 
         if(user.isPresent()){
             throw new ExistResourceException("user is exist");
         }
 
-        if(userDTO.getId() != null){
+        if(dto.getId() != null){
             throw new NotValidateParamException("missed param:id");
         }
 
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(userService.save(userDTO));
+                .body(userService.save(dto));
     }
 
     @Operation(parameters = @Parameter(
@@ -250,11 +252,6 @@ public class UserController {
                 throw new NotValidateParamException("missed param: id");
             }
 
-            Optional<User> user = userService.findById(dto.getId());
-
-            if(user.isEmpty())  throw new NotResourceException("user is not exist");
-
-
             return ResponseEntity.ok(userService.update(dto));
     }
 
@@ -279,13 +276,8 @@ public class UserController {
             )
     })
     @PutMapping("/delete/email")
-    public ResponseEntity<String> deleteByEmail(@RequestBody String email){
-            Optional<User> user = userService.findByEmail(email);
-
-            if(user.isEmpty()) throw new NotResourceException("user is not exist");;
-
+    public void deleteByEmail(@RequestBody String email){
             userService.deleteByEmail(email);
-            return ResponseEntity.ok("delete user");
     }
 
 
@@ -310,13 +302,8 @@ public class UserController {
             )
     })
     @PutMapping("/delete/id")
-    public ResponseEntity<String> deleteById(@RequestBody Long id ){
-            Optional<User> user= userService.findById(id);
-
-            if(user.isEmpty())  throw new NotResourceException("user is not exist");
-
+    public void deleteById(@RequestBody Long id ){
             userService.deleteById(id);
-            return ResponseEntity.ok("delete user");
     }
 
     @Operation(summary = "exist user",
@@ -352,8 +339,7 @@ public class UserController {
         if(!serviceKey.equals(header))
             return new ResponseEntity(new MessageError("not access"),HttpStatus.FORBIDDEN);
 
-        return ResponseEntity
-                .ok(userService.existById(id));
+        return ResponseEntity.ok(userService.existById(id));
     }
 
 
@@ -394,15 +380,13 @@ public class UserController {
     @PostMapping("/loadedUser")
     public ResponseEntity<User> loadedUser(@RequestHeader("micro-service-key") String header,
                                                   @RequestBody String username){
-        if(!serviceKey.equals(header))
-            return new ResponseEntity(new MessageError("not access"),HttpStatus.FORBIDDEN);
+        if(!serviceKey.equals(header)) return new ResponseEntity(new MessageError("not access"),HttpStatus.FORBIDDEN);
 
         Optional<User> user = userService.findByUsername(username);
 
-        if(user.isEmpty()){
-            throw new NotResourceException("user is not exist");
+        if(user.isEmpty()) throw new NotResourceException("user is not exist");
 
-        }
+
         return ResponseEntity.ok(user.get());
 
     }

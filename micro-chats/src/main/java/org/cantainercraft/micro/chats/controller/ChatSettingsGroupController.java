@@ -24,11 +24,6 @@ public class ChatSettingsGroupController {
     @PostMapping("/add")
     public ResponseEntity<Chat_Settings_Group> save(@RequestBody ChatSettingsGroupDTO chatSettingsDTO)
     {
-        Optional<Chat_Settings_Group> chatSettings = chatSettingsGroupService.findByUUID(chatSettingsDTO.getUuid());
-
-        if (chatSettings.isPresent()) {
-            throw new ExistResourceException("SettingGroup is exist");
-        }
         return ResponseEntity.ok(chatSettingsGroupService.save(chatSettingsDTO));
     }
 
@@ -43,7 +38,7 @@ public class ChatSettingsGroupController {
         return ResponseEntity.ok(chatSettingsGroupService.delete(uuid));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+
     @PutMapping("/update")
     public ResponseEntity<Boolean> update(@RequestBody ChatSettingsGroupDTO chatSettingsDTO) {
         if (chatSettingsDTO.getUuid() == null) {
@@ -53,7 +48,6 @@ public class ChatSettingsGroupController {
         return ResponseEntity.ok(chatSettingsGroupService.update(chatSettingsDTO));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/id")
     public ResponseEntity<Chat_Settings_Group> findByUUID(UUID uuid) {
         Optional<Chat_Settings_Group> chatSettings = chatSettingsGroupService.findByUUID(uuid);
@@ -63,6 +57,7 @@ public class ChatSettingsGroupController {
         return ResponseEntity.ok(chatSettings.get());
     }
 
+    //?
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/search")
     public ResponseEntity<List<Chat_Settings_Group>> findByChatID(UUID uuid) {

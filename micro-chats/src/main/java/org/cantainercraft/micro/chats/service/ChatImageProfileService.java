@@ -18,4 +18,6 @@ public interface ChatImageProfileService {
     List<Chat_Image_Profile> findAll();
 
     Optional<Chat_Image_Profile> findById(UUID uuid);
+
+    boolean existById(UUID uuid);
 }

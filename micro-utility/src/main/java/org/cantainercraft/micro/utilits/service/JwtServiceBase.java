@@ -11,8 +11,7 @@ public interface JwtServiceBase {
 
 
      Date extractExpiry(String token);
-
-    public boolean isTokenExpired(String token);
+     boolean isTokenExpired(String token);
 
     String extractUsername(String token);
 

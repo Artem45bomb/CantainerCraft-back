@@ -8,49 +8,52 @@ import org.cantainercraft.micro.chats.service.ChatSettingsGroupService;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.chats.Chat_Settings_Group;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ChatSettingsGroupServiceImpl implements ChatSettingsGroupService {
+    private final ChatSettingsGroupRepository repository;
+    private final ChatSettingsGroupDTOConvertor convertor;
 
-    private final ChatSettingsGroupRepository chatSettingsGroupRepository;
-    private final ChatSettingsGroupDTOConvertor chatSettingsGroupDTOConvertor;
 
     public boolean delete(UUID uuid) {
-        if(!chatSettingsGroupRepository.existsById(uuid))
+        if(!repository.existsById(uuid))
         {
             throw new NotResourceException("no settingsGroup by id");
         }
-        chatSettingsGroupRepository.deleteById(uuid);
+        repository.deleteById(uuid);
         return true;
     }
 
     public boolean update(ChatSettingsGroupDTO chatSettingsGroupDTO) {
-        if(!chatSettingsGroupRepository.existsById(chatSettingsGroupDTO.getUuid())) {
+        if(!repository.existsById(chatSettingsGroupDTO.getUuid())) {
             throw new NotResourceException("no settingsGroup by id");
         }
-        Chat_Settings_Group chatSettingsGroup = chatSettingsGroupDTOConvertor.convertChatSettingsGroupDTOToChatSettingsGroup(chatSettingsGroupDTO);
-        chatSettingsGroupRepository.save(chatSettingsGroup);
+        Chat_Settings_Group chatSettingsGroup = convertor.convertChatSettingsGroupDTOToChatSettingsGroup(chatSettingsGroupDTO);
+        repository.save(chatSettingsGroup);
         return true;
     }
 
     public Chat_Settings_Group save(ChatSettingsGroupDTO chatSettingsGroupDTO)
     {
-        Chat_Settings_Group chatSettingsGroup = chatSettingsGroupDTOConvertor.convertChatSettingsGroupDTOToChatSettingsGroup(chatSettingsGroupDTO);
-        return chatSettingsGroupRepository.save(chatSettingsGroup);
+        Chat_Settings_Group chatSettingsGroup = convertor.convertChatSettingsGroupDTOToChatSettingsGroup(chatSettingsGroupDTO);
+        return repository.save(chatSettingsGroup);
     }
 
 
     public Optional<Chat_Settings_Group> findByUUID(UUID uuid) {
-        return chatSettingsGroupRepository.findById(uuid);
+        return repository.findById(uuid);
     }
 
     public List<Chat_Settings_Group> findByGroupId(UUID uuid) {
-        return chatSettingsGroupRepository.findByChatSettingsUuid(uuid);
+        return repository.findByChatSettingsUuid(uuid);
     }
 
 }

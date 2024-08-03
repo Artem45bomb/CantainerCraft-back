@@ -4,48 +4,45 @@ package org.cantainercraft.micro.users.controller;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.users.dto.UserOnlineDTO;
 import org.cantainercraft.micro.users.service.UserOnlineService;
-import org.cantainercraft.micro.utilits.exception.MessageError;
-import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.users.User_Online;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.logging.ConsoleHandler;
+
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/user_online")
 public class UserOnlineController {
-    private final UserOnlineService userOnlineService;
+    private final UserOnlineService service;
 
     @GetMapping("/all")
     public ResponseEntity<List<User_Online>> findAll(){
-        return ResponseEntity.ok(userOnlineService.findAll());
+        return ResponseEntity.ok(service.findAll());
     }
 
     @GetMapping("/{uuid}")
     public ResponseEntity<User_Online> findById(@PathVariable UUID uuid) {
-        return ResponseEntity.ok(userOnlineService.findById(uuid));
+        return ResponseEntity.ok(service.findById(uuid));
     }
 
     @PostMapping("/add")
-    public ResponseEntity<User_Online> save(@RequestBody UserOnlineDTO userOnlineDTO){
-         return ResponseEntity.ok(userOnlineService.save(userOnlineDTO));
+    public ResponseEntity<User_Online> save(@RequestBody UserOnlineDTO dto){
+         return ResponseEntity.ok(service.save(dto));
     }
 
 
     @PutMapping("/update")
-    public ResponseEntity<User_Online> update(@RequestBody UserOnlineDTO userOnlineDTO){
-        return ResponseEntity.ok(userOnlineService.update(userOnlineDTO));
+    public ResponseEntity<User_Online> update(@RequestBody UserOnlineDTO dto){
+        return ResponseEntity.ok(service.update(dto));
     }
 
 
     @DeleteMapping("/delete/id")
     public void deleteById(@RequestBody UUID uuid ){
-        userOnlineService.deleteById(uuid);
+        service.deleteById(uuid);
     }
 
 }

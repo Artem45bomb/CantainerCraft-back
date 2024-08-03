@@ -26,7 +26,7 @@ public class Chat_Info implements Serializable {
     private UUID uuid;
 
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
     private UUID chatId;

@@ -24,7 +24,7 @@ public class MessageRead implements Serializable {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID uuid;
 
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ManyToOne
     private Message message;
 
     private Long userId;
@@ -32,7 +32,7 @@ public class MessageRead implements Serializable {
     private boolean is_read;
 
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ManyToOne
     private Chat chat;
 
     @Override

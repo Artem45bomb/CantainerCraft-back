@@ -22,18 +22,18 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService {
     private final ConvertorDTO<RoleDTO,Role> roleDTOConvertor;
-    private final RoleRepository roleRepository;
+    private final RoleRepository repository;
 
 
     @Override
     public List<Role> findAll(){
-        return roleRepository.findAll();
+        return repository.findAll();
     }
 
     @Override
     @Cacheable(value = "roles",key = "#id")
     public Role findById(Long id){
-        Optional<Role> role = roleRepository.findById(id);
+        Optional<Role> role = repository.findById(id);
 
         if(role.isEmpty()) throw new NotResourceException("role is not exist");
 
@@ -42,33 +42,38 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role save(RoleDTO dto){
-        Optional<Role> entity = roleRepository.findByRole(dto.getRole());
+        Optional<Role> entity = repository.findByRole(dto.getRole());
 
         if(entity.isPresent()) throw new ExistResourceException("role is exist");
         Role role = roleDTOConvertor.convertDTOToEntity(dto);
 
-        return roleRepository.save(role);
+        return repository.save(role);
     }
 
     @Override
     @CachePut(value = "roles",key = "#dto.id")
     public Role update(RoleDTO dto){
-        Optional<Role> role = roleRepository.findById(dto.getId());
-        Optional<Role> roleExist = roleRepository.findByRole(dto.getRole());
+        Optional<Role> role = repository.findById(dto.getId());
+        Optional<Role> roleExist = repository.findByRole(dto.getRole());
 
         if(role.isEmpty()) throw new NotResourceException("role is not exist");
         if(roleExist.isPresent()) throw new ExistResourceException("a role with the same name exists");
 
-        return roleRepository.save(roleDTOConvertor.convertDTOToEntity(dto));
+        return repository.save(roleDTOConvertor.convertDTOToEntity(dto));
     }
 
     @Override
     @CacheEvict(value = "roles",key = "#id")
     public void deleteById(Long id){
-        Optional<Role> role = roleRepository.findById(id);
+        Optional<Role> role = repository.findById(id);
 
         if(role.isEmpty()) throw new NotResourceException("role is not exist");
 
-        roleRepository.deleteById(id);
+        repository.deleteById(id);
+    }
+
+    @Override
+    public Optional<Role> findByRole(String role) {
+        return repository.findByRole(role);
     }
 }

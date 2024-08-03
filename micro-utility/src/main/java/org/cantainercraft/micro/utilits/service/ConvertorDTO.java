@@ -1,7 +1,7 @@
 package org.cantainercraft.micro.utilits.service;
 
-public interface ConvertorDTO <DTO,Entity> {
-    DTO convertEntityToDTO(Entity entity);
+public interface ConvertorDTO<DTO,Object> {
+    DTO convertEntityToDTO(Object object);
 
-    Entity convertDTOToEntity(DTO dto);
+    Object convertDTOToEntity(DTO dto);
 }

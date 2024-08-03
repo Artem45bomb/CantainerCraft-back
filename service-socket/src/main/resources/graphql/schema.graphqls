@@ -1,6 +1,7 @@
 type Query{
     messageId(id:ID):MessageDTO
     messagesSearch(input:MessageSearch):[MessageDTO]!
+    findByUserIdChatSecured(userId:Int):[ChatSecuredDTO]!
 }
 
 
@@ -41,4 +42,15 @@ type UserEmotion{
         uuid:ID,
         emotion:Emotion!,
         userId:String
+}
+
+
+input ChatSecuredSearch{
+    userId:Int
+}
+
+type ChatSecuredDTO{
+    uuid:ID,
+    userId:Int,
+    chatId:String
 }

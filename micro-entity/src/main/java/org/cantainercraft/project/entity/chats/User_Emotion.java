@@ -23,9 +23,9 @@ public class User_Emotion implements Serializable {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID uuid;
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,optional = false)
     private Message message;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(optional = false)
     private Emotion emotion;
     private Long userId;
 }

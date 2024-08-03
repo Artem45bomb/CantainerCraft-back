@@ -27,7 +27,7 @@ public class User_Privilege implements Serializable {
     private Long userId;
 
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,optional = false)
     private Privilege privilege;
 
     @Override

@@ -110,17 +110,15 @@ public class RoleController {
     @ApiResponses({
             @ApiResponse(responseCode = "200",
             description = "success operation",
-            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Boolean.class))),
+            content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "404",
             description = "role is not exist",
             content = @Content( schema = @Schema(implementation = Boolean.class))),
     })
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Boolean> deleteById(@PathVariable Long id ){
-            findById(id);
+    public void deleteById(@PathVariable Long id ){
             roleService.deleteById(id);
-            return ResponseEntity.ok(true);
     }
 
 }

@@ -29,7 +29,7 @@ public class Chat_Settings_Chanel implements Serializable {
     private String type_channel;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "chatSettingsChanel",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "chatSettingsChanel",fetch = FetchType.LAZY)
     private Chat_Settings chatSettings;
 
     @Override

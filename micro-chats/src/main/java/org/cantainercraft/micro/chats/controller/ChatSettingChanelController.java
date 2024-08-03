@@ -22,10 +22,7 @@ public class ChatSettingChanelController {
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<Chat_Settings_Chanel> save(@RequestBody ChatSettingsChanelDTO chatSettingsChanelDTO){
-        Optional<Chat_Settings_Chanel> chatSettingsChanel = chatSettingsChanelService.findByUUID(chatSettingsChanelDTO.getUuid());
-        if(chatSettingsChanel.isEmpty()){
-            throw new ExistResourceException("SettingChanel is exist");
-        }
+
         return ResponseEntity.ok(chatSettingsChanelService.save(chatSettingsChanelDTO));
     }
 
@@ -40,7 +37,6 @@ public class ChatSettingChanelController {
         return ResponseEntity.ok(chatSettingsChanelService.delete(uuid));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<Boolean> update(@RequestBody ChatSettingsChanelDTO chatSettingsDTO) {
         if (chatSettingsDTO.getUuid() == null) {
@@ -51,7 +47,6 @@ public class ChatSettingChanelController {
     }
 
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/id")
     public ResponseEntity<Chat_Settings_Chanel> findByUUID(UUID uuid) {
         Optional<Chat_Settings_Chanel> chatSettings = chatSettingsChanelService.findByUUID(uuid);

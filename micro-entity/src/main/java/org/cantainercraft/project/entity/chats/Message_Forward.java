@@ -27,7 +27,7 @@ public class Message_Forward implements Serializable {
     @JoinColumn(name = "messageFromId")
     private Message messageFromId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Message message;
 
     @Override

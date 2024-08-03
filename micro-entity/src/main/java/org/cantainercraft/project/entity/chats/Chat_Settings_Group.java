@@ -49,7 +49,7 @@ public class Chat_Settings_Group {
     private Duration slowMode;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "chatSettingsGroup",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "chatSettingsGroup",fetch = FetchType.LAZY)
     private Chat_Settings chatSettings;
 
     @Override

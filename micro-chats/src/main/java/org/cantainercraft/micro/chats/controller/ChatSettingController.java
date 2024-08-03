@@ -20,19 +20,14 @@ public class ChatSettingController {
 
     private final ChatSettingsService chatSettingsService;
 
-@PreAuthorize("hasAnyRole('ADMIN')")
-@PostMapping("/add")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PostMapping("/add")
     public ResponseEntity<Chat_Settings> save(@RequestBody ChatSettingsDTO chatSettingsDTO)
     {
-        Optional<Chat_Settings> chatSettings = chatSettingsService.findByUUID(chatSettingsDTO.getUuid());
-
-        if (chatSettings.isPresent()) {
-            throw new ExistResourceException("Setting is exist");
-        }
         return ResponseEntity.ok(chatSettingsService.save(chatSettingsDTO));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+
     @PutMapping("/delete/chat_settings")
     public ResponseEntity<Boolean> delete(@RequestBody UUID uuid) {
         Optional<Chat_Settings> chatSettings = chatSettingsService.findByUUID(uuid);
@@ -43,7 +38,7 @@ public class ChatSettingController {
         return ResponseEntity.ok(chatSettingsService.delete(uuid));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+
     @PutMapping("/update")
     public ResponseEntity<Boolean> update(@RequestBody ChatSettingsDTO chatSettingsDTO) {
         if (chatSettingsDTO.getUuid() == null) {
@@ -53,7 +48,6 @@ public class ChatSettingController {
         return ResponseEntity.ok(chatSettingsService.update(chatSettingsDTO));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/id")
     public ResponseEntity<Chat_Settings> findByUUID(UUID uuid) {
         Optional<Chat_Settings> chatSettings = chatSettingsService.findByUUID(uuid);
@@ -63,7 +57,7 @@ public class ChatSettingController {
         return ResponseEntity.ok(chatSettings.get());
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+
     @PostMapping("/search")
     public ResponseEntity<List<Chat_Settings>> findByChatID(UUID uuid) {
         return ResponseEntity.ok(chatSettingsService.findByChatId(uuid));

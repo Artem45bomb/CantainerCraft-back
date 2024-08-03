@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.net.http.HttpHeaders;
+import java.util.HashMap;
 
 
 @Component
@@ -61,7 +62,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             //getting the user from the database
             UserDetails userDetails = userServiceDetails.loadUserByUsername(username);
 
-            if(jwtService.isTokenValid(token,userDetails)){
+            HashMap<String,String> param = new HashMap<>();
+            param.put("username",userDetails.getUsername());
+            // Проверка валидности токена
+            if (jwtService.isTokenValid(token,param)) {
                 try {
                     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                             userDetails.getUsername(),

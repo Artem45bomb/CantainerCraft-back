@@ -3,10 +3,10 @@ package org.cantainercraft.micro.chats.controller;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.dto.MessageReplyDTO;
 import org.cantainercraft.micro.chats.service.MessageReplyService;
-import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.chats.Message_Reply;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +20,7 @@ public class MessageReplyController {
 
     private final MessageReplyService service;
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/all")
     public ResponseEntity<List<Message_Reply>> findAll() {
         return ResponseEntity.ok(service.findAll());
@@ -35,36 +36,31 @@ public class MessageReplyController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Message_Reply> save(@RequestBody MessageReplyDTO messageReplyDTO) {
-        if (service.findById(messageReplyDTO.getUuid()).isPresent()) {
-            throw new ExistResourceException("Content is already exist");
-        }
-        return ResponseEntity.ok(service.save(messageReplyDTO));
+    public ResponseEntity<Message_Reply> save(@RequestBody MessageReplyDTO dto) {
+        return ResponseEntity.ok(service.save(dto));
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Boolean> update(@RequestBody MessageReplyDTO messageReplyDTO) {
-        if (service.findById(messageReplyDTO.getUuid()).isEmpty()) {
+    public ResponseEntity<Boolean> update(@RequestBody MessageReplyDTO dto) {
+        if (service.findById(dto.getUuid()).isEmpty()) {
             throw new NotResourceException("No content to update");
         }
-        return ResponseEntity.ok(service.update(messageReplyDTO));
+        return ResponseEntity.ok(service.update(dto));
     }
 
     @PutMapping("/delete")
-    public ResponseEntity<Void> delete(@RequestBody UUID id) {
+    public void delete(@RequestBody UUID id) {
         if (service.findById(id).isEmpty()) {
             throw new NotResourceException("No content to delete");
         }
         service.delete(id);
-        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/delete/user")
-    public ResponseEntity<Void> deleteByMessageReplyUserId(@RequestBody MessageReplyDTO messageReplyDTO) {
-        if (service.findByMessageReplyUserId(messageReplyDTO.getMessageReply().getUserId()).isEmpty()) {
+    public void deleteByMessageReplyUserId(@RequestBody MessageReplyDTO dto) {
+        if (service.findByMessageReplyUserId(dto.getMessageReply().getUserId()).isEmpty()) {
            throw new NotResourceException("No content to delete");
         }
-        service.deleteByMessageReplyUserId(messageReplyDTO.getMessageReply().getUserId());
-        return ResponseEntity.noContent().build();
+        service.deleteByMessageReplyUserId(dto.getMessageReply().getUserId());
     }
 }

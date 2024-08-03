@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.users.dto.CustomUserDetails;
 import org.cantainercraft.micro.users.repository.UserRepository;
 
+import org.cantainercraft.micro.users.service.UserService;
 import org.cantainercraft.project.entity.users.Role;
 import org.cantainercraft.project.entity.users.User;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,11 +22,11 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserServiceDetailsImpl implements UserDetailsService {
-    public final UserRepository userRepository;
+    public final UserService userService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findByUsername(username);
+        Optional<User> user = userService.findByUsername(username);
 
         if(user.isEmpty()){
             throw new UsernameNotFoundException("user is not exist");
@@ -40,7 +41,5 @@ public class UserServiceDetailsImpl implements UserDetailsService {
 
         customUserDetails.setAuthorities(grantedAuthorities);
         return customUserDetails;
-
-
     }
 }

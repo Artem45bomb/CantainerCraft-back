@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * Фильтр для аутентификации JWT токенов, который выполняется один раз за запрос.
@@ -67,8 +68,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         if (username != null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
+            HashMap<String,String> param = new HashMap<>();
+            param.put("username",userDetails.getUsername());
             // Проверка валидности токена
-            if (jwtService.isTokenValid(token, userDetails)) {
+            if (jwtService.isTokenValid(token,param)) {
                 try {
                     // Создание объекта аутентификации
                     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(

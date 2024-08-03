@@ -12,7 +12,7 @@ public interface SubscriptionService {
      Subscription findById(Long id);
 
      Subscription save(SubscriptionDTO subscriptionDTO);
-     boolean update(SubscriptionUpdateDTO subscriptionUpdateDTO);
+     Subscription update(SubscriptionUpdateDTO subscriptionUpdateDTO);
 
      void deleteById(Long id);
 }

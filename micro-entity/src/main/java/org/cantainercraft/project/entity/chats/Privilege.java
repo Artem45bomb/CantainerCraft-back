@@ -25,7 +25,7 @@ public class Privilege {
     private UUID uuid;
 
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Chat chat;
 
     private String nameRole;

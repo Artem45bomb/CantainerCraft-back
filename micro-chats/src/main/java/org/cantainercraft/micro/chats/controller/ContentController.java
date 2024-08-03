@@ -7,6 +7,7 @@ import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.chats.Content;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class ContentController {
 
     private final ContentService service;
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/all")
     public ResponseEntity<List<Content>> findAll() {
         return ResponseEntity.ok(service.findAll());
@@ -35,13 +37,11 @@ public class ContentController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Content> create(@RequestBody ContentDTO contentDTO) {
-        if (service.findById(contentDTO.getUuid()).isPresent()) {
-            throw new ExistResourceException("Content is already exist");
-        }
+    public ResponseEntity<Content> save(@RequestBody ContentDTO contentDTO) {
         return ResponseEntity.ok(service.save(contentDTO));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<Boolean> update(@RequestBody ContentDTO contentDTO) {
         if (service.findById(contentDTO.getUuid()).isEmpty()) {
