@@ -10,15 +10,15 @@ import java.util.UUID;
 
 public interface PrivilegeService {
 
-    Privilege save(PrivilegeDTO privilegeDTO);
+    Privilege save(PrivilegeDTO dto);
 
-    boolean update(PrivilegeDTO privilegeDTO);
+    Privilege update(PrivilegeDTO dto);
 
-    boolean delete(UUID uuid);
+    void deleteById(UUID uuid);
 
     List<Privilege> findAll();
 
-    Optional<Privilege> findById(UUID uuid);
+    Privilege findById(UUID uuid);
 
     List<Privilege> findByChat(UUID uuid, String name);
 

@@ -2,8 +2,6 @@ package org.cantainercraft.micro.chats.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.service.UserChatService;
-import org.cantainercraft.micro.chats.webflux.UserWebClient;
-import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -18,80 +16,44 @@ import java.util.*;
 @RequiredArgsConstructor
 class UserChatController {
     //UserFeignClient для взаимодействия с micro-users
-    private final UserWebClient userWebClient;
-    private final UserChatService userChatService;
+    private final UserChatService service;
 
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/all")
     public ResponseEntity<List<User_Chat>> findAll(){
-        return ResponseEntity.ok(userChatService.findAll());
+        return ResponseEntity.ok(service.findAll());
     }
 
     @PostMapping("/id")
     public ResponseEntity<User_Chat> findById(@RequestBody Long id){
-        Optional<User_Chat> chat = userChatService.findById(id);
-
-        if(chat.isEmpty()) {
-            throw new NotResourceException("No content");
-        }
+        Optional<User_Chat> chat = service.findById(id);
         return ResponseEntity.ok(chat.get());
     }
 
     @PostMapping("/search")
     public ResponseEntity<List<User_Chat>> findBySearch(@RequestBody UserChatSearchDTO dto){
-
-        Long id = dto.getId();
-        Long userId = dto.getUserId();
-        UUID chatId = dto.getChatId();
-        return ResponseEntity.ok(userChatService.findBySearch(id,userId,chatId));
+        return ResponseEntity.ok(service.findBySearch(dto.getId(), dto.getUserId(), dto.getChatId()));
     }
 
     @PutMapping("/delete")
-    public ResponseEntity<Boolean> delete(@RequestBody Long id){
-            Optional<User_Chat> userChat= userChatService.findById(id);
-
-            if(userChat.isEmpty()){
-                throw new NotResourceException("No content for delete");
-            }
-
-            userChatService.deleteById(id);
-            return ResponseEntity.ok(true);
+    public void deleteById(@RequestBody Long id){
+            service.deleteById(id);
     }
 
     @PutMapping("/delete/user")
-    public ResponseEntity<Integer> delete(@RequestBody UserChatDTO dto){
-            List<User_Chat> user_chats = userChatService.findBySearch(null, dto.getUserId(),dto.getChat().getUuid());
-
-            if(user_chats.isEmpty()){
-                throw new NotResourceException("No content for delete");
-            }
-
-            return ResponseEntity.ok(userChatService.deleteByUserId(dto.getUserId(),dto.getChat().getUuid()));
+    public void delete(@RequestBody UserChatDTO dto){
+            service.deleteByUserId(dto.getUserId(),dto.getChat().getUuid());
     }
 
     @PostMapping("/add")
     public ResponseEntity<User_Chat> save(@RequestBody UserChatDTO dto){
-
-        if(!userWebClient.userExist(dto.getUserId())){
-            throw new NotResourceException("user is not exist");
-        }
-
-        return ResponseEntity.ok(userChatService.save(dto));
+        return ResponseEntity.ok(service.save(dto));
     }
 
 
     @PutMapping("/update")
     public ResponseEntity<User_Chat> update(@RequestBody UserChatDTO dto){
-        Optional<User_Chat> userChat= userChatService.findById(dto.getId());
-        if(userChat.isEmpty()){
-            throw new NotResourceException("No content for update");
-        }
-
-        if(userWebClient.userExist(dto.getUserId()) == null){
-            throw new NotResourceException("user is not exist");
-        }
-
-        return ResponseEntity.ok(userChatService.update(dto));
+        return ResponseEntity.ok(service.update(dto));
     }
 }

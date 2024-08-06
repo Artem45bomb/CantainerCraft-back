@@ -3,7 +3,6 @@ package org.cantainercraft.micro.chats.controller;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.dto.UserPrivilegeDTO;
 import org.cantainercraft.micro.chats.service.UserPrivilegeService;
-import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.chats.User_Privilege;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,6 +18,7 @@ import java.util.UUID;
 public class UserPrivilegeController {
 
     private final UserPrivilegeService service;
+
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/all")
     public ResponseEntity<List<User_Privilege>> findAll() {
@@ -26,21 +26,18 @@ public class UserPrivilegeController {
     }
 
     @PostMapping("/uuid")
-    public ResponseEntity<User_Privilege> findById(@RequestBody UUID id) {
-        Optional<User_Privilege> userPrivilege = service.findById(id);
-        if(userPrivilege.isEmpty()){
-            throw new NotResourceException("No content");
-        }
-        return ResponseEntity.ok(userPrivilege.get());
+    public ResponseEntity<Optional<User_Privilege>> findById(@RequestBody UUID id) {
+//        Optional<User_Privilege> userPrivilege = service.findById(id);
+//        if(userPrivilege.isEmpty()){
+//            throw new NotResourceException("No content");
+//        }
+//        return ResponseEntity.ok(userPrivilege.get());
+        return ResponseEntity.ok(service.findById(id));
     }
 
     @PostMapping("/userId")
-    public ResponseEntity<User_Privilege> findByUserId(Long id) {
-        Optional<User_Privilege> userPrivilege = service.findByUserId(id);
-        if (userPrivilege.isEmpty()) {
-            throw new NotResourceException("No content");
-        }
-        return ResponseEntity.ok(userPrivilege.get());
+    public ResponseEntity<Optional<User_Privilege>> findByUserId(Long id) {
+        return ResponseEntity.ok(service.findByUserId(id));
     }
 
     @PostMapping("/add")
@@ -49,26 +46,20 @@ public class UserPrivilegeController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Boolean> update(@RequestBody UserPrivilegeDTO dto) {
-        if (service.findById(dto.getUuid()).isEmpty()) {
-            throw new NotResourceException("No content to update");
-        }
+    public ResponseEntity<User_Privilege> update(@RequestBody UserPrivilegeDTO dto) {
         return ResponseEntity.ok(service.update(dto));
     }
 
     @PutMapping("/delete")
     public void delete(@RequestBody UUID id) {
-        if (service.findById(id).isEmpty()) {
-            throw new NotResourceException("No content to delete");
-        }
         service.delete(id);
     }
 
+
+    // что удалить Привелегию? в чем разница верхниго и нижнего?
     @PutMapping("/delete/user")
     public void deleteByUserId(@RequestBody Long id) {
-        if (service.findByUserId(id).isEmpty()) {
-            throw new NotResourceException("No content to delete");
-        }
+
         service.deleteByUserId(id);
     }
 }

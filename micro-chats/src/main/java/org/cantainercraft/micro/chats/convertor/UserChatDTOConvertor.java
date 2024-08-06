@@ -11,11 +11,11 @@ public class UserChatDTOConvertor {
     @Autowired
     private ModelMapper modelMapper;
 
-    public UserChatDTO convertUserChatToUserChatDTO(User_Chat userChat){
-        return modelMapper.map(userChat,UserChatDTO.class);
+    public UserChatDTO convertEntityToDTO(User_Chat userChat){
+        return modelMapper.map(userChat, UserChatDTO.class);
     }
 
-    public User_Chat convertUserChatDTOToUserChat(UserChatDTO userChatDTO){
-        return modelMapper.map(userChatDTO,User_Chat.class);
+    public User_Chat convertDTOToEntity(UserChatDTO dto){
+        return modelMapper.map(dto, User_Chat.class);
     }
 }

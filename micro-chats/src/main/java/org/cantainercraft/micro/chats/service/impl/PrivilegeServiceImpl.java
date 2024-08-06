@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.convertor.PrivilegeDTOConvertor;
 import org.cantainercraft.micro.chats.dto.PrivilegeDTO;
 import org.cantainercraft.micro.chats.service.PrivilegeService;
+import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.chats.Privilege;
 import org.cantainercraft.micro.chats.repository.PrivilegeRepository;
 import org.springframework.stereotype.Service;
@@ -22,28 +23,30 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     private final PrivilegeDTOConvertor convertor;
 
     @Override
-    public Privilege save(PrivilegeDTO privilegeDTO) {
-        Privilege entity = convertor.convertPrivilegeDTOToPrivilege(privilegeDTO);
+    public Privilege save(PrivilegeDTO dto) {
+        Privilege entity = convertor.convertDTOToEntity(dto);
+        if(repository.existsById(dto.getUuid())){
+            throw new NotResourceException("This privilege already exists");
+        }
         return repository.save(entity);
     }
 
     @Override
-    public boolean update(PrivilegeDTO privilegeDTO) {
-        if (repository.existsById(privilegeDTO.getUuid())) {
-            Privilege entity = convertor.convertPrivilegeDTOToPrivilege(privilegeDTO);
-            repository.save(entity);
-            return true;
+    public Privilege update(PrivilegeDTO dto) {
+        Privilege entity = convertor.convertDTOToEntity(dto);
+        if (repository.findAll().isEmpty()) {
+            throw new NotResourceException("Privilage already exists");
         }
-        return false;
+        return repository.save(entity);
     }
 
     @Override
-    public boolean delete(UUID uuid) {
-        if (repository.existsById(uuid)) {
-            repository.deleteById(uuid);
-            return true;
+    public void deleteById(UUID uuid) {
+        Optional<Privilege> optional = repository.findById(uuid);
+        if (optional.isPresent()) {
+            throw new NotResourceException("This privilege does not exist");
         }
-        return false;
+        repository.deleteById(uuid);
     }
 
     @Override
@@ -52,17 +55,27 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     }
 
     @Override
-    public Optional<Privilege> findById(UUID uuid) {
-        return repository.findById(uuid);
+    public Privilege findById(UUID uuid) {
+        Optional <Privilege> optional = repository.findById(uuid);
+        if (optional.isEmpty()) {
+            throw new NotResourceException("This privilege does not exist");
+        }
+        return optional.get();
     }
 
     @Override
     public List<Privilege> findByChat(UUID uuid, String name) {
+        Optional <Privilege> optional = repository.findById(uuid);
+
+        if (optional.isEmpty()) { // не закончено
+            throw new NotResourceException("This privilege does not exist");
+        }
         return repository.findPrivilegeByChatUuidOrChatName(uuid, name);
     }
 
     @Override
     public boolean findByChatIdAndNameRole(UUID chatId, String role) {
-        return repository.findByChatUuidAndAndNameRole(chatId, role);
+        // не закончено
+        return repository.findByChatUuidAndNameRole(chatId, role);
     }
 }
