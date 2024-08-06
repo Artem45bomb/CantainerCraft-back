@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.cantainercraft.micro.users.dto.*;
+import org.cantainercraft.micro.users.dto.tokens.JwtAuthResponse;
 import org.cantainercraft.micro.users.factory.AccessTokenFactory;
 import org.cantainercraft.micro.users.service.AuthService;
 import org.cantainercraft.micro.users.service.UserAuthService;
@@ -31,7 +32,7 @@ public class AuthServiceImpl implements AuthService {
     private Long cookieTime;
 
     @Override
-    public JwtAuthResponse signup( SignUpAuthDTO signUpAuthDTO,HttpServletResponse response){
+    public JwtAuthResponse signup(SignUpAuthDTO signUpAuthDTO, HttpServletResponse response){
 
             User user = User.builder()
                     .username(signUpAuthDTO.getUsername())
@@ -40,8 +41,8 @@ public class AuthServiceImpl implements AuthService {
                     .build();
 
             //create an authentication token
-            var authentication = new UsernamePasswordAuthenticationToken(signUpAuthDTO.getUsername()
-                    ,signUpAuthDTO.getPassword());
+            var authentication = new UsernamePasswordAuthenticationToken(user.getUsername()
+                    ,user.getPassword());
 
             userAuthService.authUser(user);
 
@@ -77,10 +78,10 @@ public class AuthServiceImpl implements AuthService {
 
            ResponseCookie responseCookie = ResponseCookie.from("accessToken")
                    .value(accessToken)
-                   .httpOnly(true)
-                   .secure(false)
+//                   .httpOnly(true)
+//                   .secure(false)
                    .path("/")
-                   .maxAge(10000*24*60*cookieTime)
+                   .maxAge(1000*24*60*cookieTime)
                    .build();
            response.addHeader(HttpHeaders.SET_COOKIE,responseCookie.toString());
            return JwtAuthResponse.builder()

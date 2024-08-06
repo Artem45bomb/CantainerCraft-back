@@ -1,4 +1,4 @@
-package org.cantainercraft.micro.users.dto;
+package org.cantainercraft.micro.users.dto.tokens;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

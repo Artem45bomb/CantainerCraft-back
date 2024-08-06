@@ -19,5 +19,5 @@ public interface ChatImageProfileService {
 
     Optional<Chat_Image_Profile> findById(UUID uuid);
 
-    boolean existById(UUID uuid);
+    List<Chat_Image_Profile> findByChatId(UUID uuid);
 }

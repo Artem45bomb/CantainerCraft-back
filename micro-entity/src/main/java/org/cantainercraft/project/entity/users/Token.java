@@ -22,8 +22,10 @@ public class Token implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(unique = true,nullable = false)
     private String token;
 
+    @Column(unique = true)
     private String username;
 
     private String password;

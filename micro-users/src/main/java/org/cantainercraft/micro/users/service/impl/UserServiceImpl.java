@@ -41,8 +41,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public User save(UserDTO dto){
         if(existByUsername(dto.getUsername())){
-            throw new ExistResourceException("user is exist");
+            throw new ExistResourceException("username is exist");
         }
+        if(repository.existsByEmail(dto.getEmail())){
+            throw new ExistResourceException("email is exist");
+        }
+
         User user = convertor.convertDTOToEntity(dto);
 
         return repository.save(user);

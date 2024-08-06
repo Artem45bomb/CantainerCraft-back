@@ -24,7 +24,7 @@ public class ChatImageProfileServiceImpl implements ChatImageProfileService {
 
     @Override
     public Chat_Image_Profile save(ChatImageProfileDTO dto) {
-        if(!repository.existsBySrcContent(dto.getSrcContent())) throw new ExistResourceException("src is exist");
+        if(repository.existsBySrcContent(dto.getSrcContent())) throw new ExistResourceException("src is exist");
 
         Chat_Image_Profile entity = convertor.convertDTOToEntity(dto);
 
@@ -45,7 +45,7 @@ public class ChatImageProfileServiceImpl implements ChatImageProfileService {
     @Override
     public void delete(UUID uuid) {
         if (!repository.existsById(uuid)){
-            throw new NotResourceException("No content to update");
+            throw new NotResourceException("No content to delete");
         }
 
         repository.deleteById(uuid);
@@ -62,7 +62,7 @@ public class ChatImageProfileServiceImpl implements ChatImageProfileService {
     }
 
     @Override
-    public boolean existById(UUID uuid) {
-        return repository.existsById(uuid);
+    public List<Chat_Image_Profile> findByChatId(UUID uuid){
+        return repository.findByChatUuid(uuid);
     }
 }

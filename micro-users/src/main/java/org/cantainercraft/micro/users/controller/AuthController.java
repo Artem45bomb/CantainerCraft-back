@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.cantainercraft.micro.users.dto.JwtAuthResponse;
+import org.cantainercraft.micro.users.dto.tokens.JwtAuthResponse;
 import org.cantainercraft.micro.users.dto.SignInAuthDTO;
 import org.cantainercraft.micro.users.dto.SignUpAuthDTO;
 import org.cantainercraft.micro.users.service.impl.AuthServiceImpl;
@@ -50,7 +50,7 @@ public class AuthController {
                     content = @Content(schema = @Schema()))
     })
     @PostMapping("/signup")
-    private JwtAuthResponse signup(@RequestBody @Valid SignUpAuthDTO authDTO,HttpServletResponse response){
+    public JwtAuthResponse signup(@RequestBody @Valid SignUpAuthDTO authDTO,HttpServletResponse response){
         return authService.signup(authDTO,response);
     }
 
@@ -75,8 +75,7 @@ public class AuthController {
                     content = @Content(schema = @Schema()))
     })
     @PostMapping("/login")
-    private JwtAuthResponse login(@RequestBody @Valid SignInAuthDTO signInAuthDTO, @NonNull HttpServletResponse response){
+    public JwtAuthResponse login(@RequestBody @Valid SignInAuthDTO signInAuthDTO, @NonNull HttpServletResponse response){
         return authService.login(signInAuthDTO,response);
     }
-
 }

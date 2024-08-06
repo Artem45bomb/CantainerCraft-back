@@ -25,6 +25,11 @@ public class ChatImageProfileController {
         return ResponseEntity.ok(service.findAll());
     }
 
+    @GetMapping("/{chatId}")
+    public List<Chat_Image_Profile> findByChatId(@PathVariable UUID chatId){
+        return service.findByChatId(chatId);
+    }
+
     @PostMapping("/uuid")
     public ResponseEntity<Chat_Image_Profile> findById(@RequestBody UUID uuid) {
         Optional<Chat_Image_Profile> chatImageProfile = service.findById(uuid);
@@ -54,8 +59,6 @@ public class ChatImageProfileController {
 
     @PutMapping("/delete")
     public void delete(@RequestBody UUID id) {
-
-
         service.delete(id);
     }
 }

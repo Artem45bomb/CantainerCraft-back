@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.cantainercraft.micro.utilits.service.JwtServiceBase;
 
-import java.security.Key;
+import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.Map;
 import java.util.function.Function;
@@ -52,29 +52,30 @@ public abstract class JwtBaseServiceImpl implements JwtServiceBase {
     public Claims extractAllClaims(String token){
         return Jwts
                 .parser()
-                .setSigningKey(getSignKey())
+                .decryptWith(getSignKey())
+                .verifyWith(getSignKey())
                 .build()
-                .parseClaimsJws(token)
-                .getBody();
+                .parseSignedClaims(token)
+                .getPayload();
     }
 
     @Override
     public String createToken(Map<String,Object> claims, String username){
 
         Date date = new Date();
-        Date expiry = new Date(date.getTime() +10000*24*60*cookieTime);
+        Date expiry = new Date(date.getTime() +24*60*cookieTime);
         return Jwts.builder()
-                .setClaims(claims)  // Устанавливаем пользовательские claims
-                .setSubject(username) // Устанавливаем имя пользователя в качестве темы токена (Subject)
-                .setIssuedAt(date) // Устанавливаем метку времени выпуска токена
-                .setExpiration(expiry) // Устанавливаем срок действия токена
+                .claims(claims)  // Устанавливаем пользовательские claims
+                .subject(username) // Устанавливаем имя пользователя в качестве темы токена (Subject)
+                .issuedAt(date) // Устанавливаем метку времени выпуска токена
+                .expiration(expiry) // Устанавливаем срок действия токена
                 .signWith(getSignKey())
                 .compact();
 
     }
 
     @Override
-    public Key getSignKey(){
+    public SecretKey getSignKey(){
         byte[] keys = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keys);
     }

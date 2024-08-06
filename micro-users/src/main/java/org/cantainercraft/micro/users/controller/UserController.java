@@ -9,13 +9,16 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.cantainercraft.micro.users.dto.UserLoadDTO;
 import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.micro.utilits.exception.MessageError;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.micro.utilits.exception.NotValidateParamException;
+import org.cantainercraft.micro.utilits.service.ConvertorDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.cantainercraft.micro.users.dto.UserDTO;
 import org.cantainercraft.micro.users.dto.UserSearchDTO;
@@ -32,6 +35,7 @@ public class UserController {
 
     @Value("${service.key}")
     private String serviceKey;
+    private final ConvertorDTO<UserLoadDTO,User> convertorLoad;
     private final UserService userService;
 
 
@@ -378,16 +382,20 @@ public class UserController {
             )
     })
     @PostMapping("/loadedUser")
-    public ResponseEntity<User> loadedUser(@RequestHeader("micro-service-key") String header,
-                                                  @RequestBody String username){
-        if(!serviceKey.equals(header)) return new ResponseEntity(new MessageError("not access"),HttpStatus.FORBIDDEN);
+    public ResponseEntity<UserLoadDTO> loadedUser(@RequestBody String username){
 
         Optional<User> user = userService.findByUsername(username);
 
         if(user.isEmpty()) throw new NotResourceException("user is not exist");
 
 
-        return ResponseEntity.ok(user.get());
+        return ResponseEntity.ok(convertorLoad.convertEntityToDTO(user.get()));
 
+    }
+
+    @PostAuthorize("hasAnyRole('USER')")
+    @GetMapping("/permission")
+    public boolean isPermission(){
+        return true;
     }
 }
