@@ -22,6 +22,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     private final PrivilegeRepository repository;
     private final PrivilegeDTOConvertor convertor;
 
+    //исправить
     @Override
     public Privilege save(PrivilegeDTO dto) {
         Privilege entity = convertor.convertDTOToEntity(dto);
@@ -31,6 +32,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
         return repository.save(entity);
     }
 
+    //исправить
     @Override
     public Privilege update(PrivilegeDTO dto) {
         Privilege entity = convertor.convertDTOToEntity(dto);
@@ -41,19 +43,20 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     }
 
     @Override
-    public void deleteById(UUID uuid) {
+    public void delete(UUID uuid) {
         Optional<Privilege> optional = repository.findById(uuid);
         if (optional.isPresent()) {
             throw new NotResourceException("This privilege does not exist");
         }
-        repository.deleteById(uuid);
-    }
+        repository.deleteById(uuid);}
+
 
     @Override
     public List<Privilege> findAll() {
         return repository.findAll();
     }
 
+    //исправить
     @Override
     public Privilege findById(UUID uuid) {
         Optional <Privilege> optional = repository.findById(uuid);
@@ -63,14 +66,10 @@ public class PrivilegeServiceImpl implements PrivilegeService {
         return optional.get();
     }
 
+    //исправить
     @Override
-    public List<Privilege> findByChat(UUID uuid, String name) {
-        Optional <Privilege> optional = repository.findById(uuid);
-
-        if (optional.isEmpty()) { // не закончено
-            throw new NotResourceException("This privilege does not exist");
-        }
-        return repository.findPrivilegeByChatUuidOrChatName(uuid, name);
+    public List<Privilege> findByChat(UUID chatId, String name) {
+        return repository.findPrivilegeByChatUuidOrChatName(chatId, name);
     }
 
     @Override

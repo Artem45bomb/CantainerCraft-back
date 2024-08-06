@@ -48,8 +48,9 @@ public class UserChatServiceImpl implements UserChatService {
         return repository.save(userChat);
     }
 
+    //исправить
     public Integer deleteByUserId(Long userId, UUID chatId){
-        List<User_Chat> user_chats = repository.findBySearch(null, userId, chatId);
+        Optional<User_Chat> user_chats = repository.findByChatUuidAndUserId(chatId,userId);
         if(user_chats.isEmpty()){
             throw new NotResourceException("No content for delete");
         }

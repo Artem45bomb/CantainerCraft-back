@@ -38,11 +38,4 @@ public class UserOnlineController {
     public ResponseEntity<User_Online> update(@RequestBody UserOnlineDTO dto){
         return ResponseEntity.ok(service.update(dto));
     }
-
-
-    @DeleteMapping("/delete/id")
-    public void deleteById(@RequestBody UUID uuid ){
-        service.deleteById(uuid);
-    }
-
 }

@@ -24,11 +24,14 @@ public class PrivilegeController {
         return ResponseEntity.ok(service.findAll());
     }
 
+    //optional
     @PostMapping("/uuid")
     public ResponseEntity<Privilege> findById(@RequestBody UUID id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
+
+    //без имени
     @PostMapping("/user")
     public ResponseEntity<List<Privilege>> findByChat(@RequestBody PrivilegeSearchDTO dto) {
         UUID chatId = dto.getChatId();
@@ -49,6 +52,6 @@ public class PrivilegeController {
 
     @PutMapping("/delete")
     public void delete(@RequestBody UUID uuid) {
-        service.deleteById(uuid);
+        service.delete(uuid);
     }
 }

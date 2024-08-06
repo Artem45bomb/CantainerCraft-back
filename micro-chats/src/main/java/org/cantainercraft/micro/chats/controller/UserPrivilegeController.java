@@ -25,6 +25,7 @@ public class UserPrivilegeController {
         return ResponseEntity.ok(service.findAll());
     }
 
+    //исправить
     @PostMapping("/uuid")
     public ResponseEntity<Optional<User_Privilege>> findById(@RequestBody UUID id) {
 //        Optional<User_Privilege> userPrivilege = service.findById(id);
@@ -55,11 +56,10 @@ public class UserPrivilegeController {
         service.delete(id);
     }
 
-
+    // удалить по uuid - привелегия,Long userId привелегии
     // что удалить Привелегию? в чем разница верхниго и нижнего?
     @PutMapping("/delete/user")
     public void deleteByUserId(@RequestBody Long id) {
-
         service.deleteByUserId(id);
     }
 }

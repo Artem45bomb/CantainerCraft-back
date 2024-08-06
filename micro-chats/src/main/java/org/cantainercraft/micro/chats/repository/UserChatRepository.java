@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.cantainercraft.project.entity.chats.User_Chat;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -18,6 +19,8 @@ public interface UserChatRepository extends JpaRepository<User_Chat,Long> {
             "(user_chat.userId = :userId or :userId is null ) and " +
             "(user_chat.id=:id or :id is null )")
     List<User_Chat> findBySearch(Long id,Long userId,UUID chatId);
+
+    Optional<User_Chat> findByChatUuidAndUserId(UUID chatId, Long userId);
 
     @Transactional
     @Modifying

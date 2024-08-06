@@ -26,6 +26,7 @@ public class UserEmotionController {
         return ResponseEntity.ok(service.findAll());
     }
 
+    //исправить
     @PostMapping("/uuid")
     public ResponseEntity<User_Emotion> findById(@RequestBody UUID uuid) {
         return  ResponseEntity.ok(service.findById(uuid));
