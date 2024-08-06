@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.convertor.UserPrivilegeDTOConvertor;
 import org.cantainercraft.micro.chats.dto.UserPrivilegeDTO;
 import org.cantainercraft.micro.chats.service.UserPrivilegeService;
+import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.chats.User_Privilege;
 import org.cantainercraft.micro.chats.repository.UserPrivilegeRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,28 +22,27 @@ public class UserPrivilegeServiceImpl implements UserPrivilegeService {
     private final UserPrivilegeDTOConvertor convertor;
 
     @Override
-    public User_Privilege save(UserPrivilegeDTO userPrivilegeDTO) {
-        User_Privilege entity = convertor.convertUserPrivilegeDTOToUserPrivilege(userPrivilegeDTO);
+    public User_Privilege save(UserPrivilegeDTO dto) {
+        User_Privilege entity = convertor.convertDTOToEntity(dto);
         return repository.save(entity);
     }
 
     @Override
-    public boolean update(UserPrivilegeDTO userPrivilegeDTO) {
-        if (repository.existsById(userPrivilegeDTO.getUuid())) {
-            User_Privilege entity = convertor.convertUserPrivilegeDTOToUserPrivilege(userPrivilegeDTO);
-            repository.save(entity);
-            return true;
+    public User_Privilege update(UserPrivilegeDTO dto) {
+        User_Privilege entity = convertor.convertDTOToEntity(dto);
+        Optional<User_Privilege> userPrivilege = repository.findById(dto.getUuid());
+        if (userPrivilege.isEmpty()) {
+            throw new NotResourceException("User privilege not found");
         }
-        return false;
+
+        return repository.save(entity);
     }
 
     @Override
-    public boolean delete(UUID uuid) {
+    public void delete(UUID uuid) {
         if (repository.existsById(uuid)) {
             repository.deleteById(uuid);
-            return true;
         }
-        return false;
     }
 
     @Override
@@ -60,11 +61,9 @@ public class UserPrivilegeServiceImpl implements UserPrivilegeService {
     }
 
     @Override
-    public boolean deleteByUserId(Long id) {
+    public void deleteByUserId(Long id) {
         if (repository.findByUserId(id).isPresent()) {
             repository.deleteByUserId(id);
-            return true;
         }
-        return false;
     }
 }

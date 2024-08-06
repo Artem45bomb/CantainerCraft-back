@@ -9,11 +9,11 @@ import java.util.UUID;
 
 public interface UserPrivilegeService {
 
-    User_Privilege save(UserPrivilegeDTO userPrivilegeDTO);
+    User_Privilege save(UserPrivilegeDTO dto);
 
-    boolean update(UserPrivilegeDTO userPrivilegeDTO);
+    User_Privilege update(UserPrivilegeDTO dto);
 
-    boolean delete(UUID uuid);
+    void delete(UUID uuid);
 
     List<User_Privilege> findAll();
 
@@ -21,5 +21,5 @@ public interface UserPrivilegeService {
 
     Optional<User_Privilege> findByUserId(Long id);
 
-    boolean deleteByUserId(Long id);
+    void deleteByUserId(Long id);
 }

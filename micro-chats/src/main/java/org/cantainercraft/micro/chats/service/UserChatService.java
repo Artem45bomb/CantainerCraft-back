@@ -9,10 +9,12 @@ import java.util.UUID;
 
 public interface UserChatService {
 
-    User_Chat save(UserChatDTO userChatDTO);
+    User_Chat save(UserChatDTO dto);
 
-    User_Chat update(UserChatDTO userChatDTO);
+    User_Chat update(UserChatDTO dto);
+
     Integer deleteByUserId(Long userId, UUID chatId);
+
     void deleteById(Long id);
 
     Optional<User_Chat> findById(Long id);

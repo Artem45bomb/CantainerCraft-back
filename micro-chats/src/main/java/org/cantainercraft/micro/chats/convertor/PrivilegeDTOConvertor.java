@@ -11,11 +11,11 @@ import org.cantainercraft.project.entity.chats.Privilege;
 public class PrivilegeDTOConvertor {
     private final ModelMapper modelMapper;
 
-    public PrivilegeDTO convertPrivilegeToPrivilegeDTO(Privilege privilege) {
+    public PrivilegeDTO convertEntityToDTO(Privilege privilege) {
         return modelMapper.map(privilege, PrivilegeDTO.class);
     }
 
-    public Privilege convertPrivilegeDTOToPrivilege(PrivilegeDTO dto) {
+    public Privilege convertDTOToEntity(PrivilegeDTO dto) {
         return modelMapper.map(dto, Privilege.class);
     }
 }
