@@ -13,13 +13,13 @@ public interface UserChatService {
 
     User_Chat update(UserChatDTO dto);
 
-    Integer deleteByUserId(Long userId, UUID chatId);
+    void deleteByUserId(Long userId, UUID chatId);
 
     void deleteById(Long id);
 
     Optional<User_Chat> findById(Long id);
 
-    List<User_Chat> findBySearch(Long id, Long userId, UUID chatId);
+    Optional<List<User_Chat>> findBySearch(Long id, Long userId, UUID chatId);
 
     List<User_Chat> findAll();
 }

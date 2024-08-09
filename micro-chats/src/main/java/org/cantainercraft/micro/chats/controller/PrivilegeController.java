@@ -9,8 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
-//import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/privileges")
@@ -26,18 +26,15 @@ public class PrivilegeController {
 
     //optional
     @PostMapping("/uuid")
-    public ResponseEntity<Privilege> findById(@RequestBody UUID id) {
+    public ResponseEntity<Optional<Privilege>> findById(@RequestBody UUID id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
 
     //без имени
     @PostMapping("/user")
-    public ResponseEntity<List<Privilege>> findByChat(@RequestBody PrivilegeSearchDTO dto) {
-        UUID chatId = dto.getChatId();
-        String chatName = dto.getChatName();
-
-        return ResponseEntity.ok(service.findByChat(chatId, chatName));
+    public ResponseEntity<Optional<List<Privilege>>> findByChat(@RequestBody PrivilegeSearchDTO dto) {
+        return ResponseEntity.ok(service.findByChat(dto.getChatId()));
     }
 
     @PostMapping("/add")
@@ -51,7 +48,7 @@ public class PrivilegeController {
     }
 
     @PutMapping("/delete")
-    public void delete(@RequestBody UUID uuid) {
-        service.delete(uuid);
+    public void deleteById(@RequestBody UUID uuid) {
+        service.deleteById(uuid);
     }
 }

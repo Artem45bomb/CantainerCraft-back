@@ -18,9 +18,9 @@ public interface PrivilegeService {
 
     List<Privilege> findAll();
 
-    Privilege findById(UUID uuid);
+    Optional<Privilege> findById(UUID uuid);
 
-    List<Privilege> findByChat(UUID uuid, String name);
+    Optional<List<Privilege>> findByChat(UUID uuid);
 
     boolean findByChatIdAndNameRole(UUID chatId,String role);
 }

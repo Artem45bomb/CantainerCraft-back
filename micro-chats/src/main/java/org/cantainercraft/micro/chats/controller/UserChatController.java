@@ -26,24 +26,23 @@ class UserChatController {
     }
 
     @PostMapping("/id")
-    public ResponseEntity<User_Chat> findById(@RequestBody Long id){
-        Optional<User_Chat> chat = service.findById(id);
-        return ResponseEntity.ok(chat.get());
+    public ResponseEntity<Optional<User_Chat>> findById(@RequestBody Long id){
+        return ResponseEntity.ok(service.findById(id));
     }
 
     @PostMapping("/search")
-    public ResponseEntity<List<User_Chat>> findBySearch(@RequestBody UserChatSearchDTO dto){
+    public ResponseEntity<Optional<List<User_Chat>>> findBySearch(@RequestBody UserChatSearchDTO dto){
         return ResponseEntity.ok(service.findBySearch(dto.getId(), dto.getUserId(), dto.getChatId()));
     }
 
     @PutMapping("/delete")
     public void deleteById(@RequestBody Long id){
-            service.deleteById(id);
+        service.deleteById(id);
     }
 
     @PutMapping("/delete/user")
     public void delete(@RequestBody UserChatDTO dto){
-            service.deleteByUserId(dto.getUserId(),dto.getChat().getUuid());
+        service.deleteByUserId(dto.getUserId(),dto.getChat().getUuid());
     }
 
     @PostMapping("/add")

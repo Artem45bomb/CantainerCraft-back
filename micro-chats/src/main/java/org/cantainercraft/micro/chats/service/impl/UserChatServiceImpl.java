@@ -8,6 +8,7 @@ import org.cantainercraft.micro.chats.dto.UserChatDTO;
 import org.cantainercraft.micro.chats.service.UserChatService;
 import org.cantainercraft.micro.chats.webflux.UserWebClient;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
+import org.cantainercraft.project.entity.chats.Chat;
 import org.springframework.stereotype.Service;
 import org.cantainercraft.micro.chats.repository.UserChatRepository;
 import org.cantainercraft.project.entity.chats.User_Chat;
@@ -48,13 +49,13 @@ public class UserChatServiceImpl implements UserChatService {
         return repository.save(userChat);
     }
 
-    //исправить
-    public Integer deleteByUserId(Long userId, UUID chatId){
+    //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+    public void deleteByUserId(Long userId, UUID chatId){
         Optional<User_Chat> user_chats = repository.findByChatUuidAndUserId(chatId,userId);
         if(user_chats.isEmpty()){
             throw new NotResourceException("No content for delete");
         }
-        return repository.deleteByUserIdAndChatUuid(userId,chatId);
+        repository.deleteByUserIdAndChatUuid(userId,chatId);
     }
 
     public void deleteById(Long id){
@@ -74,7 +75,11 @@ public class UserChatServiceImpl implements UserChatService {
         return repository.findById(id);
     }
 
-    public List<User_Chat> findBySearch(Long id,Long userId,UUID chatId){
+    public Optional<List<User_Chat>> findBySearch(Long id,Long userId,UUID chatId){
+        Optional<User_Chat> userChat = repository.findById(id);
+        if(userChat.isEmpty()){
+            throw new NotResourceException("userChat not exist");
+        }
         return repository.findBySearch(id,userId,chatId);
     }
 
