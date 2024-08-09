@@ -1,7 +1,7 @@
 package org.cantainercraft.micro.chats.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.cantainercraft.micro.chats.dto.CustomUserDetails;
+import org.cantainercraft.micro.chats.repository.dto.CustomUserDetails;
 import org.cantainercraft.micro.chats.webflux.UserWebClient;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,15 +14,6 @@ public class UserDetailServiceImpl implements UserDetailsService {
     private final UserWebClient userWebClient;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-
-        UserDetails userDetails = new CustomUserDetails(userWebClient.loadedUser(username));
-
-        if(userDetails != null){
-            return userDetails;
-        }
-        else{
-            throw new UsernameNotFoundException("user is not exist");
-        }
+       return new CustomUserDetails(userWebClient.loadedUser(username));
     }
 }

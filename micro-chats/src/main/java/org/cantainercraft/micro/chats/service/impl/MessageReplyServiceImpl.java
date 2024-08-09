@@ -2,7 +2,7 @@ package org.cantainercraft.micro.chats.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.convertor.MessageReplyDTOConvertor;
-import org.cantainercraft.micro.chats.dto.MessageReplyDTO;
+import org.cantainercraft.micro.chats.repository.dto.MessageReplyDTO;
 import org.cantainercraft.micro.chats.service.MessageReplyService;
 import org.cantainercraft.project.entity.chats.Message_Reply;
 import org.cantainercraft.micro.chats.repository.MessageReplyRepository;

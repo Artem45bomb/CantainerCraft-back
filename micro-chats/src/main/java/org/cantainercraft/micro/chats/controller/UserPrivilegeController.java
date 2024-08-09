@@ -1,8 +1,9 @@
 package org.cantainercraft.micro.chats.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.cantainercraft.micro.chats.dto.UserPrivilegeDTO;
+import org.cantainercraft.micro.chats.repository.dto.UserPrivilegeDTO;
 import org.cantainercraft.micro.chats.service.UserPrivilegeService;
+import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.chats.User_Privilege;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,13 +28,12 @@ public class UserPrivilegeController {
 
     //исправить
     @PostMapping("/uuid")
-    public ResponseEntity<Optional<User_Privilege>> findById(@RequestBody UUID id) {
-//        Optional<User_Privilege> userPrivilege = service.findById(id);
-//        if(userPrivilege.isEmpty()){
-//            throw new NotResourceException("No content");
-//        }
-//        return ResponseEntity.ok(userPrivilege.get());
-        return ResponseEntity.ok(service.findById(id));
+    public ResponseEntity<User_Privilege> findById(@RequestBody UUID id) {
+        Optional<User_Privilege> userPrivilege = service.findById(id);
+        if(userPrivilege.isEmpty()){
+            throw new NotResourceException("No content");
+        }
+        return ResponseEntity.ok(userPrivilege.get());
     }
 
     @PostMapping("/userId")
@@ -42,7 +42,7 @@ public class UserPrivilegeController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<User_Privilege> create(@RequestBody UserPrivilegeDTO dto) {
+    public ResponseEntity<User_Privilege> save(@RequestBody UserPrivilegeDTO dto) {
         return ResponseEntity.ok(service.save(dto));
     }
 
@@ -56,10 +56,4 @@ public class UserPrivilegeController {
         service.delete(id);
     }
 
-    // удалить по uuid - привелегия,Long userId привелегии
-    // что удалить Привелегию? в чем разница верхниго и нижнего?
-    @PutMapping("/delete/user")
-    public void deleteByUserId(@RequestBody Long id) {
-        service.deleteByUserId(id);
-    }
 }

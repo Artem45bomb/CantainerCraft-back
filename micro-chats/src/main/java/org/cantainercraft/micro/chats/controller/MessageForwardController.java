@@ -1,9 +1,8 @@
 package org.cantainercraft.micro.chats.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.cantainercraft.micro.chats.dto.MessageForwardDTO;
+import org.cantainercraft.micro.chats.repository.dto.MessageForwardDTO;
 import org.cantainercraft.micro.chats.service.MessageForwardService;
-import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.chats.Message_Forward;
 import org.springframework.http.ResponseEntity;

@@ -3,9 +3,8 @@ package org.cantainercraft.micro.chats.controller;
 
 
 import lombok.RequiredArgsConstructor;
-import org.cantainercraft.micro.chats.dto.EmotionDTO;
+import org.cantainercraft.micro.chats.repository.dto.EmotionDTO;
 import org.cantainercraft.micro.chats.service.EmotionService;
-import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.chats.Emotion;
 import org.springframework.http.ResponseEntity;

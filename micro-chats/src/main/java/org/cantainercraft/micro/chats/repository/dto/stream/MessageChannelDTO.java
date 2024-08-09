@@ -1,4 +1,4 @@
-package org.cantainercraft.micro.chats.dto;
+package org.cantainercraft.micro.chats.repository.dto.stream;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,14 +7,13 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class MessageDTO {
+@AllArgsConstructor
+public class MessageChannelDTO implements Serializable {
     private UUID uuid;
 
     private String text;
@@ -23,12 +22,9 @@ public class MessageDTO {
 
     private Boolean isPinned;
 
-
     private Long userId;
 
-    public ChatDTO chat;
+    //public UUID chatId;
 
     private UUID clientId;
-
-    private List<EmotionDTO> emotions;
 }

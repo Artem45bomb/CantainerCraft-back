@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.utilits.service.ConvertorDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-import org.cantainercraft.micro.chats.dto.ChatDTO;
+import org.cantainercraft.micro.chats.repository.dto.ChatDTO;
 import org.cantainercraft.project.entity.chats.Chat;
 
 @Component

@@ -2,8 +2,6 @@ package org.cantainercraft.micro.users.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.users.dto.CustomUserDetails;
-import org.cantainercraft.micro.users.repository.UserRepository;
-
 import org.cantainercraft.micro.users.service.UserService;
 import org.cantainercraft.project.entity.users.Role;
 import org.cantainercraft.project.entity.users.User;

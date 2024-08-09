@@ -1,7 +1,7 @@
 package org.cantainercraft.micro.chats.service;
 
 
-import org.cantainercraft.micro.chats.dto.PrivilegeDTO;
+import org.cantainercraft.micro.chats.repository.dto.PrivilegeDTO;
 import org.cantainercraft.project.entity.chats.Privilege;
 
 import java.util.List;
@@ -20,7 +20,5 @@ public interface PrivilegeService {
 
     Optional<Privilege> findById(UUID uuid);
 
-    Optional<List<Privilege>> findByChat(UUID uuid);
-
-    boolean findByChatIdAndNameRole(UUID chatId,String role);
+    List<Privilege> findByChat(UUID chatId);
 }

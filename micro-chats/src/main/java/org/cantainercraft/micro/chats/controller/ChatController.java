@@ -2,8 +2,8 @@ package org.cantainercraft.micro.chats.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.cantainercraft.micro.chats.dto.ChatDTO;
-import org.cantainercraft.micro.chats.dto.ChatSearchDTO;
+import org.cantainercraft.micro.chats.repository.dto.ChatDTO;
+import org.cantainercraft.micro.chats.repository.dto.ChatSearchDTO;
 import org.cantainercraft.micro.chats.service.ChatService;
 import org.cantainercraft.micro.chats.service.UserChatService;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
@@ -105,7 +105,7 @@ public class ChatController {
     //ищет пользователей по userId через userChatService так как все пользователи хранятся в user_chat
     @PostMapping("/user/search")
     public ResponseEntity<List<Chat>> search(@RequestBody Long userId){
-        List<User_Chat> userChats =userChatService.findBySearch(null,userId,null);
+        List<User_Chat> userChats =userChatService.findBySearch(userId,null);
         
         return ResponseEntity.ok(userChats.stream()
                 .map(User_Chat::getChat)

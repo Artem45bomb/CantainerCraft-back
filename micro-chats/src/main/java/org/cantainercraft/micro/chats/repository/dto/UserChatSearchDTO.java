@@ -1,4 +1,4 @@
-package org.cantainercraft.micro.chats.dto;
+package org.cantainercraft.micro.chats.repository.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +11,6 @@ import java.util.UUID;
 @Setter
 @ToString
 public class UserChatSearchDTO implements Serializable {
-    private Long id;
     private Long userId;
     private UUID chatId;
 }

@@ -1,6 +1,6 @@
 package org.cantainercraft.micro.chats.service;
 
-import org.cantainercraft.micro.chats.dto.MessageForwardDTO;
+import org.cantainercraft.micro.chats.repository.dto.MessageForwardDTO;
 import org.cantainercraft.project.entity.chats.Message_Forward;
 
 import java.util.List;

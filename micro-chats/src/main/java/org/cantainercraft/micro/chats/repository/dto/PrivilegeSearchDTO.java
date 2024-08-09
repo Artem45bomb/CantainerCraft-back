@@ -1,4 +1,4 @@
-package org.cantainercraft.micro.chats.dto;
+package org.cantainercraft.micro.chats.repository.dto;
 
 import lombok.Data;
 
@@ -9,5 +9,4 @@ import java.util.UUID;
 @Data
 public class PrivilegeSearchDTO implements Serializable {
     private UUID chatId;
-    private String chatName;
 }

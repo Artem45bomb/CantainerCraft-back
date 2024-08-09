@@ -2,7 +2,7 @@ package org.cantainercraft.micro.chats.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.convertor.ChatSettingsGroupDTOConvertor;
-import org.cantainercraft.micro.chats.dto.ChatSettingsGroupDTO;
+import org.cantainercraft.micro.chats.repository.dto.ChatSettingsGroupDTO;
 import org.cantainercraft.micro.chats.repository.ChatSettingsGroupRepository;
 import org.cantainercraft.micro.chats.service.ChatSettingsGroupService;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
@@ -10,9 +10,6 @@ import org.cantainercraft.project.entity.chats.Chat_Settings_Group;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service

@@ -1,6 +1,6 @@
 package org.cantainercraft.micro.chats.service;
 
-import org.cantainercraft.micro.chats.dto.ChatImageProfileDTO;
+import org.cantainercraft.micro.chats.repository.dto.ChatImageProfileDTO;
 import org.cantainercraft.project.entity.chats.Chat_Image_Profile;
 
 import java.util.List;

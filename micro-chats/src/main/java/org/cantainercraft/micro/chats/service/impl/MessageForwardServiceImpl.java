@@ -2,7 +2,7 @@ package org.cantainercraft.micro.chats.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.convertor.MessageForwardDTOConvertor;
-import org.cantainercraft.micro.chats.dto.MessageForwardDTO;
+import org.cantainercraft.micro.chats.repository.dto.MessageForwardDTO;
 import org.cantainercraft.micro.chats.service.MessageForwardService;
 import org.cantainercraft.project.entity.chats.Message_Forward;
 import org.cantainercraft.micro.chats.repository.MessageForwardRepository;

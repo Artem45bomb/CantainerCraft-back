@@ -1,7 +1,7 @@
 package org.cantainercraft.micro.chats.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.cantainercraft.micro.chats.dto.ChatSecuredDTO;
+import org.cantainercraft.micro.chats.repository.dto.ChatSecuredDTO;
 import org.cantainercraft.micro.chats.repository.ChatRepository;
 import org.cantainercraft.micro.chats.repository.ChatSecuredRepository;
 import org.cantainercraft.micro.chats.service.ChatSecuredService;

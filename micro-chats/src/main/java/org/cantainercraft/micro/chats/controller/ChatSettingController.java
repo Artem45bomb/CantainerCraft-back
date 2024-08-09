@@ -1,7 +1,7 @@
 package org.cantainercraft.micro.chats.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.cantainercraft.micro.chats.dto.ChatSettingsDTO;
+import org.cantainercraft.micro.chats.repository.dto.ChatSettingsDTO;
 import org.cantainercraft.micro.chats.service.ChatSettingsService;
 import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.project.entity.chats.Chat_Settings;

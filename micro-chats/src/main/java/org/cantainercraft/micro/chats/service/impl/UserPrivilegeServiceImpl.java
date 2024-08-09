@@ -2,12 +2,11 @@ package org.cantainercraft.micro.chats.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.convertor.UserPrivilegeDTOConvertor;
-import org.cantainercraft.micro.chats.dto.UserPrivilegeDTO;
+import org.cantainercraft.micro.chats.repository.dto.UserPrivilegeDTO;
 import org.cantainercraft.micro.chats.service.UserPrivilegeService;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.chats.User_Privilege;
 import org.cantainercraft.micro.chats.repository.UserPrivilegeRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -58,12 +57,5 @@ public class UserPrivilegeServiceImpl implements UserPrivilegeService {
     @Override
     public Optional<User_Privilege> findByUserId(Long id) {
         return repository.findByUserId(id);
-    }
-
-    @Override
-    public void deleteByUserId(Long id) {
-        if (repository.findByUserId(id).isPresent()) {
-            repository.deleteByUserId(id);
-        }
     }
 }

@@ -1,36 +1,6 @@
-1
-const peerConnection = new RTCPeerConnection();
+GMail password to smtp server
 
-let data = peerConnection.createDataChannel()
-
-data.onopen = () => console.log("open")
-
-data.onclose = () => console.log("close")
-
-data.onmessage = e => console.log("message",e)
-
-peerConnection.onicecandidate = (e) => console.log("icecandidate",e)
-
-const offer =await peerConnection.createOffer()
-
-peerConnection.setLocalDescription(offer)
-
-//offer
-{sdp: "v=0\r\no=- 5424694264322297761 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=extmap-allow-mixed\r\na=msid-semantic: WMS\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=ice-ufrag:M3LH\r\na=ice-pwd:CapFGVZcsIbMh4JmQ0p391qg\r\na=ice-options:trickle\r\na=fingerprint:sha-256 85:89:64:77:7C:9B:18:03:3B:AA:92:DB:94:4F:76:43:16:D8:35:B3:6F:5C:AE:12:AC:B9:33:AC:91:5F:D4:70\r\na=setup:actpass\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n", type: 'offer'}
-/2
-const peerConnection = new RTCPeerConnection();
-
-peerConnection.onicecandidate = (e) => console.log("icecandidate",e)
-
-const offer = {sdp: "v=0\r\no=- 5424694264322297761 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=extmap-allow-mixed\r\na=msid-semantic: WMS\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=ice-ufrag:M3LH\r\na=ice-pwd:CapFGVZcsIbMh4JmQ0p391qg\r\na=ice-options:trickle\r\na=fingerprint:sha-256 85:89:64:77:7C:9B:18:03:3B:AA:92:DB:94:4F:76:43:16:D8:35:B3:6F:5C:AE:12:AC:B9:33:AC:91:5F:D4:70\r\na=setup:actpass\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n", type: 'offer'} 
-
-peerConnection.setRemoteDescription(offer)
-
-const data = peerConnection.ondatachannel = event => {
-  let dataChannel = event.channel;
-    dataChannel.onopen = () => console.log("Channel opened")
+{
+    "name":"SMTPdeveloper",
+    "password":"vrrg osgj nijx dveg"
 }
-
-const answer =await peerConnection.createAnswer();
-
-peerConnection.setRemoteDescription(answer)

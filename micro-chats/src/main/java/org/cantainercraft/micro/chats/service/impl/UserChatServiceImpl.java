@@ -4,11 +4,10 @@ package org.cantainercraft.micro.chats.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.cantainercraft.micro.chats.convertor.UserChatDTOConvertor;
-import org.cantainercraft.micro.chats.dto.UserChatDTO;
+import org.cantainercraft.micro.chats.repository.dto.UserChatDTO;
 import org.cantainercraft.micro.chats.service.UserChatService;
 import org.cantainercraft.micro.chats.webflux.UserWebClient;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
-import org.cantainercraft.project.entity.chats.Chat;
 import org.springframework.stereotype.Service;
 import org.cantainercraft.micro.chats.repository.UserChatRepository;
 import org.cantainercraft.project.entity.chats.User_Chat;
@@ -38,8 +37,7 @@ public class UserChatServiceImpl implements UserChatService {
 
     public User_Chat update(UserChatDTO dto){
         User_Chat userChat = convertor.convertDTOToEntity(dto);
-        Optional<User_Chat> entity= repository.findById(dto.getId());
-        if(entity.isEmpty()){
+        if(!repository.existsById(dto.getId())){
             throw new NotResourceException("No content for update");
         }
 
@@ -49,38 +47,28 @@ public class UserChatServiceImpl implements UserChatService {
         return repository.save(userChat);
     }
 
-    //���������
+
     public void deleteByUserId(Long userId, UUID chatId){
-        Optional<User_Chat> user_chats = repository.findByChatUuidAndUserId(chatId,userId);
-        if(user_chats.isEmpty()){
+        if(!repository.existsByUserIdAndChatUuid(userId,chatId)){
             throw new NotResourceException("No content for delete");
         }
         repository.deleteByUserIdAndChatUuid(userId,chatId);
     }
 
     public void deleteById(Long id){
-            Optional<User_Chat> userChat = repository.findById(id);
+        if(!repository.existsById(id)){
+            throw new NotResourceException("No content for delete");
+        }
 
-            if(userChat.isEmpty()){
-                throw new NotResourceException("No content for delete");
-            }
         repository.deleteById(id);
     }
 
     public Optional<User_Chat> findById(Long id){
-        Optional<User_Chat> chat = repository.findById(id);
-        if(chat.isEmpty()) {
-            throw new NotResourceException("No content");
-        }
         return repository.findById(id);
     }
 
-    public Optional<List<User_Chat>> findBySearch(Long id,Long userId,UUID chatId){
-        Optional<User_Chat> userChat = repository.findById(id);
-        if(userChat.isEmpty()){
-            throw new NotResourceException("userChat not exist");
-        }
-        return repository.findBySearch(id,userId,chatId);
+    public List<User_Chat> findBySearch(Long userId,UUID chatId){
+        return repository.findBySearch(userId,chatId);
     }
 
     public List<User_Chat> findAll(){

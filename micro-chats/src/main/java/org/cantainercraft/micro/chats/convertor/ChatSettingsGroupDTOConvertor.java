@@ -1,6 +1,6 @@
 package org.cantainercraft.micro.chats.convertor;
 
-import org.cantainercraft.micro.chats.dto.ChatSettingsGroupDTO;
+import org.cantainercraft.micro.chats.repository.dto.ChatSettingsGroupDTO;
 import org.cantainercraft.project.entity.chats.Chat_Settings_Group;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

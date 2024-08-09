@@ -1,9 +1,9 @@
 package org.cantainercraft.micro.chats.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.cantainercraft.micro.chats.dto.EmotionAddDTO;
-import org.cantainercraft.micro.chats.dto.EmotionDeleteDTO;
-import org.cantainercraft.micro.chats.dto.UserEmotionDTO;
+import org.cantainercraft.micro.chats.repository.dto.EmotionAddDTO;
+import org.cantainercraft.micro.chats.repository.dto.EmotionDeleteDTO;
+import org.cantainercraft.micro.chats.repository.dto.UserEmotionDTO;
 import org.cantainercraft.micro.chats.service.UserEmotionService;
 import org.cantainercraft.project.entity.chats.User_Emotion;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +26,7 @@ public class UserEmotionController {
         return ResponseEntity.ok(service.findAll());
     }
 
-    //исправить
+
     @PostMapping("/uuid")
     public ResponseEntity<User_Emotion> findById(@RequestBody UUID uuid) {
         return  ResponseEntity.ok(service.findById(uuid));

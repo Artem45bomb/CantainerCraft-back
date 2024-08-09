@@ -1,4 +1,4 @@
-package org.cantainercraft.micro.chats.dto;
+package org.cantainercraft.micro.chats.repository.dto;
 
 
 import lombok.Builder;

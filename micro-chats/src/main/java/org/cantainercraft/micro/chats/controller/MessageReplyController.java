@@ -1,7 +1,7 @@
 package org.cantainercraft.micro.chats.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.cantainercraft.micro.chats.dto.MessageReplyDTO;
+import org.cantainercraft.micro.chats.repository.dto.MessageReplyDTO;
 import org.cantainercraft.micro.chats.service.MessageReplyService;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.chats.Message_Reply;

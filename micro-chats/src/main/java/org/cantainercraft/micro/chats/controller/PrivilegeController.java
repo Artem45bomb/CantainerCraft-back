@@ -1,9 +1,10 @@
 package org.cantainercraft.micro.chats.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.cantainercraft.micro.chats.dto.PrivilegeDTO;
-import org.cantainercraft.micro.chats.dto.PrivilegeSearchDTO;
+import org.cantainercraft.micro.chats.repository.dto.PrivilegeDTO;
+import org.cantainercraft.micro.chats.repository.dto.PrivilegeSearchDTO;
 import org.cantainercraft.micro.chats.service.PrivilegeService;
+import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.chats.Privilege;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,14 +27,19 @@ public class PrivilegeController {
 
     //optional
     @PostMapping("/uuid")
-    public ResponseEntity<Optional<Privilege>> findById(@RequestBody UUID id) {
-        return ResponseEntity.ok(service.findById(id));
+    public ResponseEntity<Privilege> findById(@RequestBody UUID id) {
+        Optional<Privilege> privilege = service.findById(id);
+
+        if (privilege.isEmpty()) {
+            throw new NotResourceException("This privilege does not exist");
+        }
+
+        return ResponseEntity.ok(privilege.get());
     }
 
 
-    //без имени
-    @PostMapping("/user")
-    public ResponseEntity<Optional<List<Privilege>>> findByChat(@RequestBody PrivilegeSearchDTO dto) {
+    @PostMapping("/chat")
+    public ResponseEntity<List<Privilege>> findByChat(@RequestBody PrivilegeSearchDTO dto) {
         return ResponseEntity.ok(service.findByChat(dto.getChatId()));
     }
 

@@ -1,6 +1,6 @@
 package org.cantainercraft.micro.chats.configuration;
 
-import org.cantainercraft.micro.chats.dto.ChatSecuredDTO;
+import org.cantainercraft.micro.chats.repository.dto.ChatSecuredDTO;
 import org.cantainercraft.project.entity.chats.Chat_Secured;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;

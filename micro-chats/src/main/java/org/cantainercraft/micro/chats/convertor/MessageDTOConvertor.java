@@ -3,7 +3,7 @@ package org.cantainercraft.micro.chats.convertor;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-import org.cantainercraft.micro.chats.dto.MessageDTO;
+import org.cantainercraft.micro.chats.repository.dto.MessageDTO;
 import org.cantainercraft.project.entity.chats.Message;
 
 

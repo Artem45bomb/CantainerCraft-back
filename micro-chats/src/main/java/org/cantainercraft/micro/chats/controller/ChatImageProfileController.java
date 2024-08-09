@@ -1,6 +1,6 @@
 package org.cantainercraft.micro.chats.controller;
 import lombok.RequiredArgsConstructor;
-import org.cantainercraft.micro.chats.dto.ChatImageProfileDTO;
+import org.cantainercraft.micro.chats.repository.dto.ChatImageProfileDTO;
 import org.cantainercraft.micro.chats.service.ChatImageProfileService;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.micro.utilits.exception.NotValidateParamException;

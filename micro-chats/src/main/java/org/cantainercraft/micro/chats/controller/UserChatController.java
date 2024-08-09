@@ -2,11 +2,12 @@ package org.cantainercraft.micro.chats.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.service.UserChatService;
+import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.cantainercraft.micro.chats.dto.UserChatDTO;
-import org.cantainercraft.micro.chats.dto.UserChatSearchDTO;
+import org.cantainercraft.micro.chats.repository.dto.UserChatDTO;
+import org.cantainercraft.micro.chats.repository.dto.UserChatSearchDTO;
 import org.cantainercraft.project.entity.chats.User_Chat;
 
 import java.util.*;
@@ -26,13 +27,17 @@ class UserChatController {
     }
 
     @PostMapping("/id")
-    public ResponseEntity<Optional<User_Chat>> findById(@RequestBody Long id){
-        return ResponseEntity.ok(service.findById(id));
+    public ResponseEntity<User_Chat> findById(@RequestBody Long id){
+        Optional<User_Chat> userChat = service.findById(id);
+
+        if(userChat.isEmpty()) throw new  NotResourceException("content is not exist");
+
+        return ResponseEntity.ok(userChat.get());
     }
 
     @PostMapping("/search")
-    public ResponseEntity<Optional<List<User_Chat>>> findBySearch(@RequestBody UserChatSearchDTO dto){
-        return ResponseEntity.ok(service.findBySearch(dto.getId(), dto.getUserId(), dto.getChatId()));
+    public ResponseEntity<List<User_Chat>> findBySearch(@RequestBody UserChatSearchDTO dto){
+        return ResponseEntity.ok(service.findBySearch(dto.getUserId(), dto.getChatId()));
     }
 
     @PutMapping("/delete")

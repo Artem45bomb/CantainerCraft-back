@@ -3,7 +3,7 @@ package org.cantainercraft.micro.chats.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.convertor.EmotionDTOConvertor;
-import org.cantainercraft.micro.chats.dto.EmotionDTO;
+import org.cantainercraft.micro.chats.repository.dto.EmotionDTO;
 import org.cantainercraft.micro.chats.repository.EmotionRepository;
 import org.cantainercraft.micro.chats.service.EmotionService;
 import org.cantainercraft.micro.utilits.exception.ExistResourceException;

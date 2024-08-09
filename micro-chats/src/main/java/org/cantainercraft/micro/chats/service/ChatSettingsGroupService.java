@@ -1,8 +1,7 @@
 package org.cantainercraft.micro.chats.service;
 
-import org.cantainercraft.micro.chats.dto.ChatSettingsGroupDTO;
+import org.cantainercraft.micro.chats.repository.dto.ChatSettingsGroupDTO;
 import org.cantainercraft.project.entity.chats.Chat_Settings_Group;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
