@@ -169,7 +169,7 @@ public class MessageControllerTest {
 
         mockMvc.perform(put("/message/update")
                         .contentType("application/json")
-                        .content(gson.toJson(convertor.convertMessageToMessageDTO(messageRequest))))
+                        .content(gson.toJson(convertor.convertEntityToDTO(messageRequest))))
                 .andDo(print())
                 .andExpect(status().is(200));
     }
@@ -192,7 +192,7 @@ public class MessageControllerTest {
 
         mockMvc.perform(put("/message/update")
                         .contentType("application/json")
-                        .content(gson.toJson(convertor.convertMessageToMessageDTO(messageRequest))))
+                        .content(gson.toJson(convertor.convertEntityToDTO(messageRequest))))
                 .andDo(print())
                 .andExpect(status().is(404))
                 .andExpect(mvcResult -> mvcResult.getResolvedException().getClass().equals(NotResourceException.class));

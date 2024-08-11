@@ -20,63 +20,72 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class MessageServiceImpl implements MessageService {
-    private final MessageRepository messageRepository;
-    private final MessageDTOConvertor messageDTOConvertor;
+    private final MessageRepository repository;
+    private final MessageDTOConvertor convertor;
 
     @Override
     public Message save(MessageDTO messageDTO) {
-        Message message = messageDTOConvertor.convertMessageDTOToMessage(messageDTO);
+        Message message = convertor.convertDTOToEntity(messageDTO);
 
+        if(repository.existsById(messageDTO.getUuid())) {
+            throw new NotResourceException("Message with id " + messageDTO.getUuid() + " already exists");
+        }
 
-        return messageRepository.save(message);
+        return repository.save(message);
     }
 
     @Override
     public Message update(MessageDTO messageDTO){
-        Message message = messageDTOConvertor.convertMessageDTOToMessage(messageDTO);
-        return messageRepository.save(message);
+        Message message = convertor.convertDTOToEntity(messageDTO);
+
+        if(repository.existsById(messageDTO.getUuid())) {
+            throw new NotResourceException("Message with id " + messageDTO.getUuid() + " already exists");
+        }
+
+        return repository.save(message);
     }
 
     @Override
-    public boolean delete(UUID uuid){
-        messageRepository.deleteById(uuid);
-        return true;
+    public void delete(UUID uuid){
+        if(!repository.existsById(uuid)) {
+            throw new NotResourceException("Message with id " + uuid + " does not exist");
+        }
+        repository.deleteById(uuid);
     }
 
     @Override
     public void deleteByClientId(UUID clientId){
-        Optional<Message> message = messageRepository.findByClientId(clientId);
+        Optional<Message> message = repository.findByClientId(clientId);
 
         if(message.isEmpty()){
             throw new NotResourceException("message is not exist");
         }
-        messageRepository.deleteByClientId(clientId);
+        repository.deleteByClientId(clientId);
     }
 
     @Override
     public List<Message> findAll(){
-        return messageRepository.findAll();
+        return repository.findAll();
     }
 
     @Override
     public Optional<Message> findByUuid(UUID uuid){
-        return messageRepository.findById(uuid);
+        return repository.findById(uuid);
     }
 
     @Override
     public Optional<Message> findByUuidOrClientId(UUID uuid,UUID clientId){
-        return messageRepository.findByUuidOrClientId(uuid,clientId);
+        return repository.findByUuidOrClientId(uuid,clientId);
     }
 
     @Override
     public Page<Message> findBySearch(Date dateStart, Date dateEnd, String text, UUID uuid, Long userId, UUID chatId, Pageable pageable){
-        return messageRepository.findBySearch(dateStart,dateEnd,text,uuid,userId,chatId,pageable);
+        return repository.findBySearch(dateStart,dateEnd,text,uuid,userId,chatId,pageable);
     }
 
     @Override
     public List<Message> findByUserId(Long id) {
-        return messageRepository.findByUserId(id);
+        return repository.findByUserId(id);
     }
-
 
 }

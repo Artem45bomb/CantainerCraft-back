@@ -11,9 +11,9 @@ public interface MessageReplyService {
 
     Message_Reply save(MessageReplyDTO messageReplyDTO);
 
-    boolean update(MessageReplyDTO messageReplyDTO);
+    Message_Reply update(MessageReplyDTO messageReplyDTO);
 
-    boolean delete(UUID uuid);
+    void delete(UUID uuid);
 
     List<Message_Reply> findAll();
 

@@ -41,7 +41,7 @@ public class MessageForwardController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Boolean> update(@RequestBody MessageForwardDTO messageForwardDTO) {
+    public ResponseEntity<Message_Forward> update(@RequestBody MessageForwardDTO messageForwardDTO) {
         if (service.findById(messageForwardDTO.getUuid()).isEmpty()) {
             throw new NotResourceException("No content to update");
         }
@@ -49,11 +49,10 @@ public class MessageForwardController {
     }
 
     @PutMapping("/delete")
-    public ResponseEntity<Void> delete(@RequestBody UUID uuid) {
+    public void delete(@RequestBody UUID uuid) {
         if (service.findById(uuid).isEmpty()) {
             throw new NotResourceException("No content to delete");
         }
         service.delete(uuid);
-        return ResponseEntity.noContent().build();
     }
 }

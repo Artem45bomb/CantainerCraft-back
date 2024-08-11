@@ -11,9 +11,9 @@ public interface MessageForwardService {
 
     Message_Forward save(MessageForwardDTO messageForwardDTO);
 
-    boolean update(MessageForwardDTO messageForwardDTO);
+    Message_Forward update(MessageForwardDTO messageForwardDTO);
 
-    boolean delete(UUID uuid);
+    void delete(UUID uuid);
 
     List<Message_Forward> findAll();
 

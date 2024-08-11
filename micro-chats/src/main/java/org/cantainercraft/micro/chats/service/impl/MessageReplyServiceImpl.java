@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.convertor.MessageReplyDTOConvertor;
 import org.cantainercraft.micro.chats.repository.dto.MessageReplyDTO;
 import org.cantainercraft.micro.chats.service.MessageReplyService;
+import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.chats.Message_Reply;
 import org.cantainercraft.micro.chats.repository.MessageReplyRepository;
 import org.springframework.stereotype.Service;
@@ -21,27 +22,25 @@ public class MessageReplyServiceImpl implements MessageReplyService {
 
     @Override
     public Message_Reply save(MessageReplyDTO messageReplyDTO) {
-        Message_Reply entity = convertor.convertMessageReplyDTOToMessageReply(messageReplyDTO);
+        Message_Reply entity = convertor.convertDTOToEntity(messageReplyDTO);
         return repository.save(entity);
     }
 
     @Override
-    public boolean update(MessageReplyDTO messageReplyDTO) {
-        if (repository.existsById(messageReplyDTO.getUuid())) {
-            Message_Reply entity = convertor.convertMessageReplyDTOToMessageReply(messageReplyDTO);
-            repository.save(entity);
-            return true;
+    public Message_Reply update(MessageReplyDTO messageReplyDTO) {
+        if (!repository.existsById(messageReplyDTO.getUuid())) {
+            throw new NotResourceException("no Message_Reply by id");
         }
-        return false;
+        Message_Reply entity = convertor.convertDTOToEntity(messageReplyDTO);
+        return repository.save(entity);
     }
 
     @Override
-    public boolean delete(UUID uuid) {
-        if (repository.existsById(uuid)) {
-            repository.deleteById(uuid);
-            return true;
+    public void delete(UUID uuid) {
+        if (!repository.existsById(uuid)) {
+           throw new NotResourceException("no Message_Reply by id");
         }
-        return false;
+        repository.deleteById(uuid);
     }
 
     @Override

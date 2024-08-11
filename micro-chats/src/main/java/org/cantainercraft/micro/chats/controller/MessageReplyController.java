@@ -41,7 +41,7 @@ public class MessageReplyController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Boolean> update(@RequestBody MessageReplyDTO dto) {
+    public ResponseEntity<Message_Reply> update(@RequestBody MessageReplyDTO dto) {
         if (service.findById(dto.getUuid()).isEmpty()) {
             throw new NotResourceException("No content to update");
         }

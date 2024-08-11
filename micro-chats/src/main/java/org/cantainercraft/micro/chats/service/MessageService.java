@@ -14,7 +14,7 @@ public interface MessageService {
 
     Message update(MessageDTO messageDTO);
 
-    boolean delete(UUID uuid);
+    void delete(UUID uuid);
 
     void deleteByClientId(UUID clientId);
 

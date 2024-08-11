@@ -11,9 +11,9 @@ public interface MessageReadService {
 
     MessageRead save(MessageReadDTO messageReadDTO);
 
-    boolean update(MessageReadDTO messageReadDTO);
+    MessageRead update(MessageReadDTO messageReadDTO);
 
-    boolean delete(UUID uuid);
+    void delete(UUID uuid);
 
     List<MessageRead> findAll();
 

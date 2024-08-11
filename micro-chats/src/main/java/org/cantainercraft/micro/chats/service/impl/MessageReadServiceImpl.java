@@ -1,5 +1,6 @@
 package org.cantainercraft.micro.chats.service.impl;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.convertor.MessageReadDTOConvertor;
 import org.cantainercraft.micro.chats.repository.dto.MessageReadDTO;
@@ -21,27 +22,25 @@ public class MessageReadServiceImpl implements MessageReadService {
 
     @Override
     public MessageRead save(MessageReadDTO messageReadDTO) {
-        MessageRead entity = convertor.convertMessageReadDTOToMessageRead(messageReadDTO);
+        MessageRead entity = convertor.convertDTOToEntity(messageReadDTO);
         return repository.save(entity);
     }
 
     @Override
-    public boolean update(MessageReadDTO messageReadDTO) {
-        if (repository.existsById(messageReadDTO.getUuid())) {
-            MessageRead entity = convertor.convertMessageReadDTOToMessageRead(messageReadDTO);
-            repository.save(entity);
-            return true;
+    public MessageRead update(MessageReadDTO messageReadDTO) {
+        if (!repository.existsById(messageReadDTO.getUuid())) {
+           throw new EntityNotFoundException("Message read with uuid " + messageReadDTO.getUuid() + " not found");
         }
-        return false;
+        MessageRead entity = convertor.convertDTOToEntity(messageReadDTO);
+        return repository.save(entity);
     }
 
     @Override
-    public boolean delete(UUID uuid) {
-        if (repository.existsById(uuid)) {
-            repository.deleteById(uuid);
-            return true;
-        }
-        return false;
+    public void delete(UUID uuid) {
+        if (!repository.existsById(uuid)) {
+           throw new EntityNotFoundException("Message read with uuid " + uuid + " not found");
+        } 
+        repository.deleteById(uuid);
     }
 
     @Override
