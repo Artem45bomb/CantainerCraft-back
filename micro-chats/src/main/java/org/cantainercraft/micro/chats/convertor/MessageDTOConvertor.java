@@ -12,11 +12,11 @@ import org.cantainercraft.project.entity.chats.Message;
 public class MessageDTOConvertor {
     private final ModelMapper modelMapper;
 
-    public MessageDTO convertMessageToMessageDTO(Message message){
+    public MessageDTO convertEntityToDTO(Message message){
         return modelMapper.map(message,MessageDTO.class);
     }
 
-    public Message convertMessageDTOToMessage(MessageDTO messageDTO){
+    public Message convertDTOToEntity(MessageDTO messageDTO){
         return modelMapper.map(messageDTO,Message.class);
     }
 }

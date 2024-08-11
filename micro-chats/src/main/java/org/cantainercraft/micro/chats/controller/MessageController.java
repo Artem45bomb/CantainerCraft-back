@@ -22,20 +22,20 @@ import java.util.*;
 @RequiredArgsConstructor
 public class MessageController {
 
-    private final MessageService messageService;
+    private final MessageService service;
     private final UserFeignClient userFeignClient;
     private static final String COLUM_ID = "id";
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/all")
     public ResponseEntity<List<Message>> findAll(){
-        return ResponseEntity.ok(messageService.findAll());
+        return ResponseEntity.ok(service.findAll());
     }
 
 
     @PostMapping("/uuid")
     public ResponseEntity<Message> findByUUID(@RequestBody UUID uuid) {
-        Optional<Message> message = messageService.findByUuid(uuid);
+        Optional<Message> message = service.findByUuid(uuid);
 
         if(message.isEmpty()) {
             throw new NotResourceException("No content");
@@ -45,48 +45,42 @@ public class MessageController {
 
     @PostMapping("/user")
     public ResponseEntity<List<Message>> findByUserId(@RequestBody Long id) {
-       return ResponseEntity.ok(messageService.findByUserId(id));
+       return ResponseEntity.ok(service.findByUserId(id));
     }
 
     //@PreAuthorize("hasAnyRole('USER,ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<Message> save(@RequestBody MessageDTO messageDTO) {
 
-        if (userFeignClient.userExist(messageDTO.getUserId()).getBody() == null) {
+        /* if (userFeignClient.userExist(messageDTO.getUserId()).getBody() == null) {
             throw new NotResourceException("user is not exist");
-        }
+        }*/
 
         messageDTO.setDate(new Date());
 
-        if (messageDTO.getClientId() == null) {
+        /* if (messageDTO.getClientId() == null) {
             throw new NotValidateParamException("Missed param: clientId");
-        }
+        }*/
 
-        Message result = messageService.save(messageDTO);
+        Message result = service.save(messageDTO);
         return ResponseEntity.ok(result);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/delete")
-    public ResponseEntity<Boolean> delete(@RequestBody UUID uuid){
-            Optional<Message> message = messageService.findByUuid(uuid);
-
-            if(message.isEmpty()){
-                throw new NotResourceException("No content for delete");
-            }
-
-            return ResponseEntity.ok(messageService.delete(uuid));
+    public void delete(@RequestBody UUID uuid){
+            service.delete(uuid);
     }
 
 
     @PutMapping("/delete/client/id")
     public void deleteByClientId(@RequestBody UUID clientId){
-        messageService.deleteByClientId(clientId);
+        service.deleteByClientId(clientId);
     }
 
     @PutMapping("/update")
     public ResponseEntity<Message> update(@RequestBody MessageDTO messageDTO) {
-            Optional<Message> message = messageService.findByUuidOrClientId(messageDTO.getUuid(),messageDTO.getClientId());
+            Optional<Message> message = service.findByUuidOrClientId(messageDTO.getUuid(),messageDTO.getClientId());
 
             if(message.isEmpty()) {
                 throw new NotResourceException("No content for update");
@@ -101,7 +95,7 @@ public class MessageController {
                 messageDTO.setUuid(message.get().getUuid());
             }
 
-            return ResponseEntity.ok(messageService.update(messageDTO));
+            return ResponseEntity.ok(service.update(messageDTO));
 
     }
 
@@ -151,7 +145,7 @@ public class MessageController {
         Sort sort = Sort.by(direction,sortColumn,COLUM_ID);
         PageRequest pageRequest = PageRequest.of(pageNumber,pageSize,sort);
 
-        return ResponseEntity.ok(messageService.findBySearch(dateStart,dateEnd,valueMessage,uuid,userId,chatId,pageRequest).getContent());
+        return ResponseEntity.ok(service.findBySearch(dateStart,dateEnd,valueMessage,uuid,userId,chatId,pageRequest).getContent());
 
     }
 }

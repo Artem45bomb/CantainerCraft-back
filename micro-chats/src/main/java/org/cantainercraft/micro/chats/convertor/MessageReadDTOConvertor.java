@@ -11,11 +11,11 @@ import org.cantainercraft.project.entity.chats.MessageRead;
 public class MessageReadDTOConvertor {
     private final ModelMapper modelMapper;
 
-    public MessageReadDTO convertMessageReadToMessageReadDTO(MessageRead messageRead) {
+    public MessageReadDTO convertEntityToDTO(MessageRead messageRead) {
         return modelMapper.map(messageRead, MessageReadDTO.class);
     }
 
-    public MessageRead convertMessageReadDTOToMessageRead(MessageReadDTO messageReadDTO) {
+    public MessageRead convertDTOToEntity(MessageReadDTO messageReadDTO) {
         return modelMapper.map(messageReadDTO, MessageRead.class);
     }
 }

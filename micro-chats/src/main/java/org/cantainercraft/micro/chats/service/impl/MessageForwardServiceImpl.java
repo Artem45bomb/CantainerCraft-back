@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.convertor.MessageForwardDTOConvertor;
 import org.cantainercraft.micro.chats.repository.dto.MessageForwardDTO;
 import org.cantainercraft.micro.chats.service.MessageForwardService;
+import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.chats.Message_Forward;
 import org.cantainercraft.micro.chats.repository.MessageForwardRepository;
 import org.springframework.stereotype.Service;
@@ -21,27 +22,25 @@ public class MessageForwardServiceImpl implements MessageForwardService {
 
     @Override
     public Message_Forward save(MessageForwardDTO messageForwardDTO) {
-        Message_Forward entity = convertor.convertMessageForwardDTOToMessageForward(messageForwardDTO);
+        Message_Forward entity = convertor.convertDTOToEntity(messageForwardDTO);
         return repository.save(entity);
     }
 
     @Override
-    public boolean update(MessageForwardDTO messageForwardDTO) {
-        if (repository.existsById(messageForwardDTO.getUuid())) {
-            Message_Forward entity = convertor.convertMessageForwardDTOToMessageForward(messageForwardDTO);
-            repository.save(entity);
-            return true;
+    public Message_Forward update(MessageForwardDTO messageForwardDTO) {
+        if (!repository.existsById(messageForwardDTO.getUuid())) {
+           throw new NotResourceException("no Message_Forward by id");
         }
-        return false;
+        Message_Forward entity = convertor.convertDTOToEntity(messageForwardDTO);
+        return repository.save(entity);
     }
 
     @Override
-    public boolean delete(UUID uuid) {
-        if (repository.existsById(uuid)) {
-            repository.deleteById(uuid);
-            return true;
+    public void delete(UUID uuid) {
+        if(!repository.existsById(uuid)) {
+            throw new NotResourceException("no Message_Forward by id");
         }
-        return false;
+        repository.deleteById(uuid);
     }
 
     @Override

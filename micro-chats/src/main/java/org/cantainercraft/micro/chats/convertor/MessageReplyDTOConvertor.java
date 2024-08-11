@@ -11,11 +11,11 @@ import org.cantainercraft.project.entity.chats.Message_Reply;
 public class MessageReplyDTOConvertor {
     private final ModelMapper modelMapper;
 
-    public MessageReplyDTO convertMessageReplyToMessageReplyDTO(Message_Reply messageReply) {
+    public MessageReplyDTO convertEntityToDTO(Message_Reply messageReply) {
         return modelMapper.map(messageReply, MessageReplyDTO.class);
     }
 
-    public Message_Reply convertMessageReplyDTOToMessageReply(MessageReplyDTO messageReplyDTO) {
+    public Message_Reply convertDTOToEntity(MessageReplyDTO messageReplyDTO) {
         return modelMapper.map(messageReplyDTO, Message_Reply.class);
     }
 }

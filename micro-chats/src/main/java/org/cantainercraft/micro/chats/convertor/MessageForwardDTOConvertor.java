@@ -11,11 +11,11 @@ import org.cantainercraft.project.entity.chats.Message_Forward;
 public class MessageForwardDTOConvertor {
     private final ModelMapper modelMapper;
 
-    public MessageForwardDTO convertMessageForwardToMessageForwardDTO(Message_Forward messageForward) {
+    public MessageForwardDTO convertEntityToDTO(Message_Forward messageForward) {
         return modelMapper.map(messageForward, MessageForwardDTO.class);
     }
 
-    public Message_Forward convertMessageForwardDTOToMessageForward(MessageForwardDTO messageForwardDTO) {
+    public Message_Forward convertDTOToEntity(MessageForwardDTO messageForwardDTO) {
         return modelMapper.map(messageForwardDTO, Message_Forward.class);
     }
 }

@@ -41,19 +41,12 @@ public class MessageReadController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Boolean> update(@RequestBody MessageReadDTO dto) {
-        if (service.findById(dto.getUuid()).isEmpty()) {
-            throw new NotResourceException("No content to update");
-        }
+    public ResponseEntity<MessageRead> update(@RequestBody MessageReadDTO dto) {
         return ResponseEntity.ok(service.update(dto));
     }
 
     @PutMapping("/delete")
-    public ResponseEntity<Void> delete(@RequestBody UUID uuid) {
-        if (service.findById(uuid).isEmpty()) {
-           throw new NotResourceException("No content to delete");
-        }
+    public void delete(@RequestBody UUID uuid) {
         service.delete(uuid);
-        return ResponseEntity.noContent().build();
     }
 }
