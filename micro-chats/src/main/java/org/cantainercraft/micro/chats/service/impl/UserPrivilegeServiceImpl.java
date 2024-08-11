@@ -39,9 +39,9 @@ public class UserPrivilegeServiceImpl implements UserPrivilegeService {
 
     @Override
     public void delete(UUID uuid) {
-        if (repository.existsById(uuid)) {
-            repository.deleteById(uuid);
-        }
+        if (!repository.existsById(uuid)) throw new NotResourceException("content is not exist");
+
+        repository.deleteById(uuid);
     }
 
     @Override

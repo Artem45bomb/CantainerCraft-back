@@ -51,7 +51,8 @@ public class SecurityConfig {
                         //permitAll - this path is available even if the user is not authorized
                         .requestMatchers("/token/**").permitAll()
                         .requestMatchers("/auth/**").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/swagger-ui/**").permitAll()
+                        .anyRequest().permitAll()
                 )
                 //disable login sessions
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))

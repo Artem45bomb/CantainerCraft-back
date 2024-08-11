@@ -27,7 +27,7 @@ public class User_Online implements Serializable {
     private UUID uuid;
 
     @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL,optional = false)
     private User user;
 
     private boolean is_online;

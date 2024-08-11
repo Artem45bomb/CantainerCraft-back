@@ -1,17 +1,14 @@
 package org.cantainercraft.micro.users.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.cantainercraft.project.entity.users.User;
 
 import java.util.UUID;
 
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@Data
 public class UserOnlineDTO {
 
     private UUID uuid;

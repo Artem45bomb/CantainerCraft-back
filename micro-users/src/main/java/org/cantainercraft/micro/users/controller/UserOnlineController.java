@@ -28,12 +28,6 @@ public class UserOnlineController {
         return ResponseEntity.ok(service.findById(uuid));
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<User_Online> save(@RequestBody UserOnlineDTO dto){
-         return ResponseEntity.ok(service.save(dto));
-    }
-
-
     @PutMapping("/update")
     public ResponseEntity<User_Online> update(@RequestBody UserOnlineDTO dto){
         return ResponseEntity.ok(service.update(dto));

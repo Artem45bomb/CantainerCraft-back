@@ -55,7 +55,7 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private List<Chat_Info> chatInfo;
 
-    @OneToOne(cascade = CascadeType.ALL,mappedBy = "user")
+    @OneToOne(cascade = CascadeType.ALL,mappedBy = "user",orphanRemoval = true)
     private User_Online userOnline;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -72,7 +72,7 @@ public class User implements Serializable {
 
 
     @JsonIgnore
-    @OneToOne(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
     private Profile profile;
 
     @Override
