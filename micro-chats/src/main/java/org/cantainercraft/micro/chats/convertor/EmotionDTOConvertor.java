@@ -11,11 +11,11 @@ import org.springframework.stereotype.Component;
 public class EmotionDTOConvertor {
     private final ModelMapper modelMapper;
 
-    public EmotionDTO convertEmotionToEmotionDTO(Emotion emotion){
+    public EmotionDTO convertEntityToDTO(Emotion emotion){
         return modelMapper.map(emotion,EmotionDTO.class);
     }
 
-    public Emotion convertEmotionDTOToEmotion(EmotionDTO emotionDTO){
+    public Emotion convertDTOToEntity(EmotionDTO emotionDTO){
         return modelMapper.map(emotionDTO,Emotion.class);
     }
 }

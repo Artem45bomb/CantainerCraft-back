@@ -11,9 +11,9 @@ public interface ContentService {
 
     Content save(ContentDTO contentDTO);
 
-    boolean update(ContentDTO contentDTO);
+    Content update(ContentDTO contentDTO);
 
-    boolean delete(UUID uuid);
+    void delete(UUID uuid);
 
     List<Content> findAll();
 

@@ -22,27 +22,24 @@ public class ChatSettingsServiceImpl implements ChatSettingsService {
     private final ChatSettingsDTOConvertor chatSettingsDTOConvector;
     private final ChatSettingsRepository chatSettingsRepository;
 
-    public boolean delete(UUID uuid) {
+    public void delete(UUID uuid) {
         if(!chatSettingsRepository.existsById(uuid))
         {
             throw new NotResourceException("no settings by id");
         }
         chatSettingsRepository.deleteById(uuid);
-        return true;
     }
 
-    public boolean update(ChatSettingsDTO chatSettingsUpdateDTO) {
+    public Chat_Settings update(ChatSettingsDTO chatSettingsUpdateDTO) {
         if(!chatSettingsRepository.existsById(chatSettingsUpdateDTO.getUuid())){
             throw new NotResourceException("no settings by id");
         }
-        Chat_Settings chatSettings = chatSettingsDTOConvector.convertChatSettingsDTOToChatSettings(chatSettingsUpdateDTO);
-        chatSettings.setUuid(chatSettingsUpdateDTO.getUuid());
-        chatSettingsRepository.save(chatSettings);
-        return true;
+        Chat_Settings chatSettings = chatSettingsDTOConvector.convertDTOToEntity(chatSettingsUpdateDTO);
+        return chatSettingsRepository.save(chatSettings);
     }
 
     public Chat_Settings save(ChatSettingsDTO settings) {
-        Chat_Settings chatSettings = chatSettingsDTOConvector.convertChatSettingsDTOToChatSettings(settings);
+        Chat_Settings chatSettings = chatSettingsDTOConvector.convertDTOToEntity(settings);
         return chatSettingsRepository.save(chatSettings);
     }
 

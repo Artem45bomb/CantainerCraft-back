@@ -48,7 +48,7 @@ public class EmotionServiceImpl implements EmotionService {
 
         if(emotion.isEmpty()){
             return repository
-                    .save(convertor.convertEmotionDTOToEmotion(emotionDTO));
+                    .save(convertor.convertDTOToEntity(emotionDTO));
         }
         else
             throw new ExistResourceException("emotion is exist");
@@ -59,7 +59,7 @@ public class EmotionServiceImpl implements EmotionService {
                 .findById(emotionDTO.getUuid())
                 .orElseThrow(() -> {throw new NotResourceException("emotion is not exist");});
         return repository
-                .save(convertor.convertEmotionDTOToEmotion(emotionDTO));
+                .save(convertor.convertDTOToEntity(emotionDTO));
     }
     public List<Emotion> findAll() {
         return repository.findAll();

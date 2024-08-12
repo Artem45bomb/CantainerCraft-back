@@ -18,39 +18,33 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ChatSettingController {
 
-    private final ChatSettingsService chatSettingsService;
+    private final ChatSettingsService service;
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<Chat_Settings> save(@RequestBody ChatSettingsDTO chatSettingsDTO)
     {
-        return ResponseEntity.ok(chatSettingsService.save(chatSettingsDTO));
+        return ResponseEntity.ok(service.save(chatSettingsDTO));
     }
 
 
-    @PutMapping("/delete/chat_settings")
-    public ResponseEntity<Boolean> delete(@RequestBody UUID uuid) {
-        Optional<Chat_Settings> chatSettings = chatSettingsService.findByUUID(uuid);
-
-        if (chatSettings.isEmpty()) {
-            throw new ExistResourceException("No Settings to delete");
-        }
-        return ResponseEntity.ok(chatSettingsService.delete(uuid));
+    @PutMapping("/delete")
+    public void delete(@RequestBody UUID uuid) {
+        service.delete(uuid);
     }
-
 
     @PutMapping("/update")
-    public ResponseEntity<Boolean> update(@RequestBody ChatSettingsDTO chatSettingsDTO) {
+    public ResponseEntity<Chat_Settings> update(@RequestBody ChatSettingsDTO chatSettingsDTO) {
         if (chatSettingsDTO.getUuid() == null) {
             throw new ExistResourceException("No Settings to update");
         }
         //chatSettingsService.update(chatSettingsDTO);
-        return ResponseEntity.ok(chatSettingsService.update(chatSettingsDTO));
+        return ResponseEntity.ok(service.update(chatSettingsDTO));
     }
 
     @PostMapping("/id")
     public ResponseEntity<Chat_Settings> findByUUID(UUID uuid) {
-        Optional<Chat_Settings> chatSettings = chatSettingsService.findByUUID(uuid);
+        Optional<Chat_Settings> chatSettings = service.findByUUID(uuid);
         if (chatSettings.isEmpty()) {
             throw new ExistResourceException("No Settings");
         }
@@ -60,7 +54,7 @@ public class ChatSettingController {
 
     @PostMapping("/search")
     public ResponseEntity<List<Chat_Settings>> findByChatID(UUID uuid) {
-        return ResponseEntity.ok(chatSettingsService.findByChatId(uuid));
+        return ResponseEntity.ok(service.findByChatId(uuid));
     }
 }
 

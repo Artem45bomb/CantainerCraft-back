@@ -11,11 +11,11 @@ public class ChatSettingsGroupDTOConvertor {
     @Autowired
     private ModelMapper modelMapper;
 
-    public ChatSettingsGroupDTO convertChatSettingsGroupToChatSettingsGroupDTO(Chat_Settings_Group chatSettingsGroup) {
+    public ChatSettingsGroupDTO convertEntityToDTO(Chat_Settings_Group chatSettingsGroup) {
         return modelMapper.map(chatSettingsGroup, ChatSettingsGroupDTO.class);
     }
 
-    public Chat_Settings_Group convertChatSettingsGroupDTOToChatSettingsGroup(ChatSettingsGroupDTO chatSettingsGroupDTO) {
+    public Chat_Settings_Group convertDTOToEntity(ChatSettingsGroupDTO chatSettingsGroupDTO) {
         return modelMapper.map(chatSettingsGroupDTO, Chat_Settings_Group.class);
     }
 

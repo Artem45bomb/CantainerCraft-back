@@ -45,7 +45,7 @@ public class ChatController {
     }
 
     @PutMapping("/delete")
-    public void  delete(@RequestBody UUID uuid){
+    public void delete(@RequestBody UUID uuid){
         service.delete(uuid);
     }
 

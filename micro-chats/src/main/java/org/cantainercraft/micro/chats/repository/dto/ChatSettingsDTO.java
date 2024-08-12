@@ -24,3 +24,4 @@ public class ChatSettingsDTO implements Serializable {
     private Chat_Settings_Chanel chatSettingsChanel;
     private Chat chat;
 }
+

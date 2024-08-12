@@ -10,9 +10,9 @@ import java.util.UUID;
 
 public interface ChatSettingsGroupService {
 
-    boolean delete(UUID uuid);
+    void delete(UUID uuid);
 
-    boolean update(ChatSettingsGroupDTO chatSettingsGroupUpdateDTO);
+    Chat_Settings_Group update(ChatSettingsGroupDTO chatSettingsGroupUpdateDTO);
 
     Chat_Settings_Group save(ChatSettingsGroupDTO chatSettingsGroupDTO);
 
