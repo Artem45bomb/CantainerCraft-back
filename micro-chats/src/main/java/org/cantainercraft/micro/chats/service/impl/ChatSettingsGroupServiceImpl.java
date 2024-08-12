@@ -20,27 +20,25 @@ public class ChatSettingsGroupServiceImpl implements ChatSettingsGroupService {
     private final ChatSettingsGroupDTOConvertor convertor;
 
 
-    public boolean delete(UUID uuid) {
+    public void delete(UUID uuid) {
         if(!repository.existsById(uuid))
         {
             throw new NotResourceException("no settingsGroup by id");
         }
         repository.deleteById(uuid);
-        return true;
     }
 
-    public boolean update(ChatSettingsGroupDTO chatSettingsGroupDTO) {
+    public Chat_Settings_Group update(ChatSettingsGroupDTO chatSettingsGroupDTO) {
         if(!repository.existsById(chatSettingsGroupDTO.getUuid())) {
             throw new NotResourceException("no settingsGroup by id");
         }
-        Chat_Settings_Group chatSettingsGroup = convertor.convertChatSettingsGroupDTOToChatSettingsGroup(chatSettingsGroupDTO);
-        repository.save(chatSettingsGroup);
-        return true;
+        Chat_Settings_Group chatSettingsGroup = convertor.convertDTOToEntity(chatSettingsGroupDTO);
+        return repository.save(chatSettingsGroup);
     }
 
     public Chat_Settings_Group save(ChatSettingsGroupDTO chatSettingsGroupDTO)
     {
-        Chat_Settings_Group chatSettingsGroup = convertor.convertChatSettingsGroupDTOToChatSettingsGroup(chatSettingsGroupDTO);
+        Chat_Settings_Group chatSettingsGroup = convertor.convertDTOToEntity(chatSettingsGroupDTO);
         return repository.save(chatSettingsGroup);
     }
 

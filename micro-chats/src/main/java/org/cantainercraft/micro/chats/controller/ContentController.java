@@ -42,7 +42,7 @@ public class ContentController {
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/update")
-    public ResponseEntity<Boolean> update(@RequestBody ContentDTO contentDTO) {
+    public ResponseEntity<Content> update(@RequestBody ContentDTO contentDTO) {
         if (service.findById(contentDTO.getUuid()).isEmpty()) {
             throw new NotResourceException("No content to update");
         }

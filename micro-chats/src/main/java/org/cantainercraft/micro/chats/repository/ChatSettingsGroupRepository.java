@@ -7,6 +7,5 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ChatSettingsGroupRepository extends JpaRepository<Chat_Settings_Group, UUID> {
-
     List<Chat_Settings_Group> findByChatSettingsUuid(UUID uuid);
 }

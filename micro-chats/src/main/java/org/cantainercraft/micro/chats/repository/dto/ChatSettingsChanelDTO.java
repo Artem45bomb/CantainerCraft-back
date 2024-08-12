@@ -21,6 +21,5 @@ public class ChatSettingsChanelDTO implements Serializable {
     private UUID uuid;
     private boolean singMessage;
     private String type_channel;
-
     private Chat_Settings chatSettings;
 }

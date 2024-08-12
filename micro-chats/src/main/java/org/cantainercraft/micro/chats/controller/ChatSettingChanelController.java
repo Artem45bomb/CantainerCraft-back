@@ -27,7 +27,7 @@ public class ChatSettingChanelController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
-    @PutMapping("/delete/chat_settings_chanel")
+    @PutMapping("/delete")
     public void delete(@RequestBody UUID uuid) {
         service.delete(uuid);
     }

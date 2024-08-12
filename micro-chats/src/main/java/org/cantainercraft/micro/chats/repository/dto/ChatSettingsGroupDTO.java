@@ -29,6 +29,6 @@ public class ChatSettingsGroupDTO implements Serializable {
     private boolean isPreviewSrc;
     private boolean isUpdateMessage;
     private Duration slowMode;
-
     private Chat_Settings chatSettings;
 }
+
