@@ -19,19 +19,6 @@ public class ChatSettingChanelController {
 
     private final ChatSettingsChanelService service;
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    @PostMapping("/add")
-    public ResponseEntity<Chat_Settings_Chanel> save(@RequestBody ChatSettingsChanelDTO chatSettingsChanelDTO){
-
-        return ResponseEntity.ok(service.save(chatSettingsChanelDTO));
-    }
-
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    @PutMapping("/delete/chat_settings_chanel")
-    public void delete(@RequestBody UUID uuid) {
-        service.delete(uuid);
-    }
-
     @PutMapping("/update")
     public ResponseEntity<Chat_Settings_Chanel> update(@RequestBody ChatSettingsChanelDTO chatSettingsDTO) {
         if (chatSettingsDTO.getUuid() == null) {

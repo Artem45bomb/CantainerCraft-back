@@ -22,6 +22,10 @@ public interface MessageRepository extends JpaRepository<Message, UUID> {
 
     Optional<Message> findByClientId(UUID clientId);
 
+    boolean existsByClientId(UUID clientId);
+
+    boolean existsByClientIdOrUuid(UUID clientId,UUID uuid);
+
     void deleteByClientId(UUID clientId);
 
     @Query("select message from  Message message where(lower(message.text) like lower(concat('%',:value,'%')) or :value is null or :value = '') and" +

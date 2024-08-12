@@ -26,8 +26,10 @@ public class Content implements Serializable {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID uuid;
 
+    @Column(unique = true,updatable = false)
     private String srcContent;
 
+    @Column(updatable = false)
     private String type;
 
     private BigInteger sizeByte;

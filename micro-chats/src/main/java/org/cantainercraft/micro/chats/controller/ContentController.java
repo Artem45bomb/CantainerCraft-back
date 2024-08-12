@@ -40,15 +40,6 @@ public class ContentController {
         return ResponseEntity.ok(service.save(contentDTO));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    @PutMapping("/update")
-    public ResponseEntity<Boolean> update(@RequestBody ContentDTO contentDTO) {
-        if (service.findById(contentDTO.getUuid()).isEmpty()) {
-            throw new NotResourceException("No content to update");
-        }
-        return ResponseEntity.ok(service.update(contentDTO));
-    }
-
     @PutMapping("/delete")
     public ResponseEntity<Void> delete(@RequestBody UUID id) {
         if (service.findById(id).isEmpty()) {

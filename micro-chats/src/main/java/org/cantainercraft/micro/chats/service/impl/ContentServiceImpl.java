@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.convertor.ContentDTOConvertor;
 import org.cantainercraft.micro.chats.repository.dto.ContentDTO;
 import org.cantainercraft.micro.chats.service.ContentService;
+import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.chats.Content;
 import org.cantainercraft.micro.chats.repository.ContentRepository;
 import org.springframework.stereotype.Service;
@@ -28,22 +29,11 @@ public class ContentServiceImpl implements ContentService {
     }
 
     @Override
-    public boolean update(ContentDTO contentDTO) {
-        if (repository.existsById(contentDTO.getUuid())) {
-            Content entity = convertor.convertContentDTOToContent(contentDTO);
-            repository.save(entity);
-            return true;
+    public void delete(UUID uuid) {
+        if (!repository.existsById(uuid)) {
+            throw new NotResourceException("content is not exist");
         }
-        return false;
-    }
-
-    @Override
-    public boolean delete(UUID uuid) {
-        if (repository.existsById(uuid)) {
-            repository.deleteById(uuid);
-            return true;
-        }
-        return false;
+        repository.deleteById(uuid);
     }
 
     @Override

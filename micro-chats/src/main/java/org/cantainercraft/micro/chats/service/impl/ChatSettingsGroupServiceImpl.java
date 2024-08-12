@@ -20,22 +20,20 @@ public class ChatSettingsGroupServiceImpl implements ChatSettingsGroupService {
     private final ChatSettingsGroupDTOConvertor convertor;
 
 
-    public boolean delete(UUID uuid) {
+    public void delete(UUID uuid) {
         if(!repository.existsById(uuid))
         {
             throw new NotResourceException("no settingsGroup by id");
         }
         repository.deleteById(uuid);
-        return true;
     }
 
-    public boolean update(ChatSettingsGroupDTO chatSettingsGroupDTO) {
+    public Chat_Settings_Group update(ChatSettingsGroupDTO chatSettingsGroupDTO) {
         if(!repository.existsById(chatSettingsGroupDTO.getUuid())) {
             throw new NotResourceException("no settingsGroup by id");
         }
         Chat_Settings_Group chatSettingsGroup = convertor.convertChatSettingsGroupDTOToChatSettingsGroup(chatSettingsGroupDTO);
-        repository.save(chatSettingsGroup);
-        return true;
+        return repository.save(chatSettingsGroup);
     }
 
     public Chat_Settings_Group save(ChatSettingsGroupDTO chatSettingsGroupDTO)
@@ -49,8 +47,6 @@ public class ChatSettingsGroupServiceImpl implements ChatSettingsGroupService {
         return repository.findById(uuid);
     }
 
-    public List<Chat_Settings_Group> findByGroupId(UUID uuid) {
-        return repository.findByChatSettingsUuid(uuid);
-    }
+
 
 }

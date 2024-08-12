@@ -24,10 +24,11 @@ public class Message_Reply implements Serializable {
     private UUID uuid;
 
     @ManyToOne
+    @JoinColumn(nullable = false)
     private Message message;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "message_replyId", referencedColumnName = "uuid")
+    @JoinColumn(name = "message_replyId", referencedColumnName = "uuid",nullable = false)
     private Message messageReply;
 
     @Override

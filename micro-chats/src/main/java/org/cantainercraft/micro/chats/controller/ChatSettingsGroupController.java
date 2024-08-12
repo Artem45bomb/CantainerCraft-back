@@ -18,49 +18,23 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ChatSettingsGroupController {
 
-    private final ChatSettingsGroupService chatSettingsGroupService;
-
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    @PostMapping("/add")
-    public ResponseEntity<Chat_Settings_Group> save(@RequestBody ChatSettingsGroupDTO chatSettingsDTO)
-    {
-        return ResponseEntity.ok(chatSettingsGroupService.save(chatSettingsDTO));
-    }
-
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    @PutMapping("/delete/chat_settings")
-    public ResponseEntity<Boolean> delete(@RequestBody UUID uuid) {
-        Optional<Chat_Settings_Group> chatSettings = chatSettingsGroupService.findByUUID(uuid);
-
-        if (chatSettings.isEmpty()) {
-            throw new ExistResourceException("No SettingsGroup to delete");
-        }
-        return ResponseEntity.ok(chatSettingsGroupService.delete(uuid));
-    }
-
+    private final ChatSettingsGroupService service;
 
     @PutMapping("/update")
-    public ResponseEntity<Boolean> update(@RequestBody ChatSettingsGroupDTO chatSettingsDTO) {
+    public ResponseEntity<Chat_Settings_Group> update(@RequestBody ChatSettingsGroupDTO chatSettingsDTO) {
         if (chatSettingsDTO.getUuid() == null) {
             throw new ExistResourceException("No SettingsGroup to update");
         }
-        //chatSettingsService.update(chatSettingsDTO);
-        return ResponseEntity.ok(chatSettingsGroupService.update(chatSettingsDTO));
+
+        return ResponseEntity.ok(service.update(chatSettingsDTO));
     }
 
     @PostMapping("/id")
     public ResponseEntity<Chat_Settings_Group> findByUUID(UUID uuid) {
-        Optional<Chat_Settings_Group> chatSettings = chatSettingsGroupService.findByUUID(uuid);
+        Optional<Chat_Settings_Group> chatSettings = service.findByUUID(uuid);
         if (chatSettings.isEmpty()) {
             throw new ExistResourceException("No SettingsGroup");
         }
         return ResponseEntity.ok(chatSettings.get());
-    }
-
-    //?
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    @PostMapping("/search")
-    public ResponseEntity<List<Chat_Settings_Group>> findByChatID(UUID uuid) {
-        return ResponseEntity.ok(chatSettingsGroupService.findByGroupId(uuid));
     }
 }

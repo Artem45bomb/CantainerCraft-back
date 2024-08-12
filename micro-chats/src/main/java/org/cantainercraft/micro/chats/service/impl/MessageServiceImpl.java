@@ -27,7 +27,7 @@ public class MessageServiceImpl implements MessageService {
     public Message save(MessageDTO messageDTO) {
         Message message = convertor.convertDTOToEntity(messageDTO);
 
-        if(repository.existsById(messageDTO.getUuid())) {
+        if(repository.existsByClientId(messageDTO.getClientId())) {
             throw new NotResourceException("Message with id " + messageDTO.getUuid() + " already exists");
         }
 
@@ -38,7 +38,7 @@ public class MessageServiceImpl implements MessageService {
     public Message update(MessageDTO messageDTO){
         Message message = convertor.convertDTOToEntity(messageDTO);
 
-        if(repository.existsById(messageDTO.getUuid())) {
+        if(repository.existsByClientIdOrUuid(message.getClientId(),messageDTO.getUuid())) {
             throw new NotResourceException("Message with id " + messageDTO.getUuid() + " already exists");
         }
 

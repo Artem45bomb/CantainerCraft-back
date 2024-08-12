@@ -52,15 +52,15 @@ public class MessageController {
     @PostMapping("/add")
     public ResponseEntity<Message> save(@RequestBody MessageDTO messageDTO) {
 
-        /* if (userFeignClient.userExist(messageDTO.getUserId()).getBody() == null) {
+        if (userFeignClient.userExist(messageDTO.getUserId()).getBody() == null) {
             throw new NotResourceException("user is not exist");
-        }*/
+        }
 
         messageDTO.setDate(new Date());
 
-        /* if (messageDTO.getClientId() == null) {
+        if (messageDTO.getClientId() == null) {
             throw new NotValidateParamException("Missed param: clientId");
-        }*/
+        }
 
         Message result = service.save(messageDTO);
         return ResponseEntity.ok(result);

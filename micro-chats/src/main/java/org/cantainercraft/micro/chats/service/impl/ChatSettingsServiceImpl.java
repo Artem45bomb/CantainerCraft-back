@@ -20,37 +20,35 @@ import java.util.UUID;
 public class ChatSettingsServiceImpl implements ChatSettingsService {
 
     private final ChatSettingsDTOConvertor chatSettingsDTOConvector;
-    private final ChatSettingsRepository chatSettingsRepository;
+    private final ChatSettingsRepository repository;
 
-    public boolean delete(UUID uuid) {
-        if(!chatSettingsRepository.existsById(uuid))
+    public void delete(UUID uuid) {
+        if(!repository.existsById(uuid))
         {
             throw new NotResourceException("no settings by id");
         }
-        chatSettingsRepository.deleteById(uuid);
-        return true;
+        repository.deleteById(uuid);
     }
 
-    public boolean update(ChatSettingsDTO chatSettingsUpdateDTO) {
-        if(!chatSettingsRepository.existsById(chatSettingsUpdateDTO.getUuid())){
+    public Chat_Settings update(ChatSettingsDTO chatSettingsUpdateDTO) {
+        if(!repository.existsById(chatSettingsUpdateDTO.getUuid())){
             throw new NotResourceException("no settings by id");
         }
         Chat_Settings chatSettings = chatSettingsDTOConvector.convertChatSettingsDTOToChatSettings(chatSettingsUpdateDTO);
         chatSettings.setUuid(chatSettingsUpdateDTO.getUuid());
-        chatSettingsRepository.save(chatSettings);
-        return true;
+        return repository.save(chatSettings);
     }
 
     public Chat_Settings save(ChatSettingsDTO settings) {
         Chat_Settings chatSettings = chatSettingsDTOConvector.convertChatSettingsDTOToChatSettings(settings);
-        return chatSettingsRepository.save(chatSettings);
+        return repository.save(chatSettings);
     }
 
     public Optional<Chat_Settings> findByUUID(UUID uuid) {
-        return chatSettingsRepository.findById(uuid);
+        return repository.findById(uuid);
     }
 
     public List<Chat_Settings> findByChatId(UUID chat_Id) {
-        return chatSettingsRepository.findByChatUuid(chat_Id);
+        return repository.findByChatUuid(chat_Id);
     }
 }

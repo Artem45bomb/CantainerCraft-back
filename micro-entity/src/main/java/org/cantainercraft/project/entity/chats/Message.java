@@ -36,6 +36,7 @@ public class Message implements Serializable {
 
     private Long userId;
 
+    @Column(unique = true)
     private UUID clientId;
 
     @OneToMany(mappedBy = "message",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
