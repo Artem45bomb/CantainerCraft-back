@@ -9,6 +9,8 @@ import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.chats.Chat_Settings_Chanel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -42,5 +44,10 @@ public class ChatSettingsChanelServiceImpl implements ChatSettingsChanelService 
 
     public Optional<Chat_Settings_Chanel> findByUUID(UUID uuid) {
         return repository.findById(uuid);
+    }
+
+    @Override
+    public List<Chat_Settings_Chanel> findAll() {
+        return repository.findAll();
     }
 }

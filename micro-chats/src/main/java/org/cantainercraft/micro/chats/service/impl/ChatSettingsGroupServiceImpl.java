@@ -47,6 +47,9 @@ public class ChatSettingsGroupServiceImpl implements ChatSettingsGroupService {
         return repository.findById(uuid);
     }
 
-
+    @Override
+    public List<Chat_Settings_Group> findAll(){
+        return repository.findAll();
+    }
 
 }

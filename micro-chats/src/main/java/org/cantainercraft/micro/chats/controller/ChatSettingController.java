@@ -42,5 +42,11 @@ public class ChatSettingController {
     public ResponseEntity<List<Chat_Settings>> findByChatID(UUID uuid) {
         return ResponseEntity.ok(service.findByChatId(uuid));
     }
+
+    @PostMapping("/all")
+    public List<Chat_Settings> findAll(){
+        return service.findAll();
+    }
+
 }
 

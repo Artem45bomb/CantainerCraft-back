@@ -19,7 +19,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ChatSettingsServiceImpl implements ChatSettingsService {
 
-    private final ChatSettingsDTOConvertor chatSettingsDTOConvector;
+    private final ChatSettingsDTOConvertor convertor;
     private final ChatSettingsRepository repository;
 
     public void delete(UUID uuid) {
@@ -34,13 +34,13 @@ public class ChatSettingsServiceImpl implements ChatSettingsService {
         if(!repository.existsById(chatSettingsUpdateDTO.getUuid())){
             throw new NotResourceException("no settings by id");
         }
-        Chat_Settings chatSettings = chatSettingsDTOConvector.convertChatSettingsDTOToChatSettings(chatSettingsUpdateDTO);
+        Chat_Settings chatSettings = convertor.convertChatSettingsDTOToChatSettings(chatSettingsUpdateDTO);
         chatSettings.setUuid(chatSettingsUpdateDTO.getUuid());
         return repository.save(chatSettings);
     }
 
     public Chat_Settings save(ChatSettingsDTO settings) {
-        Chat_Settings chatSettings = chatSettingsDTOConvector.convertChatSettingsDTOToChatSettings(settings);
+        Chat_Settings chatSettings = convertor.convertChatSettingsDTOToChatSettings(settings);
         return repository.save(chatSettings);
     }
 
@@ -50,5 +50,9 @@ public class ChatSettingsServiceImpl implements ChatSettingsService {
 
     public List<Chat_Settings> findByChatId(UUID chat_Id) {
         return repository.findByChatUuid(chat_Id);
+    }
+    
+    public List<Chat_Settings> findAll(){
+        return repository.findAll();
     }
 }

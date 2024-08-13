@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,6 +37,11 @@ public class ChatSettingChanelController {
             throw new ExistResourceException("No SettingsChanel");
         }
         return ResponseEntity.ok(chatSettings.get());
+    }
+
+    @PostMapping("/all")
+    public List<Chat_Settings_Chanel> findAll(){
+        return service.findAll();
     }
 
 }

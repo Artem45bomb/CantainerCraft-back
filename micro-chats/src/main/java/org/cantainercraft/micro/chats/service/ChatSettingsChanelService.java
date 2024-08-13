@@ -3,6 +3,7 @@ package org.cantainercraft.micro.chats.service;
 import org.cantainercraft.micro.chats.repository.dto.ChatSettingsChanelDTO;
 import org.cantainercraft.project.entity.chats.Chat_Settings_Chanel;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -15,4 +16,6 @@ public interface ChatSettingsChanelService {
     Chat_Settings_Chanel save(ChatSettingsChanelDTO settings);
 
     Optional<Chat_Settings_Chanel> findByUUID(UUID uuid);
+
+    List<Chat_Settings_Chanel> findAll();
 }

@@ -17,4 +17,6 @@ public interface ChatSettingsGroupService {
     Chat_Settings_Group save(ChatSettingsGroupDTO chatSettingsGroupDTO);
 
     Optional<Chat_Settings_Group> findByUUID(UUID uuid);
+
+    List<Chat_Settings_Group> findAll();
 }

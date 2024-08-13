@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.repository.dto.ChatSettingsGroupDTO;
 import org.cantainercraft.micro.chats.service.ChatSettingsGroupService;
 import org.cantainercraft.micro.utilits.exception.ExistResourceException;
+import org.cantainercraft.project.entity.chats.Chat_Settings;
 import org.cantainercraft.project.entity.chats.Chat_Settings_Group;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -36,5 +37,10 @@ public class ChatSettingsGroupController {
             throw new ExistResourceException("No SettingsGroup");
         }
         return ResponseEntity.ok(chatSettings.get());
+    }
+
+    @PostMapping("/all")
+    public List<Chat_Settings_Group> findAll(){
+        return service.findAll();
     }
 }
