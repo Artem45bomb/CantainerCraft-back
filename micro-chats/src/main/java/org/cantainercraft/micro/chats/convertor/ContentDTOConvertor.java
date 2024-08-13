@@ -11,11 +11,11 @@ import org.cantainercraft.project.entity.chats.Content;
 public class ContentDTOConvertor {
     private final ModelMapper modelMapper;
 
-    public ContentDTO convertContentToContentDTO(Content content) {
+    public ContentDTO convertEntityToDTO(Content content) {
         return modelMapper.map(content, ContentDTO.class);
     }
 
-    public Content convertContentDTOToContent(ContentDTO contentDTO) {
+    public Content convertDTOToEntity(ContentDTO contentDTO) {
         return modelMapper.map(contentDTO, Content.class);
     }
 }

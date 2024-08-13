@@ -19,14 +19,6 @@ import java.util.UUID;
 public class ChatSettingController {
     private final ChatSettingsService service;
 
-    @PutMapping("/update")
-    public ResponseEntity<Chat_Settings> update(@RequestBody ChatSettingsDTO chatSettingsDTO) {
-        if (chatSettingsDTO.getUuid() == null) {
-            throw new ExistResourceException("No Settings to update");
-        }
-        
-        return ResponseEntity.ok(service.update(chatSettingsDTO));
-    }
 
     @PostMapping("/id")
     public ResponseEntity<Chat_Settings> findByUUID(UUID uuid) {

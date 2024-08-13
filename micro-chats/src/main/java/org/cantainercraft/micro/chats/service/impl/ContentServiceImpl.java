@@ -24,15 +24,25 @@ public class ContentServiceImpl implements ContentService {
 
     @Override
     public Content save(ContentDTO contentDTO) {
-        Content entity = convertor.convertContentDTOToContent(contentDTO);
+        Content entity = convertor.convertDTOToEntity(contentDTO);
+        return repository.save(entity);
+    }
+
+
+    public Content update(ContentDTO contentDTO) {
+        if (!repository.existsById(contentDTO.getUuid())) {
+           throw new NotResourceException("no content by id");
+        }
+        Content entity = convertor.convertDTOToEntity(contentDTO);
         return repository.save(entity);
     }
 
     @Override
     public void delete(UUID uuid) {
-        if (!repository.existsById(uuid)) {
+        if(!repository.existsById(uuid)){
             throw new NotResourceException("content is not exist");
         }
+
         repository.deleteById(uuid);
     }
 

@@ -21,12 +21,12 @@ public class ChatSettingsGroupController {
 
     private final ChatSettingsGroupService service;
 
+
     @PutMapping("/update")
     public ResponseEntity<Chat_Settings_Group> update(@RequestBody ChatSettingsGroupDTO chatSettingsDTO) {
         if (chatSettingsDTO.getUuid() == null) {
             throw new ExistResourceException("No SettingsGroup to update");
         }
-
         return ResponseEntity.ok(service.update(chatSettingsDTO));
     }
 
@@ -40,7 +40,7 @@ public class ChatSettingsGroupController {
     }
 
     @PostMapping("/all")
-    public List<Chat_Settings_Group> findAll(){
+    public List<Chat_Settings_Group> findAll() {
         return service.findAll();
     }
 }

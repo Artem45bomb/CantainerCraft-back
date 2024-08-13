@@ -16,5 +16,4 @@ import java.util.UUID;
 public class EmotionDTO implements Serializable {
     private String unicode;
     private UUID uuid;
-
 }

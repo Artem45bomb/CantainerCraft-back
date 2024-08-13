@@ -20,12 +20,12 @@ public class ChatSettingChanelController {
 
     private final ChatSettingsChanelService service;
 
+
     @PutMapping("/update")
     public ResponseEntity<Chat_Settings_Chanel> update(@RequestBody ChatSettingsChanelDTO chatSettingsDTO) {
         if (chatSettingsDTO.getUuid() == null) {
             throw new ExistResourceException("No SettingsChanel to update");
         }
-        //chatSettingsService.update(chatSettingsDTO);
         return ResponseEntity.ok(service.update(chatSettingsDTO));
     }
 

@@ -30,17 +30,17 @@ public class ChatSettingsServiceImpl implements ChatSettingsService {
         repository.deleteById(uuid);
     }
 
+
     public Chat_Settings update(ChatSettingsDTO chatSettingsUpdateDTO) {
         if(!repository.existsById(chatSettingsUpdateDTO.getUuid())){
             throw new NotResourceException("no settings by id");
         }
-        Chat_Settings chatSettings = convertor.convertChatSettingsDTOToChatSettings(chatSettingsUpdateDTO);
-        chatSettings.setUuid(chatSettingsUpdateDTO.getUuid());
+        Chat_Settings chatSettings = convertor.convertDTOToEntity(chatSettingsUpdateDTO);
         return repository.save(chatSettings);
     }
 
     public Chat_Settings save(ChatSettingsDTO settings) {
-        Chat_Settings chatSettings = convertor.convertChatSettingsDTOToChatSettings(settings);
+        Chat_Settings chatSettings = convertor.convertDTOToEntity(settings);
         return repository.save(chatSettings);
     }
 

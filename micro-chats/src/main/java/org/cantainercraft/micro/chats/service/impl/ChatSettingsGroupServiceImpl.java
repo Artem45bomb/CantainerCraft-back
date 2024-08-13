@@ -32,13 +32,14 @@ public class ChatSettingsGroupServiceImpl implements ChatSettingsGroupService {
         if(!repository.existsById(chatSettingsGroupDTO.getUuid())) {
             throw new NotResourceException("no settingsGroup by id");
         }
-        Chat_Settings_Group chatSettingsGroup = convertor.convertChatSettingsGroupDTOToChatSettingsGroup(chatSettingsGroupDTO);
+        Chat_Settings_Group chatSettingsGroup = convertor.convertDTOToEntity(chatSettingsGroupDTO);
+
         return repository.save(chatSettingsGroup);
     }
 
     public Chat_Settings_Group save(ChatSettingsGroupDTO chatSettingsGroupDTO)
     {
-        Chat_Settings_Group chatSettingsGroup = convertor.convertChatSettingsGroupDTOToChatSettingsGroup(chatSettingsGroupDTO);
+        Chat_Settings_Group chatSettingsGroup = convertor.convertDTOToEntity(chatSettingsGroupDTO);
         return repository.save(chatSettingsGroup);
     }
 

@@ -40,6 +40,7 @@ public class ContentController {
         return ResponseEntity.ok(service.save(contentDTO));
     }
 
+
     @PutMapping("/delete")
     public ResponseEntity<Void> delete(@RequestBody UUID id) {
         if (service.findById(id).isEmpty()) {

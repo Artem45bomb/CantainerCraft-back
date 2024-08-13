@@ -11,6 +11,8 @@ public interface ContentService {
 
     Content save(ContentDTO contentDTO);
 
+    Content update(ContentDTO contentDTO);
+
     void delete(UUID uuid);
 
     List<Content> findAll();
