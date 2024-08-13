@@ -2,7 +2,6 @@ package org.cantainercraft.micro.chats.repository;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -12,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -20,7 +18,6 @@ import java.util.UUID;
 public interface ChatRepository extends JpaRepository<Chat, UUID> {
     boolean existsByLink(String link);
 
-    Optional<Chat> findByLink(String link);
 
     @Query("select chat from Chat chat where (:uuid is null or chat.uuid = :uuid) and" +
             "( :chatName is null  or lower(chat.name) like  lower(concat('%',:chatName,'%'))) and" +

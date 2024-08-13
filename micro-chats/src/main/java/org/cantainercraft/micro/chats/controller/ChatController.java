@@ -1,7 +1,6 @@
 package org.cantainercraft.micro.chats.controller;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.cantainercraft.micro.chats.repository.dto.ChatDTO;
 import org.cantainercraft.micro.chats.repository.dto.ChatSearchDTO;
 import org.cantainercraft.micro.chats.service.ChatService;
@@ -20,7 +19,6 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/chat")
-@Slf4j
 @RequiredArgsConstructor
 public class ChatController {
     private final ChatService service;

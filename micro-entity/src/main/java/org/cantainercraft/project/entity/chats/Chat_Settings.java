@@ -26,12 +26,12 @@ public class Chat_Settings implements Serializable {
 
     private boolean isAllowTheme;
 
-
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER,optional = false,orphanRemoval = true)
+    @JoinColumn(name = "group_id",referencedColumnName = "uuid")
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER,orphanRemoval = true)
     private Chat_Settings_Group chatSettingsGroup;
 
-
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER,optional = false,orphanRemoval = true)
+    @JoinColumn(name = "channel_id",referencedColumnName = "uuid")
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER,orphanRemoval = true)
     private Chat_Settings_Chanel chatSettingsChanel;
 
     @JsonIgnore

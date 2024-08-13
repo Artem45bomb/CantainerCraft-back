@@ -2,6 +2,7 @@ package org.cantainercraft.micro.chats.service.impl;
 
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.cantainercraft.micro.chats.repository.dto.ChatDTO;
 import org.cantainercraft.micro.chats.repository.ChatRepository;
 import org.cantainercraft.micro.chats.service.ChatService;
@@ -20,6 +21,7 @@ import java.util.UUID;
 
 @Service
 @Transactional
+@Slf4j
 @RequiredArgsConstructor
 public class ChatServiceImpl implements ChatService {
     private final ChatRepository repository;
@@ -27,8 +29,9 @@ public class ChatServiceImpl implements ChatService {
 
     public Chat save(ChatDTO dto){
         Chat chat = convertor.convertDTOToEntity(dto);
-        
-        if(repository.existsByLink(dto.getLink())){ 
+
+        log.info("create chat ,link:{}",dto.getLink());
+        if(repository.existsByLink(dto.getLink())) {
             throw new ExistResourceException("link for chat is exist");
         }
         

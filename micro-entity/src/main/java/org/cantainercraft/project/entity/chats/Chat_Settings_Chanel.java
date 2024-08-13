@@ -28,10 +28,6 @@ public class Chat_Settings_Chanel implements Serializable {
 
     private String type_channel;
 
-    @JsonIgnore
-    @OneToOne(mappedBy = "chatSettingsChanel",fetch = FetchType.LAZY)
-    private Chat_Settings chatSettings;
-
     @Override
     public boolean equals(Object object) {
         if (this == object) return true;

@@ -48,10 +48,6 @@ public class Chat_Settings_Group {
 
     private Duration slowMode;
 
-    @JsonIgnore
-    @OneToOne(mappedBy = "chatSettingsGroup",fetch = FetchType.LAZY)
-    private Chat_Settings chatSettings;
-
     @Override
     public boolean equals(Object object) {
         if (this == object) return true;
