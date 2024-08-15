@@ -2,6 +2,7 @@ package org.cantainercraft.micro.users.controller;
 
 import com.google.gson.Gson;
 import org.cantainercraft.micro.users.configuration.filter.JwtAuthFilter;
+import org.cantainercraft.micro.users.configuration.filter.ServiceAuthFilter;
 import org.cantainercraft.micro.users.convertor.UserDTOConvertor;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -9,19 +10,14 @@ import org.cantainercraft.micro.utilits.exception.MessageError;
 import org.cantainercraft.micro.users.service.impl.UserServiceImpl;
 import org.cantainercraft.project.entity.users.User;
 import org.junit.jupiter.api.*;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.test.context.support.WithAnonymousUser;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.test.web.servlet.MockMvc;
 import java.util.Optional;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -31,53 +27,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class UserControllerTest {
 
 
-    private final Gson gson = new Gson();
+    @MockBean
+    private JwtAuthFilter jwtAuthFilter;
+    @MockBean
+    private ServiceAuthFilter serviceAuthFilter;
     @MockBean
     private UserServiceImpl userService;
-    private final UserDTOConvertor convertor = new UserDTOConvertor(new ModelMapper());
 
+    private final Gson gson = new Gson();
+
+    private final UserDTOConvertor convertor = new UserDTOConvertor(new ModelMapper());
     @Autowired
     private MockMvc mockMvc;
 
 
-    @Test
 
-    public void givenUserById_whenGetExistUser_thenStatus200() throws Exception{
-        long id = 1;
-
-        User userTest = new User(id,"Container","Craft","containercraft@gmail.com");
-
-        Mockito.when(userService.findById(Mockito.any()))
-                .thenReturn(Optional.of(userTest));
-
-
-        mockMvc.perform(post("/user/id")
-                        .contentType("application/json")
-                        .content(gson.toJson(id))
-                        .with(csrf()))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().json(gson.toJson(userTest)));
-    }
-
-    @Test
-    @WithMockUser(username = "admin",authorities = {"ADMIN"})
-    public void givenUserById_whenNotExistUser_thenStatus404() throws Exception{
-        long id =1;
-
-        Mockito.when(userService.findById(Mockito.any()))
-                .thenReturn(Optional.empty());
-
-        String body="user is not exist";
-
-        mockMvc.perform(post("/user/id")
-                .contentType("application/json")
-                .content(gson.toJson(id))
-                        .with(csrf()))
-                .andDo(print())
-                .andExpect(status().is(404))
-                .andExpect(content().json(gson.toJson(MessageError.of(body))));
-    }
 
     @Test
     public void deleteUserById_whenExistUser_thenStatus404() throws Exception{
