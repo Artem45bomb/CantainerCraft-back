@@ -2,7 +2,7 @@ package org.cantainercraft.micro.chats.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.convertor.ChatSettingsGroupDTOConvertor;
-import org.cantainercraft.micro.chats.repository.dto.ChatSettingsGroupDTO;
+import org.cantainercraft.micro.chats.dto.ChatSettingsGroupDTO;
 import org.cantainercraft.micro.chats.repository.ChatSettingsGroupRepository;
 import org.cantainercraft.micro.chats.service.ChatSettingsGroupService;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;

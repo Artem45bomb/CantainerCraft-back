@@ -1,7 +1,7 @@
 package org.cantainercraft.micro.chats.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.cantainercraft.micro.chats.repository.dto.UserPrivilegeDTO;
+import org.cantainercraft.micro.chats.dto.UserPrivilegeDTO;
 import org.cantainercraft.micro.chats.service.UserPrivilegeService;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.chats.User_Privilege;
@@ -37,8 +37,13 @@ public class UserPrivilegeController {
     }
 
     @PostMapping("/userId")
-    public ResponseEntity<Optional<User_Privilege>> findByUserId(Long id) {
-        return ResponseEntity.ok(service.findByUserId(id));
+    public ResponseEntity<User_Privilege> findByUserId(Long id) {
+        Optional<User_Privilege> userPrivilege = service.findByUserId(id);
+        if(userPrivilege.isEmpty()){
+            throw new NotResourceException("No content");
+        }
+
+        return ResponseEntity.ok(userPrivilege.get());
     }
 
     @PostMapping("/add")

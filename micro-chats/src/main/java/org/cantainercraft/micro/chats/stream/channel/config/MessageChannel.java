@@ -2,7 +2,7 @@ package org.cantainercraft.micro.chats.stream.channel.config;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.cantainercraft.micro.chats.repository.dto.stream.MessageChannelDTO;
+import org.cantainercraft.micro.chats.dto.stream.MessageChannelDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;

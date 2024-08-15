@@ -1,7 +1,7 @@
 package org.cantainercraft.micro.chats.convertor;
 
 import lombok.RequiredArgsConstructor;
-import org.cantainercraft.micro.chats.repository.dto.UserEmotionDTO;
+import org.cantainercraft.micro.chats.dto.UserEmotionDTO;
 import org.cantainercraft.micro.utilits.service.ConvertorDTO;
 import org.cantainercraft.project.entity.chats.User_Emotion;
 import org.modelmapper.ModelMapper;

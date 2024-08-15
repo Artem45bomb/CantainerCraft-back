@@ -2,8 +2,8 @@ package org.cantainercraft.micro.chats.service.impl;
 
 
 import lombok.RequiredArgsConstructor;
-import org.cantainercraft.micro.chats.repository.dto.MessageDeleteRabbitDTO;
-import org.cantainercraft.micro.chats.repository.dto.MessageRabbitDTO;
+import org.cantainercraft.micro.chats.dto.MessageDeleteRabbitDTO;
+import org.cantainercraft.micro.chats.dto.MessageRabbitDTO;
 import org.cantainercraft.micro.chats.service.MessageServiceAOP;
 import org.cantainercraft.project.entity.chats.Message;
 import org.springframework.cloud.stream.function.StreamBridge;

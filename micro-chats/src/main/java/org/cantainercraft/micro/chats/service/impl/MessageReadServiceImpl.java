@@ -3,7 +3,7 @@ package org.cantainercraft.micro.chats.service.impl;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.convertor.MessageReadDTOConvertor;
-import org.cantainercraft.micro.chats.repository.dto.MessageReadDTO;
+import org.cantainercraft.micro.chats.dto.MessageReadDTO;
 import org.cantainercraft.micro.chats.service.MessageReadService;
 import org.cantainercraft.project.entity.chats.MessageRead;
 import org.cantainercraft.micro.chats.repository.MessageReadRepository;

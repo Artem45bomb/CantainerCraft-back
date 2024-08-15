@@ -1,6 +1,6 @@
 package org.cantainercraft.micro.chats.service;
 
-import org.cantainercraft.micro.chats.repository.dto.MessageDTO;
+import org.cantainercraft.micro.chats.dto.MessageDTO;
 import org.cantainercraft.project.entity.chats.Message;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -1,7 +1,7 @@
 package org.cantainercraft.micro.chats.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.cantainercraft.micro.chats.repository.dto.CustomUserDetails;
+import org.cantainercraft.micro.chats.dto.CustomUserDetails;
 import org.cantainercraft.micro.chats.webflux.UserWebClient;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

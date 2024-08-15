@@ -1,6 +1,6 @@
 package org.cantainercraft.micro.chats.service;
 
-import org.cantainercraft.micro.chats.repository.dto.ChatSettingsChanelDTO;
+import org.cantainercraft.micro.chats.dto.ChatSettingsChanelDTO;
 import org.cantainercraft.project.entity.chats.Chat_Settings_Chanel;
 
 import java.util.List;

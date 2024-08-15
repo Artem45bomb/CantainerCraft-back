@@ -6,8 +6,8 @@ import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.cantainercraft.micro.chats.repository.dto.UserChatDTO;
-import org.cantainercraft.micro.chats.repository.dto.UserChatSearchDTO;
+import org.cantainercraft.micro.chats.dto.UserChatDTO;
+import org.cantainercraft.micro.chats.dto.UserChatSearchDTO;
 import org.cantainercraft.project.entity.chats.User_Chat;
 
 import java.util.*;

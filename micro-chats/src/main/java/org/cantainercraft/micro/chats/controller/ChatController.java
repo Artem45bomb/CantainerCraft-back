@@ -1,8 +1,8 @@
 package org.cantainercraft.micro.chats.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.cantainercraft.micro.chats.repository.dto.ChatDTO;
-import org.cantainercraft.micro.chats.repository.dto.ChatSearchDTO;
+import org.cantainercraft.micro.chats.dto.ChatDTO;
+import org.cantainercraft.micro.chats.dto.ChatSearchDTO;
 import org.cantainercraft.micro.chats.service.ChatService;
 import org.cantainercraft.micro.chats.service.UserChatService;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;

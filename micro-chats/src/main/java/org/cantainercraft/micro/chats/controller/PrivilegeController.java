@@ -1,8 +1,8 @@
 package org.cantainercraft.micro.chats.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.cantainercraft.micro.chats.repository.dto.PrivilegeDTO;
-import org.cantainercraft.micro.chats.repository.dto.PrivilegeSearchDTO;
+import org.cantainercraft.micro.chats.dto.PrivilegeDTO;
+import org.cantainercraft.micro.chats.dto.PrivilegeSearchDTO;
 import org.cantainercraft.micro.chats.service.PrivilegeService;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.chats.Privilege;

@@ -4,7 +4,7 @@ package org.cantainercraft.micro.chats.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.cantainercraft.micro.chats.convertor.UserChatDTOConvertor;
-import org.cantainercraft.micro.chats.repository.dto.UserChatDTO;
+import org.cantainercraft.micro.chats.dto.UserChatDTO;
 import org.cantainercraft.micro.chats.service.UserChatService;
 import org.cantainercraft.micro.chats.webflux.UserWebClient;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;

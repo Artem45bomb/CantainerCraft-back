@@ -2,7 +2,7 @@ package org.cantainercraft.micro.chats.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.convertor.UserPrivilegeDTOConvertor;
-import org.cantainercraft.micro.chats.repository.dto.UserPrivilegeDTO;
+import org.cantainercraft.micro.chats.dto.UserPrivilegeDTO;
 import org.cantainercraft.micro.chats.service.UserPrivilegeService;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.chats.User_Privilege;

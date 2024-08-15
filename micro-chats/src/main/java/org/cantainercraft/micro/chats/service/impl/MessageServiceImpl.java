@@ -9,7 +9,7 @@ import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.cantainercraft.micro.chats.repository.dto.MessageDTO;
+import org.cantainercraft.micro.chats.dto.MessageDTO;
 import org.cantainercraft.project.entity.chats.Message;
 import java.util.Date;
 import java.util.List;

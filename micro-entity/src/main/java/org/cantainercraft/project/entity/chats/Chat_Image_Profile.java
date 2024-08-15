@@ -25,9 +25,12 @@ public class Chat_Image_Profile implements Serializable {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID uuid;
 
-    private String srcContent;
+    @JoinColumn(name = "content_id",nullable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Content content;
 
     @JsonIgnore
+    @JoinColumn(name = "chat_id",nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Chat chat;
 
@@ -35,11 +38,11 @@ public class Chat_Image_Profile implements Serializable {
     public boolean equals(Object object) {
         if (this == object) return true;
         if (!(object instanceof Chat_Image_Profile that)) return false;
-        return Objects.equals(getUuid(), that.getUuid()) && Objects.equals(getSrcContent(), that.getSrcContent());
+        return Objects.equals(getUuid(), that.getUuid());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUuid(), getSrcContent());
+        return Objects.hash(getUuid());
     }
 }

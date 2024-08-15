@@ -1,6 +1,6 @@
 package org.cantainercraft.micro.chats.service;
 
-import org.cantainercraft.micro.chats.repository.dto.UserChatDTO;
+import org.cantainercraft.micro.chats.dto.UserChatDTO;
 import org.cantainercraft.project.entity.chats.User_Chat;
 
 import java.util.List;
