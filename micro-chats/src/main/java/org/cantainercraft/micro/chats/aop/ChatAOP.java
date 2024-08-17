@@ -3,7 +3,7 @@ package org.cantainercraft.micro.chats.aop;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
-import org.cantainercraft.micro.chats.repository.dto.ChatSettingsDTO;
+import org.cantainercraft.micro.chats.dto.ChatSettingsDTO;
 import org.cantainercraft.micro.chats.service.ChatService;
 import org.cantainercraft.micro.chats.service.ChatSettingsService;
 import org.cantainercraft.project.entity.chats.Chat;

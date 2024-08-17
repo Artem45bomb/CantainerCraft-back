@@ -1,4 +1,4 @@
-package org.cantainercraft.micro.chats.repository.dto.stream;
+package org.cantainercraft.micro.chats.dto.stream;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

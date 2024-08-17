@@ -1,9 +1,9 @@
 package org.cantainercraft.micro.chats.service;
 
 
-import org.cantainercraft.micro.chats.repository.dto.EmotionAddDTO;
-import org.cantainercraft.micro.chats.repository.dto.EmotionDeleteDTO;
-import org.cantainercraft.micro.chats.repository.dto.UserEmotionDTO;
+import org.cantainercraft.micro.chats.dto.EmotionAddDTO;
+import org.cantainercraft.micro.chats.dto.EmotionDeleteDTO;
+import org.cantainercraft.micro.chats.dto.UserEmotionDTO;
 import org.cantainercraft.project.entity.chats.User_Emotion;
 
 import java.util.List;

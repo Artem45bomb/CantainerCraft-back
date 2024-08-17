@@ -9,8 +9,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.cantainercraft.micro.chats.repository.dto.MessageDTO;
-import org.cantainercraft.micro.chats.repository.dto.MessageSearchDTO;
+import org.cantainercraft.micro.chats.dto.MessageDTO;
+import org.cantainercraft.micro.chats.dto.MessageSearchDTO;
 import org.cantainercraft.micro.chats.feign.UserFeignClient;
 import org.cantainercraft.project.entity.chats.Message;
 

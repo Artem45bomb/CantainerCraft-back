@@ -1,6 +1,6 @@
 package org.cantainercraft.micro.chats.controller;
 import lombok.RequiredArgsConstructor;
-import org.cantainercraft.micro.chats.repository.dto.ChatImageProfileDTO;
+import org.cantainercraft.micro.chats.dto.ChatImageProfileDTO;
 import org.cantainercraft.micro.chats.service.ChatImageProfileService;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.micro.utilits.exception.NotValidateParamException;
@@ -41,8 +41,8 @@ public class ChatImageProfileController {
 
     @PostMapping("/add")
     public ResponseEntity<Chat_Image_Profile> save(@RequestBody ChatImageProfileDTO dto) {
-        if(dto.getSrcContent() == null || dto.getSrcContent().isEmpty()) {
-            throw new NotValidateParamException("missed parma: srcContent");
+        if(dto.getContent() == null) {
+            throw new NotValidateParamException("missed parma: content");
         }
         
         return ResponseEntity.ok(service.save(dto));
@@ -50,8 +50,8 @@ public class ChatImageProfileController {
 
     @PutMapping("/update")
     public ResponseEntity<Chat_Image_Profile> update(@RequestBody ChatImageProfileDTO dto) {
-        if(dto.getSrcContent() == null || dto.getSrcContent().isEmpty()) {
-            throw new NotValidateParamException("missed parma: srcContent");
+        if(dto.getContent() == null ) {
+            throw new NotValidateParamException("missed parma: content");
         }
 
         return ResponseEntity.ok(service.update(dto));

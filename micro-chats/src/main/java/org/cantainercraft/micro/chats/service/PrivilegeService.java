@@ -1,7 +1,7 @@
 package org.cantainercraft.micro.chats.service;
 
 
-import org.cantainercraft.micro.chats.repository.dto.PrivilegeDTO;
+import org.cantainercraft.micro.chats.dto.PrivilegeDTO;
 import org.cantainercraft.project.entity.chats.Privilege;
 
 import java.util.List;

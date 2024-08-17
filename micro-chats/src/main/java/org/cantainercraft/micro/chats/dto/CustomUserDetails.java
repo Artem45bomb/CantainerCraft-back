@@ -1,4 +1,4 @@
-package org.cantainercraft.micro.chats.repository.dto;
+package org.cantainercraft.micro.chats.dto;
 
 
 import lombok.RequiredArgsConstructor;
