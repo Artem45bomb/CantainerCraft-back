@@ -56,12 +56,9 @@ public class FileLoadThread extends Thread {
             byte[] body = new byte[CHUNK_SIZE];
 
 
-            while ((readLength = fis.read(body)) != -1 && isActive) {
+            while ((readLength = fis.read(body)) != -1 && isActive && session.isOpen()) {
                 log.info("read file byte:{}", readLength);
-
-                if (session.isOpen())
-                    session.sendMessage(new BinaryMessage(body, 0, readLength, true));
-                else break;
+                session.sendMessage(new BinaryMessage(body, 0, readLength, true));
             }
 
             if (!isActive) fis.close();
