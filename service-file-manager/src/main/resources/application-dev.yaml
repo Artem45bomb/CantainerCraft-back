@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    username: postgres
+    password: postgres
+    url: jdbc:postgresql://localhost:5555/files_manager
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true

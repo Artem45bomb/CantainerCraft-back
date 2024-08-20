@@ -25,9 +25,9 @@ public class Chat_Image_Profile implements Serializable {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID uuid;
 
-    @JoinColumn(name = "content_id",nullable = false)
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Content content;
+
+    @Column(nullable = false)
+    private String srcContent;
 
     @JsonIgnore
     @JoinColumn(name = "chat_id",nullable = false)

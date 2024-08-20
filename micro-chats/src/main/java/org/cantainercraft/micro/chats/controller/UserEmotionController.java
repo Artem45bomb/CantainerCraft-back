@@ -45,7 +45,6 @@ public class UserEmotionController {
                         .userId(userEmotion.getUserId())
                         .uuid(userEmotion.getUuid())
                         .emotionId(userEmotion.getEmotion().getUuid())
-                        .messageClientId(userEmotion.getMessage().getClientId())
                         .build());
     }
 

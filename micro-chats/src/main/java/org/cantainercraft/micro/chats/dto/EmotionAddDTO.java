@@ -13,7 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class EmotionAddDTO implements Serializable {
     private UUID uuid;
-    private UUID messageClientId;
+    private UUID messageId;
     private UUID emotionId;
     private Long userId;
 }

@@ -11,22 +11,11 @@ import org.cantainercraft.project.entity.chats.Message;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public interface MessageRepository extends JpaRepository<Message, UUID> {
     List<Message> findByUserId(Long userId);
-
-    Optional<Message> findByUuidOrClientId(UUID uuid,UUID clientId);
-
-    Optional<Message> findByClientId(UUID clientId);
-
-    boolean existsByClientId(UUID clientId);
-
-    boolean existsByClientIdOrUuid(UUID clientId,UUID uuid);
-
-    void deleteByClientId(UUID clientId);
 
     @Query("select message from  Message message where(lower(message.text) like lower(concat('%',:value,'%')) or :value is null or :value = '') and" +
             "(message.uuid = :uuid or :uuid is null) and" +

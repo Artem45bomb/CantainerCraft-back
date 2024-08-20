@@ -1,13 +1,12 @@
-package org.cantainercraft.project.entity.chats;
+package org.containercraft.servicefilemanager.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -18,7 +17,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Cacheable
-@Table(name = "content", schema = "messenger_chats", catalog = "micro_chats")
+@Table(name = "content", schema = "public", catalog = "files_manager")
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Content implements Serializable {
 
@@ -32,11 +31,10 @@ public class Content implements Serializable {
     @Column(updatable = false)
     private String type;
 
-    private BigInteger sizeByte;
+    @Column(updatable = false)
+    private long sizeByte;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Message message;
+    private boolean isDelete;
 
     @Override
     public boolean equals(Object object) {

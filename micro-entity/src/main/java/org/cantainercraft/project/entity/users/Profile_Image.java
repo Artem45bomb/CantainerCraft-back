@@ -25,7 +25,7 @@ public class Profile_Image implements Serializable {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID uuid;
 
-    @Column(unique = true)
+    @Column(nullable = false)
     private String srcContent;
 
     @JsonIgnore

@@ -43,7 +43,7 @@ public class Chat implements Serializable {
     @Column(unique = true)
     private String link;
 
-    @Column(name = "create_date",updatable = false)
+    @Column(name = "create_date",updatable = false,nullable = false)
     private Date date;
 
     @Column(nullable = false)

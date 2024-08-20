@@ -37,8 +37,13 @@ public class UserPrivilegeController {
     }
 
     @PostMapping("/userId")
-    public ResponseEntity<Optional<User_Privilege>> findByUserId(Long id) {
-        return ResponseEntity.ok(service.findByUserId(id));
+    public ResponseEntity<User_Privilege> findByUserId(Long id) {
+        Optional<User_Privilege> userPrivilege = service.findByUserId(id);
+        if(userPrivilege.isEmpty()){
+            throw new NotResourceException("No content");
+        }
+
+        return ResponseEntity.ok(userPrivilege.get());
     }
 
     @PostMapping("/add")

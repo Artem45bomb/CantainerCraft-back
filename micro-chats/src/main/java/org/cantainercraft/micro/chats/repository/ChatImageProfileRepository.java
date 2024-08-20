@@ -10,8 +10,5 @@ import java.util.UUID;
 
 @Repository
 public interface ChatImageProfileRepository extends JpaRepository<Chat_Image_Profile, UUID> {
-
-    boolean existsBySrcContent(String srcContent);
-
     List<Chat_Image_Profile> findByChatUuid(UUID uuid);
 }

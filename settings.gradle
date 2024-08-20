@@ -1,4 +1,6 @@
 rootProject.name = 'CantainerCraft-back'
+
+
 includeBuild('micro-server')
 includeBuild('micro-users')
 includeBuild('micro-entity')
@@ -10,4 +12,5 @@ includeBuild('micro-utility')
 includeBuild("service-db-store")
 includeBuild("StreamRedis")
 includeBuild("grpc-service")
+includeBuild('service-file-manager')
 
