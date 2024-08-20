@@ -1,5 +1,6 @@
 package org.containercraft.servicefilemanager.service.files;
 
+import org.containercraft.servicefilemanager.entity.Content;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,11 +13,11 @@ public interface StorageService {
     Path load(String fileName);
     Stream<Path> loadAll();
     Resource loadAsResource(String filename);
-    void store(MultipartFile file);
+    Content store(MultipartFile file);
     void deleteAll();
     boolean delete(String fileName);
 
-    void progressUnload(MultipartFile file,String fileId,Integer startByte);
+    void progressUnload(MultipartFile file,String fileId,int startByte);
 
     Path validPath(String filename);
 }

@@ -1,23 +1,32 @@
 package org.containercraft.servicefilemanager.service.socket.thread;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.containercraft.servicefilemanager.dto.DownloadResFileDTO;
+import org.containercraft.servicefilemanager.dto.Action.FileAction;
+import org.containercraft.servicefilemanager.dto.RespSocket;
 import org.containercraft.servicefilemanager.exception.StorageException;
 import org.containercraft.servicefilemanager.service.files.StorageService;
 import org.springframework.web.socket.BinaryMessage;
+import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.file.Path;
 
 @Slf4j
 public class FileLoadThread extends Thread {
-    private int CHUNK_SIZE = 8 * 1024;
-    private final WebSocketSession session;
-    private final String filename;
     private final StorageService service;
+    private final WebSocketSession session;
+    private int CHUNK_SIZE = 8 * 1024;
+    private final String filename;
     private final Long startByte;
+    private boolean isActive = true;
+
+    public void disabled(){
+        isActive = false;
+    }
 
 
     public FileLoadThread(WebSocketSession session, String filename,Long startByte, Integer CHUNK_SIZE, StorageService service) {
@@ -36,6 +45,7 @@ public class FileLoadThread extends Thread {
 
     @Override
     public void run() {
+        ObjectMapper mapper = new ObjectMapper();
         Path pathFile = service.validPath(filename);
         log.info("load file src:{}", pathFile);
 
@@ -46,20 +56,24 @@ public class FileLoadThread extends Thread {
             byte[] body = new byte[CHUNK_SIZE];
 
 
-            while ((readLength = fis.read(body)) != -1 && !Thread.currentThread().isInterrupted()) {
+            while ((readLength = fis.read(body)) != -1 && isActive) {
                 log.info("read file byte:{}", readLength);
 
                 if (session.isOpen())
                     session.sendMessage(new BinaryMessage(body, 0, readLength, true));
-                else throw new RuntimeException("session is close");
+                else break;
             }
 
-            if(Thread.currentThread().isInterrupted()) fis.close();
-        } catch (FileNotFoundException ex) {
-            throw new StorageException("file is not exist");
-        } catch (Exception ex) {
-            throw new StorageException(ex.getMessage(), ex);
-
+            if (!isActive) fis.close();
+        } catch (FileNotFoundException ex)  {
+                if(session.isOpen()) {
+                    try {
+                        String payload = mapper.writeValueAsString(new RespSocket(FileAction.DELETE_FILE,"FILE IS DELETE",pathFile.getFileName().toString()));
+                        session.sendMessage(new TextMessage(payload));
+                    } catch (IOException ignore){}
+                }
+        } catch (IOException ex) {
+            log.error(ex.getMessage(),ex);
         }
     }
 }

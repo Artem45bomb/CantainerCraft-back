@@ -2,8 +2,11 @@ package org.containercraft.servicefilemanager.service.files.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.containercraft.servicefilemanager.config.StorageProperties;
+import org.containercraft.servicefilemanager.dto.ContentDTO;
+import org.containercraft.servicefilemanager.entity.Content;
 import org.containercraft.servicefilemanager.exception.StorageException;
 import org.containercraft.servicefilemanager.exception.StorageFileNotFoundException;
+import org.containercraft.servicefilemanager.service.files.ContentService;
 import org.containercraft.servicefilemanager.service.files.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -18,16 +21,17 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Base64;
 import java.util.stream.Stream;
 
 @Slf4j
 @Service
 public class StorageFiles implements StorageService {
+    private final ContentService contentService;
     private final Path rootLocation;
 
     @Autowired
-    public StorageFiles(StorageProperties properties) {
+    public StorageFiles(ContentService contentService, StorageProperties properties) {
+        this.contentService = contentService;
         if(properties.getLocation().trim().isEmpty()){
             throw new StorageException("root location length 0");
         }
@@ -81,7 +85,7 @@ public class StorageFiles implements StorageService {
     }
 
     @Override
-    public void store(MultipartFile file) {
+    public Content store(MultipartFile file) {
         if(file.isEmpty()){
             throw new StorageException("body is not exist in sending file");
         }
@@ -94,6 +98,13 @@ public class StorageFiles implements StorageService {
             log.info("error while writing");
             throw new StorageException("error while writing",exception);
         }
+
+        ContentDTO contentDTO = ContentDTO.builder()
+                .type(file.getContentType())
+                .sizeByte(file.getSize())
+                .srcContent(file.getOriginalFilename())
+                .build();
+        return contentService.save(contentDTO);
     }
 
     @Override
@@ -122,7 +133,7 @@ public class StorageFiles implements StorageService {
     }
 
     @Override
-    public void progressUnload(MultipartFile file, String fileId, Integer startByte) {
+    public void progressUnload(MultipartFile file, String fileId,int startByte) {
         String[] filesParts = fileId.split("-");
 
         if (filesParts.length != 3) {
@@ -130,7 +141,8 @@ public class StorageFiles implements StorageService {
         }
 
         String filename = filesParts[0];
-        Integer size = Integer.parseInt(filesParts[2]);
+        long size = Long.parseLong(filesParts[1]);
+        boolean isLast = Boolean.parseBoolean(filesParts[2]);
 
         Path filePath = validPath(filename);
         File fileFind = filePath.toFile();
@@ -147,6 +159,14 @@ public class StorageFiles implements StorageService {
         } catch (IOException ex) {
             log.info("Progress error: {}", ex.getMessage());
             throw new StorageException("Error writing file", ex);
+        }
+
+        if(isLast){
+            contentService.save(ContentDTO.builder()
+                    .type(file.getContentType())
+                    .srcContent(file.getOriginalFilename())
+                    .sizeByte(size)
+                    .build());
         }
     }
 

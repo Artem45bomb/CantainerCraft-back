@@ -5,7 +5,8 @@ public class Action{
     public static enum FileAction {
         LOAD,
         STOP_LOAD,
-        CONTINUE_LOAD
+        DELETE_FILE,
+        NOT_FOUND
     }
 }
 

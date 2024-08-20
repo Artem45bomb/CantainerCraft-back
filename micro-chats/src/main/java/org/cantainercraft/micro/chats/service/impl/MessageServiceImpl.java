@@ -27,10 +27,6 @@ public class MessageServiceImpl implements MessageService {
     public Message save(MessageDTO messageDTO) {
         Message message = convertor.convertDTOToEntity(messageDTO);
 
-        if(repository.existsByClientId(messageDTO.getClientId())) {
-            throw new NotResourceException("Message with id " + messageDTO.getUuid() + " already exists");
-        }
-
         return repository.save(message);
     }
 
@@ -38,7 +34,7 @@ public class MessageServiceImpl implements MessageService {
     public Message update(MessageDTO messageDTO){
         Message message = convertor.convertDTOToEntity(messageDTO);
 
-        if(repository.existsByClientIdOrUuid(message.getClientId(),messageDTO.getUuid())) {
+        if(!repository.existsById(messageDTO.getUuid())) {
             throw new NotResourceException("Message with id " + messageDTO.getUuid() + " already exists");
         }
 
@@ -54,16 +50,6 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public void deleteByClientId(UUID clientId){
-        Optional<Message> message = repository.findByClientId(clientId);
-
-        if(message.isEmpty()){
-            throw new NotResourceException("message is not exist");
-        }
-        repository.deleteByClientId(clientId);
-    }
-
-    @Override
     public List<Message> findAll(){
         return repository.findAll();
     }
@@ -71,11 +57,6 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public Optional<Message> findByUuid(UUID uuid){
         return repository.findById(uuid);
-    }
-
-    @Override
-    public Optional<Message> findByUuidOrClientId(UUID uuid,UUID clientId){
-        return repository.findByUuidOrClientId(uuid,clientId);
     }
 
     @Override

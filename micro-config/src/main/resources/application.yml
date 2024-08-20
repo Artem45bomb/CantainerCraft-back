@@ -6,7 +6,7 @@ spring:
       server:
         git:
           username: weather
-          password: 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
+          password: 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
           basedir: file://c:\weather/git-prop
           clone-on-start: true
           uri: https://github.com/Artem45bomb/LinkNet-prop.git

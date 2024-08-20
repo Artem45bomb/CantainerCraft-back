@@ -5,13 +5,20 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.containercraft.servicefilemanager.dto.DownloadReqFileDTO;
 import static org.containercraft.servicefilemanager.dto.Action.FileAction;
+
+import org.containercraft.servicefilemanager.dto.RespSocket;
+import org.containercraft.servicefilemanager.entity.Content;
+import org.containercraft.servicefilemanager.service.files.ContentService;
 import org.containercraft.servicefilemanager.service.files.StorageService;
 import org.containercraft.servicefilemanager.service.socket.thread.FileLoadThread;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.*;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
+
+import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -21,43 +28,60 @@ import java.util.concurrent.CopyOnWriteArraySet;
 @RequiredArgsConstructor
 public class FileHandler extends TextWebSocketHandler {
     private final StorageService storageFiles;
-    private final ObjectMapper objectMapper = new ObjectMapper();
-    private  Set<WebSocketSession> sessions = new CopyOnWriteArraySet();
-    private final Map<WebSocketSession,Thread> sessionLoad = new ConcurrentHashMap<>();
+    private final ContentService contentService;
+    private final ObjectMapper mapper;
+    private final Map<WebSocketSession, FileLoadThread> sessionLoad = new ConcurrentHashMap<>();
+    private final Set<WebSocketSession> sessions = new CopyOnWriteArraySet<>();
 
     public void afterConnectionEstablished(@NonNull WebSocketSession session) throws Exception {
-        session.getAttributes().put("compression-level", 6);
         sessions.add(session);
+        session.getAttributes().put("compression-level", 6);
     }
 
     @Override
     public void handleTextMessage(@NonNull WebSocketSession session,@NonNull TextMessage message) throws Exception {
-        DownloadReqFileDTO reqLoadFile = objectMapper.readValue(message.getPayload(),DownloadReqFileDTO.class);
+        DownloadReqFileDTO reqLoadFile = mapper.readValue(message.getPayload(),DownloadReqFileDTO.class);
+        Optional<Content> content = contentService.findBySrc(reqLoadFile.getFilename());
 
-        if(sessionLoad.containsKey(session) && !reqLoadFile.getAction().equals(FileAction.STOP_LOAD)){
-           Thread thread = sessionLoad.get(session);
-           log.info("stop thread for session");
-           if(thread != null) thread.interrupt();
+        if(!reqLoadFile.getAction().equals(FileAction.STOP_LOAD) && (content.isEmpty() || content.get().isDelete())){
+            String payload = mapper.writeValueAsString(new RespSocket(FileAction.NOT_FOUND,"FILE IS NOT EXIST", reqLoadFile.getFilename()));
+            for(WebSocketSession elem : sessions){
+                if(elem.isOpen()) elem.sendMessage(new TextMessage(payload));
+            }
+            return;
         }
 
-        if(!reqLoadFile.getAction().equals(FileAction.STOP_LOAD)){
+        if(reqLoadFile.getAction().equals(FileAction.DELETE_FILE) && session.isOpen()){
+            content.get().setDelete(true);
+            contentService.update(content.get());
+            String payload = mapper.writeValueAsString(new RespSocket(FileAction.DELETE_FILE,"FILE IS DELETE", reqLoadFile.getFilename()));
+            session.sendMessage(new TextMessage(payload));
+        }
+
+
+        if(sessionLoad.containsKey(session)) {
+            log.info("stop load filename:{}",reqLoadFile.getFilename());
+            FileLoadThread thread = sessionLoad.get(session);
+            sessionLoad.remove(session);
+            if(thread != null) thread.disabled();
+        }
+
+
+        if(reqLoadFile.getAction().equals(FileAction.LOAD)){
             log.info("load file:{}",reqLoadFile.getFilename());
-            Thread thread = new FileLoadThread(session,reqLoadFile.getFilename(), reqLoadFile.getStartByte(), storageFiles);
+            FileLoadThread thread = new FileLoadThread(session,reqLoadFile.getFilename(), reqLoadFile.getStartByte(), storageFiles);
             thread.start();
             sessionLoad.put(session,thread);
         }
-        else if(sessionLoad.containsKey(session)) {
-            log.info("stop load filename:{}",reqLoadFile.getFilename());
-            Thread thread = sessionLoad.get(session);
-            if(thread != null) thread.interrupt();
-        }
+
     }
 
     public void afterConnectionClosed(@NonNull WebSocketSession session, @NonNull CloseStatus status) throws Exception {
         sessions.remove(session);
         if(sessionLoad.containsKey(session)){
-            Thread thread = sessionLoad.get(session);
-            if(thread != null) thread.interrupt();
+            FileLoadThread thread = sessionLoad.get(session);
+            sessionLoad.remove(session);
+            if(thread != null) thread.disabled();
         }
     }
 }

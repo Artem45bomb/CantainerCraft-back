@@ -41,7 +41,7 @@ public class ChatImageProfileController {
 
     @PostMapping("/add")
     public ResponseEntity<Chat_Image_Profile> save(@RequestBody ChatImageProfileDTO dto) {
-        if(dto.getContent() == null) {
+        if(dto.getSrcContent() == null) {
             throw new NotValidateParamException("missed parma: content");
         }
         
@@ -50,7 +50,7 @@ public class ChatImageProfileController {
 
     @PutMapping("/update")
     public ResponseEntity<Chat_Image_Profile> update(@RequestBody ChatImageProfileDTO dto) {
-        if(dto.getContent() == null ) {
+        if(dto.getSrcContent() == null ) {
             throw new NotValidateParamException("missed parma: content");
         }
 

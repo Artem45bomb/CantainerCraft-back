@@ -16,14 +16,9 @@ public interface MessageService {
 
     void delete(UUID uuid);
 
-    void deleteByClientId(UUID clientId);
-
-
     List<Message> findAll();
 
     Optional<Message> findByUuid(UUID uuid);
-
-    Optional<Message> findByUuidOrClientId(UUID uuid,UUID clientId);
 
     Page<Message> findBySearch(Date dateStart, Date dateEnd, String text, UUID uuid, Long userId, UUID chatId, Pageable pageable);
 

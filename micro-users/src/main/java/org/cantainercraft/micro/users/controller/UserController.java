@@ -338,11 +338,7 @@ public class UserController {
             )
     })
     @PostMapping("/exist/id")
-    public ResponseEntity<Boolean> existById(@RequestHeader("micro-service-key") String header,
-                                                     @RequestBody Long id){
-        if(!serviceKey.equals(header))
-            return new ResponseEntity(new MessageError("not access"),HttpStatus.FORBIDDEN);
-
+    public ResponseEntity<Boolean> existById(@RequestBody Long id){
         return ResponseEntity.ok(userService.existById(id));
     }
 

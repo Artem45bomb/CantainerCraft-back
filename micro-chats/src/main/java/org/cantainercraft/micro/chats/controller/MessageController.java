@@ -2,6 +2,7 @@ package org.cantainercraft.micro.chats.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.service.MessageService;
+import org.cantainercraft.micro.chats.webflux.UserWebClient;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.micro.utilits.exception.NotValidateParamException;
 import org.springframework.data.domain.PageRequest;
@@ -11,7 +12,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.cantainercraft.micro.chats.dto.MessageDTO;
 import org.cantainercraft.micro.chats.dto.MessageSearchDTO;
-import org.cantainercraft.micro.chats.feign.UserFeignClient;
 import org.cantainercraft.project.entity.chats.Message;
 
 
@@ -23,7 +23,7 @@ import java.util.*;
 public class MessageController {
 
     private final MessageService service;
-    private final UserFeignClient userFeignClient;
+    private final UserWebClient userWebClient;
     private static final String COLUM_ID = "id";
 
     @PreAuthorize("hasAnyRole('ADMIN')")
@@ -48,19 +48,14 @@ public class MessageController {
        return ResponseEntity.ok(service.findByUserId(id));
     }
 
-    //@PreAuthorize("hasAnyRole('USER,ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<Message> save(@RequestBody MessageDTO messageDTO) {
 
-        if (userFeignClient.userExist(messageDTO.getUserId()).getBody() == null) {
+        if (!userWebClient.userExist(messageDTO.getUserId())) {
             throw new NotResourceException("user is not exist");
         }
 
-        messageDTO.setDate(new Date());
-
-        if (messageDTO.getClientId() == null) {
-            throw new NotValidateParamException("Missed param: clientId");
-        }
+        if(messageDTO.getDate() == null) messageDTO.setDate(new Date());
 
         Message result = service.save(messageDTO);
         return ResponseEntity.ok(result);
@@ -72,27 +67,13 @@ public class MessageController {
             service.delete(uuid);
     }
 
-
-    @PutMapping("/delete/client/id")
-    public void deleteByClientId(@RequestBody UUID clientId){
-        service.deleteByClientId(clientId);
-    }
-
     @PutMapping("/update")
     public ResponseEntity<Message> update(@RequestBody MessageDTO messageDTO) {
-            Optional<Message> message = service.findByUuidOrClientId(messageDTO.getUuid(),messageDTO.getClientId());
-
-            if(message.isEmpty()) {
-                throw new NotResourceException("No content for update");
-            }
             if(messageDTO.getUuid() == null) {
                 throw new NotValidateParamException("Missed param: id");
             }
-            if (userFeignClient.userExist(messageDTO.getUserId()) == null) {
+            if (!userWebClient.userExist(messageDTO.getUserId())) {
                 throw new NotResourceException("user is not exist");
-            }
-            if(messageDTO.getUuid() == null && messageDTO.getClientId() != null){
-                messageDTO.setUuid(message.get().getUuid());
             }
 
             return ResponseEntity.ok(service.update(messageDTO));
