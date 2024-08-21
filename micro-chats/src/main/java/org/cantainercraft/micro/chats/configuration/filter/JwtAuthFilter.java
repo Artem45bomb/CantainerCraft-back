@@ -41,7 +41,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
      * @throws IOException если возникает ошибка ввода-вывода
      */
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
+    public void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         String token = null;

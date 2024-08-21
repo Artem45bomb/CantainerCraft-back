@@ -14,8 +14,12 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -37,7 +41,7 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 public class SpringSecurity {
 
     // Поля
-    private final UserDetailServiceImpl userDetailServiceImpl; // Сервис для получения информации о пользователях
+    private final UserDetailsService userDetailServiceImpl; // Сервис для получения информации о пользователях
     private final JwtAuthFilter jwtAuthFilter; // Фильтр для обработки JWT аутентификации
     private final ServiceAuthHandler serviceAuthHandler;
 
@@ -48,6 +52,7 @@ public class SpringSecurity {
      * @return настроенный SecurityFilterChain
      * @throws Exception если возникает ошибка конфигурации
      */
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception, IOException {
         http.csrf(AbstractHttpConfigurer::disable) // Отключение защиты от CSRF
@@ -68,7 +73,6 @@ public class SpringSecurity {
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class); // Добавление JWT фильтра перед фильтром аутентификации
         return http.build();
     }
-
     /**
      * Создает и настраивает кодировщик паролей.
      *

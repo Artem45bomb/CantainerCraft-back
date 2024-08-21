@@ -1,23 +1,38 @@
 package org.cantainercraft.micro.chats.controller.massage;
 
 
+import org.cantainercraft.micro.chats.configuration.SpringSecurity;
+import org.cantainercraft.micro.chats.configuration.filter.JwtAuthFilter;
+import org.cantainercraft.micro.chats.configuration.filter.ServiceAuthHandler;
 import org.cantainercraft.micro.chats.controller.MessageController;
 import org.cantainercraft.micro.chats.dto.MessageDTO;
-import org.cantainercraft.micro.chats.dto.MessageSearchDTO;
 import org.cantainercraft.micro.chats.service.MessageService;
+import org.cantainercraft.micro.chats.service.impl.JwtService;
+import org.cantainercraft.micro.chats.service.impl.UserDetailServiceImpl;
 import org.cantainercraft.micro.chats.webflux.UserWebClient;
 import org.cantainercraft.project.entity.chats.Message;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.test.context.support.WithAnonymousUser;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 
+import java.io.IOException;
 import java.util.*;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -29,34 +44,38 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.springframework.http.MediaType;
 
 
-@WebMvcTest(MessageController.class)
+
+@WebMvcTest(
+        value=MessageController.class
+)
+@Import(SpringSecurity.class)
 public class MessageControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @Mock
+
+    //base bean for filter
+    @MockBean
+    private UserDetailsService details;
+    @MockBean
+    private JwtService jwtService;
+    //end base bean for filter.These bins must be present
+
+    @MockBean
     private MessageService messageService;
 
-    @Mock
+    @MockBean
     private UserWebClient userWebClient;
 
-    @InjectMocks
-    private MessageController messageController;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
-
-/**
- * <li>CHECK ALL PASS!!!!!!</li>
- * <li>CHECK ALL PASS!!!!!!</li>
- * <li>CHECK ALL PASS!!!!!!</li>
- * <li>CHECK ALL PASS!!!!!!</li>
- */
     @Test
+    @WithMockUser(roles = {"ADMIN"})// authentication user with admin role
     public void findAll_whenMessageNotExist_shouldReturnEmptyList() throws Exception {
         when(messageService.findAll()).thenReturn(Collections.emptyList());
 
@@ -90,7 +109,7 @@ public class MessageControllerTest {
 
         mockMvc.perform(post("/api/message/user")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"id\":" + userId + "}"))
+                        .content("{\"id\":1}"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(1))); // Assuming 1 message is found
@@ -132,6 +151,8 @@ public class MessageControllerTest {
     @Test
     public void delete_whenMessageExists_shouldReturnNoContent() throws Exception {
         UUID uuid = UUID.randomUUID();
+
+
 
         mockMvc.perform(put("/api/message/delete")
                         .contentType(MediaType.APPLICATION_JSON)
