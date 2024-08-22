@@ -1,6 +1,7 @@
 package org.containercraft.servicefilemanager.service.files.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.antlr.v4.runtime.misc.NotNull;
 import org.containercraft.servicefilemanager.config.StorageProperties;
 import org.containercraft.servicefilemanager.dto.ContentDTO;
 import org.containercraft.servicefilemanager.entity.Content;
@@ -87,28 +88,43 @@ public class StorageFiles implements StorageService {
     }
 
     @Override
-    public InputStreamResource loadAsRange(File file, long start, long end){
-        long rangeLength = end - start + 1;
+    public InputStreamResource loadAsRange(File file, long start, long end) throws IOException{
 
-        try(FileInputStream fis = new FileInputStream(file){
+        FileInputStream fis = new FileInputStream(file){
+            private long position = start;
+
             @Override
-            public synchronized int available() {
-                return (int)rangeLength;
-            }
-        }){
-            log.info("fis open");
-            byte[] bytes = new byte[(int) rangeLength];
-            fis.skip(start);
+            public synchronized int read( byte[] b, int off, int len) throws IOException {
+                // Check if we reached the end of the specified range
+                if(position >= end +1 ){
+                    return  -1;
+                }
 
-            if(fis.read(bytes) == -1){
-                throw new IOException();
+                int byteLength =(int)Math.min(len,end+1 - position);
+                int readLength = super.read(b,off,byteLength);
+                if(readLength != -1){
+                    position += readLength;
+                }
+                return readLength;
             }
 
-            return new InputStreamResource(new ByteArrayResource(bytes));
-        }
-        catch (IOException ex){
-            throw new StorageFileNotFoundException("file is not exist");
-        }
+            @Override
+            public synchronized int read() throws IOException {
+                if (position >= end + 1) {
+                    return -1; // End of stream
+                }
+
+                int byteRead = super.read();
+                if (byteRead != -1) {
+                    position++; // Update the current position
+                }
+                return byteRead;
+            }
+
+
+        };
+
+        return new InputStreamResource(fis);
     }
 
     @Override

@@ -18,7 +18,7 @@ public interface StorageService {
     Stream<Path> loadAll();
     Resource loadAsResource(String filename);
 
-    InputStreamResource loadAsRange(File file, long start, long end);
+    InputStreamResource loadAsRange(File file, long start, long end) throws IOException;
     Content store(MultipartFile file);
     void deleteAll();
     boolean delete(String fileName);
