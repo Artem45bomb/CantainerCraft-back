@@ -9,6 +9,8 @@ import org.containercraft.servicefilemanager.exception.StorageFileNotFoundExcept
 import org.containercraft.servicefilemanager.service.files.ContentService;
 import org.containercraft.servicefilemanager.service.files.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -81,6 +83,31 @@ public class StorageFiles implements StorageService {
         }
         catch (MalformedURLException e) {
             throw new StorageFileNotFoundException("Could not read file: " + fileName, e);
+        }
+    }
+
+    @Override
+    public InputStreamResource loadAsRange(File file, long start, long end){
+        long rangeLength = end - start + 1;
+
+        try(FileInputStream fis = new FileInputStream(file){
+            @Override
+            public synchronized int available() {
+                return (int)rangeLength;
+            }
+        }){
+            log.info("fis open");
+            byte[] bytes = new byte[(int) rangeLength];
+            fis.skip(start);
+
+            if(fis.read(bytes) == -1){
+                throw new IOException();
+            }
+
+            return new InputStreamResource(new ByteArrayResource(bytes));
+        }
+        catch (IOException ex){
+            throw new StorageFileNotFoundException("file is not exist");
         }
     }
 
