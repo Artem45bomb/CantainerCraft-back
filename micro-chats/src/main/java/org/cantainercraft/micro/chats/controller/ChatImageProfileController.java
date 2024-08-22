@@ -45,17 +45,12 @@ public class ChatImageProfileController {
         if(dto.getSrcContent() == null) {
             throw new NotValidateParamException("missed parma: content");
         }
+
+        if(dto.getChat() == null || dto.getChat().getUuid() == null){
+            throw new NotValidateParamException("missed param: chat uuid");
+        }
         
         return ResponseEntity.ok(service.save(dto));
-    }
-
-    @PutMapping("/update")
-    public ResponseEntity<Chat_Image_Profile> update(@RequestBody ChatImageProfileDTO dto) {
-        if(dto.getSrcContent() == null ) {
-            throw new NotValidateParamException("missed parma: content");
-        }
-
-        return ResponseEntity.ok(service.update(dto));
     }
 
     @PutMapping("/delete")

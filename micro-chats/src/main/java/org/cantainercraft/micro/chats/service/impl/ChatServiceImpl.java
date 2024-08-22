@@ -40,8 +40,13 @@ public class ChatServiceImpl implements ChatService {
 
     public Chat update(ChatDTO dto){
         Chat chat = convertor.convertDTOToEntity(dto);
+        Optional<Chat> chatFind = repository.findById(dto.getUuid());
 
-        if(repository.existsByLink(dto.getLink())){
+        if(chatFind.isEmpty()){
+            throw new NotResourceException("chat is not exist");
+        }
+
+        if(!dto.getLink().equals(chatFind.get().getLink())  &&  repository.existsByLink(dto.getLink())){
             throw new ExistResourceException("link for chat is exist");
         }
         

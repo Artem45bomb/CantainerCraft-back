@@ -31,7 +31,7 @@ public class Chat_Image_Profile implements Serializable {
 
     @JsonIgnore
     @JoinColumn(name = "chat_id",nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,optional = false)
     private Chat chat;
 
     @Override

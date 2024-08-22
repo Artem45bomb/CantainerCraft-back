@@ -69,4 +69,9 @@ public class MessageServiceImpl implements MessageService {
         return repository.findByUserId(id);
     }
 
+    @Override
+    public boolean existById(UUID id) {
+        return repository.existsById(id);
+    }
+
 }
