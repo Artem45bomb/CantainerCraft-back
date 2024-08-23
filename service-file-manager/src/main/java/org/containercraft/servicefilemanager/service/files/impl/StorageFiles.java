@@ -145,7 +145,7 @@ public class StorageFiles implements StorageService {
         ContentDTO contentDTO = ContentDTO.builder()
                 .type(file.getContentType())
                 .sizeByte(file.getSize())
-                .srcContent(file.getOriginalFilename())
+                .srcContent(destination.toString())
                 .build();
         return contentService.save(contentDTO);
     }
@@ -207,7 +207,7 @@ public class StorageFiles implements StorageService {
         if(isLast){
             contentService.save(ContentDTO.builder()
                     .type(file.getContentType())
-                    .srcContent(file.getOriginalFilename())
+                    .srcContent(filePath.toString())
                     .sizeByte(size)
                     .build());
         }

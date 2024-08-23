@@ -45,6 +45,11 @@ public class ContentServiceImpl implements ContentService {
     }
 
     @Override
+    public boolean existById(UUID uuid){
+        return repository.existsById(uuid);
+    }
+
+    @Override
     public void delete(UUID uuid) {
         if(!repository.existsById(uuid)){
             throw new StorageException("file is not exist");

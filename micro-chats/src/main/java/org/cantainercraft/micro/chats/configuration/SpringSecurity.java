@@ -61,7 +61,7 @@ public class SpringSecurity {
                 }))
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(STATELESS)) // Сессии не используются
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/**").permitAll()
+                        .requestMatchers("/api/**").authenticated()
                         .anyRequest().authenticated()) // Все остальные запросы требуют аутентификации
                 .authenticationProvider(authenticationProvider()) // Установка провайдера аутентификации
                 .addFilterBefore(serviceAuthHandler,UsernamePasswordAuthenticationFilter.class)

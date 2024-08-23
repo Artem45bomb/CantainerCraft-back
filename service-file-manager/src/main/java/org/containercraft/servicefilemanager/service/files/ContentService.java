@@ -11,6 +11,8 @@ import java.util.UUID;
 public interface ContentService {
 
     Content save(ContentDTO dto);
+
+    boolean existById(UUID uuid);
     
     Optional<Content> findBySrc(String src);
 

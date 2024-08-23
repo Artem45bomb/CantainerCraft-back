@@ -5,6 +5,7 @@ import org.cantainercraft.micro.chats.convertor.ChatImageProfileDTOConvertor;
 import org.cantainercraft.micro.chats.dto.ChatImageProfileDTO;
 import org.cantainercraft.micro.chats.service.ChatImageProfileService;
 import org.cantainercraft.micro.chats.service.ChatService;
+import org.cantainercraft.micro.chats.webflux.FileWebClient;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.chats.Chat;
 import org.cantainercraft.project.entity.chats.Chat_Image_Profile;
@@ -23,13 +24,20 @@ public class ChatImageProfileServiceImpl implements ChatImageProfileService {
     private final ChatImageProfileRepository repository;
     private final ChatImageProfileDTOConvertor convertor;
     private final ChatService chatService;
+    private final FileWebClient fileClient;
 
     @Override
     public Chat_Image_Profile save(ChatImageProfileDTO dto) {
         Chat_Image_Profile entity = convertor.convertDTOToEntity(dto);
         Optional<Chat> chat = chatService.findByUUID(dto.getChat().getUuid());
 
-        if(chat.isEmpty()) throw new NotResourceException("chat is not exist");
+
+        if(fileClient.findBySrc(dto.getSrcContent()) == null) {
+            throw new NotResourceException("chat is not exist");
+        }
+        if(chat.isEmpty()){
+            throw new NotResourceException("chat is not exist");
+        }
 
         return repository.save(entity);
     }
@@ -40,6 +48,10 @@ public class ChatImageProfileServiceImpl implements ChatImageProfileService {
 
         if (!repository.existsById(dto.getUuid())){
             throw new NotResourceException("No content to update");
+        }
+
+        if(fileClient.findBySrc(dto.getSrcContent()) == null) {
+            throw new NotResourceException("chat is not exist");
         }
 
         return repository.save(entity);

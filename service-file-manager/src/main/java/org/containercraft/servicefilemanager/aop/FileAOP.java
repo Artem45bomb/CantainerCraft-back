@@ -19,9 +19,10 @@ public class FileAOP {
     private final ContentService contentService;
     private final StorageFiles storageFiles;
 
-    @Before(value = "execution(* org.containercraft.servicefilemanager.controller.FileUploadController.serveFile(..))")
+    @Before(value = "execution(* org.containercraft.servicefilemanager.controller.FileUploadController.downloadFIle(..))")
     public void fileAccess(JoinPoint joinPoint){
         String filename = (String)joinPoint.getArgs()[0];
+        System.out.println("filename:"+filename);
 
         Optional<Content> content = contentService
                 .findBySrc(storageFiles.validPath(filename).toString());
