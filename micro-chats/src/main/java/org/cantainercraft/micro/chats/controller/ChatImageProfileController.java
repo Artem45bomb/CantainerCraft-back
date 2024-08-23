@@ -1,4 +1,5 @@
 package org.cantainercraft.micro.chats.controller;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.dto.ChatImageProfileDTO;
 import org.cantainercraft.micro.chats.service.ChatImageProfileService;
@@ -40,7 +41,7 @@ public class ChatImageProfileController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Chat_Image_Profile> save(@RequestBody ChatImageProfileDTO dto) {
+    public ResponseEntity<Chat_Image_Profile> save(@Valid @RequestBody ChatImageProfileDTO dto) {
 
         if(dto.getSrcContent() == null) {
             throw new NotValidateParamException("missed parma: content");

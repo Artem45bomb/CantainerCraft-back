@@ -1,5 +1,6 @@
 package org.cantainercraft.micro.chats.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.dto.MessageReplyDTO;
 import org.cantainercraft.micro.chats.service.MessageReplyService;
@@ -36,25 +37,17 @@ public class MessageReplyController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Message_Reply> save(@RequestBody MessageReplyDTO dto) {
+    public ResponseEntity<Message_Reply> save(@Valid @RequestBody MessageReplyDTO dto) {
         return ResponseEntity.ok(service.save(dto));
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Message_Reply> update(@RequestBody MessageReplyDTO dto) {
+    public ResponseEntity<Message_Reply> update(@Valid @RequestBody MessageReplyDTO dto) {
         return ResponseEntity.ok(service.update(dto));
     }
 
     @PutMapping("/delete")
     public void delete(@RequestBody UUID id) {
         service.delete(id);
-    }
-
-    @PutMapping("/delete/user")
-    public void deleteByMessageReplyUserId(@RequestBody MessageReplyDTO dto) {
-        if (service.findByMessageReplyUserId(dto.getMessageReply().getUserId()).isEmpty()) {
-           throw new NotResourceException("No content to delete");
-        }
-        service.deleteByMessageReplyUserId(dto.getMessageReply().getUserId());
     }
 }

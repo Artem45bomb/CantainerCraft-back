@@ -1,5 +1,6 @@
 package org.cantainercraft.micro.chats.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.dto.PrivilegeDTO;
 import org.cantainercraft.micro.chats.dto.PrivilegeSearchDTO;
@@ -39,17 +40,17 @@ public class PrivilegeController {
 
 
     @PostMapping("/chat")
-    public ResponseEntity<List<Privilege>> findByChat(@RequestBody PrivilegeSearchDTO dto) {
+    public ResponseEntity<List<Privilege>> findByChat( @RequestBody PrivilegeSearchDTO dto) {
         return ResponseEntity.ok(service.findByChat(dto.getChatId()));
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Privilege> save(@RequestBody PrivilegeDTO dto) {
+    public ResponseEntity<Privilege> save(@Valid @RequestBody PrivilegeDTO dto) {
         return ResponseEntity.ok(service.save(dto));
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Privilege> update(@RequestBody PrivilegeDTO dto) {
+    public ResponseEntity<Privilege> update(@Valid @RequestBody PrivilegeDTO dto) {
         return ResponseEntity.ok(service.update(dto));
     }
 

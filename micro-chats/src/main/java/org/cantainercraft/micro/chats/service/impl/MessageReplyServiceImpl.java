@@ -52,14 +52,4 @@ public class MessageReplyServiceImpl implements MessageReplyService {
     public Optional<Message_Reply> findById(UUID uuid) {
         return repository.findById(uuid);
     }
-
-    @Override
-    public void deleteByMessageReplyUserId(Long userId) {
-        repository.deleteByMessageReplyUserId(userId);
-    }
-
-    @Override
-    public Optional<Message_Reply> findByMessageReplyUserId(Long userId) {
-        return repository.findByMessageReplyUserId(userId);
-    }
 }

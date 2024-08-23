@@ -1,5 +1,6 @@
 package org.cantainercraft.micro.chats.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.dto.ChatSecuredDTO;
 import org.cantainercraft.micro.chats.service.ChatSecuredService;
@@ -19,7 +20,7 @@ public class ChatSecuredController {
     private final ConvertorDTO<ChatSecuredDTO, Chat_Secured> convertor;
 
     @PostMapping("/add")
-    public ChatSecuredDTO save(@RequestBody ChatSecuredDTO dto){
+    public ChatSecuredDTO save(@Valid @RequestBody ChatSecuredDTO dto){
         Chat_Secured entity = service.save(dto);
         ChatSecuredDTO chatSecured = convertor.convertEntityToDTO(entity);
 
@@ -34,7 +35,7 @@ public class ChatSecuredController {
     }
 
     @PutMapping
-    public void delete(@RequestBody ChatSecuredDTO dto){
+    public void delete(@Valid @RequestBody ChatSecuredDTO dto){
         service.delete(dto);
     }
 

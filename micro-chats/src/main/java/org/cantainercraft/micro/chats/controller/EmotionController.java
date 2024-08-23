@@ -2,6 +2,7 @@
 package org.cantainercraft.micro.chats.controller;
 
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.dto.EmotionDTO;
 import org.cantainercraft.micro.chats.service.EmotionService;
@@ -42,13 +43,13 @@ public class EmotionController {
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/add")
-    public ResponseEntity<Emotion> save(@RequestBody EmotionDTO emotionDTO){
+    public ResponseEntity<Emotion> save(@Valid @RequestBody EmotionDTO emotionDTO){
         return ResponseEntity.ok(service.save(emotionDTO));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/update")
-    public ResponseEntity<Emotion> update(@RequestBody EmotionDTO emotionDTO){
+    public ResponseEntity<Emotion> update(@Valid @RequestBody EmotionDTO emotionDTO){
         Optional<Emotion> emotion = service.findById(emotionDTO.getUuid());
         if(emotion.isEmpty()) {
             throw new NotResourceException("No content for update");

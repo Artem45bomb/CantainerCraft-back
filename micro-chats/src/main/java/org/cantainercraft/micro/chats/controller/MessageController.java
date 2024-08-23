@@ -1,5 +1,6 @@
 package org.cantainercraft.micro.chats.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.service.MessageService;
 import org.cantainercraft.micro.chats.webflux.UserWebClient;
@@ -49,7 +50,7 @@ public class MessageController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Message> save(@RequestBody MessageDTO messageDTO) {
+    public ResponseEntity<Message> save(@Valid @RequestBody MessageDTO messageDTO) {
 
         if (!userWebClient.userExist(messageDTO.getUserId())) {
             throw new NotResourceException("user is not exist");
@@ -82,7 +83,7 @@ public class MessageController {
 
 
     @PostMapping("/search")
-    public ResponseEntity<List<Message>> findBySearch(@RequestBody MessageSearchDTO messageSearchDTO){
+    public ResponseEntity<List<Message>> findBySearch(@Valid @RequestBody MessageSearchDTO messageSearchDTO){
 
         UUID uuid = messageSearchDTO.getUuid() == null ? null :messageSearchDTO.getUuid();
         String valueMessage = messageSearchDTO.getValue() == null ? null :messageSearchDTO.getValue();

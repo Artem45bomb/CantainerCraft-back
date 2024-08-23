@@ -1,5 +1,6 @@
 package org.cantainercraft.micro.chats.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.dto.MessageForwardDTO;
 import org.cantainercraft.micro.chats.service.MessageForwardService;
@@ -36,12 +37,12 @@ public class MessageForwardController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Message_Forward> save(@RequestBody MessageForwardDTO messageForwardDTO) {
+    public ResponseEntity<Message_Forward> save(@Valid @RequestBody MessageForwardDTO messageForwardDTO) {
         return ResponseEntity.ok(service.save(messageForwardDTO));
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Message_Forward> update(@RequestBody MessageForwardDTO messageForwardDTO) {
+    public ResponseEntity<Message_Forward> update(@Valid @RequestBody MessageForwardDTO messageForwardDTO) {
         return ResponseEntity.ok(service.update(messageForwardDTO));
     }
 

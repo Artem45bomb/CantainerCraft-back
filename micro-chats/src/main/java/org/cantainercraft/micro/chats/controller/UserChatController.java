@@ -1,5 +1,6 @@
 package org.cantainercraft.micro.chats.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.service.UserChatService;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
@@ -46,18 +47,18 @@ class UserChatController {
     }
 
     @PutMapping("/delete/user")
-    public void delete(@RequestBody UserChatDTO dto){
+    public void delete(@Valid @RequestBody UserChatDTO dto){
         service.deleteByUserId(dto.getUserId(),dto.getChat().getUuid());
     }
 
     @PostMapping("/add")
-    public ResponseEntity<User_Chat> save(@RequestBody UserChatDTO dto){
+    public ResponseEntity<User_Chat> save(@Valid @RequestBody UserChatDTO dto){
         return ResponseEntity.ok(service.save(dto));
     }
 
 
     @PutMapping("/update")
-    public ResponseEntity<User_Chat> update(@RequestBody UserChatDTO dto){
+    public ResponseEntity<User_Chat> update(@Valid @RequestBody UserChatDTO dto){
         return ResponseEntity.ok(service.update(dto));
     }
 }

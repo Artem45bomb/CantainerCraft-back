@@ -1,5 +1,6 @@
 package org.cantainercraft.micro.chats.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.dto.EmotionAddDTO;
 import org.cantainercraft.micro.chats.dto.EmotionDeleteDTO;
@@ -33,12 +34,12 @@ public class UserEmotionController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<User_Emotion> save(@RequestBody UserEmotionDTO dto) {
+    public ResponseEntity<User_Emotion> save(@Valid @RequestBody UserEmotionDTO dto) {
         return ResponseEntity.ok(service.save(dto));
     }
 
     @PostMapping("/message/add")
-    public ResponseEntity<EmotionAddDTO> addEmotion(@RequestBody EmotionAddDTO dto){
+    public ResponseEntity<EmotionAddDTO> addEmotion(@Valid @RequestBody EmotionAddDTO dto){
         User_Emotion userEmotion = service.addEmotion(dto);
 
         return ResponseEntity.ok(EmotionAddDTO.builder()
@@ -49,12 +50,12 @@ public class UserEmotionController {
     }
 
     @PutMapping("/message/delete")
-    public void deleteEmotion(@RequestBody EmotionDeleteDTO dto){
+    public void deleteEmotion(@Valid @RequestBody EmotionDeleteDTO dto){
         service.deleteEmotion(dto);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<User_Emotion> update(@RequestBody UserEmotionDTO dto) {
+    public ResponseEntity<User_Emotion> update(@Valid @RequestBody UserEmotionDTO dto) {
         return ResponseEntity.ok(service.update(dto));
     }
 

@@ -1,5 +1,6 @@
 package org.cantainercraft.micro.chats.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.dto.ChatDTO;
 import org.cantainercraft.micro.chats.dto.ChatSearchDTO;
@@ -49,12 +50,12 @@ public class ChatController {
 
 
     @PostMapping("/add")
-    public ResponseEntity<Chat> save(@RequestBody ChatDTO chatDTO){
+    public ResponseEntity<Chat> save(@Valid @RequestBody ChatDTO chatDTO){
         return ResponseEntity.ok(service.save(chatDTO));
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Chat> update(@RequestBody ChatDTO chatDTO) throws Exception{
+    public ResponseEntity<Chat> update(@Valid @RequestBody ChatDTO chatDTO) throws Exception{
         if(chatDTO.getUuid() == null){
             throw new NotValidateParamException("missed param: id");
         }

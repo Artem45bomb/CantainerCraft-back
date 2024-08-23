@@ -1,5 +1,6 @@
 package org.cantainercraft.micro.chats.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.dto.UserPrivilegeDTO;
 import org.cantainercraft.micro.chats.service.UserPrivilegeService;
@@ -47,12 +48,12 @@ public class UserPrivilegeController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<User_Privilege> save(@RequestBody UserPrivilegeDTO dto) {
+    public ResponseEntity<User_Privilege> save(@Valid @RequestBody UserPrivilegeDTO dto) {
         return ResponseEntity.ok(service.save(dto));
     }
 
     @PutMapping("/update")
-    public ResponseEntity<User_Privilege> update(@RequestBody UserPrivilegeDTO dto) {
+    public ResponseEntity<User_Privilege> update(@Valid @RequestBody UserPrivilegeDTO dto) {
         return ResponseEntity.ok(service.update(dto));
     }
 
