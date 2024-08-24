@@ -2,6 +2,7 @@ package org.cantainercraft.micro.users.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.users.dto.tokens.JwtAuthResponse;
@@ -21,7 +22,7 @@ public class UserAccountController {
     private final AccountService accountService;
 
     @PostMapping("/update")
-    public JwtAuthResponse accountUpdate(@RequestBody UserDTO userDTO, @NonNull HttpServletResponse response){
+    public JwtAuthResponse accountUpdate(@Valid @RequestBody UserDTO userDTO, @NonNull HttpServletResponse response){
         return accountService.update(userDTO,response);
     }
 

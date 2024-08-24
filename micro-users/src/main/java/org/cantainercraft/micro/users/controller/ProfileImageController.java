@@ -1,5 +1,6 @@
 package org.cantainercraft.micro.users.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.users.dto.ProfileImageDTO;
 import org.cantainercraft.micro.users.service.ProfileImageService;
@@ -28,13 +29,13 @@ public class ProfileImageController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Profile_Image> save(@RequestBody ProfileImageDTO dto){
+    public ResponseEntity<Profile_Image> save(@Valid @RequestBody ProfileImageDTO dto){
             return ResponseEntity.ok(profileImageService.save(dto));
     }
 
 
     @PutMapping("/update")
-    public ResponseEntity<Profile_Image> update(@RequestBody ProfileImageDTO dto){
+    public ResponseEntity<Profile_Image> update(@Valid @RequestBody ProfileImageDTO dto){
         return ResponseEntity.ok(profileImageService.update(dto));
     }
 

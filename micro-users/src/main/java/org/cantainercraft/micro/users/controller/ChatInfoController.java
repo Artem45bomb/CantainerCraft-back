@@ -1,6 +1,7 @@
 package org.cantainercraft.micro.users.controller;
 
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.users.dto.ChatInfoDTO;
 import org.cantainercraft.micro.users.service.ChatInfoService;
@@ -20,7 +21,7 @@ public class ChatInfoController  {
     private final ChatInfoService chatInfoService;
 
     @PostMapping("/add")
-    public ResponseEntity<Chat_Info> save(@RequestBody ChatInfoDTO dto){
+    public ResponseEntity<Chat_Info> save(@Valid @RequestBody ChatInfoDTO dto){
         return ResponseEntity.ok(chatInfoService.save(dto));
     }
 
@@ -35,7 +36,7 @@ public class ChatInfoController  {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Chat_Info> update(@RequestBody ChatInfoDTO dto) {
+    public ResponseEntity<Chat_Info> update(@Valid @RequestBody ChatInfoDTO dto) {
         return ResponseEntity.ok(chatInfoService.update(dto));
     }
 

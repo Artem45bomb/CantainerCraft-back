@@ -1,5 +1,6 @@
 package org.cantainercraft.micro.users.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.users.dto.SubscriptionDTO;
 import org.cantainercraft.micro.users.dto.SubscriptionUpdateDTO;
@@ -30,13 +31,13 @@ public class SubscriptionController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/add")
-    public ResponseEntity<Subscription> save(@RequestBody SubscriptionDTO subscriptionDTO){
+    public ResponseEntity<Subscription> save(@Valid @RequestBody SubscriptionDTO subscriptionDTO){
         return ResponseEntity.ok(service.save(subscriptionDTO));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/update")
-    public ResponseEntity<Subscription> update(@RequestBody SubscriptionUpdateDTO subscriptionUpdateDTO){
+    public ResponseEntity<Subscription> update(@Valid @RequestBody SubscriptionUpdateDTO subscriptionUpdateDTO){
             return ResponseEntity.ok(service.update(subscriptionUpdateDTO));
     }
 

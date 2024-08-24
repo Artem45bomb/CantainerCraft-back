@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.users.dto.UserLoadDTO;
 import org.cantainercraft.micro.utilits.exception.ExistResourceException;
@@ -204,7 +205,7 @@ public class UserController {
             )
     })
     @PostMapping("/add")
-    public ResponseEntity<User> save(@RequestBody UserDTO dto){
+    public ResponseEntity<User> save(@Valid @RequestBody UserDTO dto){
         Optional<User> user = userService.findByEmail(dto.getEmail());
 
         if(user.isPresent()){
@@ -251,7 +252,7 @@ public class UserController {
             )
     })
     @PutMapping("/update")
-    public ResponseEntity<User> update(@RequestBody UserDTO dto){
+    public ResponseEntity<User> update(@Valid @RequestBody UserDTO dto){
             if(dto.getId() == null){
                 throw new NotValidateParamException("missed param: id");
             }

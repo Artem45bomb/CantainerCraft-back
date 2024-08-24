@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -32,6 +33,7 @@ public class AccountServiceImpl implements AccountService {
     private final RefreshTokenService refreshService;
     private final Function<Token,String> accessTokenFactory;
     private final JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
     private final ConvertorDTO<UserClientDTO,User> userClientConvertor;
 
     @Value("${duration.time.cookie}")
@@ -50,8 +52,18 @@ public class AccountServiceImpl implements AccountService {
         Token token = refreshService.createRefreshToken(authentication);
         String accessToken =  accessTokenFactory.apply(token);
 
+
+
+        if(userDTO.getPassword() == null || userDTO.getPassword().isEmpty()){
+            userDTO.setPassword(user.get().getPassword());
+        }
+        else{
+            userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        }
+
+        System.out.println("user pass:"+user.get().getPassword()+",userDTO pass"+userDTO.getPassword());
         //update user account
-        userService.save(userDTO);
+        userService.update(userDTO);
 
         //add accessToken to cookies so that the user has access to services
         ResponseCookie cookie = ResponseCookie.from("accessToken")
@@ -78,7 +90,13 @@ public class AccountServiceImpl implements AccountService {
                 accessToken = cookie.getValue();
             }
         }
-        return userClientConvertor.convertEntityToDTO(userService.findByUsername(
-                jwtService.extractUsername(accessToken)).get());
+
+        Optional<User> user = userService.findByUsername(jwtService.extractUsername(accessToken));
+
+        if(user.isEmpty()){
+            throw new NotResourceException("user is not exist");
+        }
+
+        return userClientConvertor.convertEntityToDTO(user.get());
     }
 }

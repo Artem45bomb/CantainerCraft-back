@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.users.dto.ProfileDTO;
 import org.cantainercraft.micro.users.dto.ProfileSearchDTO;
@@ -117,7 +118,7 @@ public class ProfileController {
     })
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/update")
-    public ResponseEntity<Profile> update(@RequestBody ProfileDTO profileDTO){
+    public ResponseEntity<Profile> update(@Valid @RequestBody ProfileDTO profileDTO){
             return ResponseEntity.ok(profileService.update(profileDTO));
     }
 }
