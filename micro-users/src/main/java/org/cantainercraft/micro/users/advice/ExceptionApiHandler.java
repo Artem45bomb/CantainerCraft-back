@@ -45,7 +45,7 @@ public class ExceptionApiHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String,String> notValid(MethodArgumentNotValidException ex){
+    public Map<String, String> validError(MethodArgumentNotValidException ex){
         Map<String,String> errors = new HashMap<>();
 
         ex.getBindingResult().getAllErrors().forEach(error -> {

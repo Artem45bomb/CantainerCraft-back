@@ -17,10 +17,10 @@ public class UserDTO {
     @Size(min = 5, max = 50, message = "Имя пользователя должно содержать от 5 до 50 символов")
     @NotBlank(message = "Name is empty")
     private String username;
-    @Min(value = 1,message = "Length must be greater than 0")
+    @Size(min = 5,message = "Length must be greater than 5")
     @NotBlank(message = "Email is empty")
     private String email;
-    @Size(max = 255, message = "Длина пароля должна быть не менее 255 символов")
+    @Size(min = 5,max = 255, message = "Длина пароля должна быть от 5 - 255 символов")
     @NotBlank(message = "Password is empty")
     private String password;
     private List<Role> roles;

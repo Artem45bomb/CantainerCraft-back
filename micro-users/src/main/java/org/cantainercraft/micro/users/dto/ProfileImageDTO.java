@@ -1,7 +1,7 @@
 package org.cantainercraft.micro.users.dto;
 
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,9 +17,10 @@ import java.util.UUID;
 public class ProfileImageDTO {
     private UUID uuid;
 
-    @NotNull(message = "Src content is empty")
+    @Size(min = 3,message = "Min length 3 symbols")
+    @NotBlank(message = "Src content is empty")
+    @NotEmpty
     private String srcContent;
-
     @NotNull(message = "Profile is empty")
     private Profile profile;
 }

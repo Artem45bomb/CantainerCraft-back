@@ -6,43 +6,44 @@ import org.cantainercraft.micro.users.dto.ProfileImageDTO;
 import org.cantainercraft.micro.users.service.ProfileImageService;
 import org.cantainercraft.project.entity.users.Profile_Image;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/profileImage")
+@RequestMapping("/api/profile-image")
 @RequiredArgsConstructor
 public class ProfileImageController {
 
-    private final ProfileImageService profileImageService;
+    private final ProfileImageService service;
 
     @GetMapping("/all")
     public ResponseEntity<List<Profile_Image>> findAll(){
-        return ResponseEntity.ok(profileImageService.findAll());
+        return ResponseEntity.ok(service.findAll());
     }
 
     @GetMapping("/{uuid}")
     public ResponseEntity<Profile_Image> findById(@PathVariable UUID uuid) {
-        return ResponseEntity.ok(profileImageService.findById(uuid));
+        return ResponseEntity.ok(service.findById(uuid));
     }
 
     @PostMapping("/add")
     public ResponseEntity<Profile_Image> save(@Valid @RequestBody ProfileImageDTO dto){
-            return ResponseEntity.ok(profileImageService.save(dto));
+            return ResponseEntity.ok(service.save(dto));
     }
 
 
     @PutMapping("/update")
-    public ResponseEntity<Profile_Image> update(@Valid @RequestBody ProfileImageDTO dto){
-        return ResponseEntity.ok(profileImageService.update(dto));
+    public ResponseEntity<Profile_Image> update(@RequestBody @Valid ProfileImageDTO dto){
+        return ResponseEntity.ok(service.update(dto));
     }
 
 
     @DeleteMapping("/delete/{uuid}")
     public void deleteById(@PathVariable UUID uuid ){
-        profileImageService.deleteById(uuid);
+        service.deleteById(uuid);
     }
 
 }

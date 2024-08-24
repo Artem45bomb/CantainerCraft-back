@@ -5,7 +5,7 @@ import org.cantainercraft.micro.users.convertor.ProfileImageDTOConvertor;
 import org.cantainercraft.micro.users.dto.ProfileImageDTO;
 import org.cantainercraft.micro.users.repository.ProfileImageRepository;
 import org.cantainercraft.micro.users.service.ProfileImageService;
-import org.cantainercraft.micro.utilits.exception.ExistResourceException;
+import org.cantainercraft.micro.users.webflux.FileWebClient;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.users.Profile_Image;
 import org.springframework.cache.annotation.CacheEvict;
@@ -13,6 +13,7 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -23,13 +24,15 @@ import java.util.UUID;
 public class ProfileImageServiceImpl implements ProfileImageService {
     private final ProfileImageDTOConvertor convertor;
     private final ProfileImageRepository repository;
-
+    private final FileWebClient fileClient;
 
     @Override
     public Profile_Image save(ProfileImageDTO dto) {
         Profile_Image profileImage = convertor.convertDTOToEntity(dto);
 
-        if(repository.existsBySrcContent(dto.getSrcContent())) throw new ExistResourceException("this content is exist");
+        if(fileClient.findBySrc(profileImage.getSrcContent()) == null ){
+            throw new NotResourceException("src is not exist");
+        }
 
         return repository.save(profileImage);
     }
@@ -56,6 +59,10 @@ public class ProfileImageServiceImpl implements ProfileImageService {
         Profile_Image entity = convertor.convertDTOToEntity(dto);
         if(repository.existsById(dto.getUuid())){
             throw new NotResourceException("Profile image already exists");
+        }
+
+        if(fileClient.findBySrc(entity.getSrcContent()) == null ){
+            throw new NotResourceException("src is not exist");
         }
 
         return repository.save(entity);
