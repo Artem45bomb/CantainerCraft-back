@@ -28,7 +28,7 @@ public class UserWebClient {
     public User loadedUser(String username) {
         return webClient
                 .post() // Создание POST запроса
-                .uri("/user/loadedUser") // Указание URI эндпоинта
+                .uri("/user/name") // Указание URI эндпоинта
                 .bodyValue(username) // Установка тела запроса (имя пользователя)
                 .header("micro-service-key", serviceKey) // Установка заголовка с секретным ключом
                 .retrieve() // Отправка запроса и получение ответа

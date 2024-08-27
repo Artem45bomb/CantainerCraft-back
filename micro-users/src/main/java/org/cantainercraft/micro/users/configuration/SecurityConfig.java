@@ -52,6 +52,7 @@ public class SecurityConfig {
                         .requestMatchers("/token/**").permitAll()
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
+                        .requestMatchers("/api/**").authenticated()
                         .anyRequest().permitAll()
                 )
                 //disable login sessions

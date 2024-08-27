@@ -11,7 +11,7 @@ import lombok.Setter;
 public class RoleDTO {
     private Long id;
 
-    @Size(min = 1,message = "String length must be greater than 0")
+    @Size(min = 3,max = 50,message = "Min string length must be greater than 3 and less 51 symbols")
     @NotNull(message = "Role is empty")
     private String role;
 

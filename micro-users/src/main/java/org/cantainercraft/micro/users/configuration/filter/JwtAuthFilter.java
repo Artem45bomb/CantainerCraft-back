@@ -31,7 +31,6 @@ import java.util.Optional;
 @Slf4j
 public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
-    private final RefreshTokenService refreshTokenService;
     private final UserServiceDetailsImpl userServiceDetails;
 
     @Override

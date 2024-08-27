@@ -1,7 +1,6 @@
 package org.cantainercraft.micro.users.dto;
 
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Null;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,10 +24,13 @@ public class ProfileDTO{
 
     private List<Profile_Image> profileImages;
 
+    @NotNull
     private String about;
 
+    @NotNull
     private String telephone;
 
+    @NotNull
     private User user;
 
 }

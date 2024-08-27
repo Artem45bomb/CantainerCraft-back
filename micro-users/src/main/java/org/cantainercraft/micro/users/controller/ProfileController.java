@@ -71,7 +71,7 @@ public class ProfileController {
                     content = @Content(schema = @Schema)),
     })
     @PostMapping("/user")
-    public ResponseEntity<Profile> findByUser(@RequestBody ProfileSearchDTO profileSearchDTO){
+    public ResponseEntity<Profile> findByUser(@Valid @RequestBody ProfileSearchDTO profileSearchDTO){
         String email = profileSearchDTO.getEmail();
         Long userId = profileSearchDTO.getUserId();
 

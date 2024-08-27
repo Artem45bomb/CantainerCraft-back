@@ -43,7 +43,6 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.postgresql:postgresql'
     annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     //utility
     implementation 'org.cantainercraft.micro.utilits:micro-utility'
@@ -55,6 +54,9 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-stream-binder-rabbit:4.1.2'
     implementation 'org.springframework.cloud:spring-cloud-function-web:4.1.2'
 
+
+    //test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 dependencyManagement {

@@ -15,7 +15,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TokenUpdateDTO implements Serializable {
-
     @Size(min = 1,message = "token length greater than 0")
     @NotBlank(message = "token length is 0")
     private String tokenRefresh;

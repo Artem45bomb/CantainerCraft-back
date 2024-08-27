@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(UserDTO dto){
-        if(existByUsername(dto.getUsername())){
+        if(repository.existsByUsername(dto.getUsername())){
             throw new ExistResourceException("username is exist");
         }
         if(repository.existsByEmail(dto.getEmail())){
