@@ -4,16 +4,17 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.cantainercraft.project.entity.users.Role;
 import org.cantainercraft.project.entity.users.Subscription;
 
+import java.io.Serializable;
 import java.util.List;
 
-@Getter
-@Setter
-public class UserDTO {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserDTO implements Serializable {
     private Long id;
     @Size(min = 5, max = 50, message = "Length must be greater than 5")
     @NotBlank(message = "Name is empty")

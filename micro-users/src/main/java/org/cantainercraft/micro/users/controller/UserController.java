@@ -9,18 +9,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.StringUtils;
-import org.cantainercraft.micro.users.dto.UserLoadDTO;
-import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.micro.utilits.exception.NotValidateParamException;
 import org.cantainercraft.micro.utilits.service.ConvertorDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.cantainercraft.micro.users.dto.UserDTO;
 import org.cantainercraft.micro.users.dto.UserSearchDTO;
@@ -34,7 +29,6 @@ import java.util.*;
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserController {
-    private final ConvertorDTO<UserLoadDTO,User> convertorLoad;
     private final UserService userService;
 
 

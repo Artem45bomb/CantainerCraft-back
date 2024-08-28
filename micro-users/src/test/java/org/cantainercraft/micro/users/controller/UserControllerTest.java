@@ -1,25 +1,19 @@
 package org.cantainercraft.micro.users.controller;
 
 import com.google.gson.Gson;
-import org.bouncycastle.util.Arrays;
 import org.cantainercraft.micro.users.advice.ExceptionApiHandler;
 import org.cantainercraft.micro.users.convertor.UserDTOConvertor;
-import org.cantainercraft.micro.users.dto.UserLoadDTO;
 import org.cantainercraft.micro.users.repository.UserRepository;
-import org.cantainercraft.micro.users.service.UserService;
 import org.cantainercraft.micro.users.service.impl.JwtService;
 import org.cantainercraft.micro.users.service.impl.UserServiceDetailsImpl;
 import org.cantainercraft.micro.users.service.impl.UserServiceImpl;
 import org.cantainercraft.micro.utilits.service.ConvertorDTO;
 import org.mockito.MockitoAnnotations;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 import org.cantainercraft.micro.utilits.exception.MessageError;
 import org.cantainercraft.project.entity.users.User;
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -38,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @WebMvcTest(value = UserController.class)
-@Import({SecurityConfig.class, UserServiceImpl.class, ExceptionApiHandler.class})
+@Import({SecurityConfig.class, UserServiceImpl.class})
 public class UserControllerTest {
     private final Gson gson = new Gson();
 
@@ -46,8 +40,6 @@ public class UserControllerTest {
     private JwtService jwtService;
     @MockBean
     private UserServiceDetailsImpl userDetailsService;
-    @MockBean
-    private ConvertorDTO<UserLoadDTO,User> convertorLoad;
     @MockBean
     private UserDTOConvertor convertor;
 
