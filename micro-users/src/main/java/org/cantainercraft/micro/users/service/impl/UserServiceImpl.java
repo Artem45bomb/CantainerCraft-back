@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Cacheable(value = "users",key = "#id")
+    @Cacheable(value = "users",key = "#id",unless = "#result == null ")
     public Optional<User> findById(Long id) {
         return repository.findById(id);
     }

@@ -22,56 +22,50 @@ import java.util.UUID;
 @Transactional
 @RequiredArgsConstructor
 public class UserOnlineServiceImpl implements UserOnlineService {
-    private final UserOnlineRepository userOnlineRepository;
+    private final UserOnlineRepository repository;
     private final UserOnlineDTOConvertor dtoConvertor;
 
     @Override
     public List<User_Online> findAll() {
-        return userOnlineRepository.findAll();
+        return repository.findAll();
     }
 
     @Override
-    @Cacheable(value = "user-online",key = "#uuid")
-    public User_Online findById(UUID uuid) {
-        Optional<User_Online> userOnline = userOnlineRepository.findById(uuid);
-        if (userOnline.isEmpty()) {
-            throw new NotResourceException("User online not found");
-        }
-
-        return userOnline.get();
+    @Cacheable(value = "user-online",key = "#uuid",unless = "#result == null ")
+    public Optional<User_Online> findById(UUID uuid) {
+       return repository.findById(uuid);
     }
 
     @Override
     public User_Online save(UserOnlineDTO dto) {
         User_Online userOnline = dtoConvertor.convertDTOToEntity(dto);
-        if (userOnlineRepository.existsByUserId(dto.getUser().getId())) {
+        if (repository.existsByUserId(dto.getUser().getId())) {
             throw new ExistResourceException("UserOnline already exists");
         }
 
-        return userOnlineRepository.save(userOnline);
+        return repository.save(userOnline);
     }
 
     @Override
     @CachePut(value = "user-online",key = "#dto.uuid")
     public User_Online update(UserOnlineDTO dto) {
         User_Online entity = dtoConvertor.convertDTOToEntity(dto);
-        Optional<User_Online> userOnline = userOnlineRepository.findById(dto.getUuid());
-        if (userOnline.isEmpty()) {
-            throw new NotResourceException("UserOnline already exists");
+        if (!repository.existsById(dto.getUuid())) {
+            throw new NotResourceException("UserOnline not exists");
         }
 
-        return userOnlineRepository.save(entity);
+        return repository.save(entity);
     }
 
     @Override
     @CacheEvict(value = "user-online",key = "#uuid")
     public void deleteById(UUID uuid) {
-        Optional<User_Online> userOnline = userOnlineRepository.findById(uuid);
+        Optional<User_Online> userOnline = repository.findById(uuid);
         if(userOnline.isEmpty()) {
             throw new NotResourceException("UserOnline does not exist");
         }
 
-        userOnlineRepository.deleteByUuid(uuid);
+        repository.deleteByUuid(uuid);
     }
 
 }

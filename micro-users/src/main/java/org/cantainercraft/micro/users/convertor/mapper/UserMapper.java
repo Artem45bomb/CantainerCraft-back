@@ -1,4 +1,4 @@
-package org.cantainercraft.micro.users.convertor;
+package org.cantainercraft.micro.users.convertor.mapper;
 
 
 import org.cantainercraft.micro.users.dto.UserClientDTO;

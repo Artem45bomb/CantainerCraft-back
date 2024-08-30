@@ -6,7 +6,7 @@ import jakarta.validation.Valid;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.StringUtils;
-import org.cantainercraft.micro.users.convertor.UserMapperImpl;
+import org.cantainercraft.micro.users.convertor.mapper.UserMapperImpl;
 import org.cantainercraft.micro.users.dto.tokens.JwtAuthResponse;
 import org.cantainercraft.micro.users.dto.UserClientDTO;
 import org.cantainercraft.micro.users.service.AccountService;

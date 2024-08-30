@@ -18,6 +18,7 @@ import java.util.UUID;
 @Cacheable
 @Builder
 @Entity
+@ToString
 @Table(name = "user_online",schema = "messenger_users",catalog = "postgres")
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class User_Online implements Serializable {
@@ -27,6 +28,7 @@ public class User_Online implements Serializable {
     private UUID uuid;
 
     @JsonIgnore
+    @JoinColumn(name = "user_id",updatable = false,nullable = false)
     @OneToOne(fetch = FetchType.LAZY,optional = false)
     private User user;
 
@@ -36,7 +38,7 @@ public class User_Online implements Serializable {
     public boolean equals(Object object) {
         if (this == object) return true;
         if (!(object instanceof User_Online that)) return false;
-        return Objects.equals(getUuid(), that.getUuid());
+        return Objects.equals(getUuid(), that.getUuid()) && Objects.equals(getUser().getId(),that.getUser());
     }
 
     @Override

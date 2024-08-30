@@ -26,12 +26,6 @@ public class JwtService extends JwtBaseServiceImpl {
         return  username.equals(usernameCheck) && !isTokenExpired(token);
     }
 
-    public boolean isTokenName(String token,String username){
-        String usernameCheck = extractUsername(token);
-        return username.equals(usernameCheck);
-    }
-
-
     public String GenerateToken(Token token){
         Map<String,Object> claims = new HashMap<>();
         claims.put("username",token.getUsername());

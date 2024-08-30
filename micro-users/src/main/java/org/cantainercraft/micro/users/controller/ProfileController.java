@@ -15,7 +15,6 @@ import org.cantainercraft.micro.users.service.ProfileService;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.micro.utilits.exception.NotValidateParamException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.cantainercraft.project.entity.users.Profile;
 
@@ -30,7 +29,7 @@ import java.util.UUID;
 @Tag(name = "profile")
 public class ProfileController {
 
-    private final ProfileService profileService;
+    private final ProfileService service;
 
 
     @Operation(summary = "get profile",
@@ -48,7 +47,7 @@ public class ProfileController {
     @PostMapping("/id")
     public ResponseEntity<Profile> findById(@RequestBody UUID id){
 
-        Optional<Profile> profile = profileService.findById(id);
+        Optional<Profile> profile = service.findById(id);
 
         if(profile.isEmpty()) throw  new NotResourceException("profile is not exist");
 
@@ -83,7 +82,7 @@ public class ProfileController {
             throw new NotValidateParamException("param missed: email");
         }
 
-        Optional<Profile> profile = profileService.findByUser(userId, email);
+        Optional<Profile> profile = service.findByUser(userId, email);
 
         if(profile.isEmpty()){
             throw new NotResourceException("profile is not exist");
@@ -99,7 +98,7 @@ public class ProfileController {
                     schema = @Schema(implementation = Profile.class)))
     @GetMapping("/all")
     public ResponseEntity<List<Profile>> findAll(){
-        return ResponseEntity.ok(profileService.findAll());
+        return ResponseEntity.ok(service.findAll());
     }
 
     @Operation(parameters = @Parameter(
@@ -116,9 +115,8 @@ public class ProfileController {
                     content = @Content(mediaType = "application/json",
                             schema = @Schema()))
     })
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<Profile> update(@Valid @RequestBody ProfileDTO profileDTO){
-            return ResponseEntity.ok(profileService.update(profileDTO));
+            return ResponseEntity.ok(service.update(profileDTO));
     }
 }

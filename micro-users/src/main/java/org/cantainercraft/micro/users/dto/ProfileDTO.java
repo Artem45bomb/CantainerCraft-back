@@ -1,5 +1,6 @@
 package org.cantainercraft.micro.users.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,18 +20,15 @@ public class ProfileDTO{
     @NotNull(message = "Uuid is empty")
     private UUID uuid;
 
-    @NotNull(message = "Uuid is empty")
     private Date sunsetTime;
+
 
     private List<Profile_Image> profileImages;
 
-    @NotNull
     private String about;
 
-    @NotNull
     private String telephone;
 
-    @NotNull
     private User user;
 
 }

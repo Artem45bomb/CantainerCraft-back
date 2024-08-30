@@ -29,7 +29,7 @@ public class Profile implements Serializable {
     @Column(name="number_telephone")
     private String telephone;
 
-    @Column(name="sunset_time")
+    @Column(name="sunset_time",updatable = false)
     private Date sunsetTime;
 
     @OneToMany(mappedBy = "profile",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
@@ -39,8 +39,8 @@ public class Profile implements Serializable {
     private String about;
 
     @JsonIgnore
-    @OneToOne
-    @JoinColumn(name = "user_id")
+    @OneToOne(optional = false)
+    @JoinColumn(name = "user_id",updatable = false,nullable = false)
     private User user;
 
     @Override

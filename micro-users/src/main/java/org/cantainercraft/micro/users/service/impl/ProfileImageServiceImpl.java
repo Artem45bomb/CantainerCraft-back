@@ -43,7 +43,7 @@ public class ProfileImageServiceImpl implements ProfileImageService {
     }
 
     @Override
-    @Cacheable(value = "profile-image",key = "#uuid")
+    @Cacheable(value = "profile-image",key = "#uuid",unless = "#result == null")
     public Profile_Image findById(UUID uuid) {
         Optional<Profile_Image> profileImage = repository.findById(uuid);
         if (profileImage.isEmpty()) {

@@ -8,6 +8,7 @@ import org.cantainercraft.micro.utilits.exception.ExistResourceException;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.users.User;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.cantainercraft.micro.users.convertor.ProfileDTOConvertor;
@@ -39,23 +40,16 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
+    @CachePut(value = "profiles",key = "#dto.uuid")
     public Profile update(ProfileDTO dto) {
-
-        if(!repository.existsById(dto.getUuid())) throw new NotResourceException("profile is not exist");
-
         Profile profile = convertor.convertDTOToEntity(dto);
-        Optional<User> user = userRepository.findById(dto.getUser().getId());
-
-        user.map((e) -> {
-            profile.setUser(e);
-            return null;
-        });
+        if(!repository.existsById(dto.getUuid())) throw new NotResourceException("profile is not exist");
 
         return repository.save(profile);
     }
 
     @Override
-    @Cacheable(value = "profiles",key = "#uuid")
+    @Cacheable(value = "profiles",key = "#uuid",unless = "#result == null ")
     public Optional<Profile> findById(UUID uuid){
         return repository.findById(uuid);
     }

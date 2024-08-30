@@ -13,8 +13,6 @@ import java.util.UUID;
 public class UserOnlineDTO {
 
     private UUID uuid;
-    @NotNull(message = "User is empty")
     private User user;
-
     private boolean is_online;
 }
