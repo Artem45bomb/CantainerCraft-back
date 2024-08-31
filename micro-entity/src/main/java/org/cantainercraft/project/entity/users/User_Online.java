@@ -38,7 +38,7 @@ public class User_Online implements Serializable {
     public boolean equals(Object object) {
         if (this == object) return true;
         if (!(object instanceof User_Online that)) return false;
-        return Objects.equals(getUuid(), that.getUuid()) && Objects.equals(getUser().getId(),that.getUser());
+        return Objects.equals(getUuid(), that.getUuid()) && getUser().getId().equals(that.getUser().getId());
     }
 
     @Override

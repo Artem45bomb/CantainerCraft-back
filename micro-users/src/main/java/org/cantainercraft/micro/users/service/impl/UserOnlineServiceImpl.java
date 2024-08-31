@@ -60,8 +60,7 @@ public class UserOnlineServiceImpl implements UserOnlineService {
     @Override
     @CacheEvict(value = "user-online",key = "#uuid")
     public void deleteById(UUID uuid) {
-        Optional<User_Online> userOnline = repository.findById(uuid);
-        if(userOnline.isEmpty()) {
+        if(!repository.existsById(uuid)) {
             throw new NotResourceException("UserOnline does not exist");
         }
 
