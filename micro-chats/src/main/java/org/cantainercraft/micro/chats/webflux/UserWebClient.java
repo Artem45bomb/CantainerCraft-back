@@ -42,7 +42,7 @@ public class UserWebClient {
      * @param userId идентификатор пользователя
      * @return true, если пользователь существует, иначе false
      */
-    public Boolean userExist(Long userId) {
+    public Boolean userExist(long userId) {
         return webClient
                 .post() // Создание POST запроса
                 .uri("/user/exist/id") // Указание URI эндпоинта

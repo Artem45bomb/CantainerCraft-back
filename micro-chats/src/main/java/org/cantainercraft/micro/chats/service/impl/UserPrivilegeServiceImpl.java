@@ -9,7 +9,6 @@ import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.chats.User_Privilege;
 import org.cantainercraft.micro.chats.repository.UserPrivilegeRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +24,11 @@ public class UserPrivilegeServiceImpl implements UserPrivilegeService {
     @Override
     public User_Privilege save(UserPrivilegeDTO dto) {
         User_Privilege entity = convertor.convertDTOToEntity(dto);
+
+        if(!userClient.userExist(dto.getUserId())){
+            throw new NotResourceException("user not found");
+        }
+
         return repository.save(entity);
     }
 
