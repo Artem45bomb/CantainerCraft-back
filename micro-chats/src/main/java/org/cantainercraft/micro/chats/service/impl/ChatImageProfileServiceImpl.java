@@ -31,12 +31,12 @@ public class ChatImageProfileServiceImpl implements ChatImageProfileService {
         Chat_Image_Profile entity = convertor.convertDTOToEntity(dto);
         Optional<Chat> chat = chatService.findByUUID(dto.getChat().getUuid());
 
-
-        if(fileClient.findBySrc(dto.getSrcContent()) == null) {
-            throw new NotResourceException("chat is not exist");
-        }
         if(chat.isEmpty()){
             throw new NotResourceException("chat is not exist");
+        }
+
+        if(fileClient.findBySrc(dto.getSrcContent()) == null) {
+            throw new NotResourceException("src is not exist");
         }
 
         return repository.save(entity);
@@ -51,7 +51,7 @@ public class ChatImageProfileServiceImpl implements ChatImageProfileService {
         }
 
         if(fileClient.findBySrc(dto.getSrcContent()) == null) {
-            throw new NotResourceException("chat is not exist");
+            throw new NotResourceException("src is not exist");
         }
 
         return repository.save(entity);
@@ -77,7 +77,7 @@ public class ChatImageProfileServiceImpl implements ChatImageProfileService {
     }
 
     @Override
-    public List<Chat_Image_Profile> findByChatId(UUID uuid){
-        return repository.findByChatUuid(uuid);
+    public List<Chat_Image_Profile> findByChatId(UUID chatId){
+        return repository.findByChatUuid(chatId);
     }
 }

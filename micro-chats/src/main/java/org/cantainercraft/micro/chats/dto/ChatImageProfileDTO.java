@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.UUID;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChatImageProfileDTO implements Serializable {

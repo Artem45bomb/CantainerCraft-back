@@ -30,7 +30,7 @@ public class Chat_Image_Profile implements Serializable {
     private String srcContent;
 
     @JsonIgnore
-    @JoinColumn(name = "chat_id",nullable = false)
+    @JoinColumn(name = "chat_id",nullable = false,updatable = false)
     @ManyToOne(fetch = FetchType.LAZY,optional = false)
     private Chat chat;
 
@@ -38,7 +38,7 @@ public class Chat_Image_Profile implements Serializable {
     public boolean equals(Object object) {
         if (this == object) return true;
         if (!(object instanceof Chat_Image_Profile that)) return false;
-        return Objects.equals(getUuid(), that.getUuid());
+        return Objects.equals(getUuid(), that.getUuid()) && getSrcContent().equals(that.getSrcContent());
     }
 
     @Override
