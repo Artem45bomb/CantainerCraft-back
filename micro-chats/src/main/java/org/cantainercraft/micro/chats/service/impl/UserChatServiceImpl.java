@@ -41,7 +41,7 @@ public class UserChatServiceImpl implements UserChatService {
             throw new NotResourceException("No content for update");
         }
 
-        if(userWebClient.userExist(dto.getUserId()) == null){
+        if(!userWebClient.userExist(dto.getUserId())){
             throw new NotResourceException("user is not exist");
         }
         return repository.save(userChat);

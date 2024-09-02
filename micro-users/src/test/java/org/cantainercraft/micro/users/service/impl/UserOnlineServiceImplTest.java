@@ -21,12 +21,10 @@ import java.util.UUID;
 
 @ExtendWith(SpringExtension.class)
 class UserOnlineServiceImplTest {
-
     @Mock
     public UserOnlineRepository repository;
     @Mock
     public UserOnlineDTOConvertor dtoConvertor;
-
     @InjectMocks
     private UserOnlineServiceImpl service;
 

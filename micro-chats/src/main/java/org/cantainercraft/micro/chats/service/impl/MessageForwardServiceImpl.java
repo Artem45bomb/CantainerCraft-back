@@ -23,6 +23,7 @@ public class MessageForwardServiceImpl implements MessageForwardService {
     @Override
     public Message_Forward save(MessageForwardDTO messageForwardDTO) {
         Message_Forward entity = convertor.convertDTOToEntity(messageForwardDTO);
+
         return repository.save(entity);
     }
 

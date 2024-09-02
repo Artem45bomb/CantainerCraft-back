@@ -49,7 +49,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    @Cacheable(value = "profiles",key = "#uuid",unless = "#result == null ")
+    @Cacheable(value = "profiles",key = "#uuid",unless = "#result == null")
     public Optional<Profile> findById(UUID uuid){
         return repository.findById(uuid);
     }

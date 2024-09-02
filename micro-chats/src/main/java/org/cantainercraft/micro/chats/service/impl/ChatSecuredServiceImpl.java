@@ -34,7 +34,7 @@ public class ChatSecuredServiceImpl implements ChatSecuredService {
 
         if(!userClient.userExist(dto.getUserId())) throw new NotResourceException("user is not exist");
         if(chat.isEmpty()) throw new NotResourceException("chat is not exist");
-        if(!repository.existsByUserIdAndChat(dto.getUserId(),chat.get())) throw new ExistResourceException("chat is secured");
+        if(repository.existsByUserIdAndChat(dto.getUserId(),chat.get())) throw new ExistResourceException("chat is secured");
 
         Chat_Secured chatSecured = Chat_Secured.builder()
                 .chat(chat.get())
