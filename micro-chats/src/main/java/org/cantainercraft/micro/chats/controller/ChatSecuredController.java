@@ -45,7 +45,7 @@ public class ChatSecuredController {
         return service.findAll();
     }
 
-    @PreAuthorize("hasAnyRole('USER')")
+//    @PreAuthorize("hasAnyRole('USER')")
     @GetMapping("/user/{userId}")
     public List<ChatSecuredDTO> findByUserId(@PathVariable Long userId){
         return service.findByUserId(userId);

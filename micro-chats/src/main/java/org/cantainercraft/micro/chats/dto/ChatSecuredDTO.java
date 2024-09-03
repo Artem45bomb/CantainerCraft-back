@@ -8,13 +8,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChatSecuredDTO {
+public class ChatSecuredDTO implements Serializable {
     private UUID uuid;
     @Min(value = 1,message = "User id must be greater than 0")
     private Long userId;
