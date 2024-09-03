@@ -1,0 +1,3 @@
+spring:
+  config:
+    import: configserver:http://${SPRING_CONFIG_HOSTNAME}:8888
