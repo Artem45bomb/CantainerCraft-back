@@ -18,7 +18,6 @@ import java.util.UUID;
 @Transactional
 @RequiredArgsConstructor
 public class PrivilegeServiceImpl implements PrivilegeService {
-
     private final PrivilegeRepository repository;
     private final PrivilegeDTOConvertor convertor;
 

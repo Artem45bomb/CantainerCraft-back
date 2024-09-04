@@ -8,4 +8,4 @@ spring:
       ddl-auto: ${DDL_AUTO:none}
     show-sql: ${SHOW_SQL:false}
   config:
-    import: configserver:http://${SPRING_CONFIG_HOSTNAME}:8888/
+    import: configserver:http://${SPRING_CONFIG_HOSTNAME}:8888

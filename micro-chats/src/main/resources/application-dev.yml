@@ -7,3 +7,9 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+<<<<<<< main
+=======
+  config:
+    import: configserver:http://localhost:8888
+GATEWAY_URL_BASE: ""
+>>>>>>> local

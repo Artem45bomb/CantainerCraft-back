@@ -5,6 +5,7 @@ import org.cantainercraft.micro.users.convertor.ProfileImageDTOConvertor;
 import org.cantainercraft.micro.users.dto.ProfileImageDTO;
 import org.cantainercraft.micro.users.repository.ProfileImageRepository;
 import org.cantainercraft.micro.users.service.ProfileImageService;
+import org.cantainercraft.micro.users.service.ProfileService;
 import org.cantainercraft.micro.users.webflux.FileWebClient;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.users.Profile_Image;
@@ -24,6 +25,7 @@ import java.util.UUID;
 public class ProfileImageServiceImpl implements ProfileImageService {
     private final ProfileImageDTOConvertor convertor;
     private final ProfileImageRepository repository;
+    private final ProfileService profileService;
     private final FileWebClient fileClient;
 
     @Override

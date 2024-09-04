@@ -15,7 +15,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class UserWebClient {
 
     // Поля
-    private final WebClient webClient; // Экземпляр WebClient для выполнения HTTP запросов
+    @Qualifier("webclient") private final WebClient webClient; // Экземпляр WebClient для выполнения HTTP запросов
     @Value("${service.key}")
     private String serviceKey; // Секретный ключ для аутентификации микросервиса
 
