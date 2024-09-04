@@ -1,0 +1,67 @@
+version: '3.7'
+services:
+  eureka-server:
+    container_name: eureka-server
+    image: micro-server
+    ports:
+      - "8761:8761"
+    environment:
+      - SPRING_CONFIG_HOSTNAME=config-properties
+    networks:
+      - eureka
+    depends_on:
+      - config-properties
+
+  config-properties:
+    container_name: cloud-properties
+    image: micro-config
+    ports:
+      - "8888:8888"
+    networks:
+      - eureka
+
+  micro-chats:
+    container_name: eureka-client-chats
+    image: micro-chats
+    environment:
+      - EUREKA_SERVER_URL
+      - DDL_AUTO=create
+      - SHOW_SQL=true
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/micro_chats
+      - SPRING_CONFIG_HOSTNAME=config-properties
+      - DATASOURCE_USERNAME=admin
+      - DATASOURCE_PASSWORD=admin
+    networks:
+      - eureka
+    depends_on:
+      - eureka-server
+      - postgres  # Добавьте зависимость от postgres
+
+  gateway:
+    container_name: eureka-gateway
+    image: micro-gateway
+    environment:
+      - EUREKA_SERVER_URL
+    networks:
+      - eureka
+    depends_on:
+      - micro-chats
+    ports:
+      - "8081:8081"
+  postgres:
+    container_name: postgres-chats
+    volumes:
+      - ./chats-init.sql
+    image: postgres:14
+    environment:
+      POSTGRES_DB: micro_chats
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5555:5432"
+    networks:
+      - eureka
+
+networks:
+  eureka:
+    driver: bridge

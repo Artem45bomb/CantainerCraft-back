@@ -23,11 +23,10 @@ public class ChatDTO implements Serializable {
     private UUID uuid;
     @NotBlank(message = "Name is empty")
     private String name;
-    @FutureOrPresent(message = "Data is not valid")
+//    @FutureOrPresent(message = "Data is not valid")
     private Date date;
     @NotBlank(message = "Link is empty")
     private String link;
-    @NotEmpty(message = "Type for chat is empty")
     private TypeChat typeChat;
     private List<MessageDTO> messages;
     private List<UserChatDTO> users;
