@@ -8,7 +8,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface ChatSettingsRepository extends JpaRepository<Chat_Settings, UUID> {
-    List<Chat_Settings> findByChatUuid(UUID chat_Id);
+    Optional<Chat_Settings> findByChatUuid(UUID chatId);
+
+    boolean existsByChatUuid(UUID chatId);
 }
 
 

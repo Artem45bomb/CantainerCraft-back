@@ -43,18 +43,18 @@ public class EmotionController {
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/add")
-    public ResponseEntity<Emotion> save(@Valid @RequestBody EmotionDTO emotionDTO){
-        return ResponseEntity.ok(service.save(emotionDTO));
+    public ResponseEntity<Emotion> save(@Valid @RequestBody EmotionDTO dto){
+        return ResponseEntity.ok(service.save(dto));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/update")
-    public ResponseEntity<Emotion> update(@Valid @RequestBody EmotionDTO emotionDTO){
-        Optional<Emotion> emotion = service.findById(emotionDTO.getUuid());
+    public ResponseEntity<Emotion> update(@Valid @RequestBody EmotionDTO dto){
+        Optional<Emotion> emotion = service.findById(dto.getUuid());
         if(emotion.isEmpty()) {
             throw new NotResourceException("No content for update");
         }
-        return ResponseEntity.ok(service.update(emotionDTO));
+        return ResponseEntity.ok(service.update(dto));
     }
 
     @GetMapping("/all")
@@ -71,8 +71,8 @@ public class EmotionController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
-    @GetMapping
-    public ResponseEntity<Emotion> findByUnicode(String unicode){
+    @GetMapping("/unicode/{unicode}")
+    public ResponseEntity<Emotion> findByUnicode(@PathVariable String unicode){
         Optional<Emotion> emotion = service.findByUnicode(unicode);
         if(emotion.isEmpty()) {
             throw new NotResourceException("No content");

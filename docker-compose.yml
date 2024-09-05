@@ -1,9 +1,6 @@
 version: '3.7'
 services:
-<<<<<<< HEAD
   #Server
-=======
->>>>>>> 91fb5e997ca1d98d9eb570339cf7769176f2c5c2
   eureka-server:
     container_name: eureka-server
     image: micro-server
@@ -23,28 +20,17 @@ services:
       - "8888:8888"
     networks:
       - eureka
-<<<<<<< HEAD
-#Clients
+  #Clients
   #Client-chats
-=======
-
->>>>>>> 91fb5e997ca1d98d9eb570339cf7769176f2c5c2
   micro-chats:
     container_name: eureka-client-chats
     image: micro-chats
     environment:
-<<<<<<< HEAD
       - GATEWAY_URL_BASE
       - EUREKA_SERVER_URL
       - DDL_AUTO=create
       - SHOW_SQL=true
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-chats:5432/micro_chats
-=======
-      - EUREKA_SERVER_URL
-      - DDL_AUTO=create
-      - SHOW_SQL=true
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/micro_chats
->>>>>>> 91fb5e997ca1d98d9eb570339cf7769176f2c5c2
       - SPRING_CONFIG_HOSTNAME=config-properties
       - DATASOURCE_USERNAME=admin
       - DATASOURCE_PASSWORD=admin
@@ -52,7 +38,6 @@ services:
       - eureka
     depends_on:
       - eureka-server
-<<<<<<< HEAD
       - postgres-chats  # Добавьте зависимость от postgres
   #Client-users
   micro-users:
@@ -89,11 +74,7 @@ services:
     depends_on:
       - eureka-server
       - postgres-files  # Добавьте зависимость от postgres
-#Gateway
-=======
-      - postgres  # Добавьте зависимость от postgres
-
->>>>>>> 91fb5e997ca1d98d9eb570339cf7769176f2c5c2
+  #Gateway
   gateway:
     container_name: eureka-gateway
     image: micro-gateway
@@ -103,24 +84,15 @@ services:
       - eureka
     depends_on:
       - micro-chats
-<<<<<<< HEAD
       - micro-users
     ports:
       - "8081:8081"
-#Database
+  #Database
   #Chats
   postgres-chats:
     container_name: postgres-chats
     volumes:
       - ./sql/chats-init(POSTGRES).sql:/docker-entrypoint-initdb.d/chats-init(POSTGRES).sql
-=======
-    ports:
-      - "8081:8081"
-  postgres:
-    container_name: postgres-chats
-    volumes:
-      - ./chats-init.sql
->>>>>>> 91fb5e997ca1d98d9eb570339cf7769176f2c5c2
     image: postgres:14
     environment:
       POSTGRES_DB: micro_chats
@@ -130,7 +102,6 @@ services:
       - "5555:5432"
     networks:
       - eureka
-<<<<<<< HEAD
   #Users
   postgres-users:
     container_name: postgres-users
@@ -157,8 +128,6 @@ services:
       - "5556:5432"
     networks:
       - eureka
-=======
->>>>>>> 91fb5e997ca1d98d9eb570339cf7769176f2c5c2
 
 networks:
   eureka:

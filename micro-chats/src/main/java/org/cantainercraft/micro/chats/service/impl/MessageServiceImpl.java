@@ -34,18 +34,17 @@ public class MessageServiceImpl implements MessageService {
     public Message update(MessageDTO messageDTO){
         Message message = convertor.convertDTOToEntity(messageDTO);
 
-        if(!repository.existsById(messageDTO.getUuid())) {
-            throw new NotResourceException("Message with id " + messageDTO.getUuid() + " already exists");
-        }
+        if(!repository.existsById(messageDTO.getUuid()))
+            throw new NotResourceException("Message with id " + messageDTO.getUuid() + "does not exist");
 
         return repository.save(message);
     }
 
     @Override
     public void delete(UUID uuid){
-        if(!repository.existsById(uuid)) {
+        if(!repository.existsById(uuid))
             throw new NotResourceException("Message with id " + uuid + " does not exist");
-        }
+
         repository.deleteById(uuid);
     }
 

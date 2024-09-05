@@ -26,7 +26,7 @@ public class PrivilegeController {
         return ResponseEntity.ok(service.findAll());
     }
 
-    //optional
+
     @PostMapping("/uuid")
     public ResponseEntity<Privilege> findById(@RequestBody UUID id) {
         Optional<Privilege> privilege = service.findById(id);

@@ -51,14 +51,12 @@ public class ChatSecuredServiceImpl implements ChatSecuredService {
 
     @Override
     public void delete(ChatSecuredDTO dto) {
-
         Chat chat = Chat.builder()
                 .uuid(dto.getChatId())
                 .build();
 
-        if(!repository.existsByUserIdAndChat(dto.getUserId(),chat)){
+        if(!repository.existsByUserIdAndChat(dto.getUserId(),chat))
             throw new NotResourceException("chat secured is not exist");
-        }
 
         repository.deleteByUserIdAndChat(dto.getUserId(),chat);
     }

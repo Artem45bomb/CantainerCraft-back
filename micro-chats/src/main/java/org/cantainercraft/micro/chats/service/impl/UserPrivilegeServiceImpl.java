@@ -24,33 +24,19 @@ public class UserPrivilegeServiceImpl implements UserPrivilegeService {
     @Override
     public User_Privilege save(UserPrivilegeDTO dto) {
         User_Privilege entity = convertor.convertDTOToEntity(dto);
-
-        if(!userClient.userExist(dto.getUserId())){
+        if(!userClient.userExist(dto.getUserId()))
             throw new NotResourceException("user not found");
-        }
 
-        return repository.save(entity);
-    }
-
-    @Override
-    public User_Privilege update(UserPrivilegeDTO dto) {
-        User_Privilege entity = convertor.convertDTOToEntity(dto);
-        Optional<User_Privilege> userPrivilege = repository.findById(dto.getUuid());
-
-        if(!userClient.userExist(dto.getUserId())){
-            throw new NotResourceException("user not found");
-        }
-
-        if (userPrivilege.isEmpty()) {
-            throw new NotResourceException("User privilege not found");
-        }
+        if(repository.existsByUserIdAndPrivilege(dto.getUserId(),dto.getPrivilege()))
+            throw new NotResourceException("This add privilege for the user");
 
         return repository.save(entity);
     }
 
     @Override
     public void delete(UUID uuid) {
-        if (!repository.existsById(uuid)) throw new NotResourceException("content is not exist");
+        if (!repository.existsById(uuid))
+            throw new NotResourceException("content is not exist");
 
         repository.deleteById(uuid);
     }

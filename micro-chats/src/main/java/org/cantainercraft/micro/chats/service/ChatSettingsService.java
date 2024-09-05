@@ -17,7 +17,7 @@ public interface ChatSettingsService {
 
     Optional<Chat_Settings> findByUUID(UUID uuid);
 
-    List<Chat_Settings> findByChatId(UUID chat_Id);
+    Optional<Chat_Settings> findByChatId(UUID chat_Id);
 
     List<Chat_Settings> findAll();
 
