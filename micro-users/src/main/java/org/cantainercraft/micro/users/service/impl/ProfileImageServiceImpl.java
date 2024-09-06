@@ -32,9 +32,9 @@ public class ProfileImageServiceImpl implements ProfileImageService {
     public Profile_Image save(ProfileImageDTO dto) {
         Profile_Image profileImage = convertor.convertDTOToEntity(dto);
 
-        if(fileClient.findBySrc(profileImage.getSrcContent()) == null ){
+
+        if(fileClient.findBySrc(profileImage.getSrcContent()) == null )
             throw new NotResourceException("src is not exist");
-        }
 
         return repository.save(profileImage);
     }
@@ -48,9 +48,9 @@ public class ProfileImageServiceImpl implements ProfileImageService {
     @Cacheable(value = "profile-image",key = "#uuid",unless = "#result == null")
     public Profile_Image findById(UUID uuid) {
         Optional<Profile_Image> profileImage = repository.findById(uuid);
-        if (profileImage.isEmpty()) {
+
+        if (profileImage.isEmpty())
             throw new NotResourceException("Profile image already exists");
-        }
 
         return profileImage.get();
     }
@@ -59,13 +59,12 @@ public class ProfileImageServiceImpl implements ProfileImageService {
     @CachePut(value = "profile-image",key = "#dto.uuid")
     public Profile_Image update(ProfileImageDTO dto) {
         Profile_Image entity = convertor.convertDTOToEntity(dto);
-        if(repository.existsById(dto.getUuid())){
-            throw new NotResourceException("Profile image already exists");
-        }
 
-        if(fileClient.findBySrc(entity.getSrcContent()) == null ){
+        if(!repository.existsById(dto.getUuid()))
+            throw new NotResourceException("Profile image already exists");
+
+        if(fileClient.findBySrc(entity.getSrcContent()) == null )
             throw new NotResourceException("src is not exist");
-        }
 
         return repository.save(entity);
     }
@@ -73,9 +72,8 @@ public class ProfileImageServiceImpl implements ProfileImageService {
     @Override
     @CacheEvict(value = "profile-image",key = "#uuid")
     public void deleteById(UUID uuid) {
-        if(repository.existsById(uuid)){
+        if(repository.existsById(uuid))
             throw new NotResourceException("Profile image already exists");
-        }
 
         repository.deleteById(uuid);
     }
