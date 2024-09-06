@@ -45,7 +45,7 @@ class UserPrivilegeServiceImplTest {
 
     @Test
     @Tag("findById")
-    void findById_whenNotExistById_OptionalEntity(){
+    void findById_whenNotExistById_OptionalEmpty(){
         UUID id = UUID.randomUUID();
         Mockito.when(repository.findById(id)).thenReturn(Optional.empty());
         Assertions.assertEquals(service.findById(id),Optional.empty());
