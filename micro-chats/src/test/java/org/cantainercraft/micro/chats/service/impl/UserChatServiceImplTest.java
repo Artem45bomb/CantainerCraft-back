@@ -58,7 +58,6 @@ class UserChatServiceImplTest {
         when(repository.save(any())).thenReturn(result);
         when(userWebClient.userExist(2L)).thenReturn(true);
         assertEquals(service.save(dto),result);
-
     }
 
     @Test
