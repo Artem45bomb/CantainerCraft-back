@@ -18,7 +18,6 @@ import java.util.UUID;
 @Transactional
 @RequiredArgsConstructor
 public class PrivilegeServiceImpl implements PrivilegeService {
-
     private final PrivilegeRepository repository;
     private final PrivilegeDTOConvertor convertor;
 
@@ -26,34 +25,32 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     @Override
     public Privilege save(PrivilegeDTO dto) {
         Privilege entity = convertor.convertDTOToEntity(dto);
-        if(repository.existsByChatUuidAndNameRole(dto.getChat().getUuid(),dto.getNameRole())){
+        if(repository.existsByChatUuidAndNameRole(dto.getChat().getUuid(),dto.getNameRole()))
             throw new NotResourceException("This privilege already exists");
-        }
+
         return repository.save(entity);
     }
 
-    //исправить
+
     @Override
     public Privilege update(PrivilegeDTO dto) {
         Privilege entity = convertor.convertDTOToEntity(dto);
         Optional<Privilege> privilege = repository.findById(dto.getUuid());
 
-        if (privilege.isEmpty()) {
-            throw new NotResourceException("Privilege already exists");
-        }
+        if (privilege.isEmpty())
+            throw new NotResourceException("Privilege not exists");
 
         if(!dto.getNameRole().equals(privilege.get().getNameRole()) &&
-        repository.existsByChatUuidAndNameRole(dto.getChat().getUuid(),dto.getNameRole())){
+        repository.existsByChatUuidAndNameRole(dto.getChat().getUuid(),dto.getNameRole()))
             throw new NotResourceException("This privilege already exists");
-        }
+
 
         return repository.save(entity);
     }
 
     @Override
     public void deleteById(UUID uuid) {
-        Optional<Privilege> optional = repository.findById(uuid);
-        if (optional.isEmpty()) {
+        if (!repository.existsById(uuid)) {
             throw new NotResourceException("This privilege does not exist");
         }
         repository.deleteById(uuid);}

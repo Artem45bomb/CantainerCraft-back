@@ -18,40 +18,48 @@ import java.util.UUID;
 @Transactional
 @RequiredArgsConstructor
 public class ChatSettingsServiceImpl implements ChatSettingsService {
-
     private final ChatSettingsDTOConvertor convertor;
     private final ChatSettingsRepository repository;
 
+    @Override
     public void delete(UUID uuid) {
         if(!repository.existsById(uuid))
-        {
             throw new NotResourceException("no settings by id");
-        }
+
         repository.deleteById(uuid);
     }
 
 
-    public Chat_Settings update(ChatSettingsDTO chatSettingsUpdateDTO) {
-        if(!repository.existsById(chatSettingsUpdateDTO.getUuid())){
+    @Override
+    public Chat_Settings update(ChatSettingsDTO dto) {
+        if(!repository.existsById(dto.getUuid()))
             throw new NotResourceException("no settings by id");
-        }
-        Chat_Settings chatSettings = convertor.convertDTOToEntity(chatSettingsUpdateDTO);
+
+        Chat_Settings chatSettings = convertor.convertDTOToEntity(dto);
         return repository.save(chatSettings);
     }
 
-    public Chat_Settings save(ChatSettingsDTO settings) {
-        Chat_Settings chatSettings = convertor.convertDTOToEntity(settings);
-        return repository.save(chatSettings);
+    @Override
+    public Chat_Settings save(ChatSettingsDTO dto) {
+        Chat_Settings settings = convertor.convertDTOToEntity(dto);
+        
+        if(repository.existsByChatUuid(settings.getChat().getUuid()))
+            throw new NotResourceException("exist settings for chat");
+        
+        return repository.save(settings);
     }
 
+    @Override
     public Optional<Chat_Settings> findByUUID(UUID uuid) {
         return repository.findById(uuid);
     }
 
-    public List<Chat_Settings> findByChatId(UUID chat_Id) {
-        return repository.findByChatUuid(chat_Id);
+    @Override
+    public Optional<Chat_Settings> findByChatId(UUID chatId) {
+        return repository.findByChatUuid(chatId);
     }
-    
+
+    @Override
     public List<Chat_Settings> findAll(){
         return repository.findAll();
     }

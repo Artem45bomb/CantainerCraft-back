@@ -27,7 +27,6 @@ public class UserPrivilegeController {
         return ResponseEntity.ok(service.findAll());
     }
 
-    //исправить
     @PostMapping("/uuid")
     public ResponseEntity<User_Privilege> findById(@RequestBody UUID id) {
         Optional<User_Privilege> userPrivilege = service.findById(id);
@@ -50,11 +49,6 @@ public class UserPrivilegeController {
     @PostMapping("/add")
     public ResponseEntity<User_Privilege> save(@Valid @RequestBody UserPrivilegeDTO dto) {
         return ResponseEntity.ok(service.save(dto));
-    }
-
-    @PutMapping("/update")
-    public ResponseEntity<User_Privilege> update(@Valid @RequestBody UserPrivilegeDTO dto) {
-        return ResponseEntity.ok(service.update(dto));
     }
 
     @PutMapping("/delete")

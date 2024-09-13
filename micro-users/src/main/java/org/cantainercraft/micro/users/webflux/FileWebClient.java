@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
 /**
- * Компонент для взаимодействия с удаленным микросервисом пользователей через WebClient.
+ * Компонент для взаимодействия с удаленным микросервисом files через WebClient.
  */
 @Component
 @RequiredArgsConstructor

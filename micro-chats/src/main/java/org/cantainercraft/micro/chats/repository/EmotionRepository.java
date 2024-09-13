@@ -10,6 +10,6 @@ import java.util.UUID;
 public interface EmotionRepository extends JpaRepository<Emotion, UUID> {
 
     Optional<Emotion> findByUnicode(String unicode);
-
+    boolean existsByUnicode(String unicode);
     void deleteByUnicode(String unicode);
 }

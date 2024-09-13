@@ -31,13 +31,12 @@ public class ChatImageProfileServiceImpl implements ChatImageProfileService {
         Chat_Image_Profile entity = convertor.convertDTOToEntity(dto);
         Optional<Chat> chat = chatService.findByUUID(dto.getChat().getUuid());
 
-        if(chat.isEmpty()){
+        if(chat.isEmpty())
             throw new NotResourceException("chat is not exist");
-        }
 
-        if(fileClient.findBySrc(dto.getSrcContent()) == null) {
+
+        if(fileClient.findBySrc(dto.getSrcContent()) == null)
             throw new NotResourceException("src is not exist");
-        }
 
         return repository.save(entity);
     }
@@ -45,23 +44,26 @@ public class ChatImageProfileServiceImpl implements ChatImageProfileService {
     @Override
     public Chat_Image_Profile update(ChatImageProfileDTO dto) {
         Chat_Image_Profile entity = convertor.convertDTOToEntity(dto);
+        Optional<Chat> chat = chatService.findByUUID(dto.getChat().getUuid());
 
-        if (!repository.existsById(dto.getUuid())){
+        if(chat.isEmpty())
+            throw new NotResourceException("chat is not exist");
+
+        if (!repository.existsById(dto.getUuid()))
             throw new NotResourceException("No content to update");
-        }
 
-        if(fileClient.findBySrc(dto.getSrcContent()) == null) {
+        if(fileClient.findBySrc(dto.getSrcContent()) == null)
             throw new NotResourceException("src is not exist");
-        }
+
 
         return repository.save(entity);
     }
 
     @Override
     public void delete(UUID uuid) {
-        if (!repository.existsById(uuid)){
+        if (!repository.existsById(uuid))
             throw new NotResourceException("No content to delete");
-        }
+
 
         repository.deleteById(uuid);
     }

@@ -11,8 +11,6 @@ public interface UserChatService {
 
     User_Chat save(UserChatDTO dto);
 
-    User_Chat update(UserChatDTO dto);
-
     void deleteByUserId(Long userId, UUID chatId);
 
     void deleteById(Long id);

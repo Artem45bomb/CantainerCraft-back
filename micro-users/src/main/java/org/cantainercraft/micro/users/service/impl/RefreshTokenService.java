@@ -51,7 +51,6 @@ public class RefreshTokenService {
     }
 
     public Optional<Token> findByToken(Authentication authentication){
-        //String password = (String)authentication.getCredentials();
         return tokenRepository.findByUsername(authentication.getName());
     }
 

@@ -7,6 +7,8 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+  config:
+    import: configserver:http://localhost:8888
 logging:
   level:
     org:
@@ -14,3 +16,4 @@ logging:
         security: TRACE
 service:
   key: Uieiej6895op
+GATEWAY_URL_BASE: ""

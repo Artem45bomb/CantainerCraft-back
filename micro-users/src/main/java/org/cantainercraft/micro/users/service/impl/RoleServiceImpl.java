@@ -15,6 +15,7 @@ import org.cantainercraft.project.entity.users.Role;
 import org.cantainercraft.micro.users.repository.RoleRepository;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Component
@@ -42,10 +43,11 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role save(RoleDTO dto){
+        Role role = roleDTOConvertor.convertDTOToEntity(dto);
         Optional<Role> entity = repository.findByRole(dto.getRole());
 
-        if(entity.isPresent()) throw new ExistResourceException("role is exist");
-        Role role = roleDTOConvertor.convertDTOToEntity(dto);
+        if(entity.isPresent())
+            throw new ExistResourceException("role is exist");
 
         return repository.save(role);
     }
@@ -56,8 +58,10 @@ public class RoleServiceImpl implements RoleService {
         Optional<Role> role = repository.findById(dto.getId());
         Optional<Role> roleExist = repository.findByRole(dto.getRole());
 
-        if(role.isEmpty()) throw new NotResourceException("role is not exist");
-        if(roleExist.isPresent()) throw new ExistResourceException("a role with the same name exists");
+        if(role.isEmpty())
+            throw new NotResourceException("role is not exist");
+        if(roleExist.isPresent() && !Objects.equals(roleExist.get().getRole(),role.get().getRole()))
+            throw new ExistResourceException("a role with the same name exists");
 
         return repository.save(roleDTOConvertor.convertDTOToEntity(dto));
     }
@@ -67,7 +71,8 @@ public class RoleServiceImpl implements RoleService {
     public void deleteById(Long id){
         Optional<Role> role = repository.findById(id);
 
-        if(role.isEmpty()) throw new NotResourceException("role is not exist");
+        if(role.isEmpty())
+            throw new NotResourceException("role is not exist");
 
         repository.deleteById(id);
     }

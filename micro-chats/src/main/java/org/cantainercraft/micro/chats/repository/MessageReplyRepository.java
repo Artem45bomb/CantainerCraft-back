@@ -9,8 +9,4 @@ import java.util.UUID;
 
 @Repository
 public interface MessageReplyRepository extends JpaRepository<Message_Reply, UUID> {
-
-    Optional<Message_Reply> findByMessageReplyUserId(Long userId);
-
-    void deleteByMessageReplyUserId(Long userId);
 }

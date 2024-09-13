@@ -35,43 +35,21 @@ public class UserEmotionServiceImpl implements UserEmotionService {
 
     @Override
     public User_Emotion save(UserEmotionDTO dto) {
-
-        if(dto.getUuid() != null){
+        if(dto.getUuid() != null)
             throw new NotValidateParamException("missed param:id");
-        }
 
-        if(!webClient.userExist(dto.getUserId())){
+
+        if(!webClient.userExist(dto.getUserId()))
             throw new NotResourceException("user is not exist");
-        }
 
         User_Emotion entity = convertor.convertDTOToEntity(dto);
         return repository.save(entity);
-    }
-
-    @Override
-    public User_Emotion update(UserEmotionDTO dto) {
-        if(!messageService.existById(dto.getMessage().getUuid())){
-            throw new NotResourceException("message is not exist");
-        }
-
-        if (!repository.existsById(dto.getUuid())) {
-            throw new NotResourceException("Not exist");
-        }
-
-        if(!webClient.userExist(dto.getUserId())){
-            throw new NotResourceException("user is not exist");
-        }
-
-        User_Emotion entity = convertor.convertDTOToEntity(dto);
-        return repository.save(entity);
-
     }
 
     @Override
     public void delete(UUID uuid) {
-        if(!repository.existsById(uuid)) {
+        if(!repository.existsById(uuid))
             throw new NotResourceException("not is exist");
-        }
 
         repository.deleteById(uuid);
     }
@@ -84,7 +62,6 @@ public class UserEmotionServiceImpl implements UserEmotionService {
     @Override
     public User_Emotion findById(UUID uuid) {
         Optional<User_Emotion> entity = repository.findById(uuid);
-
         if(entity.isEmpty()) throw new NotResourceException("not is exist");
 
         return entity.get();

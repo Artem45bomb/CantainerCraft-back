@@ -50,6 +50,7 @@ public class UserOnlineServiceImpl implements UserOnlineService {
     @CachePut(value = "user-online",key = "#dto.uuid")
     public User_Online update(UserOnlineDTO dto) {
         User_Online entity = dtoConvertor.convertDTOToEntity(dto);
+
         if (!repository.existsById(dto.getUuid())) {
             throw new NotResourceException("UserOnline not exists");
         }

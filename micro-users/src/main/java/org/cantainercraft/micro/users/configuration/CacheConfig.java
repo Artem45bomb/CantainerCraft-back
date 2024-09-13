@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Primary;
 @Configuration(proxyBeanMethods = false)
 public class CacheConfig {
     @Bean
-    @Primary
     public CacheManagerCustomizer<ConcurrentMapCacheManager> cacheManager(){
         return cacheManager -> cacheManager.setAllowNullValues(false);
     }

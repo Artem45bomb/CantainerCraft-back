@@ -54,11 +54,6 @@ public class UserEmotionController {
         service.deleteEmotion(dto);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<User_Emotion> update(@Valid @RequestBody UserEmotionDTO dto) {
-        return ResponseEntity.ok(service.update(dto));
-    }
-
     @PutMapping("/delete")
     public void delete(@RequestBody UUID id) {
         service.delete(id);

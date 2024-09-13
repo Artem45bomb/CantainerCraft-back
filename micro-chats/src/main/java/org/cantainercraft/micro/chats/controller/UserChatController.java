@@ -55,10 +55,4 @@ class UserChatController {
     public ResponseEntity<User_Chat> save(@Valid @RequestBody UserChatDTO dto){
         return ResponseEntity.ok(service.save(dto));
     }
-
-
-    @PutMapping("/update")
-    public ResponseEntity<User_Chat> update(@Valid @RequestBody UserChatDTO dto){
-        return ResponseEntity.ok(service.update(dto));
-    }
 }
