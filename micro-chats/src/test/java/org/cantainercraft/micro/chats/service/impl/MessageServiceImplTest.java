@@ -12,9 +12,11 @@ import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.security.Provider;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -73,11 +75,16 @@ class MessageServiceImplTest {
         when(repository.findById(id)).thenReturn(Optional.of(result));
         assertEquals(service.findByUuid(id), Optional.of(result));
     }
-//  @Test
+//    @Test
 //    void findBySearch_whenFail_PageEmpty(){
 //        UUID id = UUID.randomUUID();
 //        UUID chatId = UUID.randomUUID();
-//        when(repository.findBySearch(id,chatId)).thenReturn(Optional.empty());
+//        Date dateStart = new Date();
+//        Date dateEnd = new Date();
+//        Pageable pageable = null;
+//        when(repository.findBySearch(dateStart,dateEnd,"",id,1L,chatId,pageable)).thenReturn(new PageImpl<>(List.of()));
+//        assertEquals(service.findBySearch(dateStart,dateEnd,"",id,1L,chatId,pageable), pageable.);
+//
 //    }
 //    @Test
 //    void findBySearch_whenSuccess_PageMessage(){

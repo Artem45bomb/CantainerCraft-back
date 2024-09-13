@@ -6,6 +6,7 @@ import org.cantainercraft.micro.chats.dto.UserChatDTO;
 import org.cantainercraft.micro.chats.repository.UserChatRepository;
 import org.cantainercraft.micro.chats.webflux.UserWebClient;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
+import org.cantainercraft.project.entity.chats.Chat;
 import org.cantainercraft.project.entity.chats.User_Chat;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
@@ -51,7 +52,6 @@ class UserChatServiceImplTest {
     @Test
     @Tag("save")
     void save_whenSuccess_Entity(){
-        UUID id = UUID.randomUUID();
         UserChatDTO dto = UserChatDTO.builder().id(1L).userId(2L).build();
         User_Chat result = new User_Chat(1L,2L,null);
         when(convertor.convertDTOToEntity(any())).thenReturn(result);
@@ -93,17 +93,16 @@ class UserChatServiceImplTest {
     @Test
     @Tag("deleteByUserId")
     void deleteByUserId_whenIdNotExist_Exception(){
-        UserChatDTO dto = UserChatDTO.builder().id(1L).userId(2L).build();
-        Exception ex = assertThrows(NotResourceException.class,() ->service.deleteById(dto.getId()));
-        assertEquals(NotResourceException.class,ex.getClass());
+        UUID id = UUID.randomUUID();
+        assertThrows(NotResourceException.class,()->service.deleteByUserId(1L,id));
     }
 
     @Test
     @Tag("deleteByUserId")
     void deleteByUserId_whenSuccess_Success(){
-        UserChatDTO dto = UserChatDTO.builder().id(1L).userId(2L).build();
-        when(repository.existsById(any())).thenReturn(true);
-        Assertions.assertDoesNotThrow(()->service.deleteById(dto.getId()));
+        UUID id = UUID.randomUUID();
+        when(repository.existsByUserIdAndChatUuid(1L,id)).thenReturn(true);
+        Assertions.assertDoesNotThrow(()->service.deleteByUserId(1L,id));
     }
 
     @Test
@@ -111,8 +110,7 @@ class UserChatServiceImplTest {
     void deleteById_whenIdNotExist_Exception(){
         UserChatDTO dto = UserChatDTO.builder().id(1L).userId(2L).build();
         when(repository.existsById(1L)).thenReturn(false);
-        Exception ex = assertThrows(NotResourceException.class,() ->service.deleteById(dto.getId()));
-        assertEquals(NotResourceException.class,ex.getClass());
+        assertThrows(NotResourceException.class,()->service.deleteById(dto.getId()));
     }
 
     @Test
@@ -125,7 +123,7 @@ class UserChatServiceImplTest {
 
     @Test
     @Tag("findById")
-    void findById_whenIdNotExist_Nothing(){
+    void findById_whenIdNotExist_OptionalEmpty(){
         UserChatDTO dto = UserChatDTO.builder().id(1L).userId(2L).build();
         when(repository.existsById(any())).thenReturn(false);
         assertEquals(service.findById(dto.getId()), Optional.empty());
@@ -150,7 +148,7 @@ class UserChatServiceImplTest {
 
     @Test
     @Tag("findBySearch")
-    void findBySearch_whenUserIdNotExist_Nothing(){
+    void findBySearch_whenUserIdNotExist_ListEmpty(){
         UUID id = UUID.randomUUID();
         UserChatDTO dto = UserChatDTO.builder().id(1L).userId(2L).chat(ChatDTO.builder().uuid(id).build()).build();
         when(repository.existsById(any())).thenReturn(true);

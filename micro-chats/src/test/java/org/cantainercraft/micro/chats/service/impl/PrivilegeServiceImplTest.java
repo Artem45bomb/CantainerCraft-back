@@ -1,24 +1,19 @@
 package org.cantainercraft.micro.chats.service.impl;
 
-import org.bouncycastle.LICENSE;
 import org.cantainercraft.micro.chats.convertor.PrivilegeDTOConvertor;
 import org.cantainercraft.micro.chats.dto.PrivilegeDTO;
 import org.cantainercraft.micro.chats.repository.PrivilegeRepository;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.chats.Chat;
 import org.cantainercraft.project.entity.chats.Privilege;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
 import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
-import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -41,16 +36,20 @@ class PrivilegeServiceImplTest {
         UUID id = UUID.randomUUID();
         PrivilegeDTO dto = PrivilegeDTO.builder().nameRole("role").chat(Chat.builder().uuid(id).build()).build();
         Privilege result = Privilege.builder().nameRole("role").chat(Chat.builder().uuid(id).build()).build();
-
         when(convertor.convertDTOToEntity(dto)).thenReturn(result);
         when(repository.existsByChatUuidAndNameRole(id,"role")).thenReturn(true);
-        Exception ex = Assertions.assertThrows(NotResourceException.class,() ->service.save(dto));
-        assertEquals(NotResourceException.class,ex.getClass());
+        assertThrows(NotResourceException.class,()->service.save(dto));
     }
     @Test
     @Tag("save")
     void save_whenSuccess_Entity(){
-
+        UUID id = UUID.randomUUID();
+        PrivilegeDTO dto = PrivilegeDTO.builder().nameRole("role").chat(Chat.builder().uuid(id).build()).build();
+        Privilege result = Privilege.builder().nameRole("role").chat(Chat.builder().uuid(id).build()).build();
+        when(convertor.convertDTOToEntity(dto)).thenReturn(result);
+        when(repository.existsByChatUuidAndNameRole(id,"role")).thenReturn(false);
+        when(repository.save(result)).thenReturn(result);
+        assertEquals(service.save(dto),result);
     }
     @Test
     @Tag("update")
@@ -71,7 +70,6 @@ class PrivilegeServiceImplTest {
         when(repository.save(any())).thenReturn(result);
         when(repository.findById(any())).thenReturn(Optional.of(result));
         when(repository.existsByChatUuidAndNameRole(dto.getChat().getUuid(), dto.getNameRole())).thenReturn(true);
-
         Exception ex = assertThrows(NotResourceException.class, () -> service.update(dto));
         assertEquals("This privilege already exists", ex.getMessage());
     }
@@ -104,7 +102,7 @@ class PrivilegeServiceImplTest {
     }
     @Test
     @Tag("findById")
-    void findById_whenIdNotExist_Nothing(){
+    void findById_whenIdNotExist_OptionalEmpty(){
         UUID id = UUID.randomUUID();
         when(repository.findById(any())).thenReturn(Optional.empty());
         assertEquals(service.findById(id),Optional.empty());
@@ -119,7 +117,7 @@ class PrivilegeServiceImplTest {
     }
     @Test
     @Tag("findBySearch")
-    void findByChat_whenChatIdNotExist_Nothing(){
+    void findByChat_whenChatIdNotExist_ListEmpty(){
         UUID id = UUID.randomUUID();
         when(repository.findByChatUuid(id)).thenReturn(List.of());
         assertEquals(service.findByChat(id), List.of());
