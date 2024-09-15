@@ -2,10 +2,7 @@ package org.cantainercraft.micro.chats.dto;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.cantainercraft.project.entity.chats.Emotion;
 import org.cantainercraft.project.entity.chats.Message;
 
@@ -16,6 +13,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class UserEmotionDTO implements Serializable {
     private UUID uuid;
     @NotNull(message = "Message is empty")

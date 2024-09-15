@@ -16,6 +16,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Cacheable
+@Builder
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @AllArgsConstructor
 @NoArgsConstructor
