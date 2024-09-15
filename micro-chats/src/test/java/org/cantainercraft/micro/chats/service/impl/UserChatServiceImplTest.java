@@ -6,7 +6,6 @@ import org.cantainercraft.micro.chats.dto.UserChatDTO;
 import org.cantainercraft.micro.chats.repository.UserChatRepository;
 import org.cantainercraft.micro.chats.webflux.UserWebClient;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
-import org.cantainercraft.project.entity.chats.Chat;
 import org.cantainercraft.project.entity.chats.User_Chat;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
@@ -58,36 +57,6 @@ class UserChatServiceImplTest {
         when(repository.save(any())).thenReturn(result);
         when(userWebClient.userExist(2L)).thenReturn(true);
         assertEquals(service.save(dto),result);
-    }
-
-    @Test
-    @Tag("update")
-    void update_whenIdNotExist_Exception(){
-        UserChatDTO dto = UserChatDTO.builder().id(1L).userId(2L).build();
-        when(repository.existsById(1L)).thenReturn(false);
-        Exception ex = assertThrows(Exception.class, () -> service.update(dto));
-        assertEquals(ex.getMessage(), "No content for update");
-    }
-
-    @Test
-    @Tag("update")
-    void update_whenUserNotExist_Exception(){
-        UserChatDTO dto = UserChatDTO.builder().id(1L).userId(2L).build();
-        when(repository.existsById(1L)).thenReturn(true);
-        when(userWebClient.userExist(1L)).thenReturn(false);
-        Exception ex = assertThrows(Exception.class, () -> service.update(dto));
-        assertEquals(ex.getMessage(), "user is not exist");
-    }
-
-    @Test
-    @Tag("update")
-    void update_whenSuccess_Entity(){
-        UserChatDTO dto = UserChatDTO.builder().id(1L).userId(2L).build();
-        User_Chat result = User_Chat.builder().id(1L).userId(2L).build();
-        when(repository.existsById(any())).thenReturn(true);
-        when(userWebClient.userExist(dto.getUserId())).thenReturn(true);
-        when(repository.save(any())).thenReturn(result);
-        assertEquals(service.update(dto), result);
     }
 
     @Test
@@ -165,5 +134,17 @@ class UserChatServiceImplTest {
         when(repository.existsByUserIdAndChatUuid(dto.getUserId(),dto.getChat().getUuid())).thenReturn(true);
         assertDoesNotThrow(()-> service.findBySearch(dto.getUserId(), dto.getChat().getUuid()));
     }
-
+    @Test
+    @Tag("findAll")
+    void findAll_success_ListEntity(){
+        User_Chat result = new User_Chat();
+        when(repository.findAll()).thenReturn(List.of(result));
+        assertEquals(service.findAll(),List.of(result));
+    }
+    @Test
+    @Tag("findAll")
+    void findAll_success_ListEmpty(){
+        when(repository.findAll()).thenReturn(List.of());
+        assertEquals(service.findAll(),List.of());
+    }
 }

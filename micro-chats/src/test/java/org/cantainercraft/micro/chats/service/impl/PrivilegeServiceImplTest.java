@@ -133,4 +133,17 @@ class PrivilegeServiceImplTest {
         when(repository.findByChatUuid(any())).thenReturn(List.of(result));
         assertEquals(service.findByChat(id),List.of(result));
     }
+    @Test
+    @Tag("findAll")
+    void findAll_success_ListEntity(){
+        Privilege result = new Privilege();
+        when(repository.findAll()).thenReturn(List.of(result));
+        assertEquals(service.findAll(),List.of(result));
+    }
+    @Test
+    @Tag("findAll")
+    void findAll_success_ListEmpty(){
+        when(repository.findAll()).thenReturn(List.of());
+        assertEquals(service.findAll(),List.of());
+    }
 }

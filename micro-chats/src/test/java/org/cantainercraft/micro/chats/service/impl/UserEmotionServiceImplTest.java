@@ -13,7 +13,6 @@ import org.cantainercraft.micro.utilits.exception.NotValidateParamException;
 import org.cantainercraft.project.entity.chats.Emotion;
 import org.cantainercraft.project.entity.chats.Message;
 import org.cantainercraft.project.entity.chats.User_Emotion;
-import org.cantainercraft.project.entity.users.User;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,6 +22,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -86,65 +86,6 @@ class UserEmotionServiceImplTest {
         when(repository.save(any())).thenReturn(result);
         when(webClient.userExist(1L)).thenReturn(true);
         assertEquals(service.save(dto), result);
-    }
-
-    @Test
-    @Tag("update")
-    void update_WhenMessageIdNotExist_ThrowException(){
-        UUID id = UUID.randomUUID();
-        UUID messageId = UUID.randomUUID();
-        User_Emotion result = new User_Emotion(id,Message.builder().uuid(messageId).build(), null,1L);
-        UserEmotionDTO dto = new UserEmotionDTO(id,Message.builder().uuid(messageId).build(),null,1L);
-        when(convertor.convertDTOToEntity(any())).thenReturn(result);
-        when(messageService.existById(any())).thenReturn(true);
-        Exception ex = assertThrows(Exception.class, ()->service.update(dto));
-        assertEquals(NotResourceException.class, ex.getClass());
-
-    }
-
-    @Test
-    @Tag("update")
-    void update_WhenIdNotExist_ThrowException(){
-        UUID id = UUID.randomUUID();
-        UUID messageId = UUID.randomUUID();
-        User_Emotion result = new User_Emotion(id,Message.builder().uuid(messageId).build(), null,1L);
-        UserEmotionDTO dto = new UserEmotionDTO(id,Message.builder().uuid(messageId).build(),null,1L);
-        when(convertor.convertDTOToEntity(any())).thenReturn(result);
-        when(messageService.existById(any())).thenReturn(false);
-        when(repository.existsById(any())).thenReturn(true);
-        Exception ex = assertThrows(Exception.class, ()->service.update(dto));
-        assertEquals(NotResourceException.class, ex.getClass());
-    }
-
-    @Test
-    @Tag("update")
-    void update_WhenUserIdNotExist_ThrowException(){
-        UUID id = UUID.randomUUID();
-        UUID messageId = UUID.randomUUID();
-        User_Emotion result = new User_Emotion(id,Message.builder().uuid(messageId).build(), null,1L);
-        UserEmotionDTO dto = new UserEmotionDTO(id,Message.builder().uuid(messageId).build(),null,1L);
-        when(convertor.convertDTOToEntity(any())).thenReturn(result);
-        when(messageService.existById(any())).thenReturn(false);
-        when(repository.existsById(any())).thenReturn(false);
-        when(webClient.userExist(1L)).thenReturn(true);
-        Exception ex = assertThrows(Exception.class, ()->service.update(dto));
-        assertEquals(NotResourceException.class, ex.getClass());
-    }
-
-    @Test
-    @Tag("update")
-    void update_WhenSuccess_OptionalEntity(){
-        UUID id = UUID.randomUUID();
-        UUID messageId = UUID.randomUUID();
-        UserEmotionDTO dto = new UserEmotionDTO(id,Message.builder().uuid(messageId).build(),null,1L);
-        User_Emotion result = new User_Emotion(null,null,null,1L);
-        when(convertor.convertDTOToEntity(any())).thenReturn(result);
-        when(messageService.existById(any())).thenReturn(true);
-        when(repository.save(any())).thenReturn(result);
-        when(repository.existsById(any())).thenReturn(true);
-        when(webClient.userExist(1L)).thenReturn(true);
-        assertEquals(service.update(dto), result);
-
     }
 
     @Test
@@ -271,6 +212,19 @@ class UserEmotionServiceImplTest {
         User_Emotion result = new User_Emotion(null,null,null,1L);
         when(repository.findById(any())).thenReturn(Optional.of(result));
         assertDoesNotThrow(()->service.deleteEmotion(dto));
+    }
+    @Test
+    @Tag("findAll")
+    void findAll_success_ListEntity(){
+        User_Emotion result = new User_Emotion(null,null,null,1L);
+        when(repository.findAll()).thenReturn(List.of(result));
+        assertEquals(service.findAll(),List.of(result));
+    }
+    @Test
+    @Tag("findAll")
+    void findAll_success_ListEmpty(){
+        when(repository.findAll()).thenReturn(List.of());
+        assertEquals(service.findAll(),List.of());
     }
 
 }

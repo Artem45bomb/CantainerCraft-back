@@ -7,6 +7,7 @@ import org.cantainercraft.micro.chats.repository.MessageRepository;
 import org.cantainercraft.micro.chats.dto.MessageDTO;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.chats.Message;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -115,5 +116,17 @@ class MessageServiceImplTest {
         when(repository.existsById(id)).thenReturn(true);
         assertEquals(service.existById(id),true);
     }
-
+    @Test
+    @Tag("findAll")
+    void findAll_success_ListEntity(){
+        Message result = new Message();
+        when(repository.findAll()).thenReturn(List.of(result));
+        assertEquals(service.findAll(),List.of(result));
+    }
+    @Test
+    @Tag("findAll")
+    void findAll_success_ListEmpty(){
+        when(repository.findAll()).thenReturn(List.of());
+        assertEquals(service.findAll(),List.of());
+    }
 }

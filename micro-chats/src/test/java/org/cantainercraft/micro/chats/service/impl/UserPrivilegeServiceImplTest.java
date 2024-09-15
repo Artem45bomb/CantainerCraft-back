@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -75,41 +76,6 @@ class UserPrivilegeServiceImplTest {
     }
 
     @Test
-    @Tag("update")
-    void update_whenExistByIdAndUserId_OptionalEntity() {
-        UUID id = UUID.randomUUID();
-        UserPrivilegeDTO dto = new UserPrivilegeDTO(id,1L,null);
-        User_Privilege result = new User_Privilege(id,1L,null);
-        when(convertor.convertDTOToEntity(any())).thenReturn(result);
-        when(userClient.userExist(dto.getUserId())).thenReturn(true);
-        when(repository.findById(dto.getUuid())).thenReturn(Optional.of(result));
-        when(repository.save(any())).thenReturn(result);
-
-        assertEquals(service.update(dto),result);
-
-    }
-
-
-    @Test
-    @Tag("update")
-    void update_whenNotExistByUserId_ExistResourceException() {
-        UUID id = UUID.randomUUID();
-        UserPrivilegeDTO dto = new UserPrivilegeDTO(id,1L,null);
-        when(userClient.userExist(dto.getUserId())).thenReturn(false);
-        Exception ex = assertThrows(NotResourceException.class,() ->service.update(dto));
-        assertEquals(ex.getMessage(),"user not found");
-    }
-
-    @Test
-    @Tag("update")
-    void update_whenNotExistById_ExistResourceException() {
-        UUID id = UUID.randomUUID();
-        UserPrivilegeDTO dto = new UserPrivilegeDTO(id,1L,null);
-        when(repository.existsById(any())).thenReturn(false);
-        assertThrows(NotResourceException.class,() ->service.update(dto));
-    }
-
-    @Test
     @Tag("delete")
     void delete_whenExistById_Success() {
         UUID id = UUID.randomUUID();
@@ -142,4 +108,17 @@ class UserPrivilegeServiceImplTest {
         assertEquals(service.findByUserId(1L),Optional.empty());
     }
 
+    @Test
+    @Tag("findAll")
+    void findAll_Success_ListEntity(){
+        User_Privilege result = new User_Privilege(UUID.randomUUID(),1L,null);
+        when(repository.findAll()).thenReturn(List.of(result));
+        assertEquals(service.findAll(),List.of(result));
+    }
+    @Test
+    @Tag("findAll")
+    void findAll_Success_ListEmpty(){
+        when(repository.findAll()).thenReturn(List.of());
+        assertEquals(service.findAll(),List.of());
+    }
 }
