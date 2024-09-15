@@ -58,7 +58,7 @@ class PrivilegeServiceImplTest {
         PrivilegeDTO dto = PrivilegeDTO.builder().chat(Chat.builder().uuid(id).build()).build();
         when(repository.findById(any())).thenReturn(Optional.empty());
         Exception ex = assertThrows(Exception.class, () -> service.update(dto));
-        assertEquals(ex.getMessage(), "Privilege already exists");
+        assertEquals(ex.getMessage(), "Privilege not exists");
     }
     @Test
     @Tag("update")
@@ -96,7 +96,7 @@ class PrivilegeServiceImplTest {
     void deleteById_whenSuccess_Success(){
         UUID id = UUID.randomUUID();
         Privilege result = Privilege.builder().nameRole("ddd").chat(Chat.builder().uuid(id).build()).build();
-        when(repository.findById(any())).thenReturn(Optional.of(result));
+        when(repository.existsById(any())).thenReturn(true);
         assertDoesNotThrow(()->service.deleteById(id));
 
     }

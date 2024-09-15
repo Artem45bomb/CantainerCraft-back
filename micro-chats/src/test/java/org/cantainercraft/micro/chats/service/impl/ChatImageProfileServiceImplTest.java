@@ -87,6 +87,7 @@ class ChatImageProfileServiceImplTest {
                 .build();
         Chat_Image_Profile result = new Chat_Image_Profile(UUID.randomUUID(),"/Arg.svg",new Chat());
 
+        when(chatService.findByUUID(any())).thenReturn(Optional.of(new Chat()));
         when(repository.existsById(any())).thenReturn(true);
         when(fileClient.findBySrc(any())).thenReturn(new ContentDTO());
         when(repository.save(any())).thenReturn(result);
@@ -102,6 +103,7 @@ class ChatImageProfileServiceImplTest {
                 .build();
         Chat_Image_Profile result = new Chat_Image_Profile(UUID.randomUUID(),"/Arg.svg",new Chat());
 
+        when(chatService.findByUUID(any())).thenReturn(Optional.of(new Chat()));
         when(repository.existsById(any())).thenReturn(true);
         when(fileClient.findBySrc(any())).thenReturn(null);
         when(repository.save(any())).thenReturn(result);
@@ -117,6 +119,7 @@ class ChatImageProfileServiceImplTest {
                 .chat(new Chat())
                 .build();
 
+        when(chatService.findByUUID(any())).thenReturn(Optional.of(new Chat()));
         when(repository.existsById(any())).thenReturn(false);
 
         NotResourceException ex =  Assertions.assertThrows(NotResourceException.class,() -> service.update(dto));
@@ -190,8 +193,6 @@ class ChatImageProfileServiceImplTest {
 
     @Test
     void findByAll_whenIsNotExist_returnList() {
-        UUID chatId = UUID.randomUUID();
-
         when(repository.findAll()).thenReturn(Collections.emptyList());
 
         Assertions.assertEquals(service.findAll(),Collections.emptyList());
@@ -199,8 +200,6 @@ class ChatImageProfileServiceImplTest {
 
     @Test
     void findByAll_whenExist_returnList() {
-        UUID chatId = UUID.randomUUID();
-
         List<Chat_Image_Profile> list = Collections.singletonList(new Chat_Image_Profile());
         when(repository.findAll()).thenReturn(list);
 

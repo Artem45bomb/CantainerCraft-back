@@ -51,7 +51,12 @@ class UserChatServiceImplTest {
     @Test
     @Tag("save")
     void save_whenSuccess_Entity(){
-        UserChatDTO dto = UserChatDTO.builder().id(1L).userId(2L).build();
+        UserChatDTO dto = UserChatDTO
+                .builder()
+                .id(1L)
+                .userId(2L)
+                .chat(ChatDTO.builder().uuid(UUID.randomUUID()).build())
+                .build();
         User_Chat result = new User_Chat(1L,2L,null);
         when(convertor.convertDTOToEntity(any())).thenReturn(result);
         when(repository.save(any())).thenReturn(result);

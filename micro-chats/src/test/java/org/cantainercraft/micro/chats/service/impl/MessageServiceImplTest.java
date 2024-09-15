@@ -37,6 +37,7 @@ class MessageServiceImplTest {
         MessageDTO dto = new  MessageDTO();
         assertDoesNotThrow(()->service.save(dto));
     }
+
     @Test
     void update_whenMessageIdNotExist_NotResourceException(){
         UUID id = UUID.randomUUID();
@@ -108,13 +109,13 @@ class MessageServiceImplTest {
     void existById_whenIdNotExist_false(){
         UUID id = UUID.randomUUID();
         when(repository.existsById(id)).thenReturn(false);
-        assertEquals(service.existById(id),false);
+        assertFalse(service.existById(id));
     }
     @Test
     void existById_whenSuccess_true(){
         UUID id = UUID.randomUUID();
         when(repository.existsById(id)).thenReturn(true);
-        assertEquals(service.existById(id),true);
+        assertTrue(service.existById(id));
     }
     @Test
     @Tag("findAll")
