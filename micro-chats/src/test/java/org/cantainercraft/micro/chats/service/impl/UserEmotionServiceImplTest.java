@@ -55,7 +55,6 @@ class UserEmotionServiceImplTest {
         when(repository.existsById(Mockito.any())).thenReturn(true);
         Exception ex = assertThrows(Exception.class, ()->service.save(dto));
         assertEquals(ex.getClass(),NotValidateParamException.class);
-
     }
 
     @Test
