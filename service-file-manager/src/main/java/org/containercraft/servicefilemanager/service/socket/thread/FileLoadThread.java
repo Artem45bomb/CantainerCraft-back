@@ -23,14 +23,12 @@ public class FileLoadThread extends Thread {
     private final String filename;
     private final Long startByte;
     private boolean isActive = true;
-
     public void disabled(){
         isActive = false;
     }
 
 
     public FileLoadThread(WebSocketSession session, String filename,Long startByte, Integer CHUNK_SIZE, StorageService service) {
-
         this.service = service;
         if (!session.isOpen()) throw new StorageException("session is close");
         if (CHUNK_SIZE > 0) this.CHUNK_SIZE = CHUNK_SIZE;
