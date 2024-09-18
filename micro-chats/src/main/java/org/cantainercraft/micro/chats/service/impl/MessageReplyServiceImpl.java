@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.convertor.MessageReplyDTOConvertor;
 import org.cantainercraft.micro.chats.dto.MessageReplyDTO;
 import org.cantainercraft.micro.chats.service.MessageReplyService;
+import org.cantainercraft.micro.chats.service.MessageService;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
+import org.cantainercraft.project.entity.chats.Message;
 import org.cantainercraft.project.entity.chats.Message_Reply;
 import org.cantainercraft.micro.chats.repository.MessageReplyRepository;
 import org.springframework.stereotype.Service;
@@ -16,22 +18,30 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class MessageReplyServiceImpl implements MessageReplyService {
-
+    private final MessageService messageService;
     private final MessageReplyRepository repository;
     private final MessageReplyDTOConvertor convertor;
 
     @Override
-    public Message_Reply save(MessageReplyDTO messageReplyDTO) {
-        Message_Reply entity = convertor.convertDTOToEntity(messageReplyDTO);
-        return repository.save(entity);
+    public Message_Reply save(MessageReplyDTO dto) {
+        Message_Reply entity = convertor.convertDTOToEntity(dto);
+        Optional<Message> messageReply = messageService.findByUuid(dto.getMessageReply().getUuid());
+
+        if(messageReply.isEmpty())
+            throw new NotResourceException("message reply is not exist");
+
+        Message messageSave = messageService.save(dto.getMessage());
+        
+        
+        return repository.save(new Message_Reply(null,messageSave,messageReply.get()));
     }
 
     @Override
-    public Message_Reply update(MessageReplyDTO messageReplyDTO) {
-        if (!repository.existsById(messageReplyDTO.getUuid())) {
+    public Message_Reply update(MessageReplyDTO dto) {
+        if (!repository.existsById(dto.getUuid())) {
             throw new NotResourceException("no Message_Reply by id");
         }
-        Message_Reply entity = convertor.convertDTOToEntity(messageReplyDTO);
+        Message_Reply entity = convertor.convertDTOToEntity(dto);
         return repository.save(entity);
     }
 

@@ -2,6 +2,7 @@ package org.cantainercraft.micro.users.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -28,7 +29,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Tag(name = "profile")
 public class ProfileController {
-
     private final ProfileService service;
 
 
@@ -95,7 +95,7 @@ public class ProfileController {
             tags = {"get","all"})
     @ApiResponse(responseCode = "200",
             content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = Profile.class)))
+                    array = @ArraySchema(schema = @Schema(implementation = Profile.class))))
     @GetMapping("/all")
     public ResponseEntity<List<Profile>> findAll(){
         return ResponseEntity.ok(service.findAll());

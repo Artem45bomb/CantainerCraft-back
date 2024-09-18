@@ -23,7 +23,4 @@ public class MessageReadDTO implements Serializable {
     private Message message;
     @Min(value = 1,message = "User id must he greater than 0")
     private Long userId;
-    private boolean isRead;
-    @NotNull(message = "Chat is empty")
-    private Chat chat;
 }

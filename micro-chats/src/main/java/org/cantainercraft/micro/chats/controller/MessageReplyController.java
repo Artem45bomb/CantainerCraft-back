@@ -41,11 +41,6 @@ public class MessageReplyController {
         return ResponseEntity.ok(service.save(dto));
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<Message_Reply> update(@Valid @RequestBody MessageReplyDTO dto) {
-        return ResponseEntity.ok(service.update(dto));
-    }
-
     @PutMapping("/delete")
     public void delete(@RequestBody UUID id) {
         service.delete(id);
