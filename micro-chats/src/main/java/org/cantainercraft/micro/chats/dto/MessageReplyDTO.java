@@ -20,5 +20,5 @@ public class MessageReplyDTO implements Serializable {
     @NotNull(message = "MessageReply is empty")
     private Message messageReply;
     @NotNull(message = "Message is empty")
-    private Message message;
+    private MessageDTO message;
 }

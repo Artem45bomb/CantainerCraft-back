@@ -41,13 +41,8 @@ public class MessageForwardController {
         return ResponseEntity.ok(service.save(messageForwardDTO));
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<Message_Forward> update(@Valid @RequestBody MessageForwardDTO messageForwardDTO) {
-        return ResponseEntity.ok(service.update(messageForwardDTO));
-    }
-
     @PutMapping("/delete")
-    public void delete(@RequestBody UUID uuid) {
+    public void deleteById(@RequestBody UUID uuid) {
         service.delete(uuid);
     }
 }

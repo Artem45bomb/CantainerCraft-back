@@ -24,10 +24,10 @@ public class Message_Forward implements Serializable {
     private UUID uuid;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "messageFromId")
-    private Message messageFromId;
+    @JoinColumn(name = "message_from_id")
+    private Message messageFrom;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Message message;
 
     @Override

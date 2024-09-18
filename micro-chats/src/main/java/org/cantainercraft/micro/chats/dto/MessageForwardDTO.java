@@ -20,6 +20,6 @@ public class MessageForwardDTO implements Serializable {
     @NotNull(message = "MessageFrom is empty")
     private Message messageFrom;
     @NotNull(message = "Message is empty")
-    private Message message;
+    private MessageDTO message;
 }
 

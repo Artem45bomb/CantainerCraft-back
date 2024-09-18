@@ -29,12 +29,6 @@ public class MessageRead implements Serializable {
 
     private Long userId;
 
-    private boolean is_read;
-
-    @JsonIgnore
-    @ManyToOne
-    private Chat chat;
-
     @Override
     public boolean equals(Object object) {
         if (this == object) return true;
