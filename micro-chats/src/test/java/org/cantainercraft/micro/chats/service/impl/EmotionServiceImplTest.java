@@ -47,7 +47,6 @@ class EmotionServiceImplTest{
 
     @Test
     void findByUnicode_whenNotExist_notFind() {
-        Emotion emotion = new Emotion();
         UUID uuid = UUID.randomUUID();
         String unicode = uuid.toString();
 
@@ -73,7 +72,6 @@ class EmotionServiceImplTest{
 
     @Test
     void deleteByUnicode_whenEntity_emotionNotDelete() {
-        Emotion emotion = new Emotion();
         UUID uuid = UUID.randomUUID();
         String unicode = uuid.toString();
         when(repository.findByUnicode(unicode)).thenReturn(Optional.empty());
@@ -94,7 +92,6 @@ class EmotionServiceImplTest{
 
     @Test
     void deleteById_whenEntity_emotionNotDelete() {
-        Emotion emotion = new Emotion();
         UUID uuid = UUID.randomUUID();
 
         when(repository.findById(uuid)).thenReturn(Optional.empty());
