@@ -62,7 +62,8 @@ public class SpringSecurity {
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(STATELESS)) // Сессии не используются
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/api/**").authenticated()
-                        .anyRequest().authenticated()) // Все остальные запросы требуют аутентификации
+                        .requestMatchers("/swagger-ui/**").permitAll()
+                        .anyRequest().permitAll()) // Все остальные запросы требуют аутентификации
                 .authenticationProvider(authenticationProvider()) // Установка провайдера аутентификации
                 .addFilterBefore(serviceAuthHandler,UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class); // Добавление JWT фильтра перед фильтром аутентификации
