@@ -28,6 +28,8 @@ ext {
 dependencies {
     //rabbit
     implementation 'org.springframework.cloud:spring-cloud-stream-binder-rabbit:4.1.1'
+    //swagger
+    implementation 'io.swagger.core.v3:swagger-annotations:2.2.22'
 
     implementation 'org.springframework.boot:spring-boot-starter-aop:3.3.1'
     implementation 'org.springframework.boot:spring-boot-starter-security:3.2.5'
