@@ -6,7 +6,6 @@ import org.cantainercraft.micro.users.dto.ProfileImageDTO;
 import org.cantainercraft.micro.users.service.ProfileImageService;
 import org.cantainercraft.project.entity.users.Profile_Image;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
