@@ -38,11 +38,14 @@ public class ProfileController {
                 tags = "get")
     @ApiResponses({
             @ApiResponse(responseCode = "200",
-            content = @Content(mediaType = "application/json",
-            schema = @Schema(implementation = Profile.class))),
+                    content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = Profile.class))),
             @ApiResponse(responseCode = "404",
-            description = "profile is not exist",
-            content = @Content(schema = @Schema)),
+                    description = "profile is not exist",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400",
+                    description = "not valid param",
+                    content = @Content(mediaType = "application/json")),
     })
     @PostMapping("/id")
     public ResponseEntity<Profile> findById(@RequestBody UUID id){
@@ -68,6 +71,12 @@ public class ProfileController {
             @ApiResponse(responseCode = "406",
                     description = "param is not validate",
                     content = @Content(schema = @Schema)),
+            @ApiResponse(responseCode = "406",
+                    content = @Content(mediaType = "application/json"),
+                    description = "param missed: userId"),
+            @ApiResponse(responseCode = "406",
+                    content = @Content(mediaType = "application/json"),
+                    description = "param missed: email")
     })
     @PostMapping("/user")
     public ResponseEntity<Profile> findByUser(@Valid @RequestBody ProfileSearchDTO profileSearchDTO){
@@ -112,8 +121,10 @@ public class ProfileController {
                             schema = @Schema(implementation = Profile.class))),
             @ApiResponse(responseCode = "404",
                     description = "if profile is not exist",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema()))
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400",
+                    description = "not valid param",
+                    content = @Content(mediaType = "application/json")),
     })
     @PutMapping("/update")
     public ResponseEntity<Profile> update(@Valid @RequestBody ProfileDTO profileDTO){

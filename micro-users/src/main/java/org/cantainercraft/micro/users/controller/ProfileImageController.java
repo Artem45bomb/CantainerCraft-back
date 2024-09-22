@@ -57,8 +57,11 @@ public class ProfileImageController {
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Profile_Image.class))),
             @ApiResponse(responseCode = "404",
-                    description = "profile image is not exist",
-                    content = @Content(schema = @Schema)),
+                    description = "Profile image already exists",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400",
+                    description = "not valid param",
+                    content = @Content(mediaType = "application/json"))
     })
     @GetMapping("/{uuid}")
     public ResponseEntity<Profile_Image> findById(@PathVariable UUID uuid) {
@@ -74,17 +77,69 @@ public class ProfileImageController {
                     schema = @Schema(implementation = ProfileImageDTO.class)
             )
     )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Profile_Image.class))),
+            @ApiResponse(responseCode = "404",
+                    description = "src is not exist",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400",
+                    description = "not valid param",
+                    content = @Content(mediaType = "application/json"))
+    })
     @PostMapping("/add")
     public ResponseEntity<Profile_Image> save(@Valid @RequestBody ProfileImageDTO dto){
             return ResponseEntity.ok(service.save(dto));
     }
 
+    @Operation(
+            summary = "update image",
+            description = "update image for profile of user",
+            parameters = @Parameter(
+                    required = true,
+                    description = "data for update image in profile",
+                    schema = @Schema(implementation = ProfileImageDTO.class)
+            )
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Profile_Image.class))),
+            @ApiResponse(responseCode = "409",
+                    description = "Profile Image already exists",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "404",
+                    description = "src is not exist",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400",
+                    description = "not valid param",
+                    content = @Content(mediaType = "application/json"))
+    })
 
     @PutMapping("/update")
     public ResponseEntity<Profile_Image> update(@RequestBody @Valid ProfileImageDTO dto){
         return ResponseEntity.ok(service.update(dto));
     }
 
+    @Operation(
+            summary = "delete image",
+            description = "delete image for profile of user",
+            parameters = @Parameter(
+                    required = true,
+                    description = "data for delete image in profile"
+            )
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "409",
+                    description = "Profile Image already exists",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400",
+                    description = "not valid param",
+                    content = @Content(mediaType = "application/json"))
+    })
 
     @DeleteMapping("/delete/{uuid}")
     public void deleteById(@PathVariable UUID uuid ){

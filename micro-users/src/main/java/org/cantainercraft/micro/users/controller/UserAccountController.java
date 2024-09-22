@@ -1,5 +1,11 @@
 package org.cantainercraft.micro.users.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -24,6 +30,25 @@ public class UserAccountController {
     private final AccountService accountService;
     private final UserMapperImpl userMapper;
 
+    @Operation(summary = "account update",
+            parameters = @Parameter(name = "User client data",
+                    schema = @Schema(implementation = UserClientDTO.class)),
+            tags = {"update"})
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    description = "success operation",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "404",
+                    description = "user is not exist",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "404",
+                    description = "the password length must be between 5 and 255 characters",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400",
+                    description = "not valid param",
+                    content = @Content(mediaType = "application/json")),
+    })
+
     @PostMapping("/update")
     public JwtAuthResponse accountUpdate(@Valid @RequestBody UserClientDTO userDTO, @NonNull HttpServletResponse response){
         if(!StringUtils.isBlank(userDTO.getPassword()) && userDTO.getPassword().trim().length() < 5){
@@ -32,6 +57,20 @@ public class UserAccountController {
 
         return accountService.update(userMapper.toDTO(userDTO),response);
     }
+
+    @Operation(summary = "loaded user",
+            parameters = @Parameter(name = "request",
+                    description = "http request",
+                    schema = @Schema(implementation = HttpServletRequest.class)),
+            tags = {"loaded"})
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    description = "success operation",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "404",
+                    description = "user is not exist",
+                    content = @Content(mediaType = "application/json"))
+    })
 
     @PostMapping("/loaded")
     public UserClientDTO userClient(HttpServletRequest httpServletRequest){
