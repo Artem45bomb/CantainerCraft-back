@@ -1,5 +1,6 @@
 package org.cantainercraft.micro.chats.stream.channel.config;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.Getter;
 import lombok.Setter;
 import org.cantainercraft.micro.chats.dto.stream.MessageChannelDTO;
@@ -14,6 +15,7 @@ import java.util.function.Function;
 @Configuration
 @Setter
 @Getter
+@Hidden
 public class MessageChannel {
 
     private final ModelMapper mapper;

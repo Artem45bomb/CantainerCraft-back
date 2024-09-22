@@ -3,24 +3,24 @@ spring:
     name: 'micro-chats'
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:dev}
-  cloud:
-    function:
-      definition: submitMessage
-    stream:
-      bindings:
+#  cloud:
+#    function:
+#      definition: submitMessage
+#    stream:
+#      bindings:
 #        submitMessage-out-o:
 #          destination:
-        submitMessage-out-0:
-          destination: input
-          group: create
-      rabbit:
-        bindings:
+#        submitMessage-out-0:
+#          destination: input
+#          group: create
+#      rabbit:
+#        bindings:
 #          submitMessage-in-0:
 #            consumer:
 #              exchange-type: topic
-          submitMessage-out-0:
-            producer:
-              exchange-type: topic
+#          submitMessage-out-0:
+#            producer:
+#              exchange-type: topic
 logging:
   level:
     org.cantainercraft.micro: info

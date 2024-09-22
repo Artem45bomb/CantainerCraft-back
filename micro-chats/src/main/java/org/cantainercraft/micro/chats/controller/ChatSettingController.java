@@ -84,7 +84,7 @@ public class ChatSettingController {
             content = @Content(mediaType = "application/json",
                     array = @ArraySchema( schema = @Schema(implementation = Chat_Settings.class))))
 
-    @PostMapping("/all")
+    @GetMapping("/all")
     public List<Chat_Settings> findAll(){
         return service.findAll();
     }

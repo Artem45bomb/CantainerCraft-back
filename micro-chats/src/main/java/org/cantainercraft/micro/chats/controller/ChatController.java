@@ -16,7 +16,6 @@ import org.cantainercraft.micro.chats.service.UserChatService;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.micro.utilits.exception.NotValidateParamException;
 import org.cantainercraft.project.entity.chats.Chat_Image_Profile;
-import org.cantainercraft.project.entity.chats.Chat_Secured;
 import org.cantainercraft.project.entity.users.TypeChat;
 import org.cantainercraft.project.entity.chats.Chat;
 import org.cantainercraft.project.entity.chats.User_Chat;
@@ -107,7 +106,7 @@ public class ChatController {
             summary = "Add chat image",
             tags = {"add"})
     @ApiResponses({
-            @ApiResponse(responseCode = "201",
+            @ApiResponse(responseCode = "200",
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = Chat.class)
@@ -119,12 +118,36 @@ public class ChatController {
                     description = "link for chat is exist",
                     content = @Content(mediaType = "application/json")),
     })
-
     @PostMapping("/add")
     public ResponseEntity<Chat> save(@Valid @RequestBody ChatDTO chatDTO){
         return ResponseEntity.ok(service.save(chatDTO));
     }
 
+    @Operation(
+            summary = "update chat",
+            parameters = @Parameter(
+                    name = "chat data",
+                    description = "each link unique for chat",
+                    schema = @Schema(implementation = ChatDTO.class)
+            ),
+            tags = {"update"}
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = Chat.class)
+                    )),
+            @ApiResponse(responseCode = "400",
+                    content = @Content(mediaType = "application/json"),
+                    description = "not valid param"),
+            @ApiResponse(responseCode = "404",
+                    content = @Content(mediaType = "application/json"),
+                    description = "chat is not exist"),
+            @ApiResponse(responseCode = "409",
+                    description = "link for chat is exist",
+                    content = @Content(mediaType = "application/json")),
+    })
     @PutMapping("/update")
     public ResponseEntity<Chat> update(@Valid @RequestBody ChatDTO chatDTO) throws Exception{
         if(chatDTO.getUuid() == null){
@@ -136,20 +159,19 @@ public class ChatController {
 
     @Operation(summary = "get chat",
             description = "get chat by uuid, chatName, dateStart, dateEnd, typeChat",
-            parameters = @Parameter(name = "id", description = "message id", schema = @Schema(implementation = UUID.class)),
+            parameters = @Parameter(name = "data", description = "search data", schema = @Schema(implementation = ChatSearchDTO.class)),
             tags = {"get","search"})
     @ApiResponses({
             @ApiResponse(responseCode = "200",
                     description = "get id, user id, chat id, date start, date end, value, page number, page size, sort direction, sort column",
                     content = @Content(
                             mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = UUID.class)))),
+                            array = @ArraySchema(schema = @Schema(implementation = Chat.class)))),
             @ApiResponse(responseCode = "400",
                     content = @Content(
                             mediaType = "application/json"),
                     description = "not valid param")
     })
-
     @PostMapping("/search")
     public ResponseEntity<List<Chat>> findBySearch(@RequestBody ChatSearchDTO chatSearchDTO){
 
@@ -187,7 +209,20 @@ public class ChatController {
 
     }
 
-    //ищет пользователей по userId через userChatService так как все пользователи хранятся в user_chat
+    @Operation(summary = "get chats of user",
+            description = "get chats by userId",
+            parameters = @Parameter(name = "userId", description = "search userId", schema = @Schema(implementation = Long.class)),
+            tags = {"get","search","user_chat"})
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = Chat.class)))),
+            @ApiResponse(responseCode = "400",
+                    content = @Content(
+                            mediaType = "application/json"),
+                    description = "not valid param")
+    })
     @PostMapping("/user/search")
     public ResponseEntity<List<Chat>> search(@RequestBody Long userId){
         List<User_Chat> userChats =userChatService.findBySearch(userId,null);

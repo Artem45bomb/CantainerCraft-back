@@ -11,9 +11,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.cantainercraft.micro.chats.dto.ChatDTO;
 import org.cantainercraft.micro.chats.dto.EmotionDTO;
 import org.cantainercraft.micro.chats.service.EmotionService;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
+import org.cantainercraft.project.entity.chats.Chat;
 import org.cantainercraft.project.entity.chats.Emotion;
 import org.cantainercraft.project.entity.chats.Message;
 import org.springframework.http.ResponseEntity;
@@ -115,6 +117,31 @@ public class EmotionController {
         return ResponseEntity.ok(service.save(dto));
     }
 
+    @Operation(
+            summary = "update chat",
+            parameters = @Parameter(
+                    name = "emotion",
+                    description = "each emotion is unique",
+                    schema = @Schema(implementation = EmotionDTO.class)
+            ),
+            tags = {"update"}
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = Chat.class)
+                    )),
+            @ApiResponse(responseCode = "400",
+                    content = @Content(mediaType = "application/json"),
+                    description = "not valid param"),
+            @ApiResponse(responseCode = "404",
+                    content = @Content(mediaType = "application/json"),
+                    description = "emotion is not exist"),
+            @ApiResponse(responseCode = "409",
+                    description = "unicode is exist",
+                    content = @Content(mediaType = "application/json")),
+    })
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<Emotion> update(@Valid @RequestBody EmotionDTO dto){

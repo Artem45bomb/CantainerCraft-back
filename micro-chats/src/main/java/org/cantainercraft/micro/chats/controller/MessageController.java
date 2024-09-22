@@ -9,10 +9,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.cantainercraft.micro.chats.dto.ChatDTO;
 import org.cantainercraft.micro.chats.service.MessageService;
 import org.cantainercraft.micro.chats.webflux.UserWebClient;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.micro.utilits.exception.NotValidateParamException;
+import org.cantainercraft.project.entity.chats.Chat;
 import org.cantainercraft.project.entity.chats.User_Emotion;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -167,8 +169,32 @@ public class MessageController {
             service.delete(uuid);
     }
 
+    @Operation(
+            summary = "update message",
+            parameters = @Parameter(
+                    name = "message data",
+                    schema = @Schema(implementation = MessageDTO.class)
+            ),
+            tags = {"update"}
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = MessageDTO.class)
+                    )),
+            @ApiResponse(responseCode = "400",
+                    content = @Content(mediaType = "application/json"),
+                    description = "not valid param"),
+            @ApiResponse(responseCode = "404",
+                    content = @Content(mediaType = "application/json"),
+                    description = "message is not exist"),
+            @ApiResponse(responseCode = "404",
+                    description = "user is not exist",
+                    content = @Content(mediaType = "application/json")),
+    })
     @PutMapping("/update")
-    public ResponseEntity<Message> update(@RequestBody MessageDTO messageDTO) {
+    public ResponseEntity<Message> update(@Valid @RequestBody MessageDTO messageDTO) {
             if(messageDTO.getUuid() == null) {
                 throw new NotValidateParamException("Missed param: id");
             }
@@ -182,14 +208,13 @@ public class MessageController {
 
     @Operation(summary = "get message",
             description = "get messages by uuid userId, chatId, dateStart, dateEnd, value, pageNumber, pageSize, sortDirection, sortColumn ",
-            parameters = @Parameter(name = "uuid", description = "message id", schema = @Schema(implementation = UUID.class)),
+            parameters = @Parameter(name = "search data", schema = @Schema(implementation = MessageSearchDTO.class)),
             tags = {"get","search"})
     @ApiResponses({
             @ApiResponse(responseCode = "200",
-                    description = "get id, user id, chat id, date start, date end, value, page number, page size, sort direction, sort column",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = UUID.class)
+                            array = @ArraySchema(schema = @Schema(implementation = Message.class))
                     )
             ),
             @ApiResponse(responseCode = "400",
@@ -198,7 +223,6 @@ public class MessageController {
             description = "not valid param"
             )
     })
-
     @PostMapping("/search")
     public ResponseEntity<List<Message>> findBySearch(@Valid @RequestBody MessageSearchDTO messageSearchDTO){
 
