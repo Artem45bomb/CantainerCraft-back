@@ -2,11 +2,13 @@ package org.cantainercraft.micro.users.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.users.dto.ProfileDTO;
 import org.cantainercraft.micro.users.dto.ProfileSearchDTO;
@@ -14,7 +16,6 @@ import org.cantainercraft.micro.users.service.ProfileService;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.micro.utilits.exception.NotValidateParamException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.cantainercraft.project.entity.users.Profile;
 
@@ -28,8 +29,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Tag(name = "profile")
 public class ProfileController {
-
-    private final ProfileService profileService;
+    private final ProfileService service;
 
 
     @Operation(summary = "get profile",
@@ -47,7 +47,7 @@ public class ProfileController {
     @PostMapping("/id")
     public ResponseEntity<Profile> findById(@RequestBody UUID id){
 
-        Optional<Profile> profile = profileService.findById(id);
+        Optional<Profile> profile = service.findById(id);
 
         if(profile.isEmpty()) throw  new NotResourceException("profile is not exist");
 
@@ -70,7 +70,7 @@ public class ProfileController {
                     content = @Content(schema = @Schema)),
     })
     @PostMapping("/user")
-    public ResponseEntity<Profile> findByUser(@RequestBody ProfileSearchDTO profileSearchDTO){
+    public ResponseEntity<Profile> findByUser(@Valid @RequestBody ProfileSearchDTO profileSearchDTO){
         String email = profileSearchDTO.getEmail();
         Long userId = profileSearchDTO.getUserId();
 
@@ -82,7 +82,7 @@ public class ProfileController {
             throw new NotValidateParamException("param missed: email");
         }
 
-        Optional<Profile> profile = profileService.findByUser(userId, email);
+        Optional<Profile> profile = service.findByUser(userId, email);
 
         if(profile.isEmpty()){
             throw new NotResourceException("profile is not exist");
@@ -95,10 +95,10 @@ public class ProfileController {
             tags = {"get","all"})
     @ApiResponse(responseCode = "200",
             content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = Profile.class)))
+                    array = @ArraySchema(schema = @Schema(implementation = Profile.class))))
     @GetMapping("/all")
     public ResponseEntity<List<Profile>> findAll(){
-        return ResponseEntity.ok(profileService.findAll());
+        return ResponseEntity.ok(service.findAll());
     }
 
     @Operation(parameters = @Parameter(
@@ -115,9 +115,8 @@ public class ProfileController {
                     content = @Content(mediaType = "application/json",
                             schema = @Schema()))
     })
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/update")
-    public ResponseEntity<Profile> update(@RequestBody ProfileDTO profileDTO){
-            return ResponseEntity.ok(profileService.update(profileDTO));
+    public ResponseEntity<Profile> update(@Valid @RequestBody ProfileDTO profileDTO){
+            return ResponseEntity.ok(service.update(profileDTO));
     }
 }

@@ -23,4 +23,6 @@ public interface MessageService {
     Page<Message> findBySearch(Date dateStart, Date dateEnd, String text, UUID uuid, Long userId, UUID chatId, Pageable pageable);
 
     List<Message> findByUserId(Long id);
+
+    boolean existById(UUID id);
 }

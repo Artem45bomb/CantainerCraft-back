@@ -1,5 +1,7 @@
 package org.cantainercraft.micro.chats.dto;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmotionDTO implements Serializable {
+    @Size(min = 1,message = "Unicode length must be greater than 0")
     private String unicode;
     private UUID uuid;
 }

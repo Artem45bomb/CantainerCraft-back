@@ -1,5 +1,7 @@
 package org.cantainercraft.micro.chats.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +17,9 @@ import java.util.UUID;
 @NoArgsConstructor
 public class MessageForwardDTO implements Serializable {
     private UUID uuid;
+    @NotNull(message = "MessageFrom is empty")
     private Message messageFrom;
-    private Message message;
+    @NotNull(message = "Message is empty")
+    private MessageDTO message;
 }
 

@@ -18,7 +18,6 @@ import java.util.UUID;
 public interface ChatRepository extends JpaRepository<Chat, UUID> {
     boolean existsByLink(String link);
 
-
     @Query("select chat from Chat chat where (:uuid is null or chat.uuid = :uuid) and" +
             "( :chatName is null  or lower(chat.name) like  lower(concat('%',:chatName,'%'))) and" +
             "(:typeChat is null  or chat.typeChat = :typeChat) and" +

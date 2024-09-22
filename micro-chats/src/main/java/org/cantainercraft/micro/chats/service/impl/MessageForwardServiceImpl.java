@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.convertor.MessageForwardDTOConvertor;
 import org.cantainercraft.micro.chats.dto.MessageForwardDTO;
 import org.cantainercraft.micro.chats.service.MessageForwardService;
+import org.cantainercraft.micro.chats.service.MessageService;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
+import org.cantainercraft.project.entity.chats.Message;
 import org.cantainercraft.project.entity.chats.Message_Forward;
 import org.cantainercraft.micro.chats.repository.MessageForwardRepository;
 import org.springframework.stereotype.Service;
@@ -16,22 +18,28 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class MessageForwardServiceImpl implements MessageForwardService {
-
+    private final MessageService messageService;
     private final MessageForwardRepository repository;
     private final MessageForwardDTOConvertor convertor;
 
     @Override
-    public Message_Forward save(MessageForwardDTO messageForwardDTO) {
-        Message_Forward entity = convertor.convertDTOToEntity(messageForwardDTO);
-        return repository.save(entity);
+    public Message_Forward save(MessageForwardDTO dto) {
+        Optional<Message> messageFrom = messageService.findByUuid(dto.getMessageFrom().getUuid());
+
+        if(messageFrom.isEmpty())
+            throw new NotResourceException("message from is not exist");
+
+        Message messageSave = messageService.save(dto.getMessage());
+
+        return repository.save(new Message_Forward(null,messageFrom.get(),messageSave));
     }
 
     @Override
-    public Message_Forward update(MessageForwardDTO messageForwardDTO) {
-        if (!repository.existsById(messageForwardDTO.getUuid())) {
+    public Message_Forward update(MessageForwardDTO dto) {
+        if (!repository.existsById(dto.getUuid())) {
            throw new NotResourceException("no Message_Forward by id");
         }
-        Message_Forward entity = convertor.convertDTOToEntity(messageForwardDTO);
+        Message_Forward entity = convertor.convertDTOToEntity(dto);
         return repository.save(entity);
     }
 

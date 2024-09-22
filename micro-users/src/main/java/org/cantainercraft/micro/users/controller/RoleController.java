@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.users.dto.RoleDTO;
 import org.cantainercraft.micro.users.service.RoleService;
@@ -76,7 +77,7 @@ public class RoleController {
     })
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/add")
-    public ResponseEntity<Role> save(@RequestBody RoleDTO RoleDTO){
+    public ResponseEntity<Role> save(@Valid @RequestBody RoleDTO RoleDTO){
         return ResponseEntity.ok(roleService.save(RoleDTO));
     }
 
@@ -97,7 +98,7 @@ public class RoleController {
                     content = @Content(schema = @Schema(implementation = Boolean.class))),
     })
     @PutMapping
-    public ResponseEntity<Role> update(@RequestBody RoleDTO roleDTO){
+    public ResponseEntity<Role> update(@Valid @RequestBody RoleDTO roleDTO){
             return ResponseEntity.ok(roleService.update(roleDTO));
     }
 

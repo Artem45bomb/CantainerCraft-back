@@ -15,7 +15,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class UserWebClient {
 
     // Поля
-    private final WebClient webClient; // Экземпляр WebClient для выполнения HTTP запросов
+    @Qualifier("webclient") private final WebClient webClient; // Экземпляр WebClient для выполнения HTTP запросов
     @Value("${service.key}")
     private String serviceKey; // Секретный ключ для аутентификации микросервиса
 
@@ -28,7 +28,7 @@ public class UserWebClient {
     public User loadedUser(String username) {
         return webClient
                 .post() // Создание POST запроса
-                .uri("/user/loadedUser") // Указание URI эндпоинта
+                .uri("/user/name") // Указание URI эндпоинта
                 .bodyValue(username) // Установка тела запроса (имя пользователя)
                 .header("micro-service-key", serviceKey) // Установка заголовка с секретным ключом
                 .retrieve() // Отправка запроса и получение ответа
@@ -42,7 +42,7 @@ public class UserWebClient {
      * @param userId идентификатор пользователя
      * @return true, если пользователь существует, иначе false
      */
-    public Boolean userExist(Long userId) {
+    public Boolean userExist(long userId) {
         return webClient
                 .post() // Создание POST запроса
                 .uri("/user/exist/id") // Указание URI эндпоинта

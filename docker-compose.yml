@@ -1,0 +1,134 @@
+version: '3.7'
+services:
+  #Server
+  eureka-server:
+    container_name: eureka-server
+    image: micro-server
+    ports:
+      - "8761:8761"
+    environment:
+      - SPRING_CONFIG_HOSTNAME=config-properties
+    networks:
+      - eureka
+    depends_on:
+      - config-properties
+
+  config-properties:
+    container_name: cloud-properties
+    image: micro-config
+    ports:
+      - "8888:8888"
+    networks:
+      - eureka
+  #Clients
+  #Client-chats
+  micro-chats:
+    container_name: eureka-client-chats
+    image: micro-chats
+    environment:
+      - GATEWAY_URL_BASE
+      - EUREKA_SERVER_URL
+      - DDL_AUTO=create
+      - SHOW_SQL=true
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-chats:5432/micro_chats
+      - SPRING_CONFIG_HOSTNAME=config-properties
+      - DATASOURCE_USERNAME=admin
+      - DATASOURCE_PASSWORD=admin
+    networks:
+      - eureka
+    depends_on:
+      - eureka-server
+      - postgres-chats  # Добавьте зависимость от postgres
+  #Client-users
+  micro-users:
+    container_name: eureka-client-users
+    image: micro-users
+    environment:
+      - GATEWAY_URL_BASE
+      - EUREKA_SERVER_URL
+      - DDL_AUTO=create
+      - SHOW_SQL=true
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-users:5432/postgres
+      - SPRING_CONFIG_HOSTNAME=config-properties
+      - DATASOURCE_USERNAME=admin
+      - DATASOURCE_PASSWORD=admin
+    networks:
+      - eureka
+    depends_on:
+      - eureka-server
+      - postgres-users  # Добавьте зависимость от postgres
+  #Client-files
+  service-file-manager:
+    container_name: eureka-client-files
+    image: micro-files
+    environment:
+      - EUREKA_SERVER_URL
+      - DDL_AUTO=create
+      - SHOW_SQL=true
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-files:5432/files_manager
+      - SPRING_CONFIG_HOSTNAME=config-properties
+      - DATASOURCE_USERNAME=admin
+      - DATASOURCE_PASSWORD=admin
+    networks:
+      - eureka
+    depends_on:
+      - eureka-server
+      - postgres-files  # Добавьте зависимость от postgres
+  #Gateway
+  gateway:
+    container_name: eureka-gateway
+    image: micro-gateway
+    environment:
+      - EUREKA_SERVER_URL
+    networks:
+      - eureka
+    depends_on:
+      - micro-chats
+      - micro-users
+    ports:
+      - "8081:8081"
+  #Database
+  #Chats
+  postgres-chats:
+    container_name: postgres-chats
+    volumes:
+      - ./sql/chats-init(POSTGRES).sql:/docker-entrypoint-initdb.d/chats-init(POSTGRES).sql
+    image: postgres:14
+    environment:
+      POSTGRES_DB: micro_chats
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5555:5432"
+    networks:
+      - eureka
+  #Users
+  postgres-users:
+    container_name: postgres-users
+    volumes:
+      - ./sql/users-init(POSTGRES).sql:/docker-entrypoint-initdb.d/users-init(POSTGRES).sql
+    image: postgres:14
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5432:5432"
+    networks:
+      - eureka
+  #Files
+  postgres-files:
+    container_name: postgres-files
+    image: postgres:14
+    environment:
+      POSTGRES_DB: files_manager
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5556:5432"
+    networks:
+      - eureka
+
+networks:
+  eureka:
+    driver: bridge

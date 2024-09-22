@@ -1,10 +1,21 @@
 package org.cantainercraft.micro.chats.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.cantainercraft.micro.chats.dto.ChatDTO;
 import org.cantainercraft.micro.chats.service.MessageService;
 import org.cantainercraft.micro.chats.webflux.UserWebClient;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.micro.utilits.exception.NotValidateParamException;
+import org.cantainercraft.project.entity.chats.Chat;
+import org.cantainercraft.project.entity.chats.User_Emotion;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -26,12 +37,37 @@ public class MessageController {
     private final UserWebClient userWebClient;
     private static final String COLUM_ID = "id";
 
+    @Operation(summary = "get all messages",
+            description = "we get all message without input params",
+            tags = {"get","all"})
+    @ApiResponse(responseCode = "200",
+            content = @Content(mediaType = "application/json",
+                    array = @ArraySchema( schema = @Schema(implementation = Message.class))))
+
+
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/all")
     public ResponseEntity<List<Message>> findAll(){
         return ResponseEntity.ok(service.findAll());
     }
 
+    @Operation(summary = "get message",
+            description = "we get id, text, isPinned, type, date, userId",
+            parameters = @Parameter(name = "id", description = "message id", schema = @Schema(implementation = UUID.class)),
+            tags = "get")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Message.class))),
+            @ApiResponse(responseCode = "400",
+                    description = "not valid param",
+                    content = @Content(mediaType = "application/json")
+            ),
+            @ApiResponse(responseCode = "404",
+                    description = "No content",
+                    content = @Content(mediaType = "application/json")
+            )
+    })
 
     @PostMapping("/uuid")
     public ResponseEntity<Message> findByUUID(@RequestBody UUID uuid) {
@@ -43,13 +79,53 @@ public class MessageController {
         return ResponseEntity.ok(message.get());
     }
 
+    @Operation(summary = "get message",
+            description = "we get id, text, isPinned, type, date, userId",
+            parameters = @Parameter(name = "id", description = "user id", schema = @Schema(implementation = Long.class)),
+            tags = "get")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    content = @Content(mediaType = "application/json",
+                            array =@ArraySchema( schema = @Schema(implementation = Message.class)))),
+            @ApiResponse(responseCode = "400",
+                    description = "not valid param",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "404",
+                    description = "No content",
+                    content = @Content(mediaType = "application/json"))
+    })
+
     @PostMapping("/user")
     public ResponseEntity<List<Message>> findByUserId(@RequestBody Long id) {
        return ResponseEntity.ok(service.findByUserId(id));
     }
 
+    @Operation(parameters = @Parameter(
+            name = "message data",
+            description = "message includes: uuid, text, type, date, isPinned, user id, chat, user emotions, contents",
+            schema = @Schema(implementation = Message.class)),
+            summary = "Add message",
+            tags = {"add"})
+    @ApiResponses({
+            @ApiResponse(responseCode = "201",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation =  Message.class)
+                    )),
+            @ApiResponse(responseCode = "400",
+                    content = @Content(
+                            mediaType = "application/json"),
+                    description = "not valid param"
+            ),
+            @ApiResponse(responseCode = "404",
+                    content = @Content(
+                            mediaType = "application/json"),
+                    description = "user is not exist"
+            )
+    })
+
     @PostMapping("/add")
-    public ResponseEntity<Message> save(@RequestBody MessageDTO messageDTO) {
+    public ResponseEntity<Message> save(@Valid @RequestBody MessageDTO messageDTO) {
 
         if (!userWebClient.userExist(messageDTO.getUserId())) {
             throw new NotResourceException("user is not exist");
@@ -61,14 +137,64 @@ public class MessageController {
         return ResponseEntity.ok(result);
     }
 
+    @Operation(summary = "delete message",
+            description = "delete message",
+            parameters = @Parameter(name = "id", description = "message id", schema = @Schema(implementation = UUID.class)),
+            tags = {"delete"})
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    description = "if the operation is successful, it will return to delete the message",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = UUID.class)
+                    )
+            ),
+            @ApiResponse(responseCode = "404",
+                    description = "not is exist",
+                    content = @Content(
+                            mediaType = "application/json"
+                    )
+            ),
+            @ApiResponse(responseCode = "404",
+                    description = "Missed param: id",
+                    content = @Content(
+                            mediaType = "application/json"
+                    )
+            )
+    })
+
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/delete")
     public void delete(@RequestBody UUID uuid){
             service.delete(uuid);
     }
 
+    @Operation(
+            summary = "update message",
+            parameters = @Parameter(
+                    name = "message data",
+                    schema = @Schema(implementation = MessageDTO.class)
+            ),
+            tags = {"update"}
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = MessageDTO.class)
+                    )),
+            @ApiResponse(responseCode = "400",
+                    content = @Content(mediaType = "application/json"),
+                    description = "not valid param"),
+            @ApiResponse(responseCode = "404",
+                    content = @Content(mediaType = "application/json"),
+                    description = "message is not exist"),
+            @ApiResponse(responseCode = "404",
+                    description = "user is not exist",
+                    content = @Content(mediaType = "application/json")),
+    })
     @PutMapping("/update")
-    public ResponseEntity<Message> update(@RequestBody MessageDTO messageDTO) {
+    public ResponseEntity<Message> update(@Valid @RequestBody MessageDTO messageDTO) {
             if(messageDTO.getUuid() == null) {
                 throw new NotValidateParamException("Missed param: id");
             }
@@ -80,9 +206,25 @@ public class MessageController {
 
     }
 
-
+    @Operation(summary = "get message",
+            description = "get messages by uuid userId, chatId, dateStart, dateEnd, value, pageNumber, pageSize, sortDirection, sortColumn ",
+            parameters = @Parameter(name = "search data", schema = @Schema(implementation = MessageSearchDTO.class)),
+            tags = {"get","search"})
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = Message.class))
+                    )
+            ),
+            @ApiResponse(responseCode = "400",
+            content = @Content(
+                    mediaType = "application/json"),
+            description = "not valid param"
+            )
+    })
     @PostMapping("/search")
-    public ResponseEntity<List<Message>> findBySearch(@RequestBody MessageSearchDTO messageSearchDTO){
+    public ResponseEntity<List<Message>> findBySearch(@Valid @RequestBody MessageSearchDTO messageSearchDTO){
 
         UUID uuid = messageSearchDTO.getUuid() == null ? null :messageSearchDTO.getUuid();
         String valueMessage = messageSearchDTO.getValue() == null ? null :messageSearchDTO.getValue();

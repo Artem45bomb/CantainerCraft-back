@@ -13,6 +13,7 @@ import org.cantainercraft.micro.users.service.UserService;
 import org.cantainercraft.project.entity.users.User;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.Optional;
 
 
@@ -32,6 +33,7 @@ public class UserAOP {
         userFind.ifPresent(user -> {
             profileService.save(ProfileDTO.builder()
                     .user(user)
+                    .sunsetTime(new Date())
                     .build());
             userOnlineService.save(UserOnlineDTO.builder()
                     .is_online(false)

@@ -33,12 +33,13 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator:3.3.0'
     //swagger
     implementation 'io.swagger.core.v3:swagger-annotations:2.2.22'
-    implementation 'org.springdoc:springdoc-openapi-ui:1.8.0'
 
 
     implementation 'jakarta.validation:jakarta.validation-api:3.1.0-M2'
     implementation 'com.google.code.gson:gson:2.10.1'
-
+    implementation 'org.springframework.boot:spring-boot-starter-webflux:3.2.5'
+    implementation 'org.springframework.boot:spring-boot-starter-cache:3.3.3'
+    implementation 'org.springframework.boot:spring-boot-starter-validation:3.3.3'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.cloud:spring-cloud-starter-config'
@@ -53,11 +54,17 @@ dependencies {
     implementation 'org.cantainercraft.micro.utilits:micro-utility'
 
     //junit
+    //test
+    testImplementation 'org.springframework.security:spring-security-test:6.3.3'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-
+    //mapper
+    implementation 'org.mapstruct:mapstruct:1.6.0'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.0'
+    implementation 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
 
     //jwt & auth
     implementation 'io.jsonwebtoken:jjwt-api:0.12.5'
@@ -66,7 +73,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security:3.2.5'
 
 }
-
 dependencyManagement {
     imports {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"

@@ -32,7 +32,6 @@ public class AuthController {
     @Operation(summary = "signup user",
     description = "registration user",
     parameters = @Parameter(
-            name = "data user:name,email,password",
             schema =@Schema(implementation = SignUpAuthDTO.class),required = true),
             tags = {"signup"}
     )
@@ -42,12 +41,12 @@ public class AuthController {
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = JwtAuthResponse.class))),
-            @ApiResponse(responseCode = "404",
-                    description = "user is exist",
-                    content = @Content(schema = @Schema())),
+            @ApiResponse(responseCode = "409",
+                    description = "user is exist"),
+            @ApiResponse(responseCode = "409",
+                    description = "email is exist"),
             @ApiResponse(responseCode = "403",
-                    description = "error on server",
-                    content = @Content(schema = @Schema()))
+                    description = "error on server")
     })
     @PostMapping("/signup")
     public JwtAuthResponse signup(@RequestBody @Valid SignUpAuthDTO authDTO,HttpServletResponse response){
@@ -57,7 +56,6 @@ public class AuthController {
     @Operation(summary = "login user",
             description = "authentication user",
             parameters = @Parameter(
-                    name = "data user:name,password",
                     schema =@Schema(implementation = SignInAuthDTO.class),required = true),
             tags = {"login"}
     )

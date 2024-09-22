@@ -19,7 +19,4 @@ public interface MessageReplyService {
 
     Optional<Message_Reply> findById(UUID uuid);
 
-    void deleteByMessageReplyUserId(Long userId);
-
-    Optional<Message_Reply> findByMessageReplyUserId(Long userId);
 }

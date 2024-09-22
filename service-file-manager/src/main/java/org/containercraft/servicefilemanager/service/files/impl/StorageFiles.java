@@ -1,6 +1,7 @@
 package org.containercraft.servicefilemanager.service.files.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.antlr.v4.runtime.misc.NotNull;
 import org.containercraft.servicefilemanager.config.StorageProperties;
 import org.containercraft.servicefilemanager.dto.ContentDTO;
 import org.containercraft.servicefilemanager.entity.Content;
@@ -9,6 +10,8 @@ import org.containercraft.servicefilemanager.exception.StorageFileNotFoundExcept
 import org.containercraft.servicefilemanager.service.files.ContentService;
 import org.containercraft.servicefilemanager.service.files.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -85,6 +88,46 @@ public class StorageFiles implements StorageService {
     }
 
     @Override
+    public InputStreamResource loadAsRange(File file, long start, long end) throws IOException{
+
+        FileInputStream fis = new FileInputStream(file){
+            private long position = start;
+
+            @Override
+            public synchronized int read( byte[] b, int off, int len) throws IOException {
+                // Check if we reached the end of the specified range
+                if(position >= end +1 ){
+                    return  -1;
+                }
+
+                int byteLength =(int)Math.min(len,end+1 - position);
+                int readLength = super.read(b,off,byteLength);
+                if(readLength != -1){
+                    position += readLength;
+                }
+                return readLength;
+            }
+
+            @Override
+            public synchronized int read() throws IOException {
+                if (position >= end + 1) {
+                    return -1; // End of stream
+                }
+
+                int byteRead = super.read();
+                if (byteRead != -1) {
+                    position++; // Update the current position
+                }
+                return byteRead;
+            }
+
+
+        };
+
+        return new InputStreamResource(fis);
+    }
+
+    @Override
     public Content store(MultipartFile file) {
         if(file.isEmpty()){
             throw new StorageException("body is not exist in sending file");
@@ -102,7 +145,7 @@ public class StorageFiles implements StorageService {
         ContentDTO contentDTO = ContentDTO.builder()
                 .type(file.getContentType())
                 .sizeByte(file.getSize())
-                .srcContent(file.getOriginalFilename())
+                .srcContent(destination.toString())
                 .build();
         return contentService.save(contentDTO);
     }
@@ -164,7 +207,7 @@ public class StorageFiles implements StorageService {
         if(isLast){
             contentService.save(ContentDTO.builder()
                     .type(file.getContentType())
-                    .srcContent(file.getOriginalFilename())
+                    .srcContent(filePath.toString())
                     .sizeByte(size)
                     .build());
         }

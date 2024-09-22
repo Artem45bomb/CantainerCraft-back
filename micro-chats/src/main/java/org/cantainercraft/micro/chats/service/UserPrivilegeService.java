@@ -11,8 +11,6 @@ public interface UserPrivilegeService {
 
     User_Privilege save(UserPrivilegeDTO dto);
 
-    User_Privilege update(UserPrivilegeDTO dto);
-
     void delete(UUID uuid);
 
     List<User_Privilege> findAll();

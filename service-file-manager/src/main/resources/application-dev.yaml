@@ -5,5 +5,7 @@ spring:
     url: jdbc:postgresql://localhost:5555/files_manager
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
+  config:
+    import: configserver:http://localhost:8888/

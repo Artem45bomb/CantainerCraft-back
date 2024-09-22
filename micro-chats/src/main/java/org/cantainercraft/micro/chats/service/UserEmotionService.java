@@ -12,9 +12,6 @@ import java.util.UUID;
 public interface UserEmotionService {
 
     User_Emotion save(UserEmotionDTO dto);
-
-    User_Emotion update(UserEmotionDTO dto);
-
     void delete(UUID uuid);
 
     User_Emotion findById(UUID uuid);

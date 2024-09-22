@@ -10,7 +10,7 @@ import java.util.UUID;
 public interface UserOnlineService {
     List<User_Online> findAll();
 
-    User_Online findById(UUID uuid);
+    Optional<User_Online> findById(UUID uuid);
 
     User_Online save(UserOnlineDTO UserOnlineDTO);
 

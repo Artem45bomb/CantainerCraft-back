@@ -1,5 +1,6 @@
 package org.cantainercraft.micro.chats.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.dto.MessageReadDTO;
 import org.cantainercraft.micro.chats.service.MessageReadService;
@@ -36,12 +37,12 @@ public class MessageReadController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<MessageRead> save(@RequestBody MessageReadDTO dto) {
+    public ResponseEntity<MessageRead> save(@Valid @RequestBody MessageReadDTO dto) {
         return ResponseEntity.ok(service.save(dto));
     }
 
     @PutMapping("/update")
-    public ResponseEntity<MessageRead> update(@RequestBody MessageReadDTO dto) {
+    public ResponseEntity<MessageRead> update(@Valid @RequestBody MessageReadDTO dto) {
         return ResponseEntity.ok(service.update(dto));
     }
 

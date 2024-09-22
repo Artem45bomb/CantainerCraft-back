@@ -27,6 +27,7 @@ public class ChatServiceImpl implements ChatService {
     private final ChatRepository repository;
     private final ConvertorDTO<ChatDTO,Chat> convertor;
 
+    @Override
     public Chat save(ChatDTO dto){
         Chat chat = convertor.convertDTOToEntity(dto);
 
@@ -38,33 +39,40 @@ public class ChatServiceImpl implements ChatService {
         return repository.save(chat);
     }
 
+    @Override
     public Chat update(ChatDTO dto){
         Chat chat = convertor.convertDTOToEntity(dto);
+        Optional<Chat> chatFind = repository.findById(dto.getUuid());
 
-        if(repository.existsByLink(dto.getLink())){
+        if(chatFind.isEmpty())
+            throw new NotResourceException("chat is not exist");
+
+        if(!dto.getLink().equals(chatFind.get().getLink())  &&  repository.existsByLink(dto.getLink()))
             throw new ExistResourceException("link for chat is exist");
-        }
         
         return repository.save(chat);
     }
 
+    @Override
      public void delete(UUID uuid){
-        if(!repository.existsById(uuid)){
+        if(!repository.existsById(uuid))
             throw new NotResourceException("chat is not exist");
-        }
 
         repository.deleteById(uuid);
     }
 
 
+    @Override
     public List<Chat> findBySearch(UUID uuid, String name, TypeChat typeChat, Date dateStart, Date dateEnd){
         return repository.findBySearch(uuid,name,typeChat,dateStart,dateEnd);
     }
 
+    @Override
     public List<Chat> findAll(){
         return repository.findAll();
     }
 
+    @Override
     public Optional<Chat> findByUUID(UUID uuid){
         return repository.findById(uuid);
     }

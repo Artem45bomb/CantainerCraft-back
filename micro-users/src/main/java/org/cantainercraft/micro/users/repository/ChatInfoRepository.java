@@ -7,6 +7,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface ChatInfoRepository extends JpaRepository<Chat_Info, UUID> {
-
-    Optional<Chat_Info> findByChatId(UUID uuid);
+    boolean existsByUserIdAndChatId(Long userId,UUID chatId);
 }

@@ -8,17 +8,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.cantainercraft.micro.users.dto.UserLoadDTO;
-import org.cantainercraft.micro.utilits.exception.ExistResourceException;
-import org.cantainercraft.micro.utilits.exception.MessageError;
+import org.apache.commons.lang.StringUtils;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.micro.utilits.exception.NotValidateParamException;
 import org.cantainercraft.micro.utilits.service.ConvertorDTO;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.cantainercraft.micro.users.dto.UserDTO;
 import org.cantainercraft.micro.users.dto.UserSearchDTO;
@@ -32,10 +29,6 @@ import java.util.*;
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserController {
-
-    @Value("${service.key}")
-    private String serviceKey;
-    private final ConvertorDTO<UserLoadDTO,User> convertorLoad;
     private final UserService userService;
 
 
@@ -83,7 +76,7 @@ public class UserController {
                                         schema = @Schema(
                                                 implementation = UserDTO.class))))
     @PostMapping("/search")
-    public ResponseEntity<List<User>> findBySearch(@RequestBody UserSearchDTO dto){
+    public ResponseEntity<List<User>> findBySearch(@RequestBody @Valid UserSearchDTO dto){
 
         String email = dto.getEmail() == null ? null : dto.getEmail();
         String password = dto.getPassword() ==null ? null :dto.getPassword();
@@ -112,9 +105,9 @@ public class UserController {
             )
     })
     @PostMapping("/email")
-    public ResponseEntity<User> findByEmail(@RequestBody String email){
-        if(email ==null || email.trim().isEmpty()){
-            throw  new NotValidateParamException("email is null");
+    public ResponseEntity<User> findByEmail( @RequestBody String email){
+        if(StringUtils.isBlank(email)){
+            throw new NotValidateParamException("email is null");
         }
 
         Optional<User> user = userService.findByEmail(email);
@@ -147,17 +140,16 @@ public class UserController {
     })
     @PostMapping("/name")
     public ResponseEntity<User> findByName(@RequestBody String name){
-        if(name ==null || !name.trim().isEmpty()){
-            throw  new NotValidateParamException("email is null");
+        if(StringUtils.isBlank(name)){
+            throw  new NotValidateParamException("name is null");
         }
-        Optional<User> user = userService.findByEmail(name);
+        Optional<User> user = userService.findByUsername(name);
 
         if(user.isEmpty()){
             throw new NotResourceException("user is not exist");
         }
 
         return ResponseEntity.ok(user.get());
-
     }
 
     @ApiResponses(value = {
@@ -175,14 +167,14 @@ public class UserController {
     }
 
     @Operation(parameters = @Parameter(
-        name = "user date",
+        name = "user data",
         description = "User data includes: email address, password, username.",
         schema = @Schema(implementation = UserDTO.class)
     ),
             summary = "Add user",
             tags = {"add"})
     @ApiResponses({
-            @ApiResponse(responseCode = "200",
+            @ApiResponse(responseCode = "201",
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = User.class)
@@ -204,12 +196,7 @@ public class UserController {
             )
     })
     @PostMapping("/add")
-    public ResponseEntity<User> save(@RequestBody UserDTO dto){
-        Optional<User> user = userService.findByEmail(dto.getEmail());
-
-        if(user.isPresent()){
-            throw new ExistResourceException("user is exist");
-        }
+    public ResponseEntity<User> save(@Valid @RequestBody UserDTO dto){
 
         if(dto.getId() != null){
             throw new NotValidateParamException("missed param:id");
@@ -251,7 +238,7 @@ public class UserController {
             )
     })
     @PutMapping("/update")
-    public ResponseEntity<User> update(@RequestBody UserDTO dto){
+    public ResponseEntity<User> update(@Valid @RequestBody UserDTO dto){
             if(dto.getId() == null){
                 throw new NotValidateParamException("missed param: id");
             }
@@ -342,56 +329,6 @@ public class UserController {
         return ResponseEntity.ok(userService.existById(id));
     }
 
-
-    @Operation(summary = "loaded user",
-            description = "intended for receiving user data by other services.loaded user by username",
-            parameters = {
-                    @Parameter(name = "username",description = "User name",schema = @Schema(implementation = String.class)),
-                    @Parameter(
-                            name = "header",
-                            description = "The header(micro-service-key) is needed to access the request. The header is an access key",
-                            schema = @Schema(implementation = String.class)
-                    )
-            }
-    )
-    @ApiResponses({
-            @ApiResponse(responseCode = "200",
-                    description = "if the operation is successful, it will return true",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = Boolean.class)
-
-                    )),
-            @ApiResponse(responseCode = "404",
-                    description = "if user is not exist",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema()
-                    )
-            ),
-            @ApiResponse(responseCode = "403",
-                    description = "if the service does not have an access key to the request",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema()
-                    )
-            )
-    })
-    @PostMapping("/loadedUser")
-    public ResponseEntity<UserLoadDTO> loadedUser(@RequestBody String username){
-
-        Optional<User> user = userService.findByUsername(username);
-
-        if(user.isEmpty()) throw new NotResourceException("user is not exist");
-
-
-        return ResponseEntity.ok(convertorLoad.convertEntityToDTO(user.get()));
-
-    }
-
-    @PostAuthorize("hasAnyRole('USER')")
     @GetMapping("/permission")
-    public boolean isPermission(){
-        return true;
-    }
+    public void isPermission() {}
 }

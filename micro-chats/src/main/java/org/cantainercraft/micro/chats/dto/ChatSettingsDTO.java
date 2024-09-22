@@ -1,6 +1,7 @@
 package org.cantainercraft.micro.chats.dto;
 
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.cantainercraft.project.entity.chats.Chat;
 import org.cantainercraft.project.entity.chats.Chat_Settings;

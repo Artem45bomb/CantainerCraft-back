@@ -1,6 +1,5 @@
 package org.cantainercraft.micro.users.service;
 
-import org.cantainercraft.micro.users.dto.ServiceUserDTO;
 import org.cantainercraft.micro.users.dto.UserDTO;
 import org.cantainercraft.project.entity.users.User;
 

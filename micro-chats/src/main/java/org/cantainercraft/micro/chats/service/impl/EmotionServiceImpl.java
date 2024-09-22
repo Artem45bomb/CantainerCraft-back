@@ -23,48 +23,57 @@ public class EmotionServiceImpl implements EmotionService {
     private final EmotionRepository repository;
     private final EmotionDTOConvertor convertor;
 
+    @Override
     public Optional<Emotion> findByUnicode(String unicode) {
         return repository
                 .findByUnicode(unicode);
     }
 
+    @Override
     public void deleteByUnicode(String unicode) {
-        repository
-                .findByUnicode(unicode)
-                .orElseThrow(() -> {throw new NotResourceException("emotion is not exist");});
+        if(!repository.existsByUnicode(unicode)) 
+            throw new NotResourceException("emotion is not exist");
+        
         repository.deleteByUnicode(unicode);
     }
 
+    @Override
     public void deleteById(UUID uuid) {
-        repository
-                .findById(uuid)
-                .orElseThrow(() ->{throw new NotResourceException("");});
+        if(!repository.existsById(uuid))
+            throw new NotResourceException("emotion is not exist");
+        
         repository.deleteById(uuid);
     }
 
-    public Emotion save(EmotionDTO emotionDTO) {
-        Optional<Emotion> emotion = repository
-                .findByUnicode(emotionDTO.getUnicode());
-
-        if(emotion.isEmpty()){
-            return repository
-                    .save(convertor.convertDTOToEntity(emotionDTO));
-        }
-        else
+    @Override
+    public Emotion save(EmotionDTO dto) {
+        if(repository.existsByUnicode(dto.getUnicode()))
             throw new ExistResourceException("emotion is exist");
+
+        return repository.save(convertor.convertDTOToEntity(dto));
     }
 
-    public Emotion update(EmotionDTO emotionDTO) {
-        repository
-                .findById(emotionDTO.getUuid())
-                .orElseThrow(() -> {throw new NotResourceException("emotion is not exist");});
+    @Override
+    public Emotion update(EmotionDTO dto) {
+        Optional<Emotion> emotion = repository.findById(dto.getUuid());
+        Optional<Emotion> findByUnicode = repository.findByUnicode(dto.getUnicode());
+
+        if(emotion.isEmpty())
+            throw new NotResourceException("emotion is not exist");
+
+        if(findByUnicode.isPresent() && !findByUnicode.get().getUuid().equals(dto.getUuid()))
+            throw new NotResourceException("emotion is not exist");
+
         return repository
-                .save(convertor.convertDTOToEntity(emotionDTO));
+                .save(convertor.convertDTOToEntity(dto));
     }
+    
+    @Override
     public List<Emotion> findAll() {
         return repository.findAll();
     }
 
+    @Override
     public Optional<Emotion> findById(UUID uuid){
         return repository.findById(uuid);
     }
