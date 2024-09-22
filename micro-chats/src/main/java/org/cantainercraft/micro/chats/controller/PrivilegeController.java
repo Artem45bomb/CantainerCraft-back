@@ -145,7 +145,6 @@ public class PrivilegeController {
             description = "This privilege already exists"
             )
     })
-
     @PutMapping("/update")
     public ResponseEntity<Privilege> update(@Valid @RequestBody PrivilegeDTO dto) {
         return ResponseEntity.ok(service.update(dto));
@@ -175,7 +174,6 @@ public class PrivilegeController {
                     )
             )
     })
-
     @PutMapping("/delete")
     public void deleteById(@RequestBody UUID uuid) {
         service.deleteById(uuid);

@@ -55,7 +55,6 @@ class UserChatController {
             @ApiResponse(responseCode = "404",
                     description = "content is not exist ")
     })
-
     @PostMapping("/id")
     public ResponseEntity<User_Chat> findById(@RequestBody Long id){
         Optional<User_Chat> userChat = service.findById(id);
@@ -170,8 +169,6 @@ class UserChatController {
                     description = "user is add chat"
             )
     })
-
-
     @PostMapping("/add")
     public ResponseEntity<User_Chat> save(@Valid @RequestBody UserChatDTO dto){
         return ResponseEntity.ok(service.save(dto));

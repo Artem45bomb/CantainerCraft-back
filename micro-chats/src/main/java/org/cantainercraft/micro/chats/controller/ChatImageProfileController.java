@@ -113,7 +113,6 @@ public class ChatImageProfileController {
                     description = "missed param: chat uuid",
                     content = @Content(mediaType = "application/json"))
     })
-
     @PostMapping("/add")
     public ResponseEntity<Chat_Image_Profile> save(@Valid @RequestBody ChatImageProfileDTO dto) {
 

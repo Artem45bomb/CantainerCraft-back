@@ -54,7 +54,6 @@ public class ChatSecuredController {
                     description = "chat is secured",
                     content = @Content(mediaType = "application/json"))
     })
-
     @PostMapping("/add")
     public ChatSecuredDTO save(@Valid @RequestBody ChatSecuredDTO dto){
         Chat_Secured entity = service.save(dto);
