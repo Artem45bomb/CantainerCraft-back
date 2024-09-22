@@ -77,7 +77,6 @@ public class UserOnlineController {
 
     @Operation(parameters = @Parameter(
             name = "user online data",
-            description = "User online data includes: user online id, user, is online",
             schema = @Schema(implementation = UserDTO.class)
     ),
             summary = "update user",

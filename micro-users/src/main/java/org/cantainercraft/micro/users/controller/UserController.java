@@ -171,7 +171,6 @@ public class UserController {
 
     @Operation(parameters = @Parameter(
         name = "user data",
-        description = "User data includes: email address, password, username.",
         schema = @Schema(implementation = UserDTO.class)
     ),
             summary = "Add user",
