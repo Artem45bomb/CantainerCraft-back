@@ -48,7 +48,6 @@ public class UserAccountController {
                     description = "not valid param",
                     content = @Content(mediaType = "application/json")),
     })
-
     @PostMapping("/update")
     public JwtAuthResponse accountUpdate(@Valid @RequestBody UserClientDTO userDTO, @NonNull HttpServletResponse response){
         if(!StringUtils.isBlank(userDTO.getPassword()) && userDTO.getPassword().trim().length() < 5){
@@ -71,7 +70,6 @@ public class UserAccountController {
                     description = "user is not exist",
                     content = @Content(mediaType = "application/json"))
     })
-
     @PostMapping("/loaded")
     public UserClientDTO userClient(HttpServletRequest httpServletRequest){
         return accountService.loadedUser(httpServletRequest);
