@@ -1,7 +1,9 @@
 package org.cantainercraft.micro.chats.service.impl;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.convertor.MessageForwardDTOConvertor;
+import org.cantainercraft.micro.chats.dto.MessageDTO;
 import org.cantainercraft.micro.chats.dto.MessageForwardDTO;
 import org.cantainercraft.micro.chats.service.MessageForwardService;
 import org.cantainercraft.micro.chats.service.MessageService;
@@ -9,6 +11,7 @@ import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.chats.Message;
 import org.cantainercraft.project.entity.chats.Message_Forward;
 import org.cantainercraft.micro.chats.repository.MessageForwardRepository;
+import org.cantainercraft.project.entity.chats.TypeMessage;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,9 +32,10 @@ public class MessageForwardServiceImpl implements MessageForwardService {
         if(messageFrom.isEmpty())
             throw new NotResourceException("message from is not exist");
 
-        Message messageSave = messageService.save(dto.getMessage());
+        MessageDTO message = dto.getMessage();
+        message.setType(TypeMessage.FORWARD);
 
-        return repository.save(new Message_Forward(null,messageFrom.get(),messageSave));
+        return repository.save(new Message_Forward(null,messageFrom.get(),messageService.save(message)));
     }
 
     @Override
