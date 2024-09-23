@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.micro.utilits.exception.NotValidateParamException;
-import org.cantainercraft.micro.utilits.service.ConvertorDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +31,7 @@ public class UserController {
     private final UserService userService;
 
 
-    @Operation(parameters = {@Parameter(name = "id",description = "User Id",schema = @Schema(implementation = Long.class),required = true)},
+    @Operation(parameters = {@Parameter(name = "id",description = "User Id",schema = @Schema(implementation = Long.class))},
             summary = "Retrieve a User for by Id",
             description = "We get the user by Id. If the request is successful, we get the user with information about him including personal information",
             tags = {"get"})
@@ -62,7 +61,7 @@ public class UserController {
 
 
     @Operation(
-            parameters = {@Parameter(description="object with parameters to define",schema = @Schema(implementation = UserSearchDTO.class),required = true)},
+            parameters = {@Parameter(description="object with parameters to define",schema = @Schema(implementation = UserSearchDTO.class))},
             summary = "search users",
             description = "search for similar users using parameters such as email and password",
             tags = {"search","users"}
@@ -70,9 +69,7 @@ public class UserController {
     @ApiResponse(responseCode = "200",
                         content = @Content(
                                 mediaType = "application/json",
-                                array = @ArraySchema(
-                                        schema = @Schema(
-                                                implementation = UserDTO.class))))
+                                array = @ArraySchema(schema = @Schema(implementation = User.class))))
     @PostMapping("/search")
     public ResponseEntity<List<User>> findBySearch(@RequestBody @Valid UserSearchDTO dto){
 
@@ -170,9 +167,9 @@ public class UserController {
     }
 
     @Operation(parameters = @Parameter(
-        name = "user data",
-        schema = @Schema(implementation = UserDTO.class)
-    ),
+                name = "user data",
+                schema = @Schema(implementation = UserDTO.class)
+            ),
             summary = "Add user",
             tags = {"add"})
     @ApiResponses({
@@ -208,10 +205,9 @@ public class UserController {
     }
 
     @Operation(parameters = @Parameter(
-            name = "user date",
-            description = "User data includes: email address, password, username,roles ,subscription.",
-            schema = @Schema(implementation = UserDTO.class)
-    ),
+                name = "user date",
+                description = "User data includes: email address, password, username,roles ,subscription.",
+                schema = @Schema(implementation = UserDTO.class)),
             summary = "Update user",
             tags = {"update"})
     @ApiResponses({

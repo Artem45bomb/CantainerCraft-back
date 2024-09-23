@@ -9,11 +9,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.cantainercraft.micro.users.dto.RoleDTO;
 import org.cantainercraft.micro.users.dto.SubscriptionDTO;
 import org.cantainercraft.micro.users.dto.SubscriptionUpdateDTO;
 import org.cantainercraft.micro.users.service.SubscriptionService;
-import org.cantainercraft.project.entity.users.Role;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +32,6 @@ public class SubscriptionController {
             parameters = @Parameter(
                     name = "id",
                     description = "subscription id",
-                    required = true,
                     schema = @Schema(implementation = Long.class))
     )
     @ApiResponses({
@@ -72,7 +69,7 @@ public class SubscriptionController {
             tags = {"add"},
             parameters = @Parameter(name="subscription",
                     description = "subscription name",
-                    schema = @Schema( implementation = RoleDTO.class))
+                    schema = @Schema( implementation = SubscriptionDTO.class))
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200",

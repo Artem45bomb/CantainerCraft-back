@@ -10,11 +10,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.cantainercraft.micro.users.dto.UserDTO;
 import org.cantainercraft.micro.users.dto.UserOnlineDTO;
 import org.cantainercraft.micro.users.service.UserOnlineService;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
-import org.cantainercraft.project.entity.users.User;
 import org.cantainercraft.project.entity.users.User_Online;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,7 +44,7 @@ public class UserOnlineController {
         return ResponseEntity.ok(service.findAll());
     }
 
-    @Operation(parameters = {@Parameter(name = "id",description = "User online Id",schema = @Schema(implementation = Long.class),required = true)},
+    @Operation(parameters = {@Parameter(name = "id",description = "User online Id",schema = @Schema(implementation = UUID.class))},
             summary = "get user online",
             description = "We get the user online by Id",
             tags = {"get"})
@@ -77,7 +75,7 @@ public class UserOnlineController {
 
     @Operation(parameters = @Parameter(
             name = "user online data",
-            schema = @Schema(implementation = UserDTO.class)
+            schema = @Schema(implementation = UserOnlineDTO.class)
     ),
             summary = "update user",
             tags = {"add"})

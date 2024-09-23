@@ -15,7 +15,6 @@ import org.cantainercraft.micro.chats.service.ChatService;
 import org.cantainercraft.micro.chats.service.UserChatService;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.micro.utilits.exception.NotValidateParamException;
-import org.cantainercraft.project.entity.chats.Chat_Image_Profile;
 import org.cantainercraft.project.entity.users.TypeChat;
 import org.cantainercraft.project.entity.chats.Chat;
 import org.cantainercraft.project.entity.chats.User_Chat;
@@ -53,7 +52,7 @@ public class ChatController {
     @ApiResponses({
             @ApiResponse(responseCode = "200",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Chat_Image_Profile.class))),
+                            schema = @Schema(implementation = Chat.class))),
             @ApiResponse(responseCode = "400",
                     description = "not valid param",
                     content = @Content(mediaType = "application/json")),
@@ -77,15 +76,14 @@ public class ChatController {
             description = "delete chat",
             parameters = @Parameter(
                     name = "uuid",
-                    description = "chat id"
+                    description = "chat id",
+                    schema = @Schema(implementation = UUID.class)
             ),
             tags = {"delete"})
     @ApiResponses({
             @ApiResponse(responseCode = "200",
                     description = "if the operation is successful, it will return to delete the chat",
-                    content = @Content(
-                            mediaType = "application/json"
-                    )),
+                    content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "400",
                     description = "not valid param",
                     content = @Content(mediaType = "application/json")),
@@ -101,8 +99,7 @@ public class ChatController {
 
     @Operation(parameters = @Parameter(
             name = "chat data",
-            description = "chat includes: name, link, typechat, messages, users",
-            schema = @Schema(implementation = Chat.class)),
+            schema = @Schema(implementation = ChatDTO.class)),
             summary = "Add chat image",
             tags = {"add"})
     @ApiResponses({
@@ -157,19 +154,16 @@ public class ChatController {
         return ResponseEntity.ok(service.update(chatDTO));
     }
 
-    @Operation(summary = "get chat",
-            description = "get chat by uuid, chatName, dateStart, dateEnd, typeChat",
+    @Operation(summary = "get chats",
             parameters = @Parameter(name = "data", description = "search data", schema = @Schema(implementation = ChatSearchDTO.class)),
             tags = {"get","search"})
     @ApiResponses({
             @ApiResponse(responseCode = "200",
-                    description = "get id, user id, chat id, date start, date end, value, page number, page size, sort direction, sort column",
                     content = @Content(
                             mediaType = "application/json",
                             array = @ArraySchema(schema = @Schema(implementation = Chat.class)))),
             @ApiResponse(responseCode = "400",
-                    content = @Content(
-                            mediaType = "application/json"),
+                    content = @Content(mediaType = "application/json"),
                     description = "not valid param")
     })
     @PostMapping("/search")

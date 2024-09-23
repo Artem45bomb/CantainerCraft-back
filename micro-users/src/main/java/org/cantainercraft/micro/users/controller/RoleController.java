@@ -32,7 +32,6 @@ public class RoleController {
     parameters = @Parameter(
             name = "id",
             description = "Role id",
-            required = true,
             schema = @Schema(implementation = Long.class))
     )
     @ApiResponses({
@@ -99,10 +98,10 @@ public class RoleController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = Role.class))),
             @ApiResponse(responseCode = "409",
                     description = "a role with the same name exists",
-                    content = @Content(schema = @Schema())),
+                    content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "404",
                     description = "role is not exist",
-                    content = @Content(schema = @Schema(implementation = Boolean.class))),
+                    content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "400",
                     description = "not valid param",
                     content = @Content(mediaType = "application/json")),
@@ -124,7 +123,7 @@ public class RoleController {
                     content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "404",
                     description = "role is not exist",
-                    content = @Content( schema = @Schema(implementation = Boolean.class))),
+                    content = @Content( mediaType = "application/json")),
             @ApiResponse(responseCode = "400",
                     description = "not valid param",
                     content = @Content(mediaType = "application/json")),

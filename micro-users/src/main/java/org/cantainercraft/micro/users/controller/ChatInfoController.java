@@ -40,7 +40,6 @@ public class ChatInfoController  {
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
-                    description = "if operation success",
                     content = @Content(mediaType = "application/json",
                         schema = @Schema(implementation = Chat_Info.class))
             ),
@@ -60,8 +59,8 @@ public class ChatInfoController  {
 
     @Operation(summary = "find chat info",
                 description = "find by id chat info",
-    parameters =@Parameter(description = "uuid",content = @Content(
-            schema = @Schema(implementation = UUID.class)
+                parameters =@Parameter(name = "uuid",content = @Content(
+                        schema = @Schema(implementation = UUID.class)
     )),
     tags = {"uuid"})
     @ApiResponses({
@@ -106,7 +105,6 @@ public class ChatInfoController  {
 
     @Operation(summary = "update chat info",
         parameters = @Parameter(name = "data for update chat info",
-        required = true,
         schema = @Schema(implementation = ChatInfoDTO.class)),
         tags = {"update"})
     @ApiResponses({
@@ -131,13 +129,13 @@ public class ChatInfoController  {
     }
 
     @Operation(summary = "delete chat info",
-            parameters = @Parameter(name = "uuid entity",
-                    required = true,
+            parameters = @Parameter(name = "uuid",
                     schema = @Schema(implementation = UUID.class)),
             tags = {"delete"})
     @ApiResponses({
             @ApiResponse(
                     description = "if chat info exist",
+                    content = @Content(mediaType = "application/json"),
                     responseCode = "200"),
             @ApiResponse(responseCode = "400",
                     description = "not valid param",

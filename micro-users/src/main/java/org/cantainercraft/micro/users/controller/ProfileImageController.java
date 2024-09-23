@@ -11,7 +11,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.users.dto.ProfileImageDTO;
 import org.cantainercraft.micro.users.service.ProfileImageService;
-import org.cantainercraft.project.entity.users.Profile;
 import org.cantainercraft.project.entity.users.Profile_Image;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -72,7 +71,6 @@ public class ProfileImageController {
             summary = "add image",
             description = "add image for profile of user",
             parameters = @Parameter(
-                    required = true,
                     description = "data for add image in profile",
                     schema = @Schema(implementation = ProfileImageDTO.class)
             )
@@ -97,7 +95,6 @@ public class ProfileImageController {
             summary = "update image",
             description = "update image for profile of user",
             parameters = @Parameter(
-                    required = true,
                     description = "data for update image in profile",
                     schema = @Schema(implementation = ProfileImageDTO.class)
             )
@@ -126,7 +123,6 @@ public class ProfileImageController {
             summary = "delete image",
             description = "delete image for profile of user",
             parameters = @Parameter(
-                    required = true,
                     description = "data for delete image in profile"
             )
     )
