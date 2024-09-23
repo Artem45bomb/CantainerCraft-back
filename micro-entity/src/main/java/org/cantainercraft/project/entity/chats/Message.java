@@ -30,7 +30,8 @@ public class Message implements Serializable {
     @Column(name="is_pinned")
     private Boolean isPinned;
 
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private TypeMessage type;
 
     private Date date;
 
@@ -51,11 +52,11 @@ public class Message implements Serializable {
     public boolean equals(Object object) {
         if (this == object) return true;
         if (!(object instanceof Message message)) return false;
-        return Objects.equals(getUuid(), message.getUuid()) && Objects.equals(getText(), message.getText()) && Objects.equals(getType(), message.getType());
+        return Objects.equals(getUuid(), message.getUuid());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUuid(), getText(), getType());
+        return Objects.hash(getUuid());
     }
 }

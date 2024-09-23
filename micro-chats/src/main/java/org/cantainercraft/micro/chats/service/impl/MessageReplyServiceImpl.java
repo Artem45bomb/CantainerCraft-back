@@ -2,6 +2,7 @@ package org.cantainercraft.micro.chats.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.cantainercraft.micro.chats.convertor.MessageReplyDTOConvertor;
+import org.cantainercraft.micro.chats.dto.MessageDTO;
 import org.cantainercraft.micro.chats.dto.MessageReplyDTO;
 import org.cantainercraft.micro.chats.service.MessageReplyService;
 import org.cantainercraft.micro.chats.service.MessageService;
@@ -9,6 +10,7 @@ import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.project.entity.chats.Message;
 import org.cantainercraft.project.entity.chats.Message_Reply;
 import org.cantainercraft.micro.chats.repository.MessageReplyRepository;
+import org.cantainercraft.project.entity.chats.TypeMessage;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,16 +26,16 @@ public class MessageReplyServiceImpl implements MessageReplyService {
 
     @Override
     public Message_Reply save(MessageReplyDTO dto) {
-        Message_Reply entity = convertor.convertDTOToEntity(dto);
         Optional<Message> messageReply = messageService.findByUuid(dto.getMessageReply().getUuid());
 
         if(messageReply.isEmpty())
             throw new NotResourceException("message reply is not exist");
 
-        Message messageSave = messageService.save(dto.getMessage());
+
+        MessageDTO message = dto.getMessage();
+        message.setType(TypeMessage.REPLY);
         
-        
-        return repository.save(new Message_Reply(null,messageSave,messageReply.get()));
+        return repository.save(new Message_Reply(null,messageService.save(message),messageReply.get()));
     }
 
     @Override
