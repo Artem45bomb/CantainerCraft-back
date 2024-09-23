@@ -41,11 +41,6 @@ public class MessageReadController {
         return ResponseEntity.ok(service.save(dto));
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<MessageRead> update(@Valid @RequestBody MessageReadDTO dto) {
-        return ResponseEntity.ok(service.update(dto));
-    }
-
     @PutMapping("/delete")
     public void delete(@RequestBody UUID uuid) {
         service.delete(uuid);
