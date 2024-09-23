@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 import org.cantainercraft.micro.utilits.exception.NotResourceException;
 import org.cantainercraft.micro.utilits.exception.NotValidateParamException;
-import org.cantainercraft.micro.utilits.service.ConvertorDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +31,7 @@ public class UserController {
     private final UserService userService;
 
 
-    @Operation(parameters = {@Parameter(name = "id",description = "User Id",schema = @Schema(implementation = Long.class),required = true)},
+    @Operation(parameters = {@Parameter(name = "id",description = "User Id",schema = @Schema(implementation = Long.class))},
             summary = "Retrieve a User for by Id",
             description = "We get the user by Id. If the request is successful, we get the user with information about him including personal information",
             tags = {"get"})
@@ -41,15 +40,13 @@ public class UserController {
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = User.class)
-
                     )),
             @ApiResponse(responseCode = "404",
-                    description = "if user is not exist",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema()
-                    )
-            )
+                    description = "user is not exist",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400",
+                    description = "not valid param",
+                    content = @Content(mediaType = "application/json"))
     })
     @PostMapping("/id")
     public ResponseEntity<User> findById(@RequestBody Long id){
@@ -64,7 +61,7 @@ public class UserController {
 
 
     @Operation(
-            parameters = {@Parameter(description="object with parameters to define",schema = @Schema(implementation = UserSearchDTO.class),required = true)},
+            parameters = {@Parameter(description="object with parameters to define",schema = @Schema(implementation = UserSearchDTO.class))},
             summary = "search users",
             description = "search for similar users using parameters such as email and password",
             tags = {"search","users"}
@@ -72,9 +69,7 @@ public class UserController {
     @ApiResponse(responseCode = "200",
                         content = @Content(
                                 mediaType = "application/json",
-                                array = @ArraySchema(
-                                        schema = @Schema(
-                                                implementation = UserDTO.class))))
+                                array = @ArraySchema(schema = @Schema(implementation = User.class))))
     @PostMapping("/search")
     public ResponseEntity<List<User>> findBySearch(@RequestBody @Valid UserSearchDTO dto){
 
@@ -94,15 +89,16 @@ public class UserController {
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = User.class)
-
                     )),
             @ApiResponse(responseCode = "404",
+                    description = "email is null",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "404",
                     description = "if user is not exist",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema()
-                    )
-            )
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400",
+                    description = "not valid param",
+                    content = @Content(mediaType = "application/json"))
     })
     @PostMapping("/email")
     public ResponseEntity<User> findByEmail( @RequestBody String email){
@@ -128,15 +124,16 @@ public class UserController {
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = User.class)
-
                     )),
             @ApiResponse(responseCode = "404",
-                    description = "if user is not exist",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema()
-                    )
-            )
+                    description = "user is not exist",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400",
+                    description = "name is null",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400",
+                    description = "not valid param",
+                    content = @Content(mediaType = "application/json"))
     })
     @PostMapping("/name")
     public ResponseEntity<User> findByName(@RequestBody String name){
@@ -152,6 +149,9 @@ public class UserController {
         return ResponseEntity.ok(user.get());
     }
 
+    @Operation(summary = "get all users",
+            description = "we get all users without input params",
+            tags = {"get","all"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     description = "user get all",
@@ -167,10 +167,9 @@ public class UserController {
     }
 
     @Operation(parameters = @Parameter(
-        name = "user data",
-        description = "User data includes: email address, password, username.",
-        schema = @Schema(implementation = UserDTO.class)
-    ),
+                name = "user data",
+                schema = @Schema(implementation = UserDTO.class)
+            ),
             summary = "Add user",
             tags = {"add"})
     @ApiResponses({
@@ -178,22 +177,19 @@ public class UserController {
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = User.class)
-
                     )),
             @ApiResponse(responseCode = "409",
-                    description = "if user exist",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema()
-                    )
-            ),
+                    description = "username is exist",
+                    content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "406",
                     description = "not validate param",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema()
-                    )
-            )
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "406",
+                    description = "missed param: id",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "409",
+                    description = "email is exist",
+                    content = @Content(mediaType = "application/json"))
     })
     @PostMapping("/add")
     public ResponseEntity<User> save(@Valid @RequestBody UserDTO dto){
@@ -209,10 +205,9 @@ public class UserController {
     }
 
     @Operation(parameters = @Parameter(
-            name = "user date",
-            description = "User data includes: email address, password, username,roles ,subscription.",
-            schema = @Schema(implementation = UserDTO.class)
-    ),
+                name = "user date",
+                description = "User data includes: email address, password, username,roles ,subscription.",
+                schema = @Schema(implementation = UserDTO.class)),
             summary = "Update user",
             tags = {"update"})
     @ApiResponses({
@@ -220,22 +215,16 @@ public class UserController {
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = User.class)
-
                     )),
             @ApiResponse(responseCode = "404",
-                    description = "if user is not exist",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema()
-                    )
-            ),
+                    description = "user is not exist",
+                    content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "406",
                     description = "not validate param",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema()
-                    )
-            )
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "406",
+                    description = "missed param: id",
+                    content = @Content(mediaType = "application/json")),
     })
     @PutMapping("/update")
     public ResponseEntity<User> update(@Valid @RequestBody UserDTO dto){
@@ -259,12 +248,8 @@ public class UserController {
 
                     )),
             @ApiResponse(responseCode = "404",
-                    description = "if user is not exist",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema()
-                    )
-            )
+                    description = "user is not exist",
+                    content = @Content(mediaType = "application/json"))
     })
     @PutMapping("/delete/email")
     public void deleteByEmail(@RequestBody String email){
@@ -279,18 +264,13 @@ public class UserController {
     @ApiResponses({
             @ApiResponse(responseCode = "200",
                     description = "if the operation is successful, it will return to delete the user",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = String.class)
-
-                    )),
+                    content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "404",
-                    description = "if user is not exist",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema()
-                    )
-            )
+                    description = "user is not exist",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "406",
+                    description = "not validate param",
+                    content = @Content(mediaType = "application/json"))
     })
     @PutMapping("/delete/id")
     public void deleteById(@RequestBody Long id ){
@@ -318,11 +298,10 @@ public class UserController {
                     )),
             @ApiResponse(responseCode = "403",
                     description = "if the service does not have an access key to the request",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema()
-                    )
-            )
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400",
+                    description = "not valid param",
+                    content = @Content(mediaType = "application/json"))
     })
     @PostMapping("/exist/id")
     public ResponseEntity<Boolean> existById(@RequestBody Long id){

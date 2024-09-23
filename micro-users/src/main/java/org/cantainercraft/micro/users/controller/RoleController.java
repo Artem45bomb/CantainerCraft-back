@@ -32,7 +32,6 @@ public class RoleController {
     parameters = @Parameter(
             name = "id",
             description = "Role id",
-            required = true,
             schema = @Schema(implementation = Long.class))
     )
     @ApiResponses({
@@ -42,8 +41,11 @@ public class RoleController {
                             schema = @Schema(implementation = Role.class)
                     )),
             @ApiResponse(responseCode = "404",
-                    description = "if role is not exist",
-                    content = @Content(schema = @Schema()))
+                    description = "role is not exist",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400",
+                    description = "not valid param",
+                    content = @Content(mediaType = "application/json")),
     })
     @GetMapping("/{id}")
     public ResponseEntity<Role> findById(@PathVariable Long id){
@@ -51,11 +53,12 @@ public class RoleController {
     }
 
     @Operation(summary = "Get all roles",
-    tags = {"get","all"})
+            tags = {"get","all"})
     @ApiResponse(responseCode = "200",
-    content = @Content(mediaType = "application/json",
-            array = @ArraySchema(schema = @Schema(implementation = Role.class))
-    ))
+            content = @Content(mediaType = "application/json",
+                    array = @ArraySchema(schema = @Schema(implementation = Role.class))
+            ))
+
     @GetMapping("/all")
     public ResponseEntity<List<Role>> findAll(){
         return ResponseEntity.ok(roleService.findAll());
@@ -69,11 +72,14 @@ public class RoleController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200",
-            content = @Content(mediaType = "application/json",
-            schema = @Schema(implementation = Role.class))),
+                    content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = Role.class))),
             @ApiResponse(responseCode = "409",
-            description = "if role is exist",
-            content = @Content(schema = @Schema()))
+                    description = "role is exist",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400",
+                    description = "not valid param",
+                    content = @Content(mediaType = "application/json")),
     })
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/add")
@@ -92,10 +98,13 @@ public class RoleController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = Role.class))),
             @ApiResponse(responseCode = "409",
                     description = "a role with the same name exists",
-                    content = @Content(schema = @Schema())),
+                    content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "404",
                     description = "role is not exist",
-                    content = @Content(schema = @Schema(implementation = Boolean.class))),
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400",
+                    description = "not valid param",
+                    content = @Content(mediaType = "application/json")),
     })
     @PutMapping
     public ResponseEntity<Role> update(@Valid @RequestBody RoleDTO roleDTO){
@@ -110,11 +119,14 @@ public class RoleController {
     tags = {"delete"})
     @ApiResponses({
             @ApiResponse(responseCode = "200",
-            description = "success operation",
-            content = @Content(mediaType = "application/json")),
+                    description = "success operation",
+                    content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "404",
-            description = "role is not exist",
-            content = @Content( schema = @Schema(implementation = Boolean.class))),
+                    description = "role is not exist",
+                    content = @Content( mediaType = "application/json")),
+            @ApiResponse(responseCode = "400",
+                    description = "not valid param",
+                    content = @Content(mediaType = "application/json")),
     })
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{id}")

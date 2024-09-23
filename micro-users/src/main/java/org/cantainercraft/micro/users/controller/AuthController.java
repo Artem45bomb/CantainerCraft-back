@@ -42,10 +42,13 @@ public class AuthController {
                             mediaType = "application/json",
                             schema = @Schema(implementation = JwtAuthResponse.class))),
             @ApiResponse(responseCode = "409",
+                    content = @Content(mediaType = "application/json"),
                     description = "user is exist"),
             @ApiResponse(responseCode = "409",
+                    content = @Content(mediaType = "application/json"),
                     description = "email is exist"),
             @ApiResponse(responseCode = "403",
+                    content = @Content(mediaType = "application/json"),
                     description = "error on server")
     })
     @PostMapping("/signup")
@@ -66,11 +69,11 @@ public class AuthController {
                             mediaType = "application/json",
                             schema = @Schema(implementation = JwtAuthResponse.class))),
             @ApiResponse(responseCode = "404",
-                    description = "user is not exist",
-                    content = @Content(schema = @Schema())),
+                    content = @Content(mediaType = "application/json"),
+                    description = "user is not exist"),
             @ApiResponse(responseCode = "403",
-                    description = "error on server",
-                    content = @Content(schema = @Schema()))
+                    content = @Content(mediaType = "application/json"),
+                    description = "error on server")
     })
     @PostMapping("/login")
     public JwtAuthResponse login(@RequestBody @Valid SignInAuthDTO signInAuthDTO, @NonNull HttpServletResponse response){

@@ -39,15 +39,18 @@ public class ChatInfoController  {
     )
     @ApiResponses({
             @ApiResponse(
-                    description = "if operation success",
                     responseCode = "200",
                     content = @Content(mediaType = "application/json",
                         schema = @Schema(implementation = Chat_Info.class))
             ),
             @ApiResponse(
-                    description = "if chat info already exist",
-                    responseCode = "409"
-            )
+                    responseCode = "409",
+                    content = @Content(mediaType = "application/json"),
+                    description = "Chat Info not found"
+            ),
+            @ApiResponse(responseCode = "400",
+                    description = "not valid param",
+                    content = @Content(mediaType = "application/json"))
     })
     @PostMapping("/add")
     public ResponseEntity<Chat_Info> save(@Valid @RequestBody ChatInfoDTO dto){
@@ -56,8 +59,8 @@ public class ChatInfoController  {
 
     @Operation(summary = "find chat info",
                 description = "find by id chat info",
-    parameters =@Parameter(description = "uuid",content = @Content(
-            schema = @Schema(implementation = UUID.class)
+                parameters =@Parameter(name = "uuid",content = @Content(
+                        schema = @Schema(implementation = UUID.class)
     )),
     tags = {"uuid"})
     @ApiResponses({
@@ -69,10 +72,13 @@ public class ChatInfoController  {
                             schema = @Schema(implementation =Chat_Info.class
                             ))
             ),
-            @ApiResponse(
-                    description = "not found",
-                    responseCode = "404"
-            )
+            @ApiResponse(responseCode = "404",
+                    content = @Content(mediaType = "application/json"),
+                    description = "Chat Info not found"
+            ),
+            @ApiResponse(responseCode = "400",
+                    description = "not valid param",
+                    content = @Content(mediaType = "application/json")),
     })
     @GetMapping("/{uuid}")
     public ResponseEntity<Chat_Info> findById(@PathVariable UUID uuid){
@@ -99,7 +105,6 @@ public class ChatInfoController  {
 
     @Operation(summary = "update chat info",
         parameters = @Parameter(name = "data for update chat info",
-        required = true,
         schema = @Schema(implementation = ChatInfoDTO.class)),
         tags = {"update"})
     @ApiResponses({
@@ -108,11 +113,13 @@ public class ChatInfoController  {
                     responseCode = "200",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = Chat_Info.class)
-                    )
-            ),
+                            schema = @Schema(implementation = Chat_Info.class))),
+            @ApiResponse(responseCode = "400",
+                    description = "not valid param",
+                    content = @Content(mediaType = "application/json")),
             @ApiResponse(
-                    description = "if not exist chat info",
+                    description = "Chat Info not found",
+                    content = @Content(mediaType = "application/json"),
                     responseCode = "404"
             )
     })
@@ -122,19 +129,21 @@ public class ChatInfoController  {
     }
 
     @Operation(summary = "delete chat info",
-            parameters = @Parameter(name = "uuid entity",
-                    required = true,
+            parameters = @Parameter(name = "uuid",
                     schema = @Schema(implementation = UUID.class)),
             tags = {"delete"})
     @ApiResponses({
             @ApiResponse(
                     description = "if chat info exist",
-                    responseCode = "200"
-            ),
+                    content = @Content(mediaType = "application/json"),
+                    responseCode = "200"),
+            @ApiResponse(responseCode = "400",
+                    description = "not valid param",
+                    content = @Content(mediaType = "application/json")),
             @ApiResponse(
-                    description = "if not exist chat info",
-                    responseCode = "404"
-            )
+                    description = "Chat Info not found",
+                    responseCode = "404",
+                    content = @Content(mediaType = "application/json"))
     })
     @DeleteMapping("/delete/{uuid}")
     public void deleteById(@PathVariable UUID uuid ){
